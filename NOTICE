@@ -1,1 +1,43 @@
+IoT Kickstart (Sputnik)
 Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+**********************
+THIRD PARTY COMPONENTS
+**********************
+This software includes third party software subject to the following copyrights:
+
+@sweetalert2/ngx-sweetalert2@5.1.0 under the MIT license
+aws-amplify-angular@3.0.11 under the Apache-2.0 license
+aws-amplify@1.1.36 under the Apache-2.0 license
+bootstrap@4.3.1 under the MIT license
+chart.js@2.8.0 under the MIT license
+chartjs-plugin-annotation@0.5.7 under the MIT license
+chartjs-plugin-draggable@0.1.6 under the MIT license
+chartjs-plugin-streaming@1.8.0 under the MIT license
+core-js@2.6.9 under the MIT license
+file-saver@2.0.2 under the MIT license
+font-awesome@4.7.0 under the (OFL-1.1 AND MIT) license
+fs-extra@7.0.1 under the MIT license
+gauge.js@0.2.1 under the MIT license
+graphql-tag@2.10.0 under the MIT license
+graphql@14.0.2 under the MIT license
+jquery-blockui@2.7.0 under the MIT license
+jquery-slimscroll@1.3.8 under the [ 'MIT', 'GPL' ] license
+jquery@3.4.1 under the MIT license
+jszip@3.2.2 under the (MIT OR GPL-3.0) license
+moment@2.24.0 under the MIT license
+ng-block-ui@2.1.7 under the MIT license
+ng2-charts@2.2.0 under the ISC license
+ngx-color-picker@7.5.0 under the MIT license
+node-forge@0.8.5 under the (BSD-3-Clause OR GPL-2.0) license
+node-waves@0.7.6 under the MIT license
+owl.carousel@2.3.4 under the MIT* license
+popper.js@1.15.0 under the MIT license
+shortid@2.2.14 under the MIT license
+sticky-kit@1.1.3 under the WTFPL license
+stream@0.0.2 under the MIT license
+sweetalert2@8.17.1 under the MIT license
+systemjs@0.21.5 under the MIT license
+underscore-deep-extend@1.1.5 under the MIT license
+underscore@1.9.1 under the MIT license
+uuid@3.3.2 under the MIT license

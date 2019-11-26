@@ -1,0 +1,11 @@
+AWSIoTPythonSDK
+bin
+boto3
+botocore
+dateutil
+docutils
+jmespath
+s3transfer
+urllib3
+__pycache__
+six.py

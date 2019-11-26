@@ -1,0 +1,281 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'sputnik - Defaults - Version %%VERSION%%'
+Parameters:
+    sourceS3Bucket:
+        Type: String
+        Description: sputnik S3 bucket.
+    sourceS3KeyPrefix:
+        Type: String
+        Description: sputnik Source key prefix.
+    deviceBlueprintsTable:
+        Type: String
+        Description: DynamoDB Table for storing the device blueprints
+    deviceTypesTable:
+        Type: String
+        Description: DynamoDB Table for storing the device types
+    systemBlueprintsTable:
+        Type: String
+        Description: DynamoDB Table for storing the system blueprints
+    utilsCustomResourceLambdaFunctionArn:
+        Type: String
+        Description: Utils custom resource helper ARN
+    dataS3Bucket:
+        Type: String
+        Description: sputnik Data S3 Bucket
+    dataS3BucketArn:
+        Type: String
+        Description: sputnik Data S3 Bucket ARN
+    greengrassGroupsIAMRole:
+        Type: String
+        Description: Greengrass Group Role
+
+Resources:
+
+    # Blueprints
+
+    DefaultsDeviceTypes:
+        Type: 'Custom::LoadLambda'
+        Properties:
+            ServiceToken: !Ref utilsCustomResourceLambdaFunctionArn
+            Region: !Ref 'AWS::Region'
+            sourceS3Bucket: !Ref sourceS3Bucket
+            sourceS3Key: !Join ['/', [!Ref sourceS3KeyPrefix, 'cf', 'defaults', 'device-types']]
+            table: !Ref deviceTypesTable
+            customAction: 'dynamodbPutObjectsFromS3Folder'
+
+    DefaultsDeviceBlueprints:
+        Type: 'Custom::LoadLambda'
+        Properties:
+            ServiceToken: !Ref utilsCustomResourceLambdaFunctionArn
+            Region: !Ref 'AWS::Region'
+            sourceS3Bucket: !Ref sourceS3Bucket
+            sourceS3Key: !Join ['/', [!Ref sourceS3KeyPrefix, 'cf', 'defaults', 'device-blueprints']]
+            table: !Ref deviceBlueprintsTable
+            customAction: 'dynamodbPutObjectsFromS3Folder'
+
+    DefaultsSystemBlueprints:
+        Type: 'Custom::LoadLambda'
+        Properties:
+            ServiceToken: !Ref utilsCustomResourceLambdaFunctionArn
+            Region: !Ref 'AWS::Region'
+            sourceS3Bucket: !Ref sourceS3Bucket
+            sourceS3Key: !Join ['/', [!Ref sourceS3KeyPrefix, 'cf', 'defaults', 'system-blueprints']]
+            table: !Ref systemBlueprintsTable
+            customAction: 'dynamodbPutObjectsFromS3Folder'
+
+    # Greengrass Role / Policy
+
+    DefaultsGreengrassGroupPolicy:
+        Type: 'AWS::IAM::ManagedPolicy'
+        Properties:
+            Description: 'Policy for the sputnik Greengrass Role.'
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    -
+                        Effect: 'Allow'
+                        Action:
+                            - 'logs:CreateLogStream'
+                            - 'logs:DescribeLogStreams'
+                            - 'logs:PutLogEvents'
+                            - 'logs:CreateLogGroup'
+                        Resource: 'arn:aws:logs:*:*:log-group:/aws/greengrass/*'
+                    -
+                        Effect: 'Allow'
+                        Action:
+                            - 's3:ListBucket'
+                            - 's3:GetObject'
+                            - 's3:ListObjects'
+                        Resource:
+                            - 'arn:aws:s3:::deeplens*/*'
+                            - 'arn:aws:s3:::deeplens*'
+                    -
+                        Effect: 'Allow'
+                        Action:
+                            - 'deeplens:*'
+                        Resource:
+                            - '*'
+                    -
+                        Effect: 'Allow'
+                        Action:
+                            - 'kinesisvideo:DescribeStream'
+                            - 'kinesisvideo:CreateStream'
+                            - 'kinesisvideo:GetDataEndpoint'
+                            - 'kinesisvideo:PutMedia'
+                        Resource:
+                            - '*'
+                    -
+                        Effect: 'Allow'
+                        Action:
+                            - 's3:ListBucket'
+                            - 's3:GetObject'
+                            - 's3:ListObjects'
+                            - 's3:PutObject'
+                        Resource:
+                            - !Join ['/', [!Join ['', [!Ref dataS3BucketArn, '*']], '*']]
+                            - !Join ['', [!Ref dataS3BucketArn, '*']]
+                    -
+                        Effect: 'Allow'
+                        Action:
+                            - 'iot:GetThingShadow'
+                            - 'greengrass:GetConnectivityInfo'
+                            - 'greengrass:ListGroupCertificateAuthorities'
+                            - 'greengrass:GetGroupCertificateAuthority'
+                        Resource:
+                            - '*'
+            Roles:
+                -
+                    !Ref greengrassGroupsIAMRole
+
+    # Lambda functions
+
+    DefaultsGreengrassLambdaRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'lambda.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Path: '/'
+
+    DefaultsHelloWorldLambda:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            FunctionName: 'sputnik-hello-world-python'
+            Description: 'sputnik Hello World Lambda Code'
+            Code:
+                S3Bucket: !Ref sourceS3Bucket
+                S3Key: !Join ['/', [!Ref sourceS3KeyPrefix, 'greengrasslambda', 'sputnik-hello-world-python.zip']]
+            Handler: lambda_function.lambda_handler
+            Runtime: python2.7
+            Role: !GetAtt DefaultsGreengrassLambdaRole.Arn
+            Timeout: 3
+            MemorySize: 128
+    DefaultsHelloWorldLambdaVersion:
+        Type: 'AWS::Lambda::Version'
+        Properties:
+            FunctionName: !Ref DefaultsHelloWorldLambda
+            Description: 'A first version of sputnik-hello-world-python'
+    DefaultsHelloWorldLambdaAlias:
+        Type: 'AWS::Lambda::Alias'
+        Properties:
+            FunctionName: !Ref DefaultsHelloWorldLambda
+            FunctionVersion: !GetAtt DefaultsHelloWorldLambdaVersion.Version
+            Name: 'Prod'
+
+    DefaultsSimpleGreengrassDeviceDemoLambda:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            FunctionName: 'sputnik-simple-greengrass-device-demo-python'
+            Description: 'sputnik Hello World Lambda Code'
+            Code:
+                S3Bucket: !Ref sourceS3Bucket
+                S3Key: !Join ['/', [!Ref sourceS3KeyPrefix, 'greengrasslambda', 'sputnik-simple-greengrass-device-demo-python.zip']]
+            Handler: lambda_function.lambda_handler
+            Runtime: python2.7
+            Role: !GetAtt DefaultsGreengrassLambdaRole.Arn
+            Timeout: 3
+            MemorySize: 128
+    DefaultsSimpleGreengrassDeviceDemoLambdaVersion:
+        Type: 'AWS::Lambda::Version'
+        Properties:
+            FunctionName: !Ref DefaultsSimpleGreengrassDeviceDemoLambda
+            Description: 'A first version of sputnik-simple-greengrass-device-demo-python'
+    DefaultsSimpleGreengrassDeviceDemoLambdaAlias:
+        Type: 'AWS::Lambda::Alias'
+        Properties:
+            FunctionName: !Ref DefaultsSimpleGreengrassDeviceDemoLambda
+            FunctionVersion: !GetAtt DefaultsSimpleGreengrassDeviceDemoLambdaVersion.Version
+            Name: 'Prod'
+
+    DefaultsSimpleGreengrassGatewayDemoLambda:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            FunctionName: 'sputnik-simple-greengrass-gateway-demo-python'
+            Description: 'sputnik Hello World Lambda Code'
+            Code:
+                S3Bucket: !Ref sourceS3Bucket
+                S3Key: !Join ['/', [!Ref sourceS3KeyPrefix, 'greengrasslambda', 'sputnik-simple-greengrass-gateway-demo-python.zip']]
+            Handler: lambda_function.lambda_handler
+            Runtime: python2.7
+            Role: !GetAtt DefaultsGreengrassLambdaRole.Arn
+            Timeout: 3
+            MemorySize: 128
+    DefaultsSimpleGreengrassGatewayDemoLambdaVersion:
+        Type: 'AWS::Lambda::Version'
+        Properties:
+            FunctionName: !Ref DefaultsSimpleGreengrassGatewayDemoLambda
+            Description: 'A first version of sputnik-simple-greengrass-gateway-demo-python'
+    DefaultsSimpleGreengrassGatewayDemoLambdaAlias:
+        Type: 'AWS::Lambda::Alias'
+        Properties:
+            FunctionName: !Ref DefaultsSimpleGreengrassGatewayDemoLambda
+            FunctionVersion: !GetAtt DefaultsSimpleGreengrassGatewayDemoLambdaVersion.Version
+            Name: 'Prod'
+
+    DefaultsRaspberryPiSenseHatDemoLambda:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            FunctionName: 'sputnik-rpi-sense-hat-demo-python'
+            Description: 'sputnik Raspberry Pi Sense Hat Demo Lambda Code'
+            Code:
+                S3Bucket: !Ref sourceS3Bucket
+                S3Key: !Join ['/', [!Ref sourceS3KeyPrefix, 'greengrasslambda', 'sputnik-rpi-sense-hat-demo-python.zip']]
+            Handler: lambda_function.lambda_handler
+            Runtime: python2.7
+            Role: !GetAtt DefaultsGreengrassLambdaRole.Arn
+            Timeout: 3
+            MemorySize: 128
+    DefaultsRaspberryPiSenseHatDemoLambdaVersion:
+        Type: 'AWS::Lambda::Version'
+        Properties:
+            FunctionName: !Ref DefaultsRaspberryPiSenseHatDemoLambda
+            Description: 'A first version of sputnik-rpi-sense-hat-demo-python'
+    DefaultsRaspberryPiSenseHatDemoLambdaAlias:
+        Type: 'AWS::Lambda::Alias'
+        Properties:
+            FunctionName: !Ref DefaultsRaspberryPiSenseHatDemoLambda
+            FunctionVersion: !GetAtt DefaultsRaspberryPiSenseHatDemoLambdaVersion.Version
+            Name: 'Prod'
+
+    DefaultsGGMLInferenceSqueezenetDemoLambda:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            FunctionName: 'sputnik-gg-ml-inference-squeezenet-demo-python'
+            Description: 'sputnik Greengrass ML Inference Squeezenet Demo Lambda Code'
+            Code:
+                S3Bucket: !Ref sourceS3Bucket
+                S3Key: !Join ['/', [!Ref sourceS3KeyPrefix, 'greengrasslambda', 'sputnik-gg-ml-inference-squeezenet-demo-python.zip']]
+            Handler: lambda_function.lambda_handler
+            Runtime: python2.7
+            Role: !GetAtt DefaultsGreengrassLambdaRole.Arn
+            Timeout: 3
+            MemorySize: 128
+    DefaultsGGMLInferenceSqueezenetDemoLambdaVersion:
+        Type: 'AWS::Lambda::Version'
+        Properties:
+            FunctionName: !Ref DefaultsGGMLInferenceSqueezenetDemoLambda
+            Description: 'A first version of sputnik-gg-ml-inference-squeezenet-demo-python'
+    DefaultsGGMLInferenceSqueezenetDemoLambdaAlias:
+        Type: 'AWS::Lambda::Alias'
+        Properties:
+            FunctionName: !Ref DefaultsGGMLInferenceSqueezenetDemoLambda
+            FunctionVersion: !GetAtt DefaultsGGMLInferenceSqueezenetDemoLambdaVersion.Version
+            Name: 'Prod'
+
+    DefaultsSqueezenetModel:
+        Type: 'Custom::LoadLambda'
+        Properties:
+            ServiceToken: !Ref utilsCustomResourceLambdaFunctionArn
+            Region: !Ref 'AWS::Region'
+            sourceS3Bucket: !Ref sourceS3Bucket
+            sourceS3Key: !Join ['/', [!Ref sourceS3KeyPrefix, 'assets', 'models', 'squeezenet_v1.1.zip']]
+            destS3Bucket: !Ref dataS3Bucket
+            destS3Key: !Join ['/', ['Greengrass', 'models', 'ml-demo-squeezenet-v1.0', 'squeezenet_v1.1.zip']]
+            customAction: 'copyFileFromS3ToS3'
+

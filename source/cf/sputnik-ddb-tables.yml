@@ -1,0 +1,229 @@
+# Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'sputnik - DynamoDB Tables - Version %%VERSION%%'
+
+Resources:
+
+    # Nested stack - DynamoDB Table - Deployments
+    deploymentsTable:
+        Type: "AWS::DynamoDB::Table"
+        DeletionPolicy: "Delete"
+        Properties:
+            AttributeDefinitions:
+                -
+                    AttributeName: "thingId"
+                    AttributeType: "S"
+                -
+                    AttributeName: "deploymentId"
+                    AttributeType: "S"
+            KeySchema:
+                -
+                    AttributeName: "thingId"
+                    KeyType: "HASH"
+                -
+                    AttributeName: "deploymentId"
+                    KeyType: "RANGE"
+            ProvisionedThroughput:
+                ReadCapacityUnits: 5
+                WriteCapacityUnits: 5
+            SSESpecification:
+                SSEEnabled: true
+
+    # Nested stack - DynamoDB Table - Device Blueprints
+    deviceBlueprintsTable:
+        Type: "AWS::DynamoDB::Table"
+        DeletionPolicy: "Delete"
+        Properties:
+            AttributeDefinitions:
+                -
+                    AttributeName: "id"
+                    AttributeType: "S"
+            KeySchema:
+                -
+                    AttributeName: "id"
+                    KeyType: "HASH"
+            ProvisionedThroughput:
+                ReadCapacityUnits: 5
+                WriteCapacityUnits: 5
+            SSESpecification:
+                SSEEnabled: true
+
+    # Nested stack - DynamoDB Table - Device Types
+    deviceTypesTable:
+        Type: "AWS::DynamoDB::Table"
+        DeletionPolicy: "Delete"
+        Properties:
+            AttributeDefinitions:
+                -
+                    AttributeName: "id"
+                    AttributeType: "S"
+            KeySchema:
+                -
+                    AttributeName: "id"
+                    KeyType: "HASH"
+            ProvisionedThroughput:
+                ReadCapacityUnits: 5
+                WriteCapacityUnits: 5
+            SSESpecification:
+                SSEEnabled: true
+
+    # Nested stack - DynamoDB Table - Devices
+    devicesTable:
+        Type: 'AWS::DynamoDB::Table'
+        DeletionPolicy: 'Delete'
+        Properties:
+            AttributeDefinitions:
+                -
+                    AttributeName: 'thingId'
+                    AttributeType: 'S'
+                -
+                    AttributeName: 'deviceTypeId'
+                    AttributeType: 'S'
+                -
+                    AttributeName: 'deviceBlueprintId'
+                    AttributeType: 'S'
+            KeySchema:
+                -
+                    AttributeName: 'thingId'
+                    KeyType: 'HASH'
+            GlobalSecondaryIndexes:
+                -
+                    IndexName: 'deviceTypeId'
+                    KeySchema:
+                        -
+                            AttributeName: 'deviceTypeId'
+                            KeyType: 'HASH'
+                    Projection:
+                        ProjectionType: 'ALL'
+                    ProvisionedThroughput:
+                        ReadCapacityUnits: 10
+                        WriteCapacityUnits: 10
+                -
+                    IndexName: 'deviceBlueprintId'
+                    KeySchema:
+                        -
+                            AttributeName: 'deviceBlueprintId'
+                            KeyType: 'HASH'
+                    Projection:
+                        ProjectionType: 'ALL'
+                    ProvisionedThroughput:
+                        ReadCapacityUnits: 10
+                        WriteCapacityUnits: 10
+            ProvisionedThroughput:
+                ReadCapacityUnits: 10
+                WriteCapacityUnits: 10
+            SSESpecification:
+                SSEEnabled: true
+
+    # Nested stack - DynamoDB Table - Settings
+    settingsTable:
+        Type: "AWS::DynamoDB::Table"
+        DeletionPolicy: "Delete"
+        Properties:
+            AttributeDefinitions:
+                -
+                    AttributeName: "id"
+                    AttributeType: "S"
+            KeySchema:
+                -
+                    AttributeName: "id"
+                    KeyType: "HASH"
+            ProvisionedThroughput:
+                ReadCapacityUnits: 5
+                WriteCapacityUnits: 5
+            SSESpecification:
+                SSEEnabled: true
+
+    # Nested stack - DynamoDB Table - System Blueprints
+    systemBlueprintsTable:
+        Type: "AWS::DynamoDB::Table"
+        DeletionPolicy: "Delete"
+        Properties:
+            AttributeDefinitions:
+                -
+                    AttributeName: "id"
+                    AttributeType: "S"
+            KeySchema:
+                -
+                    AttributeName: "id"
+                    KeyType: "HASH"
+            ProvisionedThroughput:
+                ReadCapacityUnits: 5
+                WriteCapacityUnits: 5
+            SSESpecification:
+                SSEEnabled: true
+
+    # Nested stack - DynamoDB Table - Systems
+    systemsTable:
+        Type: "AWS::DynamoDB::Table"
+        DeletionPolicy: "Delete"
+        Properties:
+            AttributeDefinitions:
+                -
+                    AttributeName: "id"
+                    AttributeType: "S"
+            KeySchema:
+                -
+                    AttributeName: "id"
+                    KeyType: "HASH"
+            ProvisionedThroughput:
+                ReadCapacityUnits: 5
+                WriteCapacityUnits: 5
+            SSESpecification:
+                SSEEnabled: true
+
+    # Nested stack - DynamoDB Table - Data Store
+    dataStoreTable:
+        Type: "AWS::DynamoDB::Table"
+        DeletionPolicy: "Delete"
+        Properties:
+            AttributeDefinitions:
+                -
+                    AttributeName: "ThingNameAndMetric"
+                    AttributeType: "S"
+                -
+                    AttributeName: "Timestamp"
+                    AttributeType: "N"
+            KeySchema:
+                -
+                    AttributeName: "ThingNameAndMetric"
+                    KeyType: "HASH"
+                -
+                    AttributeName: "Timestamp"
+                    KeyType: "RANGE"
+            ProvisionedThroughput:
+                ReadCapacityUnits: 20
+                WriteCapacityUnits: 20
+            SSESpecification:
+                SSEEnabled: true
+            TimeToLiveSpecification:
+                AttributeName: 'ExpirationTime'
+                Enabled: Yes
+
+Outputs:
+    dataStoreTable:
+        Description: "DynamoDB Data Store Table"
+        Value: !Ref dataStoreTable
+    deploymentsTable:
+        Description: "DynamoDB Deployments Table"
+        Value: !Ref deploymentsTable
+    deviceBlueprintsTable:
+        Description: "DynamoDB Device Blueprints Table"
+        Value: !Ref deviceBlueprintsTable
+    deviceTypesTable:
+        Description: "DynamoDB Device Types Table"
+        Value: !Ref deviceTypesTable
+    devicesTable:
+        Description: "DynamoDB Devices Table"
+        Value: !Ref devicesTable
+    settingsTable:
+        Description: "DynamoDB Settings Table"
+        Value: !Ref settingsTable
+    systemBlueprintsTable:
+        Description: "DynamoDB System Blueprints Table"
+        Value: !Ref systemBlueprintsTable
+    systemsTable:
+        Description: "DynamoDB Systems Table"
+        Value: !Ref systemsTable

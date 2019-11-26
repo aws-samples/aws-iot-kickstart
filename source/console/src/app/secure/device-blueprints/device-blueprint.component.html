@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card card-outline-info">
+            <div class="card-body">
+                <form name="attributeForm" #f="ngForm" class="form-control-line" (ngSubmit)="submit(f)" novalidate
+                    *ngIf="deviceBlueprint !== undefined">
+
+                    <div [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-group has-danger' :'form-group has-success-alt') : 'form-group'">
+                        <label for="name" class="form-control-label">Device Blueprint Name:</label>
+                        <input type="text" [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-control form-control-line form-control-danger' : 'form-control form-control-line form-control-success-alt') : 'form-control form-control-line'"
+                            name="name" id="name" #name="ngModel" [(ngModel)]="deviceBlueprint.name" required ngModel>
+                        <!-- pattern="[a-zA-Z0-9:_- ]+" -->
+                        <div *ngIf="!((name.invalid && (name.dirty || name.touched)) && name.errors)" class="form-control-feedback">
+                            <small>Name of your device blueprint.</small>
+                        </div>
+                        <div *ngIf="(name.invalid && (name.dirty || name.touched)) && name.errors" class="form-control-feedback">
+                            <small>Name of device blueprint is required or has errors.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group row" style="overflow: inherit;">
+
+                        <div class="col-lg-6">
+                            <label for="type" class="form-control-label">Type:</label>
+                            <select class="custom-select col-12" name="type" id="type" #type="ngModel" [(ngModel)]="deviceBlueprint.type"
+                                required ngModel>
+                                <option ng-selected="deviceBlueprint.type === 'UNKNOWN'">UNKNOWN</option>
+                                <option ng-selected="deviceBlueprint.type === 'SDK'">SDK</option>
+                                <option ng-selected="deviceBlueprint.type === 'A:FreeRTOS'">A:FreeRTOS</option>
+                                <option ng-selected="deviceBlueprint.type === 'GREENGRASS'">GREENGRASS</option>
+                                <option ng-selected="deviceBlueprint.type === 'THING_ONLY'">THING_ONLY</option>
+                            </select>
+                            <div class="form-control-feedback">
+                                <small>IoT Type for which this device blueprint is destined.</small>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label for="type" class="form-control-label">Compatibility:</label>
+                            <div class="dropdown">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Device Types
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <!-- <div class="input-group-text"> -->
+                                    <div class="dropdown-item" data-value="'all'">
+                                        <div class="form-check" style="padding: 0px; margin-bottom: -4px;" (click)="toggleDeviceType($event, 'all')">
+                                            <input type="checkbox" id="all" style="padding-left: 18px;" [checked]="inCompatibilityList('all')">
+                                            <label class="form-check-label" for="all" style="padding-left: 25px;">all</label>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown-item" *ngFor="let deviceType of deviceTypeService.deviceTypes"
+                                        data-value="deviceType.id">
+                                        <div class="form-check" style="padding: 0px; margin-bottom: -4px;" (click)="toggleDeviceType($event, deviceType.id)">
+                                            <input type="checkbox" id="deviceType.id" style="padding-left: 18px;"
+                                                [checked]="inCompatibilityList(deviceType.id)">
+                                            <label class="form-check-label" for="deviceType.id" style="padding-left: 25px; width: 100%;">{{deviceType.name}}</label>
+                                        </div>
+                                    </div>
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                            <div class="form-control-feedback">
+                                <small>Which device types this device blueprint works on.</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="deviceBlueprint.type === 'GREENGRASS'" class="form-group">
+                        <label for="type" class="form-control-label">Custom DeviceType Mappings:</label>
+                        <app-pretty-json name="deviceTypeMappings" [(ngModel)]="deviceBlueprint.deviceTypeMappings"
+                            [rows]="10"></app-pretty-json>
+                        <div class="form-control-feedback">
+                            <small>JSON document to use for the custom device type mappings.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type" class="form-control-label">Spec:</label>
+                        <app-pretty-json name="spec" [(ngModel)]="deviceBlueprint.spec" [rows]="20"></app-pretty-json>
+                        <div class="form-control-feedback">
+                            <small>JSON document to use for the device blueprint.</small>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button *ngIf="isAdminUser" type="button" class="btn btn-danger" (click)="delete()">Delete</button>
+                        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+                        <button *ngIf="isAdminUser" type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

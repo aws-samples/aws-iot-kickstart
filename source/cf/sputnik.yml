@@ -1,0 +1,386 @@
+# Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: '(SO0053) - IoT Pilot Kickstart: Kickstart your IoT project, define, manage and monitor your IoT devices - (codename: sputnik) - Main - Version %%VERSION%%'
+Parameters:
+    AdministratorName:
+        Type: String
+        Description: Name of the sputnik administrator.
+    AdministratorEmail:
+        Type: String
+        Description: Email address for sputnik administrator.
+        AllowedPattern: "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"
+    IsWebsitePublic:
+        Type: String
+        Description: Do you want to make the public S3 website public ?
+        Default: false
+        AllowedValues:
+            - true
+            - false
+    LoadDefaults:
+        Type: String
+        Description: Do you want to load the default blueprints into sputnik ?
+        Default: true
+        AllowedValues:
+            - true
+            - false
+
+Conditions:
+    LoadDefaultsOnInstall: !Equals [ !Ref LoadDefaults, true ]
+
+Mappings:
+    Send:
+        AnonymousUsage:
+            Data: "Yes"
+    SourceCode:
+        App:
+            ShortName: 'sputnik'
+            FullName: 'sputnik - The Simple IoT Management System'
+        General:
+            S3Bucket: '%%BUCKET_NAME%%'
+            KeyPrefix: 'sputnik/%%VERSION%%'
+
+Resources:
+
+    # ##########################################################################
+    #
+    # S3
+    #
+    # ##########################################################################
+    # Nested stack - Data bucket creation
+    CFStackForDataBucket:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: !Join ['/', ['https://s3.amazonaws.com', !Join ['-', ['%%BUCKET_NAME%%', Ref: 'AWS::Region']], !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'cf/sputnik-s3bucket-data.yml']]]]
+
+    # Nested stack - Website bucket creation
+    CFStackForWebsite:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: !Join ['/', ['https://s3.amazonaws.com', !Join ['-', ['%%BUCKET_NAME%%', Ref: 'AWS::Region']], !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'cf/sputnik-s3bucket-website.yml']]]]
+            Parameters:
+                IsWebsitePublic: !Ref IsWebsitePublic
+
+    # ##########################################################################
+    #
+    # Cognito
+    #
+    # ##########################################################################
+    # Nested stack - Cognito
+    CFStackForCognito:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: !Join ['/', ['https://s3.amazonaws.com', !Join ['-', ['%%BUCKET_NAME%%', Ref: 'AWS::Region']], !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'cf/sputnik-cognito.yml']]]]
+            Parameters:
+                AdministratorName: !Ref AdministratorName
+                AdministratorEmail: !Ref AdministratorEmail
+                dataBucketArn: !GetAtt CFStackForDataBucket.Outputs.dataBucketArn
+                websiteURL: !GetAtt CFStackForWebsite.Outputs.websiteUrl
+                fullName: !FindInMap ['SourceCode', 'App', 'FullName']
+
+
+    # ##########################################################################
+    #
+    # Dynamo DB
+    #
+    # ##########################################################################
+    CFStackForDynamoDB:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: !Join ['/', ['https://s3.amazonaws.com', !Join ['-', ['%%BUCKET_NAME%%', Ref: 'AWS::Region']], !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'cf/sputnik-ddb-tables.yml']]]]
+
+
+    # ##########################################################################
+    #
+    # Lambda
+    #
+    # ##########################################################################
+    CFStackForLambdaHelpers:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: !Join ['/', ['https://s3.amazonaws.com', !Join ['-', ['%%BUCKET_NAME%%', Ref: 'AWS::Region']], !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'cf/sputnik-lambda-helpers.yml']]]]
+            Parameters:
+                sourceBucket: !Join ['-', [!FindInMap ['SourceCode', 'General', 'S3Bucket'], Ref: 'AWS::Region']]
+                sourceKeyPrefix: !FindInMap ['SourceCode', 'General', 'KeyPrefix']
+                destBucketArn: !GetAtt CFStackForWebsite.Outputs.websiteBucketArn
+                dataBucketArn: !GetAtt CFStackForDataBucket.Outputs.dataBucketArn
+                settingsTable: !GetAtt CFStackForDynamoDB.Outputs.settingsTable
+                devicesTable: !GetAtt CFStackForDynamoDB.Outputs.devicesTable
+                deviceTypesTable: !GetAtt CFStackForDynamoDB.Outputs.deviceTypesTable
+                deviceBlueprintsTable: !GetAtt CFStackForDynamoDB.Outputs.deviceBlueprintsTable
+                systemsTable: !GetAtt CFStackForDynamoDB.Outputs.systemsTable
+                systemBlueprintsTable: !GetAtt CFStackForDynamoDB.Outputs.systemBlueprintsTable
+                greengrassServiceRoleArn: !GetAtt greengrassServiceIAMRole.Arn
+
+    CFStackForLambdaServices:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: !Join ['/', ['https://s3.amazonaws.com', !Join ['-', ['%%BUCKET_NAME%%', Ref: 'AWS::Region']], !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'cf/sputnik-lambda-services.yml']]]]
+            Parameters:
+                sourceBucket: !Join ['-', [!FindInMap ['SourceCode', 'General', 'S3Bucket'], Ref: 'AWS::Region']]
+                sourceKeyPrefix: !FindInMap ['SourceCode', 'General', 'KeyPrefix']
+                dataBucket: !GetAtt CFStackForDataBucket.Outputs.dataBucket
+                settingsTable: !GetAtt CFStackForDynamoDB.Outputs.settingsTable
+                devicesTable: !GetAtt CFStackForDynamoDB.Outputs.devicesTable
+                deviceTypesTable: !GetAtt CFStackForDynamoDB.Outputs.deviceTypesTable
+                deviceBlueprintsTable: !GetAtt CFStackForDynamoDB.Outputs.deviceBlueprintsTable
+                deploymentsTable: !GetAtt CFStackForDynamoDB.Outputs.deploymentsTable
+                systemsTable: !GetAtt CFStackForDynamoDB.Outputs.systemsTable
+                systemBlueprintsTable: !GetAtt CFStackForDynamoDB.Outputs.systemBlueprintsTable
+                greengrassGroupsIAMRoleArn: !GetAtt greengrassGroupsIAMRole.Arn
+                iotPolicyForGreengrassCores: !Ref IoTPolicyForGreengrassCores
+                iotConnectPolicyForSputnikCertificates: !Ref IoTConnectPolicyForSputnikCertificates
+                userPoolId: !GetAtt CFStackForCognito.Outputs.userPoolId
+                iotEndpoint: !GetAtt iotEndpoint.endpointAddress
+                appUUID: !GetAtt initAppUUID.UUID
+
+    # ##########################################################################
+    #
+    # AppSync
+    #
+    # ##########################################################################
+    CFStackForAppSync:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: !Join ['/', ['https://s3.amazonaws.com', !Join ['-', ['%%BUCKET_NAME%%', Ref: 'AWS::Region']], !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'cf/sputnik-appsync.yml']]]]
+            Parameters:
+                sourceBucket: !Join ['-', [!FindInMap ['SourceCode', 'General', 'S3Bucket'], Ref: 'AWS::Region']]
+                sourceKeyPrefix: !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'cf' ]]
+                userPoolId: !GetAtt CFStackForCognito.Outputs.userPoolId
+                settingsTable: !GetAtt CFStackForDynamoDB.Outputs.settingsTable
+                dataStoreTable: !GetAtt CFStackForDynamoDB.Outputs.dataStoreTable
+                devicesTable: !GetAtt CFStackForDynamoDB.Outputs.devicesTable
+                deviceTypesTable: !GetAtt CFStackForDynamoDB.Outputs.deviceTypesTable
+                deviceBlueprintsTable: !GetAtt CFStackForDynamoDB.Outputs.deviceBlueprintsTable
+                deploymentsTable: !GetAtt CFStackForDynamoDB.Outputs.deploymentsTable
+                systemsTable: !GetAtt CFStackForDynamoDB.Outputs.systemsTable
+                systemBlueprintsTable: !GetAtt CFStackForDynamoDB.Outputs.systemBlueprintsTable
+                adminServiceLambdaFunctionArn: !GetAtt CFStackForLambdaServices.Outputs.adminServiceLambdaFunctionArn
+                devicesServiceLambdaFunctionArn: !GetAtt CFStackForLambdaServices.Outputs.devicesServiceLambdaFunctionArn
+                settingsServiceLambdaFunctionArn: !GetAtt CFStackForLambdaServices.Outputs.settingsServiceLambdaFunctionArn
+                deploymentsServiceLambdaFunctionArn: !GetAtt CFStackForLambdaServices.Outputs.deploymentsServiceLambdaFunctionArn
+                systemsServiceLambdaFunctionArn: !GetAtt CFStackForLambdaServices.Outputs.systemsServiceLambdaFunctionArn
+                utilsCustomResourceLambdaFunctionArn: !GetAtt CFStackForLambdaHelpers.Outputs.utilsCustomResourceLambdaFunctionArn
+
+
+    # ##########################################################################
+    #
+    # CloudTrail
+    #
+    # ##########################################################################
+    CFStackForCloudTrail:
+        Type: AWS::CloudFormation::Stack
+        Properties:
+            TemplateURL: !Join ['/', ['https://s3.amazonaws.com', !Join ['-', ['%%BUCKET_NAME%%', Ref: 'AWS::Region']], !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'cf/sputnik-cloudtrail.yml']]]]
+
+
+    # Greengrass Service Role
+    greengrassServiceIAMRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'greengrass.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Path: '/'
+            ManagedPolicyArns:
+                - 'arn:aws:iam::aws:policy/service-role/AWSGreengrassResourceAccessRolePolicy'
+
+    # Systems Greengrass group role
+    # NOTE: This is placed here, because else it creates a circular dependency between the Lambda Stack and the Systems Stack.
+    greengrassGroupsIAMRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'greengrass.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Path: '/'
+
+    # Systems IoT Policy for Greengrass devices
+    # NOTE: This is placed here, because else it creates a circular dependency between the Lambda Stack and the Systems Stack.
+    IoTPolicyForGreengrassCores:
+        Type: "AWS::IoT::Policy"
+        DeletionPolicy: Retain
+        Properties:
+            PolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                    -
+                        Effect: "Allow"
+                        Action:
+                            - "iot:*"
+                            - "greengrass:*"
+                        Resource:
+                            - "*"
+
+    IoTConnectPolicyForSputnikCertificates:
+        Type: "AWS::IoT::Policy"
+        Properties:
+            PolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                    -
+                        Effect: "Allow"
+                        Action: "iot:Connect"
+                        Resource:
+                            - !Join [':', ['arn:aws:iot', Ref: 'AWS::Region', Ref: 'AWS::AccountId', 'client/${iot:Certificate.Subject.CommonName}']]
+                            - !Join [':', ['arn:aws:iot', Ref: 'AWS::Region', Ref: 'AWS::AccountId', 'client/${iot:Certificate.Subject.CommonName}-*']]
+                        Condition:
+                            StringEquals:
+                                iot:Certificate.Subject.Organization: "sputnik"
+                    -
+                        Effect: "Allow"
+                        Action: "greengrass:Discover"
+                        Resource:
+                            - "*"
+
+
+    # ##########################################################################
+    #
+    # Init
+    #
+    # ##########################################################################
+
+    iotEndpoint:
+        Type: 'Custom::Lambda'
+        Properties:
+            ServiceToken: !GetAtt CFStackForLambdaHelpers.Outputs.utilsCustomResourceLambdaFunctionArn
+            Region: !Ref 'AWS::Region'
+            customAction: 'iotDescribeEndpoint'
+            # endpointType: 'iot:Data'
+            endpointType: 'iot:Data-ATS'
+
+    greengrassAssociateServiceRoleToAccount:
+        Type: 'Custom::Lambda'
+        Properties:
+            ServiceToken: !GetAtt CFStackForLambdaHelpers.Outputs.utilsCustomResourceLambdaFunctionArn
+            Region: !Ref 'AWS::Region'
+            customAction: 'greengrassAssociateServiceRoleToAccount'
+
+    # Initialization - Copy of website assets (html/js/css/assets)
+    website:
+        Type: 'Custom::LoadLambda'
+        Properties:
+            ServiceToken: !GetAtt CFStackForLambdaHelpers.Outputs.customResourceS3HelperArn
+            Region: !Ref 'AWS::Region'
+            sourceS3Bucket: !Join ['-', [!FindInMap ['SourceCode', 'General', 'S3Bucket'], Ref: 'AWS::Region']]
+            sourceS3Key: !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'console']]
+            destS3Bucket: !GetAtt CFStackForWebsite.Outputs.websiteBucket
+            customAction: 'copyS3assets'
+
+    websiteConfig:
+        Type: 'Custom::LoadLambda'
+        Properties:
+            ServiceToken: !GetAtt CFStackForLambdaHelpers.Outputs.customResourceS3HelperArn
+            Region: !Ref 'AWS::Region'
+            destS3Bucket: !GetAtt CFStackForWebsite.Outputs.websiteBucket
+            destS3Key: 'assets/appVariables.js'
+            varName: 'appVariables'
+            file:
+                VERSION: '%%VERSION%%'
+                USER_POOL_ID: !GetAtt CFStackForCognito.Outputs.userPoolId
+                USER_POOL_CLIENT_ID: !GetAtt CFStackForCognito.Outputs.websiteCognitoClientId
+                IDENTITY_POOL_ID: !GetAtt CFStackForCognito.Outputs.identityPool
+                REGION: !Ref 'AWS::Region'
+                IOT_COGNITO_POLICY: !GetAtt CFStackForCognito.Outputs.websiteCognitoIoTPolicy
+                S3_DATA_BUCKET: !GetAtt CFStackForDataBucket.Outputs.dataBucket
+                APP_SYNC_GRAPHQL_ENDPOINT: !GetAtt CFStackForAppSync.Outputs.appSyncGraphQLUrl
+                IOT_ENDPOINT: !GetAtt iotEndpoint.endpointAddress
+            customAction: 'putFile'
+
+
+    # Initialization - Init Settings
+    initSettings:
+        Type: 'Custom::LoadLambda'
+        Properties:
+            ServiceToken: !GetAtt CFStackForLambdaHelpers.Outputs.utilsCustomResourceLambdaFunctionArn
+            Region: !Ref 'AWS::Region'
+            ddbTable: !GetAtt CFStackForDynamoDB.Outputs.settingsTable
+            ddbItem:
+                id: "app-config"
+                type: "config"
+                setting:
+                    uuid: !GetAtt initAppUUID.UUID
+                    mapboxToken: "NA"
+                    anonymousData: !FindInMap ["Send", "AnonymousUsage", "Data"]
+            customAction: 'dynamodbSaveItem'
+
+    # Initialization - UUID
+    initAppUUID:
+        Type: "Custom::LoadLambda"
+        Properties:
+            ServiceToken: !GetAtt CFStackForLambdaHelpers.Outputs.utilsCustomResourceLambdaFunctionArn
+            Region: !Ref 'AWS::Region'
+            customAction: "createUUID"
+            anonymousData: !FindInMap ["Send", "AnonymousUsage", "Data"]
+            version: '%%VERSION%%'
+
+    # ##########################################################################
+    #
+    # Defaults
+    #
+    # ##########################################################################
+    CFStackForDefaults:
+        Type: AWS::CloudFormation::Stack
+        Condition: LoadDefaultsOnInstall
+        Properties:
+            TemplateURL: !Join ['/', ['https://s3.amazonaws.com', !Join ['-', ['%%BUCKET_NAME%%', Ref: 'AWS::Region']], !Join ['/', [!FindInMap ['SourceCode', 'General', 'KeyPrefix'], 'cf/defaults/sputnik-defaults.yml']]]]
+            Parameters:
+                sourceS3Bucket: !Join ['-', [!FindInMap ['SourceCode', 'General', 'S3Bucket'], Ref: 'AWS::Region']]
+                sourceS3KeyPrefix: !FindInMap ['SourceCode', 'General', 'KeyPrefix']
+                deviceTypesTable: !GetAtt CFStackForDynamoDB.Outputs.deviceTypesTable
+                deviceBlueprintsTable: !GetAtt CFStackForDynamoDB.Outputs.deviceBlueprintsTable
+                systemBlueprintsTable: !GetAtt CFStackForDynamoDB.Outputs.systemBlueprintsTable
+                utilsCustomResourceLambdaFunctionArn: !GetAtt CFStackForLambdaHelpers.Outputs.utilsCustomResourceLambdaFunctionArn
+                greengrassGroupsIAMRole: !Ref greengrassGroupsIAMRole
+                dataS3Bucket: !GetAtt CFStackForDataBucket.Outputs.dataBucket
+                dataS3BucketArn: !GetAtt CFStackForDataBucket.Outputs.dataBucketArn
+
+Outputs:
+    # UUID
+    AppUUID:
+        Description: "App UUID"
+        Value: !GetAtt initAppUUID.UUID
+    # Website
+    websiteUrl:
+        Description: 'sputnik Website URL'
+        Value: !GetAtt CFStackForWebsite.Outputs.websiteUrl
+    # Cognito
+    userPoolArn:
+        Description: "sputnik User Pool"
+        Value: !GetAtt CFStackForCognito.Outputs.userPoolArn
+    userPoolId:
+        Description: "sputnik User Pool ID"
+        Value: !GetAtt CFStackForCognito.Outputs.userPoolId
+    websiteCognitoClientId:
+        Description: "sputnik Website Cognito Client"
+        Value: !GetAtt CFStackForCognito.Outputs.websiteCognitoClientId
+    identityPool:
+        Description: "sputnik Identity Pool"
+        Value: !GetAtt CFStackForCognito.Outputs.identityPool
+    websiteCognitoIoTPolicy:
+        Description: "IoT Policy to access resources"
+        Value: !GetAtt CFStackForCognito.Outputs.websiteCognitoIoTPolicy
+    # IOT
+    iotEndpoint:
+        Description: "IoT Endpoint"
+        Value: !GetAtt iotEndpoint.endpointAddress
+    greengrassGroupsIAMRole:
+        Description: "IAM Role For Greengrass Groups to be used by Addons"
+        Value: !Ref greengrassGroupsIAMRole
+    # dataBucketAccessPolicy:
+    #     Description: "IAM Policy to access the sputnik Data bucket"
+    #     Value: !GetAtt CFStackForDataBucket.Outputs.dataBucketAccessPolicy
+

@@ -1,0 +1,22 @@
+{
+    "name": "sputnik-custom-resource-helper-utils",
+    "description": "Utils for the app",
+    "main": "libs.js",
+    "author": {
+        "name": "teuteuguy"
+    },
+    "version": "0.0.1",
+    "private": "true",
+    "dependencies": {
+        "moment": "*",
+        "underscore": "*",
+        "uuid": "*",
+        "usage-metrics": "file:../usage-metrics/"
+    },
+    "scripts": {
+        "build:init": "rm -rf dist && rm -rf node_modules",
+        "build:zip": "zip -rq `jq -cr '.name' package.json`.zip .",
+        "build:dist": "mkdir dist && mv `jq -cr '.name' package.json`.zip dist/",
+        "build": "yarn run build:init && yarn install --production && yarn run build:zip && yarn run build:dist"
+    }
+}

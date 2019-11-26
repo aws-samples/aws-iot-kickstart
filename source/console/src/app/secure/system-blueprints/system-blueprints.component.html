@@ -1,0 +1,23 @@
+<!-- Row -->
+<div class="row">
+    <!-- Col 12 -->
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <button type="button" class="float-right btn btn-sm btn-success m-l-15" (click)="refreshData()"><i
+                        class="fa fa-refresh"></i> Refresh</button>
+                <button *ngIf="isAdminUser" type="button" class="float-right btn btn-sm btn-success m-l-15" (click)="handleCreate()"><i
+                        class="mdi mdi-plus"></i>
+                    Create System Blueprint</button>
+                <h4 class="card-title">{{ pageTitle }} ({{totalSystemBlueprints}})</h4>
+
+                <div class="table-responsive m-t-20">
+                    <app-table [tableHeaders]="tableHeaders" [tableData]="tableData" [pages]="pages" openPath="/securehome/system-blueprints/"
+                        openAttribute="id"></app-table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Col 12 -->
+</div>
+<!-- Row -->

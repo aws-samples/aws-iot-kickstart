@@ -1,0 +1,50 @@
+# Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'sputnik - Data Bucket - Version %%VERSION%%'
+
+Resources:
+    dataBucketAccessPolicy:
+        Type: "AWS::IAM::ManagedPolicy"
+        DeletionPolicy: Retain
+        Properties:
+            Description: "sputnik policy to access the Data Bucket."
+            PolicyDocument:
+                Version: "2012-10-17"
+                Statement:
+                    -
+                        Effect: "Allow"
+                        Action:
+                            # TODO BE MORE RESTRICTIVE
+                            - "s3:ListBucket"
+                            - "s3:GetObject"
+                            - "s3:ListObjects"
+                        Resource:
+                            - !Join ["*", [!GetAtt dataBucket.Arn, "/*"]]
+                            - !Join ["", [!GetAtt dataBucket.Arn, "*"]]
+
+    dataBucket:
+        Type: AWS::S3::Bucket
+        DeletionPolicy: Retain
+        Properties:
+            CorsConfiguration:
+                CorsRules:
+                    -
+                        AllowedOrigins:
+                            - "*"
+                        AllowedMethods:
+                            - "HEAD"
+                            - "GET"
+                        AllowedHeaders:
+                            - "*"
+Outputs:
+    dataBucket:
+        Description: 'sputnik Data Bucket'
+        Value: !Ref dataBucket
+    dataBucketArn:
+        Description: 'sputnik Data Bucket ARN'
+        Value: !GetAtt dataBucket.Arn
+    dataBucketAccessPolicyArn:
+        Description: 'sputnik Data Bucket Access Policy ARN'
+        Value: !Ref dataBucketAccessPolicy

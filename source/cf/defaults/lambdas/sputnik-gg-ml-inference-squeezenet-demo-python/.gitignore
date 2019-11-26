@@ -1,0 +1,10 @@
+*.egg-info
+camera
+videostream
+ggiot
+file_output
+greengrass_common
+greengrass_ipc_python_sdk
+greengrasssdk
+cbor2
+__pycache__

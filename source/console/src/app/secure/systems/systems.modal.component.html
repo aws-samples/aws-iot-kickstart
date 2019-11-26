@@ -1,0 +1,60 @@
+<div class="modal fade" id="createModalTemplate" tabindex="-1" role="dialog" aria-labelledby="modalLabel1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel1">System</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form name="attributeForm" #f="ngForm" class="form-control-line" (ngSubmit)="submit()" novalidate>
+
+                    <div [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-group has-danger' :'form-group has-success-alt') : 'form-group'">
+                        <label for="name" class="form-control-label">System name:</label>
+                        <input type="text" [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-control form-control-line form-control-danger' : 'form-control form-control-line form-control-success-alt') : 'form-control form-control-line'"
+                            name="name" id="name" #name="ngModel" [(ngModel)]="element.name" required ngModel>
+                        <div *ngIf="!((name.invalid && (name.dirty || name.touched)) && name.errors)" class="form-control-feedback">
+                            <small>Easy to remember name for your system.</small>
+                        </div>
+                        <div *ngIf="(name.invalid && (name.dirty || name.touched)) && name.errors" class="form-control-feedback">
+                            <small>Name of system is required.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name" class="form-control-label">Description:</label>
+                        <input type="text" class="form-control form-control-line" name="description" id="description"
+                            #description="ngModel" [(ngModel)]="element.description" ngModel [readonly]="modalType === 'view'">
+                    </div>
+
+                    <div class="form-group" style="overflow: inherit;">
+                        <label for="type" class="form-control-label">System Blueprint:</label>
+                        <select class="custom-select col-12" name="systemBlueprintId" id="systemBlueprintId" #type="ngModel"
+                            [(ngModel)]="element.systemBlueprintId" required ngModel>
+                            <!-- <option value="UNKNOWN" ng-selected="element.systemBlueprintId === 'UNKNOWN'">UNKNOWN</option> -->
+                            <option *ngFor="let item of systemBlueprintService.systemBlueprints; let i = index"
+                                value="{{item.id}}" ng-selected="element.systemBlueprintId === item.id">{{item.name}}</option>
+                        </select>
+                        <div class="form-control-feedback">
+                            <small>System blueprint for the system.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="checkbox" id="createResources" style="padding-left: 18px;" [checked]="createResources"
+                            (click)="toggleCreateResources()">
+                        <label class="form-check-label" for="createResources" style="padding-left: 25px;">Create
+                            resources
+                            ?</label>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+                        <button *ngIf="modalType !== 'view' && !name.errors" type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

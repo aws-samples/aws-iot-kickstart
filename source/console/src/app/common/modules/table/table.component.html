@@ -1,0 +1,57 @@
+<table class="table stylish-table" style="text-transform:uppercase;" data-paging-limit="dataPagingLimit">
+    <thead>
+        <tr>
+            <th *ngFor="let header of tableHeaders" class="{{header.class}}"><strong>{{ header.name }}</strong></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let elem of tableData" (click)="click(elem)">
+            <td *ngFor="let header of tableHeaders" class="{{header.class}}">
+                <div *ngIf="header.pipe === 'moment'">{{ elem[header.attr] | moment : header.pipeValue }}</div>
+                <div *ngIf="!header.pipe || header.pipe ===''">{{ elem[header.attr] }}</div>
+            </td>
+        </tr>
+        <!-- <tr *ngFor="let elem of sliceData(data)">
+            <td *ngFor="let field of params.fields" class="{{field.class}}">
+                <h6 *ngIf="field.format !== 'date' && params.fieldLink !== field.attr">{{elem[field.attr]}}</h6>
+                <a *ngIf="field.format !== 'date' && params.fieldLink === field.attr" (click)="open(elem)">{{elem[field.attr]}}
+                    <i class="mdi mdi-link-variant"></i>
+                </a>
+                <h6 *ngIf="field.format === 'date'">{{elem[field.attr] | moment : 'MMM Do YYYY'}}</h6>
+            </td>
+            <td class="pull-right" role="group">
+                <div class="dropdown">
+                    <button class="btn btn-success btn-sm dropdown-toggle" type="button" id="actionDropdownMenu"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="actionDropdownMenu">
+                        <button *ngIf="params.editElement" class="dropdown-item" type="button" (click)="handleEdit(elem)"><i
+                                class="mdi mdi-pencil"></i>
+                            {{params.editElement.text}}</button>
+                        <button *ngIf="params.viewElement" class="dropdown-item" type="button" (click)="handleView(elem)"><i
+                                class="mdi mdi-information-outline"></i>
+                            {{params.viewElement.text}}</button>
+                        <button *ngIf="params.deleteElement" class="dropdown-item" type="button" (click)="handleDeleteSubject.next(elem)"><i
+                                class="mdi mdi-delete"></i>
+                            Delete</button>
+                    </div>
+                </div>
+            </td>
+        </tr> -->
+    </tbody>
+    <tfoot>
+        <!-- <tr>
+            <td colspan="7">
+                <div class="text-right">
+                    <div class="pull-right">
+                        <button type="button" [class]="pages.current === 0 ? 'btn btn-sm btn-default disabled' : 'btn btn-sm btn-default'"
+                            (click)="previousPage()" [disabled]="pages.current === 1"><i class="mdi mdi-chevron-left"></i></button>
+                        <span class="m-l-10 m-r-10">Page {{pages.current}} of {{pages.total}}</span>
+                        <button type="button" [class]="pages.current === (pages.total - 1) ? 'btn btn-sm btn-default disabled' : 'btn btn-sm btn-default'"
+                            (click)="nextPage()" [disabled]="pages.current === pages.total"><i class="mdi mdi-chevron-right"></i></button>
+                    </div>
+                </div>
+            </td>
+        </tr> -->
+    </tfoot>
+</table>

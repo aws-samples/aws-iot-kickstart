@@ -1,0 +1,555 @@
+# Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'sputnik - Lambda - Version %%VERSION%%'
+
+Parameters:
+    sourceBucket:
+        Type: String
+        Description: S3 Bucket for Lambda code.
+    sourceKeyPrefix:
+        Type: String
+        Description: S3 Bucket Key prefix for code.
+    dataBucket:
+        Type: String
+        Description: sputnik Data Bucket
+    settingsTable:
+        Type: String
+        Description: DynamoDB Table for storing the application settings
+    devicesTable:
+        Type: String
+        Description: DynamoDB Table for storing the devices
+    deviceTypesTable:
+        Type: String
+        Description: DynamoDB Table for storing the device types
+    deviceBlueprintsTable:
+        Type: String
+        Description: DynamoDB Table for storing the device blueprints
+    deploymentsTable:
+        Type: String
+        Description: DynamoDB Table for storing the deployments
+    systemsTable:
+        Type: String
+        Description: DynamoDB Table for storing the systems
+    systemBlueprintsTable:
+        Type: String
+        Description: DynamoDB Table for storing the system blueprints
+    greengrassGroupsIAMRoleArn:
+        Type: String
+        Description: sputnik Greengrass group role ARN
+    iotPolicyForGreengrassCores:
+        Type: String
+        Description: sputnik Greengrass IoT Policy
+    iotConnectPolicyForSputnikCertificates:
+        Type: String
+        Description: sputnik default connect IoT Policy for new certs
+    userPoolId:
+        Type: String
+        Description: Cognito User Pool Id
+    iotEndpoint:
+        Type: String
+        Description: AWS IoT Core endpoint
+    appUUID:
+        Type: String
+        Description: sputnik Deployment Application UUID
+
+Resources:
+
+    # Service Lambda Function - Admin - IAM Role
+    adminServiceLambdaFunctionIAMRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'lambda.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Path: '/'
+            Policies:
+                -
+                    PolicyName: 'cloudwatchLogAccess'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'logs:CreateLogGroup'
+                                    - 'logs:CreateLogStream'
+                                    - 'logs:PutLogEvents'
+                                Resource: !Join ['', ['arn:aws:logs:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':log-group:*']]
+                -
+                    PolicyName: 'adminServiceIAMPolicy'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    # TODO: Too permissive for now.
+                                    - 'cognito-idp:*'
+                                    # - 'cognito-idp:ListUsers'
+                                    # - 'cognito-idp:AdminEnableUser'
+                                    # - 'cognito-idp:AdminDisableUser'
+                                    # - 'cognito-idp:AdminDeleteUser'
+                                    # - 'cognito-idp:AdminAddUserToGroup'
+                                Resource:
+                                    - '*'
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    # TODO: Too permissive for now.
+                                    - 'iot:*'
+                                    - 'greengrass:*'
+                                Resource:
+                                    - '*'
+    # Service Lambda Function - Admin - Function
+    adminServiceLambdaFunction:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            Description: 'sputnik Admin microservice'
+            Code:
+                S3Bucket: !Ref sourceBucket
+                S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-admin-service.zip']]
+            Handler: index.handler
+            Runtime: nodejs8.10
+            Role: !GetAtt adminServiceLambdaFunctionIAMRole.Arn
+            Timeout: 60
+            MemorySize: 256
+            Environment:
+                Variables:
+                    USER_POOL_ID: !Ref userPoolId
+                    APP_UUID: !Ref appUUID
+
+    # Service Lambda Function - Deployments - IAM Role
+    deploymentsServiceLambdaFunctionIAMRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'lambda.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Path: '/'
+            Policies:
+                -
+                    PolicyName: 'cloudwatchLogAccess'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'logs:CreateLogGroup'
+                                    - 'logs:CreateLogStream'
+                                    - 'logs:PutLogEvents'
+                                Resource: !Join ['', ['arn:aws:logs:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':log-group:*']]
+                -
+                    PolicyName: 'deploymentsServiceIAMPolicy'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'dynamodb:BatchGetItem'
+                                    - 'dynamodb:BatchWriteItem'
+                                    - 'dynamodb:DeleteItem'
+                                    - 'dynamodb:GetItem'
+                                    - 'dynamodb:PutItem'
+                                    - 'dynamodb:Query'
+                                    - 'dynamodb:Scan'
+                                    - 'dynamodb:UpdateItem'
+                                Resource:
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref settingsTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref devicesTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deviceTypesTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deviceBlueprintsTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deploymentsTable]]
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'iam:PassRole'
+                                Resource:
+                                    - !Ref greengrassGroupsIAMRoleArn
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    # TODO: Too permissive for now.
+                                    - 'iot:*'
+                                    - 'greengrass:*'
+                                Resource:
+                                    - '*'
+    # Service Lambda Function - Deployments - Function
+    deploymentsServiceLambdaFunction:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            Description: 'sputnik Deployments microservice'
+            Code:
+                S3Bucket: !Ref sourceBucket
+                S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-deployments-service.zip']]
+            Handler: index.handler
+            Runtime: nodejs8.10
+            Role: !GetAtt deploymentsServiceLambdaFunctionIAMRole.Arn
+            Timeout: 60
+            MemorySize: 256
+            Environment:
+                Variables:
+                    TABLE_DEVICES: !Ref devicesTable
+                    TABLE_DEVICE_TYPES: !Ref deviceTypesTable
+                    TABLE_DEVICE_BLUEPRINTS: !Ref deviceBlueprintsTable
+                    TABLE_DEPLOYMENTS: !Ref deploymentsTable
+                    TABLE_SETTINGS: !Ref settingsTable
+                    AWS_ACCOUNT: !Ref 'AWS::AccountId'
+                    IAM_ROLE_ARN_FOR_GREENGRASS_GROUPS: !Ref greengrassGroupsIAMRoleArn
+                    IOT_POLICY_GREENGRASS_CORE: !Ref iotPolicyForGreengrassCores
+                    DATA_BUCKET: !Ref dataBucket
+                    IOT_ENDPOINT: !Ref iotEndpoint
+                    APP_UUID: !Ref appUUID
+
+    # Service Lambda Function - Devices - IAM Role
+    devicesServiceLambdaFunctionIAMRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'lambda.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Path: '/'
+            Policies:
+                -
+                    PolicyName: 'cloudwatchLogAccess'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'logs:CreateLogGroup'
+                                    - 'logs:CreateLogStream'
+                                    - 'logs:PutLogEvents'
+                                Resource: !Join ['', ['arn:aws:logs:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':log-group:*']]
+                -
+                    PolicyName: 'devicesServiceIAMPolicy'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'dynamodb:BatchGetItem'
+                                    - 'dynamodb:BatchWriteItem'
+                                    - 'dynamodb:DeleteItem'
+                                    - 'dynamodb:GetItem'
+                                    - 'dynamodb:PutItem'
+                                    - 'dynamodb:Query'
+                                    - 'dynamodb:Scan'
+                                    - 'dynamodb:UpdateItem'
+                                Resource:
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref settingsTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref devicesTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deviceTypesTable]]
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    # Too permissive for now.
+                                    # iot:createCertificateFromCsr
+                                    - 'iot:*'
+                                    - 'greengrass:*'
+                                Resource:
+                                    - '*'
+    # Service Lambda Function - Devices - Function
+    devicesServiceLambdaFunction:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            Description: 'sputnik Devices microservice'
+            Code:
+                S3Bucket: !Ref sourceBucket
+                S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-devices-service.zip']]
+            Handler: index.handler
+            Runtime: nodejs8.10
+            Role: !GetAtt devicesServiceLambdaFunctionIAMRole.Arn
+            Timeout: 60
+            MemorySize: 256
+            Environment:
+                Variables:
+                    TABLE_DEVICES: !Ref devicesTable
+                    TABLE_DEVICE_TYPES: !Ref deviceTypesTable
+                    TABLE_SETTINGS: !Ref settingsTable
+                    IOT_DEFAULT_CONNECT_POLICY: !Ref iotConnectPolicyForSputnikCertificates
+                    APP_UUID: !Ref appUUID
+
+    # Service Lambda Function - Settings - IAM Role
+    settingsServiceLambdaFunctionIAMRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'lambda.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Path: '/'
+            Policies:
+                -
+                    PolicyName: 'cloudwatchLogAccess'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'logs:CreateLogGroup'
+                                    - 'logs:CreateLogStream'
+                                    - 'logs:PutLogEvents'
+                                Resource: !Join ['', ['arn:aws:logs:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':log-group:*']]
+                -
+                    PolicyName: 'settingsServiceIAMPolicy'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: "Allow"
+                                Action:
+                                    - "dynamodb:DescribeTable"
+                                    - 'dynamodb:BatchGetItem'
+                                    - 'dynamodb:BatchWriteItem'
+                                    - 'dynamodb:GetItem'
+                                    - 'dynamodb:PutItem'
+                                    - 'dynamodb:Query'
+                                    - 'dynamodb:Scan'
+                                Resource:
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref settingsTable]]
+                            -
+                                Effect: "Allow"
+                                Action:
+                                    # TODO: Be way more restrictive here
+                                    - "iot:*"
+                                Resource:
+                                    - "*"
+    # Service Lambda Function - Settings - Function
+    settingsServiceLambdaFunction:
+        Type: "AWS::Lambda::Function"
+        Properties:
+            Description: "sputnik Settings microservice"
+            Code:
+                S3Bucket: !Ref sourceBucket
+                S3Key: !Join ["/", [!Ref sourceKeyPrefix, 'lambda', "sputnik-settings-service.zip"]]
+            Handler: index.handler
+            Runtime: nodejs8.10
+            Role: !GetAtt settingsServiceLambdaFunctionIAMRole.Arn
+            Timeout: 60
+            MemorySize: 256
+            Environment:
+                Variables:
+                    IOT_JUST_IN_TIME_ON_BOARDING_TOPIC_RULE: !Ref justInTimeOnBoardingIoTTopicRule
+                    APP_UUID: !Ref appUUID
+
+    # Service Lambda Function - Systems - IAM Role
+    systemsServiceLambdaFunctionIAMRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'lambda.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Path: '/'
+            Policies:
+                -
+                    PolicyName: 'cloudwatchLogAccess'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'logs:CreateLogGroup'
+                                    - 'logs:CreateLogStream'
+                                    - 'logs:PutLogEvents'
+                                Resource: !Join ['', ['arn:aws:logs:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':log-group:*']]
+                -
+                    PolicyName: 'systemsServiceIAMPolicy'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'dynamodb:BatchGetItem'
+                                    - 'dynamodb:BatchWriteItem'
+                                    - 'dynamodb:DeleteItem'
+                                    - 'dynamodb:GetItem'
+                                    - 'dynamodb:PutItem'
+                                    - 'dynamodb:Query'
+                                    - 'dynamodb:Scan'
+                                    - 'dynamodb:UpdateItem'
+                                Resource:
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref devicesTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deviceBlueprintsTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deviceTypesTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref settingsTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref systemsTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref systemBlueprintsTable]]
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    # TODO: Too permissive for now.
+                                    - 'iot:*'
+                                    - 'greengrass:*'
+                                Resource:
+                                    - '*'
+    # Service Lambda Function - Systems - Function
+    systemsServiceLambdaFunction:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            Description: 'sputnik Systems microservice'
+            Code:
+                S3Bucket: !Ref sourceBucket
+                S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-systems-service.zip']]
+            Handler: index.handler
+            Runtime: nodejs8.10
+            Role: !GetAtt systemsServiceLambdaFunctionIAMRole.Arn
+            Timeout: 60
+            MemorySize: 256
+            Environment:
+                Variables:
+                    TABLE_DEVICES: !Ref devicesTable
+                    TABLE_DEVICE_BLUEPRINTS: !Ref deviceBlueprintsTable
+                    TABLE_DEVICE_TYPES: !Ref deviceTypesTable
+                    TABLE_SYSTEMS: !Ref systemsTable
+                    TABLE_SYSTEM_BLUEPRINTS: !Ref systemBlueprintsTable
+                    TABLE_SETTINGS: !Ref settingsTable
+                    APP_UUID: !Ref appUUID
+
+    # Service Lambda Function - Just In Time On Boarding - IoT Rule
+    justInTimeOnBoardingIoTTopicRule:
+        Type: "AWS::IoT::TopicRule"
+        Properties:
+            TopicRulePayload:
+                RuleDisabled: false
+                Sql: >-
+                    SELECT topic() as topic, * from '$aws/events/presence/#'
+                Actions:
+                    -
+                        Lambda:
+                            FunctionArn: !GetAtt justInTimeOnBoardingServiceLambdaFunction.Arn
+    # Service Lambda Function - Just In Time On Boarding - IoT Lambda Invocation Permission
+    justInTimeOnBoardingIoTLambdaInvocationPermission:
+        Type: AWS::Lambda::Permission
+        Properties:
+            SourceArn: !Join [ "", [ "arn:aws:iot:", !Ref "AWS::Region", ":", !Ref "AWS::AccountId", ":rule/", !Ref "justInTimeOnBoardingIoTTopicRule" ] ]
+            Action: lambda:InvokeFunction
+            Principal: iot.amazonaws.com
+            FunctionName: !GetAtt justInTimeOnBoardingServiceLambdaFunction.Arn
+            SourceAccount: !Ref AWS::AccountId
+    # Service Lambda Function - Just In Time On Boarding - IAM Role
+    justInTimeOnBoardingServiceLambdaFunctionIAMRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'lambda.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Path: '/'
+            Policies:
+                -
+                    PolicyName: 'cloudwatchLogAccess'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'logs:CreateLogGroup'
+                                    - 'logs:CreateLogStream'
+                                    - 'logs:PutLogEvents'
+                                Resource: !Join ['', ['arn:aws:logs:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':log-group:*']]
+                -
+                    PolicyName: 'justInTimeOnBoardingServiceIAMPolicy'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: "Allow"
+                                Action:
+                                    - "dynamodb:BatchGetItem"
+                                    - "dynamodb:BatchWriteItem"
+                                    - "dynamodb:DeleteItem"
+                                    - "dynamodb:GetItem"
+                                    - "dynamodb:PutItem"
+                                    - "dynamodb:Query"
+                                    - "dynamodb:Scan"
+                                    - "dynamodb:UpdateItem"
+                                Resource:
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref devicesTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref settingsTable]]
+                            -
+                                Effect: "Allow"
+                                Action:
+                                    # TODO: Too permissive for now.
+                                    - "iot:*"
+                                    - "greengrass:*"
+                                Resource:
+                                    - "*"
+    # Service Lambda Function - Just In Time On Boarding - Function
+    justInTimeOnBoardingServiceLambdaFunction:
+        Type: "AWS::Lambda::Function"
+        Properties:
+            Description: "sputnik Just In Time On Boarding microservice"
+            Code:
+                S3Bucket: !Ref sourceBucket
+                S3Key: !Join ["/", [!Ref sourceKeyPrefix, 'lambda', "sputnik-just-in-time-on-boarding-service.zip"]]
+            Handler: index.handler
+            Runtime: nodejs8.10
+            Role: !GetAtt justInTimeOnBoardingServiceLambdaFunctionIAMRole.Arn
+            Timeout: 60
+            MemorySize: 256
+            Environment:
+                Variables:
+                    TABLE_DEVICES: !Ref devicesTable
+                    TABLE_SETTINGS: !Ref settingsTable
+                    APP_UUID: !Ref appUUID
+
+Outputs:
+    deploymentsServiceLambdaFunctionArn:
+        Description: 'Deployments Service ARN'
+        Value: !GetAtt deploymentsServiceLambdaFunction.Arn
+    adminServiceLambdaFunctionArn:
+        Description: 'Admin Service ARN'
+        Value: !GetAtt adminServiceLambdaFunction.Arn
+    devicesServiceLambdaFunctionArn:
+        Description: 'Devices Service ARN'
+        Value: !GetAtt devicesServiceLambdaFunction.Arn
+    settingsServiceLambdaFunctionArn:
+        Description: "Settings Service ARN"
+        Value: !GetAtt settingsServiceLambdaFunction.Arn
+    systemsServiceLambdaFunctionArn:
+        Description: 'Systems Service ARN'
+        Value: !GetAtt systemsServiceLambdaFunction.Arn

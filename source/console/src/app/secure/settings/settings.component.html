@@ -1,0 +1,75 @@
+<!-- Row -->
+<div class="row" *ngIf="isAdminUser">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body p-b-0">
+                <h4 class="card-title">Settings</h4>
+                <h6 class="card-subtitle">Configuration settings used for the general application, micro services and
+                    reseting to application defaults.</h6>
+            </div>
+            <ul class="nav nav-tabs" id="myTab" role="tablist" style="padding-left: 1.25rem; padding-right: 1.25rem;">
+                <li class="nav-item">
+                    <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab"
+                        aria-controls="general" aria-selected="true">General</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="about-tab" data-toggle="tab" href="#about" role="tab" aria-controls="about"
+                        aria-selected="false">About</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane p-20 fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                    <div class="alert alert-danger" *ngIf="appConfigError">
+                        <h3 class="text-danger"><i class="fa fa-exclamation-circle"></i> Oops!</h3>
+                        {{appConfigErrorMessage}}
+                    </div>
+                    <form class="fm-t-40" *ngIf="!appConfigError">
+                        <div class="form-group">
+                            <label>Mapbox Token</label>
+                            <input type="text" class="form-control form-control-line" name="mapboxToken" id="mapboxToken"
+                                #mapboxToken="ngModel" [(ngModel)]="appConfig.setting.mapboxToken" required ngModel />
+                            <div class="form-control-feedback">
+                                <small>The Mapbox Token used to display maps.</small>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group">
+                            <label>sputnik API Endpoint</label>
+                            <input type="text" class="form-control form-control-line" name="apiEndpoint" id="apiEndpoint"
+                                #apiEndpoint="ngModel" [(ngModel)]="appConfig.setting.apiEndpoint" required ngModel
+                                readonly />
+                            <div class="form-control-feedback">
+                                <small>The secure endpoint for the sputnik API.</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Congito User Pool Id</label>
+                            <input type="text" class="form-control form-control-line" name="idp" id="idp" #idp="ngModel"
+                                [(ngModel)]="appConfig.setting.idp" required ngModel readonly />
+                            <div class="form-control-feedback">
+                                <small>The unique identifier for the Amazon Cognito User Pool.</small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Installation UUID</label>
+                            <input type="text" class="form-control form-control-line" name="uuid" id="uuid" #uuid="ngModel"
+                                [(ngModel)]="appConfig.setting.uuid" required ngModel readonly />
+                            <div class="form-control-feedback">
+                                <small>The unique identifier assigned to the installation.</small>
+                            </div>
+                        </div> -->
+                        <div>
+                            <button type="button" class="btn btn-success-alt btn-rounded m-r-15" (click)="update(appConfig)">Save</button>
+                            <!-- <button type="button" class="btn btn-secondary btn-rounded" (click)="cancel(appConfig)">Cancel</button> -->
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane p-20 fade" id="about" role="tabpanel" aria-labelledby="about-tab">
+                    <div class="fm-t-40">
+                        About
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Row -->

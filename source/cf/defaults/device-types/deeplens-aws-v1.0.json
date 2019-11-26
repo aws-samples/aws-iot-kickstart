@@ -1,0 +1,249 @@
+{
+    "id": "deeplens-aws-v1.0",
+    "name": "AWS Deeplens v1.0",
+    "type": "GREENGRASS",
+    "spec": {
+        "CoreDefinitionVersion": {
+            "Cores": [{
+                "CertificateArn": "[CORE_CERTIFICATE_ARN]",
+                "SyncShadow": true,
+                "ThingArn": "[CORE_ARN]"
+            }]
+        },
+        "FunctionDefinitionVersion": {
+            "Functions": [{
+                "FunctionArn": "arn:aws:lambda:::function:GGIPDetector:1",
+                "FunctionConfiguration": {
+                    "Environment": {
+                        "AccessSysfs": true,
+                        "Variables": {}
+                    },
+                    "MemorySize": 32768,
+                    "Pinned": true,
+                    "Timeout": 3
+                }
+            }, {
+                "FunctionArn": "arn:aws:lambda:[AWS_REGION]:[AWS_ACCOUNT]:function:deeplens_admin_version_poller:1",
+                "FunctionConfiguration": {
+                    "Environment": {
+                        "AccessSysfs": true,
+                        "ResourceAccessPolicies": [{
+                                "Permission": "rw",
+                                "ResourceId": "artifacts"
+                            },
+                            {
+                                "Permission": "ro",
+                                "ResourceId": "aws_cam_home"
+                            },
+                            {
+                                "Permission": "rw",
+                                "ResourceId": "tmp"
+                            },
+                            {
+                                "Permission": "rw",
+                                "ResourceId": "gpu"
+                            },
+                            {
+                                "Permission": "ro",
+                                "ResourceId": "stream"
+                            },
+                            {
+                                "Permission": "rw",
+                                "ResourceId": "sound_card"
+                            },
+                            {
+                                "Permission": "rw",
+                                "ResourceId": "sound_control"
+                            }
+                        ],
+                        "Variables": {}
+                    },
+                    "Executable": "version_poller.function_handler",
+                    "MemorySize": 131072,
+                    "Pinned": true,
+                    "Timeout": 1200
+                }
+            }, {
+                "FunctionArn": "arn:aws:lambda:[AWS_REGION]:[AWS_ACCOUNT]:function:deeplens_admin_model_downloader:1",
+                "FunctionConfiguration": {
+                    "Environment": {
+                        "AccessSysfs": true,
+                        "ResourceAccessPolicies": [{
+                                "Permission": "rw",
+                                "ResourceId": "artifacts"
+                            },
+                            {
+                                "Permission": "ro",
+                                "ResourceId": "aws_cam_home"
+                            },
+                            {
+                                "Permission": "rw",
+                                "ResourceId": "tmp"
+                            },
+                            {
+                                "Permission": "rw",
+                                "ResourceId": "gpu"
+                            },
+                            {
+                                "Permission": "ro",
+                                "ResourceId": "stream"
+                            },
+                            {
+                                "Permission": "rw",
+                                "ResourceId": "sound_card"
+                            },
+                            {
+                                "Permission": "rw",
+                                "ResourceId": "sound_control"
+                            }
+                        ],
+                        "Variables": {
+                            "DEEPLENS_ENDPOINT": "https://deeplens.us-east-1.amazonaws.com",
+                            "DEEPLENS_REGION": "us-east-1",
+                            "DEEPLENS_S3_BUCKET_MANAGED_RESOURCES": "deeplens-managed-resources-us-east-1-prod"
+                        }
+                    },
+                    "Executable": "das_mutter.function_handler",
+                    "MemorySize": 524288,
+                    "Pinned": true,
+                    "Timeout": 1200
+                }
+            }]
+        },
+        "LoggerDefinitionVersion": {
+            "Loggers": [{
+                    "Component": "GreengrassSystem",
+                    "Id": "deeplens-greengrass-AWSCloudWatch-GreengrassSystem",
+                    "Level": "INFO",
+                    "Type": "AWSCloudWatch"
+                },
+                {
+                    "Component": "Lambda",
+                    "Id": "deeplens-greengrass-AWSCloudWatch-Lambda",
+                    "Level": "INFO",
+                    "Type": "AWSCloudWatch"
+                },
+                {
+                    "Component": "GreengrassSystem",
+                    "Id": "deeplens-greengrass-FileSystem-GreengrassSystem",
+                    "Level": "INFO",
+                    "Space": 300000,
+                    "Type": "FileSystem"
+                },
+                {
+                    "Component": "Lambda",
+                    "Id": "deeplens-greengrass-FileSystem-Lambda",
+                    "Level": "INFO",
+                    "Space": 300000,
+                    "Type": "FileSystem"
+                }
+            ]
+        },
+        "ResourceDefinitionVersion": {
+            "Resources": [{
+                    "Id": "artifacts",
+                    "Name": "dc_admin_artifacts_resource",
+                    "ResourceDataContainer": {
+                        "LocalVolumeResourceData": {
+                            "DestinationPath": "/opt/awscam/artifacts/",
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/opt/awscam/artifacts/"
+                        }
+                    }
+                },
+                {
+                    "Id": "aws_cam_home",
+                    "Name": "aws_home_dir",
+                    "ResourceDataContainer": {
+                        "LocalVolumeResourceData": {
+                            "DestinationPath": "/home/aws_cam/",
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/home/aws_cam/"
+                        }
+                    }
+                },
+                {
+                    "Id": "gpu",
+                    "Name": "gpu_resource",
+                    "ResourceDataContainer": {
+                        "LocalDeviceResourceData": {
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/dev/dri/renderD128"
+                        }
+                    }
+                },
+                {
+                    "Id": "sound_card",
+                    "Name": "sound_card_resource",
+                    "ResourceDataContainer": {
+                        "LocalDeviceResourceData": {
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/dev/snd/pcmC0D0p"
+                        }
+                    }
+                },
+                {
+                    "Id": "sound_control",
+                    "Name": "sound_control_resource",
+                    "ResourceDataContainer": {
+                        "LocalDeviceResourceData": {
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/dev/snd/controlC0"
+                        }
+                    }
+                },
+                {
+                    "Id": "stream",
+                    "Name": "stream_resource",
+                    "ResourceDataContainer": {
+                        "LocalVolumeResourceData": {
+                            "DestinationPath": "/opt/awscam/out",
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/opt/awscam/out"
+                        }
+                    }
+                },
+                {
+                    "Id": "tmp",
+                    "Name": "tmp_resource",
+                    "ResourceDataContainer": {
+                        "LocalVolumeResourceData": {
+                            "DestinationPath": "/tmp",
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/tmp"
+                        }
+                    }
+                }
+            ]
+        },
+        "SubscriptionDefinitionVersion": {
+            "Subscriptions": [{
+                    "Id": "dc_admin_das_mutter_update_sub",
+                    "Source": "arn:aws:lambda:[AWS_REGION]:[AWS_ACCOUNT]:function:deeplens_admin_model_downloader:1",
+                    "Subject": "$aws/things/deeplens_qBrYvrELRpOuce8msOzOyg/shadow/update",
+                    "Target": "cloud"
+                },
+                {
+                    "Id": "dc_admin_version_poller_update_sub",
+                    "Source": "arn:aws:lambda:[AWS_REGION]:[AWS_ACCOUNT]:function:deeplens_admin_version_poller:1",
+                    "Subject": "$aws/things/deeplens_qBrYvrELRpOuce8msOzOyg/shadow/update",
+                    "Target": "cloud"
+                }
+            ]
+        }
+    }
+}

@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card card-outline-info">
+            <div class="card-body">
+                <h5 class="card-title">Greengrass ML Squeezenet Demo</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ device.name }}
+                    <span class="float-right" *ngIf="latestData">{{ latestData.fps }}fps</span>
+                </h6>
+                <div class="card-text" *ngIf="latestData">
+                    <div class="row" *ngFor="let prediction of latestData.predictions">
+                        <div class="col-6">{{prediction.name}}</div>
+                        <div class="col-6">{{prediction.probability | percent}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

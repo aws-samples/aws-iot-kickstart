@@ -1,0 +1,187 @@
+# Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'sputnik - Lambda - Version %%VERSION%%'
+
+Parameters:
+    sourceBucket:
+        Type: String
+        Description: S3 Bucket for Lambda code.
+    sourceKeyPrefix:
+        Type: String
+        Description: S3 Bucket Key prefix for code.
+    destBucketArn:
+        Type: String
+        Description: ARN of the sputnik Website Bucket.
+    dataBucketArn:
+        Type: String
+        Description: ARN of the sputnik Data Bucket.
+    settingsTable:
+        Type: String
+        Description: DynamoDB Table for storing the application settings
+    devicesTable:
+        Type: String
+        Description: DynamoDB Table for storing the devices
+    deviceTypesTable:
+        Type: String
+        Description: DynamoDB Table for storing the device types
+    deviceBlueprintsTable:
+        Type: String
+        Description: DynamoDB Table for storing the device blueprints
+    systemsTable:
+        Type: String
+        Description: DynamoDB Table for storing the systems
+    systemBlueprintsTable:
+        Type: String
+        Description: DynamoDB Table for storing the system blueprints
+    greengrassServiceRoleArn:
+        Type: String
+        Description: IAM Role Arn for Greengrass Service
+
+Resources:
+
+    # Custom Resource Common IAM Role
+    customResourcesIAMRole:
+        Type: 'AWS::IAM::Role'
+        Properties:
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: 'Allow'
+                      Principal:
+                          Service:
+                              - 'lambda.amazonaws.com'
+                      Action:
+                          - 'sts:AssumeRole'
+            Path: '/'
+            Policies:
+                -
+                    PolicyName: 'cloudwatchLogAccess'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'logs:CreateLogGroup'
+                                    - 'logs:CreateLogStream'
+                                    - 'logs:PutLogEvents'
+                                Resource: !Join ['', ['arn:aws:logs:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':log-group:*']]
+                -
+                    PolicyName: 's3Access'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 's3:GetObject'
+                                    - 's3:ListBucket'
+                                Resource:
+                                    - !Join ['', ['arn:aws:s3:::', !Ref sourceBucket]]
+                                    - !Join ['', ['arn:aws:s3:::', !Ref sourceBucket, '/*']]
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 's3:ListObjectsV2'
+                                    - 's3:PutObject'
+                                Resource:
+                                    - !Join ['/', [!Ref destBucketArn, '*']]
+                                    - !Join ['/', [!Ref dataBucketArn, '*']]
+                -
+                    PolicyName: 'ddBAccess'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: 'Allow'
+                                Action:
+                                    - 'dynamodb:BatchGetItem'
+                                    - 'dynamodb:BatchWriteItem'
+                                    - 'dynamodb:DeleteItem'
+                                    - 'dynamodb:GetItem'
+                                    - 'dynamodb:PutItem'
+                                    - 'dynamodb:Query'
+                                    - 'dynamodb:Scan'
+                                    - 'dynamodb:UpdateItem'
+                                Resource:
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref settingsTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref devicesTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deviceBlueprintsTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deviceTypesTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref systemsTable]]
+                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref systemBlueprintsTable]]
+                -
+                    PolicyName: 'utilsCustomResourceLambdaFunctionPolicy'
+                    PolicyDocument:
+                        Version: '2012-10-17'
+                        Statement:
+                            -
+                                Effect: "Allow"
+                                Action:
+                                    - "iot:DescribeEndpoint"
+                                    - "iot:AttachPrincipalPolicy"
+                                    - "iot:GetThingShadow"
+                                    - "iot:UpdateThingShadow"
+                                    - "iot:Publish"
+                                    - "iot:DeleteThingShadow"
+                                Resource:
+                                    - "*"
+                            -
+                                Effect: "Allow"
+                                Action:
+                                    - "iam:PassRole"
+                                Resource:
+                                    - "*"
+                            -
+                                Effect: "Allow"
+                                Action:
+                                    - "greengrass:AssociateServiceRoleToAccount"
+                                Resource:
+                                    - "*"
+
+    # Custom resource Lambda Function - S3 Helper
+    customResourceS3Helper:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            Description: 'sputnik S3 Custom Resource Lambda Function Helper'
+            Code:
+                S3Bucket: !Ref sourceBucket
+                S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-custom-resource-helper-s3.zip']]
+            Handler: index.handler
+            Runtime: nodejs8.10
+            Role: !GetAtt customResourcesIAMRole.Arn
+            Timeout: 300
+            MemorySize: 256
+
+    # Custom resource Lambda Function - Utils Helper
+    utilsCustomResourceLambdaFunction:
+        Type: 'AWS::Lambda::Function'
+        Properties:
+            Description: 'sputnik Utils Custom Resource Lambda Function Helper'
+            Code:
+                S3Bucket: !Ref sourceBucket
+                S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-custom-resource-helper-utils.zip']]
+            Handler: index.handler
+            Runtime: nodejs8.10
+            Role: !GetAtt customResourcesIAMRole.Arn
+            Timeout: 300
+            MemorySize: 256
+            Environment:
+                Variables:
+                    TABLE_DEVICES: !Ref devicesTable
+                    TABLE_DEVICE_BLUEPRINTS: !Ref deviceBlueprintsTable
+                    TABLE_DEVICE_TYPES: !Ref deviceTypesTable
+                    TABLE_SYSTEMS: !Ref systemsTable
+                    TABLE_SYSTEM_BLUEPRINTS: !Ref systemBlueprintsTable
+                    TABLE_SETTINGS: !Ref settingsTable
+                    GREENGRASS_SERVICE_ROLE_ARN: !Ref greengrassServiceRoleArn
+
+Outputs:
+    customResourceS3HelperArn:
+        Description: 'Custom Resource S3 Helper ARN'
+        Value: !GetAtt customResourceS3Helper.Arn
+    utilsCustomResourceLambdaFunctionArn:
+        Description: 'Custom Resource Utils Helper ARN'
+        Value: !GetAtt utilsCustomResourceLambdaFunction.Arn

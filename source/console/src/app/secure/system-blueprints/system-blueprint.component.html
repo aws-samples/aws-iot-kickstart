@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card card-outline-info">
+            <div class="card-body">
+                <form name="attributeForm" #f="ngForm" class="form-control-line" (ngSubmit)="submit(f)" novalidate
+                    *ngIf="systemBlueprint !== undefined">
+
+                    <div [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-group has-danger' :'form-group has-success-alt') : 'form-group'">
+                        <label for="name" class="form-control-label">System Blueprint Name:</label>
+                        <input type="text" [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-control form-control-line form-control-danger' : 'form-control form-control-line form-control-success-alt') : 'form-control form-control-line'"
+                            name="name" id="name" #name="ngModel" [(ngModel)]="systemBlueprint.name" required ngModel>
+                        <!-- pattern="[a-zA-Z0-9:_- ]+" -->
+                        <div *ngIf="!((name.invalid && (name.dirty || name.touched)) && name.errors)" class="form-control-feedback">
+                            <small>Name of your system blueprint.</small>
+                        </div>
+                        <div *ngIf="(name.invalid && (name.dirty || name.touched)) && name.errors" class="form-control-feedback">
+                            <small>Name of system blueprint is required or has errors.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type" class="form-control-label">Spec:</label>
+                        <app-pretty-json name="spec" [(ngModel)]="systemBlueprint.spec" [rows]="30"></app-pretty-json>
+                        <div class="form-control-feedback">
+                            <small>JSON document to use for the custom system blueprint.</small>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button *ngIf="isAdminUser" type="button" class="btn btn-danger" (click)="delete()">Delete</button>
+                        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+                        <button *ngIf="isAdminUser" type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

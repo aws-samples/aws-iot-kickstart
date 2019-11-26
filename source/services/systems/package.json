@@ -1,0 +1,30 @@
+{
+    "name": "sputnik-systems-service",
+    "description": "The systems microservice for the sputnik",
+    "main": "libs.js",
+    "license": "Amazon Software License (ASL)",
+    "version": "0.0.1",
+    "private": "true",
+    "dependencies": {
+        "moment": "*",
+        "sputnik-devices-service": "../devices",
+        "shortid": "^2.2.13",
+        "underscore": "*",
+        "uuid": "^3.3.2"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "prestart": "yarn install",
+        "start": "node index.js",
+        "build:init": "rm -rf dist && rm -rf node_modules",
+        "build:zip": "zip -rq `jq -cr '.name' package.json`.zip .",
+        "build:dist": "mkdir dist && mv `jq -cr '.name' package.json`.zip dist/",
+        "fast-build": "rm -rf dist && yarn run build:zip && yarn run build:dist",
+        "build": "yarn run build:init && yarn install --production && yarn run build:zip && yarn run build:dist"
+    },
+    "bundledDependencies": [
+        "aws-sdk",
+        "moment",
+        "underscore"
+    ]
+}

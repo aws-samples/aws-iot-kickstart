@@ -1,0 +1,8 @@
+{
+    "id": "empty-gg-blueprint-v1.0",
+    "name": "Empty Greengrass Blueprint v1.0",
+    "type": "GREENGRASS",
+    "compatibility": ["all"],
+    "deviceTypeMappings": [],
+    "spec": {}
+}

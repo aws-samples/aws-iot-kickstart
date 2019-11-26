@@ -1,0 +1,267 @@
+{
+    "id": "rpi3-sense-hat-demo-v1.0",
+    "name": "Raspberry Pi 3 Sense Hat Demo v1.0",
+    "type": "GREENGRASS",
+    "compatibility": ["rpi3-sense-hat-v1.0", "rpi3-sense-hat-camera-v1.0"],
+    "deviceTypeMappings": [],
+    "spec": {
+        "Shadow": {
+            "desired": {
+                "joystickIsTrigger": true,
+                "sendTelemetry": true,
+                "frequency": "1.0"
+            }
+        },
+        "FunctionDefinitionVersion": {
+            "Functions": [{
+                "FunctionArn": "arn:aws:lambda:[AWS_REGION]:[AWS_ACCOUNT]:function:sputnik-rpi-sense-hat-demo-python:Prod",
+                "FunctionConfiguration": {
+                    "MemorySize": 65536,
+                    "Pinned": true,
+                    "Timeout": 25,
+                    "EncodingType": "json",
+                    "Environment": {
+                        "ResourceAccessPolicies": [{
+                                "ResourceId": "sense-hat-led",
+                                "Permission": "rw"
+                            },
+                            {
+                                "ResourceId": "sense-hat-i2c",
+                                "Permission": "rw"
+                            },
+                            {
+                                "ResourceId": "sense-hat-event0",
+                                "Permission": "ro"
+                            }
+                        ],
+                        "AccessSysfs": true
+                    }
+                }
+            }]
+        },
+        "SubscriptionDefinitionVersion": {
+            "Subscriptions": [{
+                    "Target": "arn:aws:lambda:[AWS_REGION]:[AWS_ACCOUNT]:function:sputnik-rpi-sense-hat-demo-python:Prod",
+                    "Source": "cloud",
+                    "Subject": "sputnik/[CORE]/screen"
+                },
+                {
+                    "Target": "cloud",
+                    "Source": "arn:aws:lambda:[AWS_REGION]:[AWS_ACCOUNT]:function:sputnik-rpi-sense-hat-demo-python:Prod",
+                    "Subject": "sputnik/[CORE]/+"
+                },
+                {
+                    "Target": "arn:aws:lambda:[AWS_REGION]:[AWS_ACCOUNT]:function:sputnik-rpi-sense-hat-demo-python:Prod",
+                    "Source": "GGShadowService",
+                    "Subject": "$aws/things/[CORE]/shadow/update/+"
+                }
+            ]
+        },
+        "View": {
+            "subscriptions": {
+                "shadowGetAccepted": "$aws/things/[THING_NAME]/shadow/get/accepted",
+                "telemetry": "sputnik/[THING_NAME]/telemetry",
+                "shadowUpdateAccepted": "$aws/things/[THING_NAME]/shadow/update/accepted"
+            },
+            "widgets": [{
+                    "data": {
+                        "text": [{
+                                "data": {
+                                    "value": "Temperature:"
+                                },
+                                "type": "text",
+                                "class": "col-6"
+                            },
+                            {
+                                "data": {
+                                    "input": [
+                                        "telemetry"
+                                    ],
+                                    "unit": "°C",
+                                    "value": "temperature"
+                                },
+                                "type": "text",
+                                "class": "col-6"
+                            },
+                            {
+                                "data": {
+                                    "value": "Humidity:"
+                                },
+                                "type": "text",
+                                "class": "col-6"
+                            },
+                            {
+                                "data": {
+                                    "input": [
+                                        "telemetry"
+                                    ],
+                                    "unit": "%",
+                                    "value": "humidity"
+                                },
+                                "type": "text",
+                                "class": "col-6"
+                            },
+                            {
+                                "data": {
+                                    "value": "Pressure:"
+                                },
+                                "type": "text",
+                                "class": "col-6"
+                            },
+                            {
+                                "data": {
+                                    "input": [
+                                        "telemetry"
+                                    ],
+                                    "unit": "mb",
+                                    "value": "pressure"
+                                },
+                                "type": "text",
+                                "class": "col-6"
+                            },
+                            {
+                                "data": {
+                                    "value": "Send Telemetry:"
+                                },
+                                "type": "text",
+                                "class": "col-6"
+                            },
+                            {
+                                "data": {
+                                    "output": "$aws/things/[THING_NAME]/shadow/update",
+                                    "input": [
+                                        "shadowGetAccepted",
+                                        "shadowUpdateAccepted"
+                                    ],
+                                    "initWithShadow": true,
+                                    "value": {
+                                        "output": "state.desired.sendTelemetry",
+                                        "input": "state.desired.sendTelemetry"
+                                    }
+                                },
+                                "type": "checkbox",
+                                "class": "col-6 pull-right"
+                            },
+                            {
+                                "data": {
+                                    "value": "Joystick is Trigger:"
+                                },
+                                "type": "text",
+                                "class": "col-6"
+                            },
+                            {
+                                "data": {
+                                    "output": "$aws/things/[THING_NAME]/shadow/update",
+                                    "input": [
+                                        "shadowGetAccepted",
+                                        "shadowUpdateAccepted"
+                                    ],
+                                    "initWithShadow": true,
+                                    "value": {
+                                        "output": "state.desired.joystickIsTrigger",
+                                        "input": "state.desired.joystickIsTrigger"
+                                    }
+                                },
+                                "type": "checkbox",
+                                "class": "col-6 pull-right"
+                            }
+                        ],
+                        "title": [{
+                            "data": {
+                                "value": "[DEVICE_NAME]"
+                            },
+                            "type": "text",
+                            "class": "col-12"
+                        }]
+                    },
+                    "type": "card",
+                    "class": "col-12 col-md-6"
+                },
+                {
+                    "data": {
+                        "text": [{
+                                "data": {
+                                    "value": "COLOR:"
+                                },
+                                "type": "text",
+                                "class": "col-5"
+                            },
+                            {
+                                "data": {
+                                    "output": "sputnik/[THING_NAME]/screen",
+                                    "input": [
+                                        "shadowGetAccepted",
+                                        "shadowUpdateAccepted"
+                                    ],
+                                    "initWithShadow": true,
+                                    "value": {
+                                        "output": "screen",
+                                        "input": "state.reported.screen"
+                                    }
+                                },
+                                "type": "color-picker",
+                                "class": "col-7"
+                            },
+                            {
+                                "data": {
+                                    "value": "TEXT:"
+                                },
+                                "type": "text",
+                                "class": "col-5"
+                            },
+                            {
+                                "data": {
+                                    "output": "sputnik/[THING_NAME]/screen",
+                                    "input": [
+                                        "shadowGetAccepted",
+                                        "shadowUpdateAccepted"
+                                    ],
+                                    "initWithShadow": true,
+                                    "value": {
+                                        "output": "screen",
+                                        "input": "state.reported.screen"
+                                    }
+                                },
+                                "type": "input-text",
+                                "class": "col-7"
+                            }
+                        ],
+                        "title": [{
+                            "data": {
+                                "value": "Screen"
+                            },
+                            "type": "text",
+                            "class": "col-12"
+                        }]
+                    },
+                    "type": "card",
+                    "class": "col-12 col-md-6"
+                },
+                {
+                    "data": {
+                        "text": [{
+                            "data": {
+                                "input": [
+                                    "telemetry"
+                                ],
+                                "title": "Magnitude",
+                                "value": "magnitude"
+                            },
+                            "type": "graph-realtime",
+                            "class": "col-12"
+                        }],
+                        "title": [{
+                            "data": {
+                                "value": "Magnitude"
+                            },
+                            "type": "text",
+                            "class": "col-12"
+                        }]
+                    },
+                    "type": "card",
+                    "class": "col-lg-6 col-sm-12"
+                }
+            ]
+        }
+    }
+}

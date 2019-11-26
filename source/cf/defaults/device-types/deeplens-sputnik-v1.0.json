@@ -1,0 +1,121 @@
+{
+    "id": "deeplens-sputnik-v1.0",
+    "name": "AWS Deeplens v1.0 (stripped of Deeplens service capabilities)",
+    "type": "GREENGRASS",
+    "spec": {
+        "CoreDefinitionVersion": {
+            "Cores": [{
+                "CertificateArn": "[CORE_CERTIFICATE_ARN]",
+                "SyncShadow": true,
+                "ThingArn": "[CORE_ARN]"
+            }]
+        },
+        "LoggerDefinitionVersion": {
+            "Loggers": [{
+                    "Component": "GreengrassSystem",
+                    "Id": "deeplens-greengrass-AWSCloudWatch-GreengrassSystem",
+                    "Level": "INFO",
+                    "Type": "AWSCloudWatch"
+                },
+                {
+                    "Component": "Lambda",
+                    "Id": "deeplens-greengrass-AWSCloudWatch-Lambda",
+                    "Level": "INFO",
+                    "Type": "AWSCloudWatch"
+                },
+                {
+                    "Component": "GreengrassSystem",
+                    "Id": "deeplens-greengrass-FileSystem-GreengrassSystem",
+                    "Level": "INFO",
+                    "Space": 300000,
+                    "Type": "FileSystem"
+                },
+                {
+                    "Component": "Lambda",
+                    "Id": "deeplens-greengrass-FileSystem-Lambda",
+                    "Level": "INFO",
+                    "Space": 300000,
+                    "Type": "FileSystem"
+                }
+            ]
+        },
+        "ResourceDefinitionVersion": {
+            "Resources": [{
+                    "Id": "artifacts",
+                    "Name": "dc_admin_artifacts_resource",
+                    "ResourceDataContainer": {
+                        "LocalVolumeResourceData": {
+                            "DestinationPath": "/opt/awscam/artifacts/",
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/opt/awscam/artifacts/"
+                        }
+                    }
+                },
+                {
+                    "Id": "aws_cam_home",
+                    "Name": "aws_home_dir",
+                    "ResourceDataContainer": {
+                        "LocalVolumeResourceData": {
+                            "DestinationPath": "/home/aws_cam/",
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/home/aws_cam/"
+                        }
+                    }
+                },
+                {
+                    "Id": "gpu",
+                    "Name": "gpu_resource",
+                    "ResourceDataContainer": {
+                        "LocalDeviceResourceData": {
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/dev/dri/renderD128"
+                        }
+                    }
+                },
+                {
+                    "Id": "sound_card",
+                    "Name": "sound_card_resource",
+                    "ResourceDataContainer": {
+                        "LocalDeviceResourceData": {
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/dev/snd/pcmC0D0p"
+                        }
+                    }
+                },
+                {
+                    "Id": "sound_control",
+                    "Name": "sound_control_resource",
+                    "ResourceDataContainer": {
+                        "LocalDeviceResourceData": {
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/dev/snd/controlC0"
+                        }
+                    }
+                },
+                {
+                    "Id": "stream",
+                    "Name": "stream_resource",
+                    "ResourceDataContainer": {
+                        "LocalVolumeResourceData": {
+                            "DestinationPath": "/opt/awscam/out",
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/opt/awscam/out"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

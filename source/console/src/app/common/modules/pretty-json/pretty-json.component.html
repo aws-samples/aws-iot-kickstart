@@ -1,0 +1,8 @@
+<textarea class="form-control" rows="{{rows}}" style="font-family: monospace; font-size: 90%;" [(ngModel)]="jsonString" ngModel name="jsonString"
+    (change)="onChange($event)" (keyup)="onChange($event)" [readonly]="readonly"></textarea>
+<div class="form-control-feedback">
+    <small>
+<span *ngIf="prettifying">(prettifying)</span>
+        <span *ngIf="parseError" style="color: red;">ERROR: JSON is incorrect!</span>
+    </small>
+</div>

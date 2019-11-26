@@ -1,0 +1,80 @@
+{
+    "id": "intel-up2-webcam-v1.0",
+    "name": "Intel UP2 with Webcam v1.0",
+    "type": "GREENGRASS",
+    "spec": {
+        "CoreDefinitionVersion": {
+            "Cores": [{
+                "CertificateArn": "[CORE_CERTIFICATE_ARN]",
+                "SyncShadow": true,
+                "ThingArn": "[CORE_ARN]"
+            }]
+        },
+        "FunctionDefinitionVersion": {
+            "Functions": [{
+                "FunctionArn": "arn:aws:lambda:::function:GGIPDetector:1",
+                "FunctionConfiguration": {
+                    "Environment": {
+                        "AccessSysfs": true,
+                        "Variables": {}
+                    },
+                    "MemorySize": 32768,
+                    "Pinned": true,
+                    "Timeout": 3
+                }
+            }]
+        },
+        "LoggerDefinitionVersion": {
+            "Loggers": [{
+                    "Component": "GreengrassSystem",
+                    "Level": "INFO",
+                    "Type": "AWSCloudWatch"
+                },
+                {
+                    "Component": "Lambda",
+                    "Level": "INFO",
+                    "Type": "AWSCloudWatch"
+                },
+                {
+                    "Component": "GreengrassSystem",
+                    "Level": "INFO",
+                    "Space": 300000,
+                    "Type": "FileSystem"
+                },
+                {
+                    "Component": "Lambda",
+                    "Level": "INFO",
+                    "Space": 300000,
+                    "Type": "FileSystem"
+                }
+            ]
+        },
+        "ResourceDefinitionVersion": {
+            "Resources": [{
+                    "Id": "gpu",
+                    "Name": "gpu_resource",
+                    "ResourceDataContainer": {
+                        "LocalDeviceResourceData": {
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/dev/dri/renderD128"
+                        }
+                    }
+                },
+                {
+                    "Id": "video0",
+                    "Name": "dev_video0_resource",
+                    "ResourceDataContainer": {
+                        "LocalDeviceResourceData": {
+                            "GroupOwnerSetting": {
+                                "AutoAddGroupOwner": true
+                            },
+                            "SourcePath": "/dev/video0"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

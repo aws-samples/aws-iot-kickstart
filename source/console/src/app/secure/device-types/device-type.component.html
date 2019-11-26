@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card card-outline-info">
+            <div class="card-body">
+                <form name="attributeForm" #f="ngForm" class="form-control-line" (ngSubmit)="submit(f)" novalidate
+                    *ngIf="deviceType !== undefined">
+
+                    <div [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-group has-danger' :'form-group has-success-alt') : 'form-group'">
+                        <label for="name" class="form-control-label">Device Type Name:</label>
+                        <input type="text" [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-control form-control-line form-control-danger' : 'form-control form-control-line form-control-success-alt') : 'form-control form-control-line'"
+                            name="name" id="name" #name="ngModel" [(ngModel)]="deviceType.name" required ngModel>
+                        <!-- pattern="[a-zA-Z0-9:_- ]+" -->
+                        <div *ngIf="!((name.invalid && (name.dirty || name.touched)) && name.errors)" class="form-control-feedback">
+                            <small>Name of your device type.</small>
+                        </div>
+                        <div *ngIf="(name.invalid && (name.dirty || name.touched)) && name.errors" class="form-control-feedback">
+                            <small>Name of device type is required or has errors.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type" class="form-control-label">Type:</label>
+                        <select class="custom-select col-12" name="type" id="type" #type="ngModel" [(ngModel)]="deviceType.type"
+                            required ngModel>
+                            <option ng-selected="deviceType.type === 'UNKNOWN'">UNKNOWN</option>
+                            <option ng-selected="deviceType.type === 'SDK'">SDK</option>
+                            <option ng-selected="deviceType.type === 'A:FreeRTOS'">A:FreeRTOS</option>
+                            <option ng-selected="deviceType.type === 'GREENGRASS'">GREENGRASS</option>
+                            <option ng-selected="deviceBlueprint.type === 'THING_ONLY'">THING_ONLY</option>
+                        </select>
+                        <div class="form-control-feedback">
+                            <small>What type of AWS thing type is this.</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type" class="form-control-label">Spec:</label>
+                        <app-pretty-json name="spec" [(ngModel)]="deviceType.spec" [rows]="20"></app-pretty-json>
+                        <div class="form-control-feedback">
+                            <small>JSON document to use for the custom device type.</small>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button *ngIf="isAdminUser" type="button" class="btn btn-danger" (click)="delete()">Delete</button>
+                        <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+                        <button *ngIf="isAdminUser" type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

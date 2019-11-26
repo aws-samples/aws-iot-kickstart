@@ -1,0 +1,89 @@
+{
+    "id": "rpi3-sense-hat-v1.0",
+    "name": "Raspberry Pi 3 with Sense Hat v1.0",
+    "type": "GREENGRASS",
+    "spec": {
+        "CoreDefinitionVersion": {
+            "Cores": [{
+                "CertificateArn": "[CORE_CERTIFICATE_ARN]",
+                "SyncShadow": true,
+                "ThingArn": "[CORE_ARN]"
+            }]
+        },
+        "FunctionDefinitionVersion": {
+            "Functions": [{
+                "FunctionArn": "arn:aws:lambda:::function:GGIPDetector:1",
+                "FunctionConfiguration": {
+                    "Environment": {
+                        "AccessSysfs": true,
+                        "Variables": {}
+                    },
+                    "MemorySize": 32768,
+                    "Pinned": true,
+                    "Timeout": 3
+                }
+            }]
+        },
+        "LoggerDefinitionVersion": {
+            "Loggers": [{
+                    "Component": "GreengrassSystem",
+                    "Level": "INFO",
+                    "Type": "AWSCloudWatch"
+                },
+                {
+                    "Component": "Lambda",
+                    "Level": "INFO",
+                    "Type": "AWSCloudWatch"
+                },
+                {
+                    "Component": "GreengrassSystem",
+                    "Level": "INFO",
+                    "Space": 300000,
+                    "Type": "FileSystem"
+                },
+                {
+                    "Component": "Lambda",
+                    "Level": "INFO",
+                    "Space": 300000,
+                    "Type": "FileSystem"
+                }
+            ]
+        },
+        "ResourceDefinitionVersion": {
+            "Resources": [{
+                "Id": "sense-hat-led",
+                "Name": "sense-hat-led",
+                "ResourceDataContainer": {
+                    "LocalDeviceResourceData": {
+                        "GroupOwnerSetting": {
+                            "AutoAddGroupOwner": true
+                        },
+                        "SourcePath": "/dev/fb1"
+                    }
+                }
+            }, {
+                "Id": "sense-hat-i2c",
+                "Name": "sense-hat-i2c",
+                "ResourceDataContainer": {
+                    "LocalDeviceResourceData": {
+                        "GroupOwnerSetting": {
+                            "AutoAddGroupOwner": true
+                        },
+                        "SourcePath": "/dev/i2c-1"
+                    }
+                }
+            }, {
+                "Id": "sense-hat-event0",
+                "Name": "sense-hat-event0",
+                "ResourceDataContainer": {
+                    "LocalDeviceResourceData": {
+                        "GroupOwnerSetting": {
+                            "AutoAddGroupOwner": true
+                        },
+                        "SourcePath": "/dev/input/event0"
+                    }
+                }
+            }]
+        }
+    }
+}
