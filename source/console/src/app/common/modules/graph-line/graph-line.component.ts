@@ -208,7 +208,8 @@ export class GraphLineComponent implements OnInit, OnChanges {
                     y: currentValue
                 });
                 this.chart.chart.update({
-                    preservation: true
+                    lazy: true
+                    // preservation: true // Temporary comment and change to fix deployment, need to investigate reason why.
                 });
             }
         }
