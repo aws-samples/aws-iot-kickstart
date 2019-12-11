@@ -9,9 +9,16 @@ fi
 
 set -e
 
+# We need it to make it work with GNU sed and MACOS sed
 function sed_file() {
-    echo "sed -i '' -e $1 $2"
-    sed -i '' -e $1 $2
+    if [ `uname` != "Darwin" ];
+    then
+      echo "sed -i -e $1 $2"
+      sed -i -e $1 $2
+    else
+      echo "sed -i '' -e $1 $2"
+      sed -i '' -e $1 $2
+    fi
 }
 
 echo "01-prepare-cf.sh--------------------------------------------------------------"
