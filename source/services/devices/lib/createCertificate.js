@@ -1,7 +1,6 @@
 const AWS = require('aws-sdk');
 const iot = new AWS.Iot();
 const documentClient = new AWS.DynamoDB.DocumentClient();
-const UsageMetrics = require('usage-metrics');
 const moment = require('moment');
 
 const lib = 'createCertificate';
@@ -12,7 +11,6 @@ const lib = 'createCertificate';
 // - .thingId: Device Thind Id
 
 module.exports = function(event, context) {
-    const usageMetrics = new UsageMetrics();
     const tag = `${lib}(${event.thingId}):`;
 
     console.log(tag, 'Start: Request cert creation from CSR:', event.csr);
