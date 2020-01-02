@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, OnDestroy, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 import * as ChartPluginAnnotation from 'chartjs-plugin-annotation';
 import * as ChartPluginDraggable from 'chartjs-plugin-draggable';
 import * as ChartPluginStreaming from 'chartjs-plugin-streaming';
@@ -33,37 +34,8 @@ import { BaseChartDirective, Color, Label } from 'ng2-charts';
     `
 })
 
-// template: `
-//         <div class="card card-outline-info">
-//             <div class="card-body">
-//                 <h5 class="card-title">{{ title }}</h5>
-//                 <h6 class="card-subtitle mb-2 text-muted">{{ value | number: '.2' }}{{ unit }}</h6>
-//                 <div class="card-text">
-//                     <canvas
-//                         baseChart
-//                         [datasets]="[
-//                             {
-//                                 data: data || [],
-//                                 label: title,
-//                                 yAxisID: 'y-axis-0',
-//                                 fill: false,
-//                                 borderColor: 'rgb(0, 0, 255)',
-//                                 backgroundColor: 'rgb(0, 0, 255)',
-//                                 borderWidth: 1
-//                             }
-//                         ]"
-//                         [options]="options"
-//                         [plugins]="chartPlugins"
-//                         [legend]="true"
-//                         [labels]="labels"
-//                         [chartType]="'line'"
-//                     ></canvas>
-//                 </div>
-//             </div>
-//         </div>
-//     `
-export class GraphLineComponent implements OnInit, OnChanges {
-    @Input() value: any;
+export class GraphLineComponent implements OnInit, OnDestroy {
+    @Input() value: Subject<any>;
     @Input() high: number;
     @Input() low: number;
     @Input() title: string;
@@ -84,31 +56,31 @@ export class GraphLineComponent implements OnInit, OnChanges {
     public chartPlugins = [ChartPluginAnnotation, ChartPluginDraggable, ChartPluginStreaming];
     public options: any;
 
-    private setYAxeMinMax(chart) {
-        let ticks = {};
-        if (this.low) {
-            ticks['min'] = this.value - Math.abs(this.low - this.value) * 2;
-        }
-        if (this.high) {
-            ticks['max'] = Math.abs(this.high - this.value) * 2 + this.value;
-        }
-
-        if (this.yMin) {
-            ticks['min'] = parseFloat(this.yMin);
-        }
-        if (this.yMax) {
-            ticks['max'] = parseFloat(this.yMax);
-        }
-
-        if (chart) {
-            chart.options.scales.yAxes[0].ticks = ticks;
-            chart.update();
-        } else {
-            this.options.scales.yAxes[0].ticks = ticks;
-        }
+    ngOnDestroy() {
+        // needed if child gets re-created (eg on some model changes)
+        // note that subsequent subscriptions on the same subject will fail
+        // so the parent has to re-create value on changes
+        this.value.unsubscribe();
     }
 
     ngOnInit() {
+
+        this.value.subscribe(val => {
+            // called when the notifyChildren method is
+            // called in the parent component
+            if (this.chart.chart && val !== undefined) {
+                console.log('Adding value to graph', val);
+                (this.chart.chart.data.datasets[0].data as ChartPoint[]).push({
+                    x: Date.now(),
+                    y: val
+                });
+                this.chart.chart.update({
+                    lazy: true
+                    // preservation: true // Temporary comment and change to fix deployment, need to investigate reason why.
+                });
+            }
+        });
+
         this.options = {
             elements: { point: { hitRadius: 2, hoverRadius: 2, radius: 0 } },
             tooltips: {
@@ -156,7 +128,7 @@ export class GraphLineComponent implements OnInit, OnChanges {
                     // console.log(e.subject.config.value);
                     this.low = e.subject.config.value;
                     this.updateThresholds();
-                    this.setYAxeMinMax(e.subject.chart);
+                    // this.setYAxeMinMax(e.subject.chart);
                 }
             });
         }
@@ -179,7 +151,7 @@ export class GraphLineComponent implements OnInit, OnChanges {
                     // console.log(e.subject.config.value);
                     this.high = e.subject.config.value;
                     this.updateThresholds();
-                    this.setYAxeMinMax(e.subject.chart);
+                    // this.setYAxeMinMax(e.subject.chart);
                 }
             });
         }
@@ -196,24 +168,32 @@ export class GraphLineComponent implements OnInit, OnChanges {
             this.options.annotation.annotations.push(...this.annotations);
         }
 
-        this.setYAxeMinMax(null);
+        // this.setYAxeMinMax(null);
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (this.type === 'realtime') {
-            const currentValue = changes.value.currentValue;
-            if (this.chart.chart) {
-                (this.chart.chart.data.datasets[0].data as ChartPoint[]).push({
-                    x: Date.now(),
-                    y: currentValue
-                });
-                this.chart.chart.update({
-                    lazy: true
-                    // preservation: true // Temporary comment and change to fix deployment, need to investigate reason why.
-                });
-            }
-        }
-    }
+    // private setYAxeMinMax(chart) {
+    //     let ticks = {};
+    //     if (this.low) {
+    //         ticks['min'] = this.value - Math.abs(this.low - this.value) * 2;
+    //     }
+    //     if (this.high) {
+    //         ticks['max'] = Math.abs(this.high - this.value) * 2 + this.value;
+    //     }
+
+    //     if (this.yMin) {
+    //         ticks['min'] = parseFloat(this.yMin);
+    //     }
+    //     if (this.yMax) {
+    //         ticks['max'] = parseFloat(this.yMax);
+    //     }
+
+    //     if (chart) {
+    //         chart.options.scales.yAxes[0].ticks = ticks;
+    //         chart.update();
+    //     } else {
+    //         this.options.scales.yAxes[0].ticks = ticks;
+    //     }
+    // }
 
     protected updateThresholds() {
         this.thresholdChanged.emit({

@@ -9,7 +9,14 @@ export class WidgetComponent implements OnInit {
     @Input() parent: any;
     @Input() data: any;
 
-    public value;
+    // Get Setter so that can be overriden by custom widget (see. graph-realtime-widget)
+    protected _value;
+    set value(val: any) {
+        this._value = val;
+    }
+    get value() {
+        return this._value;
+    }
 
     ngOnInit() {
         // If our widget has a dynamic input. Check for the "input" field in the spec
