@@ -371,6 +371,16 @@ For example, this spec will populate a checkbox item. The input, initialized by 
 
 The ouptput of the widget, will be pushed to the $aws/things/[THING_NAME]/shadow/update topic, on the state.desired.sendTelemetry field.
 
+You can specify custom true/false values by adding the following 2 attributes to the "data":
+```
+        "data": {
+            ...
+            "toggleTrue": YOUR TRUE VALUE (Could be true, 1, 'true', 'True', 'On' etc ...)
+            "toggleFalse': YOUR FALSE VALUE (Could be false, 0, 'false', 'False', 'Off' etc ...)
+            ...
+        }
+```
+
 ### Color Picker
 ```
 Example: rpi3-sense-hat-demo-v1.0

@@ -18,34 +18,20 @@ export class IoTSubscription {
     onError: (data: any) => void;
 }
 
-export interface IoTPubSuber {
-    device: Device;
-
-    desired: any;
-    reported: any;
-    delta: any;
-
-    updateDesiredShadow(thingName: string, desiredState: any): Promise<void>;
-}
-
-
 @Component({
     selector: 'app-root-iot-pubsuber',
     template: ''
 })
-export class IoTPubSuberComponent implements OnDestroy, IoTPubSuber {
+export class IoTPubSuberComponent implements OnDestroy {
     private _subscriptions: Subscription = new Subscription();
     private _iotSubscriptions: IoTSubscription[];
 
     @Input() device: Device = new Device();
 
-    public desired: any = {};
-    public reported: any = {};
-    public delta: any = {};
-    public shadow: any = {};
-
     private subscriptionsSubject: any = new Subject<boolean>();
     public subscriptionsObservable$ = this.subscriptionsSubject.asObservable();
+
+    protected shadow: any = {};
 
     constructor(private _iotService: IoTService) {}
 
@@ -74,52 +60,5 @@ export class IoTPubSuberComponent implements OnDestroy, IoTPubSuber {
             console.log('Not connected to AWS IoT: Cant subscribe');
         }
     }
-    protected updateIncomingShadow(incoming, shadowField = null) {
 
-        _.deepExtend(this.shadow, incoming);
-
-        if (incoming.hasOwnProperty('state') && incoming.state.hasOwnProperty('reported')) {
-            if (shadowField !== null && incoming.state.reported.hasOwnProperty(shadowField)) {
-                _.deepExtend(this.reported, incoming.state.reported[shadowField]);
-            } else {
-                _.deepExtend(this.reported, incoming.state.reported);
-            }
-        }
-        if (incoming.hasOwnProperty('state') && incoming.state.hasOwnProperty('desired')) {
-            if (shadowField !== null && incoming.state.desired.hasOwnProperty(shadowField)) {
-                _.deepExtend(this.desired, incoming.state.desired[shadowField]);
-            } else {
-                _.deepExtend(this.desired, incoming.state.desired);
-            }
-        }
-        if (incoming.hasOwnProperty('state') && incoming.state.hasOwnProperty('delta')) {
-            this.delta = incoming.state.delta;
-        }
-    }
-
-    protected getLastState(thingName, shadowField = null) {
-        return this._iotService
-            .getThingShadow({
-                thingName: thingName
-            })
-            .then(result => {
-                this.updateIncomingShadow(result, shadowField);
-                return result;
-            })
-            .catch(err => {
-                console.error(err);
-                throw err;
-            });
-    }
-
-    updateDesiredShadow(thingName, desiredState) {
-        return this._iotService.updateThingShadow({
-            thingName: thingName,
-            payload: JSON.stringify({
-                state: {
-                    desired: desiredState
-                }
-            })
-        });
-    }
 }

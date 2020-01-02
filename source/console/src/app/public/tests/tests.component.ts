@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
 // import { }
-import { IoTPubSuberComponent, IoTPubSuber } from '@secure/common/iot-pubsuber.component';
+import { IoTPubSuberComponent } from '@secure/common/iot-pubsuber.component';
 import { IoTService } from '@services/iot.service';
 import { Device } from '@models/device.model';
 
@@ -16,18 +17,110 @@ export class TestsComponent extends IoTPubSuberComponent implements OnInit {
     public self: any;
     public widgets: any;
 
+    private widgetSubscriptionSubjects: any = {};
+    public widgetSubscriptionObservable$: any = {};
+
     public desired = {
         led: ['#FF0000', '#00FF00', '#0000FF', '#F0F0F0', '#0F0F0F']
     };
 
     constructor(private iotService: IoTService) {
         super(iotService);
+        this.iotService.publish = function(topic: string, payload: any) {
+            console.log('Test publish', topic, payload);
+            return Promise.resolve([]);
+        };
     }
 
     ngOnInit() {
         this.self = this;
-        // this.subscriptions =
+
+        function defaultErrorCallback(err) {
+            console.error('Error:', err);
+        }
+
+        const subs = {
+            'test': 'topicname',
+            'shadow': 'topicname'
+        };
+
+        for (let ref in subs) {
+            if (subs.hasOwnProperty(ref)) {
+                const topic = subs[ref];
+                // console.log('Subscription:', ref, topic);
+                this.widgetSubscriptionSubjects[ref] = new Subject<any>();
+                this.widgetSubscriptionObservable$[ref] = this.widgetSubscriptionSubjects[
+                    ref
+                ].asObservable();
+            }
+        }
+
+        setInterval(() => {
+            this.widgetSubscriptionSubjects['test'].next({
+                temperature: Math.random()
+            });
+        }, 1000);
+
+        setTimeout(() => {
+            this.widgetSubscriptionSubjects['shadow'].next({
+                toggle: '1'
+            });
+        }, 1000);
+
         this.widgets = [
+            {
+                data: {
+                    title: [
+                        {
+                            data: {
+                                value: 'Hello'
+                            },
+                            type: 'text',
+                            class: 'col-12'
+                        }
+                    ],
+                    text: [
+                        {
+                            "data": {
+                                "input": [
+                                    "test"
+                                ],
+                                "unit": " C",
+                                "value": "temperature"
+                            },
+                            "type": "text",
+                            "class": "col-12"
+                        },
+                        {
+                            "data": {
+                                "value": "Toggle:"
+                            },
+                            "type": "text",
+                            "class": "col-6"
+                        },
+                        {
+                            "data": {
+                                "output": "$aws/things/[THING_NAME]/shadow/update",
+                                "input": [
+                                    "shadow"
+                                ],
+                                "initWithShadow": true,
+                                "toggleTrue": '1',
+                                "toggleFalse": '0',
+                                "value": {
+                                    "output": "state.desired.toggle",
+                                    "input": "toggle"
+                                }
+                            },
+                            "type": "checkbox",
+                            "class": "col-6 pull-right"
+                        }
+                    ]
+                },
+                type: 'card',
+                class: 'col-lg-12',
+                id: 'widget1'
+            },
             {
                 data: {
                     text: [
@@ -125,7 +218,8 @@ export class TestsComponent extends IoTPubSuberComponent implements OnInit {
                     ]
                 },
                 type: 'card',
-                class: 'col-lg-4 col-sm-12'
+                class: 'col-lg-4 col-sm-12',
+                id: 'widget2'
             },
             {
                 data: {
@@ -151,7 +245,8 @@ export class TestsComponent extends IoTPubSuberComponent implements OnInit {
                     ]
                 },
                 type: 'card',
-                class: 'col-lg-8 col-sm-12'
+                class: 'col-lg-8 col-sm-12',
+                id: 'widget3'
             }
         ];
     }
