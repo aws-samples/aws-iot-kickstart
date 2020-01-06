@@ -1,9 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-    template: `
-        <div *ngIf="data">{{ value }}{{ data.unit }}</div>
-    `
+    template: ''
 })
 export class WidgetComponent implements OnInit {
     @Input() parent: any;

@@ -22,8 +22,8 @@ echo " - waves.js"
 cp node_modules/node-waves/dist/waves.min.js src/assets/ui-js/waves.min.js
 echo " - sticky-kit.js"
 cp node_modules/sticky-kit/dist/sticky-kit.min.js src/assets/ui-js/sticky-kit.min.js
-echo " - gauge.js"
-cp node_modules/gauge.js/dist/gauge.min.js src/assets/ui-js/gauge.min.js
+echo " - gaugejs"
+cp node_modules/gaugejs/dist/gauge.min.js src/assets/ui-js/gauge.min.js
 echo " - chart.js"
 cp node_modules/chart.js/dist/Chart.min.js src/assets/ui-js/Chart.min.js
 echo " - chartjs-plugin-annotation.js"

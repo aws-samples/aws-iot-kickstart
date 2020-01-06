@@ -6,12 +6,44 @@ import { IoTPubSuberComponent } from '@secure/common/iot-pubsuber.component';
 import { IoTService } from '@services/iot.service';
 import { Device } from '@models/device.model';
 
+
+        // <app-widgets [widgets]="widgets" [parent]="self" style="color: black;"></app-widgets>
+        // <div class="row">
+        //     <div class="col-12 text-center">
+        //         Yo
+        //     </div>
+        //     <div class="col-12 text-center">
+        //         <app-gauge id="speed" minValue="0" maxValue="30" [value]="temperature" animationSpeed="45"></app-gauge>
+        //     </div>
+        // </div>
+
 @Component({
     selector: 'app-tests',
     template: `
+        <div class="row">
+            <div class="col-3 text-center">
+                <app-gauge minValue=0 maxValue=31 [value]="temperature" animationSpeed=45></app-gauge>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3 text-center">
+                <app-card>
+                    <card-title #title>Test</card-title>
+                    <card-text #text>
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <app-gauge minValue=0 maxValue=30 [value]="temperature" animationSpeed=45></app-gauge>
+                            </div>
+                        </div>
+                    </card-text>
+                </app-card>
+            </div>
+        </div>
         <app-widgets [widgets]="widgets" [parent]="self" style="color: black;"></app-widgets>
     `
 })
+
+// <app-widgets [widgets]="widgets" [parent]="self" style="color: black;"></app-widgets>
 export class TestsComponent extends IoTPubSuberComponent implements OnInit {
     public title = 'Tests';
     public self: any;
@@ -23,6 +55,8 @@ export class TestsComponent extends IoTPubSuberComponent implements OnInit {
     public desired = {
         led: ['#FF0000', '#00FF00', '#0000FF', '#F0F0F0', '#0F0F0F']
     };
+
+    public temperature = 0;
 
     constructor(private iotService: IoTService) {
         super(iotService);
@@ -56,8 +90,9 @@ export class TestsComponent extends IoTPubSuberComponent implements OnInit {
         }
 
         setInterval(() => {
+            this.temperature = Math.random();
             this.widgetSubscriptionSubjects['test'].next({
-                temperature: Math.random()
+                temperature: this.temperature
             });
         }, 1000);
 
@@ -69,185 +104,232 @@ export class TestsComponent extends IoTPubSuberComponent implements OnInit {
 
         this.widgets = [
             {
-                data: {
-                    title: [
-                        {
-                            data: {
-                                value: 'Hello'
-                            },
-                            type: 'text',
-                            class: 'col-12'
-                        }
+                "data": {
+                    "input": [
+                        "test"
                     ],
-                    text: [
+                    "minValue": 0,
+                    "initWithShadow": true,
+                    "maxValue": 50,
+                    "value": {
+                        "input": "temperature"
+                    }
+                },
+                "type": "gauge",
+                "class": "col-3 text-center"
+            },
+            {
+                "data": {
+                    "text": [
                         {
                             "data": {
                                 "input": [
                                     "test"
                                 ],
-                                "unit": " C",
-                                "value": "temperature"
-                            },
-                            "type": "text",
-                            "class": "col-12"
-                        },
-                        {
-                            "data": {
-                                "value": "Toggle:"
-                            },
-                            "type": "text",
-                            "class": "col-6"
-                        },
-                        {
-                            "data": {
-                                "output": "$aws/things/[THING_NAME]/shadow/update",
-                                "input": [
-                                    "shadow"
-                                ],
+                                "minValue": 0,
                                 "initWithShadow": true,
-                                "toggleTrue": '1',
-                                "toggleFalse": '0',
+                                "maxValue": 50,
                                 "value": {
-                                    "output": "state.desired.toggle",
-                                    "input": "toggle"
+                                    "input": "temperature"
                                 }
                             },
-                            "type": "checkbox",
-                            "class": "col-6 pull-right"
-                        }
-                    ]
-                },
-                type: 'card',
-                class: 'col-lg-12',
-                id: 'widget1'
-            },
-            {
-                data: {
-                    text: [
-                        {
-                            data: {
-                                value: 'LEDs'
-                            },
-                            type: 'text',
-                            class: 'col-12'
-                        },
-                        {
-                            data: {
-                                value: 'LED 0'
-                            },
-                            type: 'text',
-                            class: 'col-3'
-                        },
-                        {
-                            data: {
-                                type: 'shadow',
-                                value: 'desired.led[0]'
-                            },
-                            type: 'color-picker',
-                            class: 'col-9'
-                        },
-                        {
-                            data: {
-                                value: 'LED 1'
-                            },
-                            type: 'text',
-                            class: 'col-3'
-                        },
-                        {
-                            data: {
-                                type: 'shadow',
-                                value: 'desired.led[1]'
-                            },
-                            type: 'color-picker',
-                            class: 'col-9'
-                        },
-                        {
-                            data: {
-                                value: 'LED 2'
-                            },
-                            type: 'text',
-                            class: 'col-3'
-                        },
-                        {
-                            data: {
-                                type: 'shadow',
-                                value: 'desired.led[2]'
-                            },
-                            type: 'color-picker',
-                            class: 'col-9'
-                        },
-                        {
-                            data: {
-                                value: 'LED 3'
-                            },
-                            type: 'text',
-                            class: 'col-3'
-                        },
-                        {
-                            data: {
-                                type: 'shadow',
-                                value: 'desired.led[3]'
-                            },
-                            type: 'color-picker',
-                            class: 'col-9'
-                        },
-                        {
-                            data: {
-                                value: 'LED 4'
-                            },
-                            type: 'text',
-                            class: 'col-3'
-                        },
-                        {
-                            data: {
-                                type: 'shadow',
-                                value: 'desired.led[4]'
-                            },
-                            type: 'color-picker',
-                            class: 'col-9'
+                            "type": "gauge",
+                            "class": "col-12 text-center"
                         }
                     ],
-                    title: [
+                    "title": [
                         {
-                            data: {
-                                value: 'Peripherals 1'
+                            "data": {
+                                "value": "Temperature"
                             },
-                            type: 'text',
-                            class: 'col-12'
+                            "type": "text",
+                            "class": "col-12 text-center"
                         }
                     ]
                 },
-                type: 'card',
-                class: 'col-lg-4 col-sm-12',
-                id: 'widget2'
+                "type": "card",
+                "class": "col-lg-3 col-sm-12"
             },
-            {
-                data: {
-                    text: [
-                        {
-                            data: {
-                                type: 'subscription',
-                                subscription: 'sub0',
-                                value: 'sensors.magnitude'
-                            },
-                            type: 'graph-realtime',
-                            class: 'col-12'
-                        }
-                    ],
-                    title: [
-                        {
-                            data: {
-                                value: 'Peripherals 2'
-                            },
-                            type: 'text',
-                            class: 'col-12'
-                        }
-                    ]
-                },
-                type: 'card',
-                class: 'col-lg-8 col-sm-12',
-                id: 'widget3'
-            }
+            // {
+            //     data: {
+            //         title: [
+            //             {
+            //                 data: {
+            //                     value: 'Hello'
+            //                 },
+            //                 type: 'text',
+            //                 class: 'col-12'
+            //             }
+            //         ],
+            //         text: [
+            //             {
+            //                 "data": {
+            //                     "input": [
+            //                         "test"
+            //                     ],
+            //                     "unit": " C",
+            //                     "value": "temperature"
+            //                 },
+            //                 "type": "text",
+            //                 "class": "col-12"
+            //             },
+            //             {
+            //                 "data": {
+            //                     "value": "Toggle:"
+            //                 },
+            //                 "type": "text",
+            //                 "class": "col-6"
+            //             },
+            //             {
+            //                 "data": {
+            //                     "output": "$aws/things/[THING_NAME]/shadow/update",
+            //                     "input": [
+            //                         "shadow"
+            //                     ],
+            //                     "initWithShadow": true,
+            //                     "toggleTrue": '1',
+            //                     "toggleFalse": '0',
+            //                     "value": {
+            //                         "output": "state.desired.toggle",
+            //                         "input": "toggle"
+            //                     }
+            //                 },
+            //                 "type": "checkbox",
+            //                 "class": "col-6 pull-right"
+            //             }
+            //         ]
+            //     },
+            //     type: 'card',
+            //     class: 'col-lg-12',
+            //     id: 'widget1'
+            // },
+            // {
+            //     data: {
+            //         text: [
+            //             {
+            //                 data: {
+            //                     value: 'LEDs'
+            //                 },
+            //                 type: 'text',
+            //                 class: 'col-12'
+            //             },
+            //             {
+            //                 data: {
+            //                     value: 'LED 0'
+            //                 },
+            //                 type: 'text',
+            //                 class: 'col-3'
+            //             },
+            //             {
+            //                 data: {
+            //                     type: 'shadow',
+            //                     value: 'desired.led[0]'
+            //                 },
+            //                 type: 'color-picker',
+            //                 class: 'col-9'
+            //             },
+            //             {
+            //                 data: {
+            //                     value: 'LED 1'
+            //                 },
+            //                 type: 'text',
+            //                 class: 'col-3'
+            //             },
+            //             {
+            //                 data: {
+            //                     type: 'shadow',
+            //                     value: 'desired.led[1]'
+            //                 },
+            //                 type: 'color-picker',
+            //                 class: 'col-9'
+            //             },
+            //             {
+            //                 data: {
+            //                     value: 'LED 2'
+            //                 },
+            //                 type: 'text',
+            //                 class: 'col-3'
+            //             },
+            //             {
+            //                 data: {
+            //                     type: 'shadow',
+            //                     value: 'desired.led[2]'
+            //                 },
+            //                 type: 'color-picker',
+            //                 class: 'col-9'
+            //             },
+            //             {
+            //                 data: {
+            //                     value: 'LED 3'
+            //                 },
+            //                 type: 'text',
+            //                 class: 'col-3'
+            //             },
+            //             {
+            //                 data: {
+            //                     type: 'shadow',
+            //                     value: 'desired.led[3]'
+            //                 },
+            //                 type: 'color-picker',
+            //                 class: 'col-9'
+            //             },
+            //             {
+            //                 data: {
+            //                     value: 'LED 4'
+            //                 },
+            //                 type: 'text',
+            //                 class: 'col-3'
+            //             },
+            //             {
+            //                 data: {
+            //                     type: 'shadow',
+            //                     value: 'desired.led[4]'
+            //                 },
+            //                 type: 'color-picker',
+            //                 class: 'col-9'
+            //             }
+            //         ],
+            //         title: [
+            //             {
+            //                 data: {
+            //                     value: 'Peripherals 1'
+            //                 },
+            //                 type: 'text',
+            //                 class: 'col-12'
+            //             }
+            //         ]
+            //     },
+            //     type: 'card',
+            //     class: 'col-lg-4 col-sm-12',
+            //     id: 'widget2'
+            // },
+            // {
+            //     data: {
+            //         text: [
+            //             {
+            //                 data: {
+            //                     type: 'subscription',
+            //                     subscription: 'sub0',
+            //                     value: 'sensors.magnitude'
+            //                 },
+            //                 type: 'graph-realtime',
+            //                 class: 'col-12'
+            //             }
+            //         ],
+            //         title: [
+            //             {
+            //                 data: {
+            //                     value: 'Peripherals 2'
+            //                 },
+            //                 type: 'text',
+            //                 class: 'col-12'
+            //             }
+            //         ]
+            //     },
+            //     type: 'card',
+            //     class: 'col-lg-8 col-sm-12',
+            //     id: 'widget3'
+            // }
         ];
     }
 }

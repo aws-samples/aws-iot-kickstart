@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { WidgetComponent } from './widget.component';
-import { Subject } from 'rxjs';
 
 @Component({
     template: `

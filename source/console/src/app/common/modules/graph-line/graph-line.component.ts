@@ -69,7 +69,6 @@ export class GraphLineComponent implements OnInit, OnDestroy {
             // called when the notifyChildren method is
             // called in the parent component
             if (this.chart.chart && val !== undefined) {
-                console.log('Adding value to graph', val);
                 (this.chart.chart.data.datasets[0].data as ChartPoint[]).push({
                     x: Date.now(),
                     y: val

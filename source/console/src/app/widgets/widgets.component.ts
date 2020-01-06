@@ -12,16 +12,18 @@ import {
 import { ButtonWidgetComponent } from './button-widget.component';
 import { CardWidgetComponent } from './card-widget.component';
 import { CheckboxWidgetComponent } from './checkbox-widget.component';
+import { ColorPickerWidgetComponent } from './color-picker-widget.component';
+import { GaugeWidgetComponent } from './gauge-widget.component';
+import { GraphRealtimeWidgetComponent } from './graph-realtime-widget.component';
 import { InputTextWidgetComponent } from './input-text-widget.component';
 import { TextWidgetComponent } from './text-widget.component';
-import { GraphRealtimeWidgetComponent } from './graph-realtime-widget.component';
-import { ColorPickerWidgetComponent } from './color-picker-widget.component';
 
 const widgetComponentTypes = {
     'button': ButtonWidgetComponent,
     'card': CardWidgetComponent,
     'checkbox': CheckboxWidgetComponent,
     'color-picker': ColorPickerWidgetComponent,
+    'gauge': GaugeWidgetComponent,
     'graph-realtime': GraphRealtimeWidgetComponent,
     'input-text': InputTextWidgetComponent,
     'text': TextWidgetComponent
