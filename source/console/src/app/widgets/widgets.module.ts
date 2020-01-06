@@ -15,6 +15,7 @@ import { CardWidgetComponent } from './card-widget.component';
 import { CheckboxWidgetComponent } from './checkbox-widget.component';
 import { ColorPickerWidgetComponent } from './color-picker-widget.component';
 import { GraphRealtimeWidgetComponent } from './graph-realtime-widget.component';
+import { GaugeWidgetComponent } from './gauge-widget.component';
 import { InputTextWidgetComponent } from './input-text-widget.component';
 import { TextWidgetComponent } from './text-widget.component';
 
@@ -30,6 +31,7 @@ import { PipesModule } from '../pipes/pipes.module';
         CheckboxWidgetComponent,
         ColorPickerWidgetComponent,
         GraphRealtimeWidgetComponent,
+        GaugeWidgetComponent,
         InputTextWidgetComponent,
         TextWidgetComponent
     ],
@@ -39,11 +41,12 @@ import { PipesModule } from '../pipes/pipes.module';
         CheckboxWidgetComponent,
         ColorPickerWidgetComponent,
         GraphRealtimeWidgetComponent,
+        GaugeWidgetComponent,
         InputTextWidgetComponent,
         TextWidgetComponent
     ],
     exports: [WidgetsComponent],
-    imports: [PipesModule, CommonModule, FormsModule, CardModule, ColorPickerModule, GaugeModule, GraphLineModule],
+    imports: [PipesModule, CommonModule, FormsModule, CardModule, ColorPickerModule, GaugeModule, GaugeModule, GraphLineModule],
     // providers: [WidgetsService],
     providers: [],
     schemas: [NO_ERRORS_SCHEMA]

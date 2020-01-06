@@ -371,6 +371,16 @@ For example, this spec will populate a checkbox item. The input, initialized by 
 
 The ouptput of the widget, will be pushed to the $aws/things/[THING_NAME]/shadow/update topic, on the state.desired.sendTelemetry field.
 
+You can specify custom true/false values by adding the following 2 attributes to the "data":
+```
+        "data": {
+            ...
+            "toggleTrue": YOUR TRUE VALUE (Could be true, 1, 'true', 'True', 'On' etc ...)
+            "toggleFalse': YOUR FALSE VALUE (Could be false, 0, 'false', 'False', 'Off' etc ...)
+            ...
+        }
+```
+
 ### Color Picker
 ```
 Example: rpi3-sense-hat-demo-v1.0
@@ -396,6 +406,27 @@ Example: rpi3-sense-hat-demo-v1.0
 For example, this spec will populate a color picker item. The input, initialized by a Shadow document, will come from the state.reported.screen field from the 2 topics shadowGetAccepted and shadowUpdateAccepted (defined by the subscription part of the spec).
 
 The output of the widget will be published to the sputnik/[THING_NAME]/screen topic, on the screen field.
+
+### Gauge
+```
+...
+	{
+        "data": {
+            "input": [
+                "shadowUpdateAccepted",
+                "shadowGetAccepted"
+            ],
+            "minValue": 0,
+            "initWithShadow": true,
+            "maxValue": 50,
+            "value": "state.reported.temperature"
+        },
+        "type": "gauge",
+        "class": "col-12"
+    }
+...
+```
+For example, this spec will populate a gauge item. The input, initialized by a Shadow document, will come from the state.reported.temperature field from the 2 topics shadowGetAccepted and shadowUpdateAccepted (defined by the subscription part of the spec).
 
 ### RealTime Graph
 ```
