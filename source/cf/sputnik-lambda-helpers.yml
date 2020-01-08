@@ -150,7 +150,7 @@ Resources:
                 S3Bucket: !Ref sourceBucket
                 S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-custom-resource-helper-s3.zip']]
             Handler: index.handler
-            Runtime: nodejs8.10
+            Runtime: nodejs10.x
             Role: !GetAtt customResourcesIAMRole.Arn
             Timeout: 300
             MemorySize: 256
@@ -164,7 +164,7 @@ Resources:
                 S3Bucket: !Ref sourceBucket
                 S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-custom-resource-helper-utils.zip']]
             Handler: index.handler
-            Runtime: nodejs8.10
+            Runtime: nodejs10.x
             Role: !GetAtt customResourcesIAMRole.Arn
             Timeout: 300
             MemorySize: 256
