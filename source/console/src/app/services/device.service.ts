@@ -138,6 +138,22 @@ export class DeviceService implements AddedDevice, UpdatedDevice, DeletedDevice 
                         }
                     })
                 );
+
+                const escaptedCert = cert.certificatePem.replace(/\r/ig, '').replace(/\n/ig, '\\n"\\\n"');
+                const escaptedPrivateKey = cert.privateKey.replace(/\r/ig, '').replace(/\n/ig, '\\n"\\\n"');
+
+                zip.folder(thingName).file('aws_clientcredential_keys.h',
+`
+#ifndef AWS_CLIENT_CREDENTIAL_KEYS_H
+#define AWS_CLIENT_CREDENTIAL_KEYS_H
+#define keyCLIENT_CERTIFICATE_PEM \\
+"${escaptedCert}"
+#define keyJITR_DEVICE_CERTIFICATE_AUTHORITY_PEM  NULL
+#define keyCLIENT_PRIVATE_KEY_PEM \\
+"${escaptedPrivateKey}"
+#endif /* AWS_CLIENT_CREDENTIAL_KEYS_H */
+`
+                );
             });
 
             zip.generateAsync({
@@ -157,7 +173,7 @@ export class DeviceService implements AddedDevice, UpdatedDevice, DeletedDevice 
         return new Promise((resolve, reject) => {
             forge.pki.rsa.generateKeyPair(
                 {
-                    bits: 4096,
+                    bits: 2048,
                     workers: 2
                 },
                 (err, keypair) => {
