@@ -55,10 +55,15 @@ export class MapsComponent implements OnInit {
                     _self.invalidMapboxToken = false;
 
                     const set = function() {
-                        $('#map').css('height', $('.page-wrapper')[0].offsetHeight + 'px');
+                        console.log("window:", $(window).height());
+                        console.log("header:", $('header').height());
+                        $('#map').css('height',  $(window).height() - $('header').height() + 'px');
+                        // $('#map').css('height', $('.page-wrapper')[0].offsetHeight + 'px');
+                        console.log($(window).height() - $('header').height() + 'px');
                     };
                     $(window).ready(set);
                     $(window).on('resize', set);
+                    set();
 
                     _self.createMap();
                 })

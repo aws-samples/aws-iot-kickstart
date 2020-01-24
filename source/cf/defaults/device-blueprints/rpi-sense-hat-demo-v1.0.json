@@ -1,8 +1,8 @@
 {
-    "id": "rpi3-sense-hat-demo-v1.0",
-    "name": "Raspberry Pi 3 Sense Hat Demo v1.0",
+    "id": "rpi-sense-hat-demo-v1.0",
+    "name": "Raspberry Pi Sense Hat Demo v1.0",
     "type": "GREENGRASS",
-    "compatibility": ["rpi3-sense-hat-v1.0", "rpi3-sense-hat-camera-v1.0"],
+    "compatibility": ["rpi-sense-hat-v1.0", "rpi-sense-hat-picamera-v1.0"],
     "deviceTypeMappings": [],
     "spec": {
         "Shadow": {
@@ -77,7 +77,7 @@
                                     "input": [
                                         "telemetry"
                                     ],
-                                    "unit": "°C",
+                                    "unit": " C",
                                     "value": "temperature"
                                 },
                                 "type": "text",

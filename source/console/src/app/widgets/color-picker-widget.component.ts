@@ -16,7 +16,9 @@ import { WidgetComponent } from './widget.component';
         />
     `
 })
+
 export class ColorPickerWidgetComponent extends WidgetComponent {
+
     private rgbToHex(rgb) {
         let hex = Number(rgb).toString(16);
         if (hex.length < 2) {
@@ -24,6 +26,7 @@ export class ColorPickerWidgetComponent extends WidgetComponent {
         }
         return hex;
     }
+
     private fullColorHex(rgb) {
         return '#' + this.rgbToHex(rgb.r) + this.rgbToHex(rgb.g) + this.rgbToHex(rgb.b);
     }
@@ -48,37 +51,4 @@ export class ColorPickerWidgetComponent extends WidgetComponent {
         this.setValue(this.value);
     }
 
-    // // get value() {
-    // //     if (this.data.type === 'shadow') {
-    // //         return this.parent.getValueByString(this.data.value);
-    // //         // this.value = this.widgetsService.getObjectValueByString(this.parent, this.data.value);
-    // //     } else {
-    // //         return this.data.value;
-    // //     }
-    // // }
-
-    // ngOnInit() {
-    //         if (this.data.type === 'shadow') {
-    //             this.value = this.parent.getValueByString(this.data.value);
-    //             // this.value = this.widgetsService.getObjectValueByString(this.parent, this.data.value);
-    //         } else {
-    //             this.value = this.data.value;
-    //         }
-    //     // if (this.data.type === 'dynamic') {
-    //     //     console.log(this.data.value, this.parent);
-    //     //     this.value = this.parent.getValueByString(this.data.value);
-    //     //     // this.value = this.widgetsService.getObjectValueByString(this.parent, this.data.value);
-    //     // } else {
-    //     //     this.value = this.data.value;
-    //     // }
-    // }
-
-    // public updateValue() {
-    //     //     if (this.data.type === 'shadow') {
-    //     //         this.parent.setValueByString(this.data.value, this.value);
-    //     //         this.parent.updateDesiredShadow(this.parent.device.thingName, this.parent.desired);
-    //     //     } else {
-    //     //         return;
-    //     //     }
-    // }
 }

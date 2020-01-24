@@ -1,67 +1,49 @@
 {
-    "id": "ml-demo-squeezenet-v1.0",
-    "name": "Greengrass ML Inference demo with Squeezenet Model v1.0",
+    "id": "rpi-ml-demo-squeezenet-v1.0",
+    "name": "Raspberry Pi Greengrass ML Inference demo with Squeezenet Model v1.0",
     "type": "GREENGRASS",
-    "compatibility": ["deeplens-aws-v1.0", "deeplens-sputnik-v1.0", "intel-up2-webcam-v1.0", "rpi3-webcam-v1.0", "rpi3-picamera-v1.0", "rpi3-sense-hat-picamera-v1.0"],
+    "compatibility": ["rpi-webcam-v1.0", "rpi-picamera-v1.0", "rpi-sense-hat-picamera-v1.0"],
     "deviceTypeMappings": [{
         "substitute": "CAM_STREAM_ID_1",
         "value": {
-            "deeplens-sputnik-v1.0": "stream",
-            "deeplens-aws-v1.0": "stream",
-            "intel-up2-webcam-v1.0": "video0",
-            "rpi3-webcam-v1.0": "video0",
-            "rpi3-picamera-v1.0": "picamera-vcsm",
-            "rpi3-sense-hat-picamera-v1.0": "picamera-vcsm"
+            "rpi-webcam-v1.0": "video0",
+            "rpi-picamera-v1.0": "picamera-vcsm",
+            "rpi-sense-hat-picamera-v1.0": "picamera-vcsm"
         }
     }, {
         "substitute": "CAM_STREAM_ID_2",
         "value": {
-            "deeplens-sputnik-v1.0": "null",
-            "deeplens-aws-v1.0": "null",
-            "intel-up2-webcam-v1.0": "null",
-            "rpi3-webcam-v1.0": "null",
-            "rpi3-picamera-v1.0": "picamera-vchiq",
-            "rpi3-sense-hat-picamera-v1.0": "picamera-vchiq"
+            "rpi-webcam-v1.0": "null",
+            "rpi-picamera-v1.0": "picamera-vchiq",
+            "rpi-sense-hat-picamera-v1.0": "picamera-vchiq"
         }
     }, {
         "substitute": "CAM_STREAM_PERMISSIONS",
         "value": {
-            "deeplens-sputnik-v1.0": "ro",
-            "deeplens-aws-v1.0": "ro",
-            "intel-up2-webcam-v1.0": "rw",
-            "rpi3-webcam-v1.0": "rw",
-            "rpi3-picamera-v1.0": "rw",
-            "rpi3-sense-hat-picamera-v1.0": "rw"
+            "rpi-webcam-v1.0": "rw",
+            "rpi-picamera-v1.0": "rw",
+            "rpi-sense-hat-picamera-v1.0": "rw"
         }
     }, {
         "substitute": "CAMERA_TYPE",
         "value": {
-            "deeplens-sputnik-v1.0": "awscam",
-            "deeplens-aws-v1.0": "awscam",
-            "intel-up2-webcam-v1.0": "video0",
-            "rpi3-webcam-v1.0": "video0",
-            "rpi3-picamera-v1.0": "picamera",
-            "rpi3-sense-hat-picamera-v1.0": "picamera"
+            "rpi-webcam-v1.0": "video0",
+            "rpi-picamera-v1.0": "picamera",
+            "rpi-sense-hat-picamera-v1.0": "picamera"
         }
     }, {
         "substitute": "ML_MODEL_TYPE",
         "value": {
-            "deeplens-sputnik-v1.0": "optimized",
-            "deeplens-aws-v1.0": "optimized",
-            "intel-up2-webcam-v1.0": "non_optimized",
-            "rpi3-webcam-v1.0": "non_optimized",
-            "rpi3-picamera-v1.0": "non_optimized",
-            "rpi3-sense-hat-picamera-v1.0": "non_optimized"
+            "rpi-webcam-v1.0": "non_optimized",
+            "rpi-picamera-v1.0": "non_optimized",
+            "rpi-sense-hat-picamera-v1.0": "non_optimized"
         }
     }, {
         "substitute": "MEMORY",
         "value": {
-            "deeplens-sputnik-v1.0": 1572864,
-            "deeplens-aws-v1.0": 1572864,
-            "intel-up2-webcam-v1.0": 1572864,
-            "rpi3-webcam-v1.0": 98304,
-            "rpi3-picamera-v1.0": 98304,
-            "rpi3-sense-hat-picamera-v1.0": 98304
+            "rpi-webcam-v1.0": 98304,
+            "rpi-picamera-v1.0": 98304,
+            "rpi-sense-hat-picamera-v1.0": 98304
         }
     }],
     "spec": {
