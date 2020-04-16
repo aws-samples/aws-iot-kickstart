@@ -117,7 +117,7 @@ Resources:
                 S3Bucket: !Ref sourceBucket
                 S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-admin-service.zip']]
             Handler: index.handler
-            Runtime: nodejs8.10
+            Runtime: nodejs12.x
             Role: !GetAtt adminServiceLambdaFunctionIAMRole.Arn
             Timeout: 60
             MemorySize: 256
@@ -198,7 +198,7 @@ Resources:
                 S3Bucket: !Ref sourceBucket
                 S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-deployments-service.zip']]
             Handler: index.handler
-            Runtime: nodejs8.10
+            Runtime: nodejs12.x
             Role: !GetAtt deploymentsServiceLambdaFunctionIAMRole.Arn
             Timeout: 60
             MemorySize: 256
@@ -281,7 +281,7 @@ Resources:
                 S3Bucket: !Ref sourceBucket
                 S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-devices-service.zip']]
             Handler: index.handler
-            Runtime: nodejs8.10
+            Runtime: nodejs12.x
             Role: !GetAtt devicesServiceLambdaFunctionIAMRole.Arn
             Timeout: 60
             MemorySize: 256
@@ -353,7 +353,7 @@ Resources:
                 S3Bucket: !Ref sourceBucket
                 S3Key: !Join ["/", [!Ref sourceKeyPrefix, 'lambda', "sputnik-settings-service.zip"]]
             Handler: index.handler
-            Runtime: nodejs8.10
+            Runtime: nodejs12.x
             Role: !GetAtt settingsServiceLambdaFunctionIAMRole.Arn
             Timeout: 60
             MemorySize: 256
@@ -429,7 +429,7 @@ Resources:
                 S3Bucket: !Ref sourceBucket
                 S3Key: !Join ['/', [!Ref sourceKeyPrefix, 'lambda', 'sputnik-systems-service.zip']]
             Handler: index.handler
-            Runtime: nodejs8.10
+            Runtime: nodejs12.x
             Role: !GetAtt systemsServiceLambdaFunctionIAMRole.Arn
             Timeout: 60
             MemorySize: 256
@@ -527,7 +527,7 @@ Resources:
                 S3Bucket: !Ref sourceBucket
                 S3Key: !Join ["/", [!Ref sourceKeyPrefix, 'lambda', "sputnik-just-in-time-on-boarding-service.zip"]]
             Handler: index.handler
-            Runtime: nodejs8.10
+            Runtime: nodejs12.x
             Role: !GetAtt justInTimeOnBoardingServiceLambdaFunctionIAMRole.Arn
             Timeout: 60
             MemorySize: 256
