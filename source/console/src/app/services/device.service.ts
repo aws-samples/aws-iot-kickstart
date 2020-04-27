@@ -9,7 +9,7 @@ import { LoggerService } from './logger.service';
 import { AppSyncService, AddedDevice, UpdatedDevice, DeletedDevice } from './appsync.service';
 
 // Helpers
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 import * as forge from 'node-forge';
 import * as JSZip from 'jszip';
 import { saveAs } from 'file-saver';

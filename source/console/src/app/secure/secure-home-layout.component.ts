@@ -23,7 +23,7 @@ import { SystemBlueprintService } from '@services/system-blueprint.service';
 // Helpers
 declare let jquery: any;
 declare let $: any;
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'app-root',

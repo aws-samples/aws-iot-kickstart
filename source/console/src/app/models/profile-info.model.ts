@@ -1,5 +1,5 @@
 // declare let _: any;
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 
 export class ProfileInfo {
     user_id: string;

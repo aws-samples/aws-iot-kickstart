@@ -7,7 +7,7 @@ import { Setting } from '@models/setting.model';
 import { AppSyncService } from './appsync.service';
 
 // Helpers
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 
 @Injectable()
 export class SettingService {

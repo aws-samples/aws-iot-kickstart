@@ -14,7 +14,7 @@ import {
 } from './appsync.service';
 
 // Helpers
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 
 @Injectable()
 export class DeviceBlueprintService implements AddedDeviceBlueprint, UpdatedDeviceBlueprint, DeletedDeviceBlueprint {

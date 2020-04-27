@@ -16,7 +16,7 @@ import { StatService } from '@services/stat.service';
 import { Subscription } from 'rxjs/Subscription';
 import { UserLoginService } from '@services/user-login.service';
 
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 import * as moment from 'moment';
 declare var jquery: any;
 declare var $: any;
