@@ -7,7 +7,7 @@ import { Device } from '@models/device.model';
 // Services
 import { IoTService } from '@services/iot.service';
 
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 import * as underscoreDeepExtend from 'underscore-deep-extend';
 
 _.mixin({ deepExtend: underscoreDeepExtend(_) });

@@ -57,7 +57,7 @@
     "stream": "0.0.2",
     "sweetalert2": "^8.17.1",
     "systemjs": "0.21.5",
-    "underscore": "^1.9.1",
+    "underscore": "^1.10.2",
     "underscore-deep-extend": "1.1.5",
     "uuid": "3.3.2",
     "zone.js": "~0.8.26"
@@ -70,6 +70,7 @@
     "@types/jasmine": "^2.8.11",
     "@types/jasminewd2": "^2.0.6",
     "@types/node": "~10.12.6",
+    "@types/underscore": "^1.9.4",
     "codelyzer": "~5.1.0",
     "jasmine-core": "~3.3.0",
     "jasmine-spec-reporter": "~4.2.1",

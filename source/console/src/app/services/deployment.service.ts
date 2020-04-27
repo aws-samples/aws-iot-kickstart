@@ -6,7 +6,7 @@ import { LoggerService } from './logger.service';
 import { AppSyncService } from './appsync.service';
 
 // Helpers
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 
 @Injectable()
 export class DeploymentService {

@@ -20,7 +20,7 @@ import { LoggerService } from '@services/logger.service';
 
 declare var jquery: any;
 declare var $: any;
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 
 @Component({
     selector: 'app-root-device',

@@ -9,7 +9,7 @@ import { LoggerService } from './logger.service';
 import { AppSyncService, AddedSystem, UpdatedSystem, DeletedSystem } from './appsync.service';
 
 // Helpers
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 
 @Injectable()
 export class SystemService implements AddedSystem, UpdatedSystem, DeletedSystem {

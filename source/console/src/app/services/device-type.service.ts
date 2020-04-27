@@ -9,7 +9,7 @@ import { LoggerService } from './logger.service';
 import { AppSyncService, AddedDeviceType, UpdatedDeviceType, DeletedDeviceType } from './appsync.service';
 
 // Helpers
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 
 @Injectable()
 export class DeviceTypeService implements AddedDeviceType, UpdatedDeviceType, DeletedDeviceType {

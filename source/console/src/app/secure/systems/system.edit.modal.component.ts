@@ -15,7 +15,7 @@ import { LoggerService } from '@services/logger.service';
 import { SystemService } from '@services/system.service';
 import { SystemBlueprintService } from '@services/system-blueprint.service';
 
-import { _ } from 'underscore';
+import * as _ from 'underscore';
 
 class DeviceBlueprintPossibleDevices {
     device: Device;

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "Creating assets..."
+echo "Creating assets... js"
 mkdir -p src/assets/ui-js
 echo " - underscore.js"
 cp node_modules/underscore/underscore-min.js src/assets/ui-js/underscore.min.js
@@ -14,8 +15,6 @@ echo " - popper.js"
 cp node_modules/popper.js/dist/umd/popper.min.js src/assets/ui-js/popper.min.js
 echo " - bootstrap.js"
 cp node_modules/bootstrap/dist/js/bootstrap.min.js src/assets/ui-js/bootstrap.min.js
-echo " - bootstrap.css"
-cp node_modules/bootstrap/dist/css/bootstrap.min.css src/assets/css/bootstrap.min.css
 echo " - jquery.slimscroll.js"
 cp node_modules/jquery-slimscroll/jquery.slimscroll.min.js src/assets/ui-js/jquery.slimscroll.min.js
 echo " - waves.js"
@@ -32,11 +31,19 @@ echo " - chartjs-plugin-draggable.js"
 cp node_modules/chartjs-plugin-draggable/dist/chartjs-plugin-draggable.min.js src/assets/ui-js/chartjs-plugin-draggable.min.js
 echo " - owl.carousel.js"
 cp node_modules/owl.carousel/dist/owl.carousel.min.js src/assets/ui-js/owl.carousel.min.js
+echo "Creating assets... css"
+mkdir -p src/assets/css
+echo " - bootstrap.css"
+cp node_modules/bootstrap/dist/css/bootstrap.min.css src/assets/css/bootstrap.min.css
 echo " - owl.carousel.css"
 cp node_modules/owl.carousel/dist/assets/owl.carousel.min.css src/assets/css/owl.carousel.min.css
 echo " - font-awesome.css"
 cp node_modules/font-awesome/css/font-awesome.min.css src/assets/css/font-awesome.min.css
-cp node_modules/font-awesome/fonts/*.* src/assets/fonts/
 echo " - mdi/font"
 cp node_modules/@mdi/font/css/materialdesignicons.min.css src/assets/css/materialdesignicons.min.css
+echo "Creating assets... fonts"
+mkdir -p src/assets/fonts
+echo " - font-awesome/fonts"
+cp node_modules/font-awesome/fonts/*.* src/assets/fonts/
+echo " - mdi/font/fonts"
 cp node_modules/@mdi/font/fonts/*.* src/assets/fonts/
