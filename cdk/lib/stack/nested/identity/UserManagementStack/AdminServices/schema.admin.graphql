@@ -1,0 +1,91 @@
+type UserAttributes
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	Name: String
+	Value: String
+}
+
+type Group
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	GroupName: String
+	UserPoolId: String
+	Description: String
+	RoleArn: String
+	Precedence: Int
+	LastModifiedDate: AWSDateTime
+	CreationDate: AWSDateTime
+}
+
+type PaginatedGroups
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	Groups: [Group]
+	NextToken: String
+}
+
+type UserGroup
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	name: String
+	_state: String
+}
+
+type User
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	user_id: String
+	name: String
+	email: String
+	enabled: Boolean
+	groups: [UserGroup]
+	created_at: AWSDateTime
+	updated_at: AWSDateTime
+	status: String
+}
+
+type PaginatedUsers
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	Users: [User]
+	PaginationToken: String
+}
+
+type AddTenantPayload {
+	tenant: String!
+	group: Group!
+}
+
+extend type Query {
+	getUser(username: String!): User
+		@aws_iam
+		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
+
+	listGroups(limit: Int, nextToken: String): PaginatedGroups
+		@aws_iam
+		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
+
+	listUsers(limit: Int, paginationToken: String): PaginatedUsers
+		@aws_iam
+		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
+
+	listTenants: [String]
+}
+
+extend type Mutation {
+	deleteUser(username: String!): User
+
+	disableUser(username: String!): User
+
+	enableUser(username: String!): User
+
+	inviteUser(name: String!, email: String!, groups: AWSJSON!): Boolean
+
+	updateUser(username: String!, groups: AWSJSON!): User
+
+	addTenant(name: String!): AddTenantPayload!
+}
+
+extend type Subscription {
+	addedTenant: AddTenantPayload @aws_subscribe(mutations: ["addTenant"])
+}

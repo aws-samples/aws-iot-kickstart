@@ -6,17 +6,9 @@
         "name": "teuteuguy"
     },
     "version": "0.0.1",
-    "private": "true",
-    "dependencies": {
-    },
-    "devDependencies": {
-    },
-    "scripts": {
-        "build:init": "rm -rf dist && rm -rf node_modules",
-        "build:zip": "zip -rq `jq -cr '.name' package.json`.zip .",
-        "build:dist": "mkdir dist && mv `jq -cr '.name' package.json`.zip dist/",
-        "build": "yarn run build:init && yarn install --production && yarn run build:zip && yarn run build:dist"
-    },
-    "bundledDependencies": [
-    ]
+    "private": true,
+    "dependencies": {},
+    "devDependencies": {},
+    "scripts": {},
+    "bundledDependencies": []
 }

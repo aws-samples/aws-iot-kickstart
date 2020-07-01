@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     mutation AddDeviceAlueprint(
@@ -25,4 +25,4 @@ export default gql`
             updatedAt
         }
     }
-`;
+`

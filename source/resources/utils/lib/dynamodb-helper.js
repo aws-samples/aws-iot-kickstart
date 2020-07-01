@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
-let AWS = require('aws-sdk');
-const fs = require('fs');
-const moment = require('moment');
+let AWS = require('aws-sdk')
+const fs = require('fs')
+const moment = require('moment')
 
 /**
  * Helper function to interact with AWS S3 for cfn custom resource.
@@ -10,153 +10,146 @@ const moment = require('moment');
  * @class dynamodbHelper
  */
 class dynamodbHelper {
-
-    /**
+	/**
      * @class dynamodbHelper
      * @constructor
      */
-    constructor() {
-        this.creds = new AWS.EnvironmentCredentials('AWS'); // Lambda provided credentials
-    }
+	constructor () {
+		this.creds = new AWS.EnvironmentCredentials('AWS') // Lambda provided credentials
+	}
 
-    dynamodbPutObjectsFromS3Folder(sourceS3Bucket, sourceS3Prefix, table) {
-        console.log(`source bucket: ${sourceS3Bucket}`);
-        console.log(`source prefix: ${sourceS3Prefix}`);
-        console.log(`ddb table: ${table}`);
+	dynamodbPutObjectsFromS3Folder (sourceS3Bucket, sourceS3Prefix, table) {
+		console.log(`source bucket: ${sourceS3Bucket}`)
+		console.log(`source prefix: ${sourceS3Prefix}`)
+		console.log(`ddb table: ${table}`)
 
-        const s3 = new AWS.S3();
-        const documentClient = new AWS.DynamoDB.DocumentClient();
+		const s3 = new AWS.S3()
+		const documentClient = new AWS.DynamoDB.DocumentClient()
 
-        let _self = this;
+		let _self = this
 
-        function _listAllFiles(allFiles, token) {
-            let opts = {
-                Bucket: sourceS3Bucket,
-                Prefix: sourceS3Prefix
-            };
-            if (token) {
-                opts.ContinuationToken = token;
-            }
+		function _listAllFiles (allFiles, token) {
+			let opts = {
+				Bucket: sourceS3Bucket,
+				Prefix: sourceS3Prefix,
+			}
 
-            return s3.listObjectsV2(opts).promise().then(data => {
-                allFiles = allFiles.concat(data.Contents.map((e) => {
-                    return e.Key.split(sourceS3Prefix + '/').pop();
-                }));
-                if (data.IsTruncated) {
-                    return _listAllFiles(allFiles, data.NextContinuationToken);
-                } else
-                    return allFiles;
-            });
-        }
+			if (token) {
+				opts.ContinuationToken = token
+			}
 
-        return _listAllFiles([], null).then(files => {
-            console.log('Found:', JSON.stringify(files));
+			return s3.listObjectsV2(opts).promise().then(data => {
+				allFiles = allFiles.concat(data.Contents.map((e) => {
+					return e.Key.split(sourceS3Prefix + '/').pop()
+				}))
 
-            files = files.filter(file => {
-                return file.indexOf('.json') > 0;
-            });
+				if (data.IsTruncated) {
+					return _listAllFiles(allFiles, data.NextContinuationToken)
+				} else {
+					return allFiles
+				}
+			})
+		}
 
-            return files.reduce((previousValue, currentValue, index, array) => {
-                return previousValue.then(chainResults => {
+		return _listAllFiles([], null).then(files => {
+			console.log('Found:', JSON.stringify(files))
 
-                    console.log('Getting:', currentValue);
+			files = files.filter(file => {
+				return file.indexOf('.json') > 0
+			})
 
-                    return s3.getObject({
-                        Bucket: sourceS3Bucket,
-                        Key: sourceS3Prefix + '/' + currentValue
-                    }).promise().then(data => {
+			return files.reduce((previousValue, currentValue, index, array) => {
+				return previousValue.then(chainResults => {
+					console.log('Getting:', currentValue)
 
-                        const params = {
-                            TableName: table,
-                            Item: JSON.parse(data.Body.toString('ascii'))
-                        };
+					return s3.getObject({
+						Bucket: sourceS3Bucket,
+						Key: sourceS3Prefix + '/' + currentValue,
+					}).promise().then(data => {
+						const params = {
+							TableName: table,
+							Item: JSON.parse(data.Body.toString('ascii')),
+						}
 
-                        params.Item.createdAt = moment()
-                            .utc()
-                            .format();
-                        params.Item.updatedAt = moment()
-                            .utc()
-                            .format();
+						params.Item.createdAt = moment()
+							.utc()
+							.format()
+						params.Item.updatedAt = moment()
+							.utc()
+							.format()
 
-                        console.log('Putting:', currentValue, params);
+						console.log('Putting:', currentValue, params)
 
-                        return documentClient.put(params).promise();
+						return documentClient.put(params).promise()
+					}).then(result => {
+						console.log('Put file', currentValue, 'in db')
 
-                    }).then(result => {
+						return [...chainResults, {
+							file: currentValue,
+						}]
+					}).catch(err => {
+						console.error('ERROR: failed to write', currentValue, 'to DB', JSON.stringify(err))
+						throw err
+					})
+				})
+			}, Promise.resolve([]).then(arrayOfResults => arrayOfResults))
 
-                        console.log('Put file', currentValue, 'in db');
+			// return Promise.all(files.map(file => {
 
-                        return [...chainResults, {
-                            file: currentValue
-                        }];
+			//     console.log('Getting:', file);
 
-                    }).catch(err => {
-                        console.error('ERROR: failed to write', currentValue, 'to DB', JSON.stringify(err));
-                        throw err;
-                    });
-                });
-            }, Promise.resolve([]).then(arrayOfResults => arrayOfResults));
+			//     return s3.getObject({
+			//         Bucket: sourceS3Bucket,
+			//         Key: sourceS3Prefix + '/' + file
+			//     }).promise().then(data => {
 
+			//         const params = {
+			//             TableName: table,
+			//             Item: JSON.parse(data.Body.toString('ascii')),
+			//             ReturnValues: 'ALL_OLD'
+			//         };
 
-            // return Promise.all(files.map(file => {
+			//         params.Item.createdAt = moment()
+			//             .utc()
+			//             .format();
+			//         params.Item.updatedAt = moment()
+			//             .utc()
+			//             .format();
 
-            //     console.log('Getting:', file);
+			//         console.log(file, params);
 
-            //     return s3.getObject({
-            //         Bucket: sourceS3Bucket,
-            //         Key: sourceS3Prefix + '/' + file
-            //     }).promise().then(data => {
+			//         return documentClient.put(params).promise();
 
-            //         const params = {
-            //             TableName: table,
-            //             Item: JSON.parse(data.Body.toString('ascii')),
-            //             ReturnValues: 'ALL_OLD'
-            //         };
+			//     }).then(result => {
+			//         console.log('Put file', file, 'in db', result);
+			//         return {
+			//             file: file
+			//         };
+			//     }).catch(err => {
+			//         console.error('ERROR: failed to write', file, 'to DB', JSON.stringify(err));
+			//         throw err;
+			//     });
+			// }));
+		}).then(results => {
+			return {
+				result: results,
+			}
+		})
+	}
 
-            //         params.Item.createdAt = moment()
-            //             .utc()
-            //             .format();
-            //         params.Item.updatedAt = moment()
-            //             .utc()
-            //             .format();
+	dynamodbSaveItem (item, ddbTable) {
+		item.created_at = moment.utc().format()
+		item.updated_at = moment.utc().format()
 
-            //         console.log(file, params);
+		const docClient = new AWS.DynamoDB.DocumentClient()
 
-            //         return documentClient.put(params).promise();
-
-            //     }).then(result => {
-            //         console.log('Put file', file, 'in db', result);
-            //         return {
-            //             file: file
-            //         };
-            //     }).catch(err => {
-            //         console.error('ERROR: failed to write', file, 'to DB', JSON.stringify(err));
-            //         throw err;
-            //     });
-            // }));
-
-        }).then(results => {
-            return {
-                result: results
-            };
-        });
-
-    }
-
-    dynamodbSaveItem(item, ddbTable) {
-
-        item.created_at = moment.utc().format();
-        item.updated_at = moment.utc().format();
-
-        const docClient = new AWS.DynamoDB.DocumentClient();
-        return docClient.put({
-            TableName: ddbTable,
-            Item: item
-        }).promise().then(result => {
-            return item;
-        });
-
-    }
+		return docClient.put({
+			TableName: ddbTable,
+			Item: item,
+		}).promise().then(result => {
+			return item
+		})
+	}
 }
 
-module.exports = dynamodbHelper;
+module.exports = dynamodbHelper

@@ -15,88 +15,89 @@
  * @author tcruse@
  */
 
- 'use strict';
+'use strict'
 
-const https = require('https');
-const AWS = require('aws-sdk');
-const moment = require('moment');
-const documentClient = new AWS.DynamoDB.DocumentClient();
+const https = require('https')
+const AWS = require('aws-sdk')
+const moment = require('moment')
+
+const documentClient = new AWS.DynamoDB.DocumentClient()
 
 // Metrics class for sending usage metrics to sb endpoints
 class Metrics {
+	constructor () {
+		this.endpoint = 'metrics.awssolutionsbuilder.com'
+	}
 
-    constructor() {
-        this.endpoint = 'metrics.awssolutionsbuilder.com';
-    }
+	sendAnonymousMetric (metric) {
+		return new Promise((resolve, reject) => {
+			let _options = {
+				hostname: this.endpoint,
+				port: 443,
+				path: '/generic',
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
 
-    sendAnonymousMetric(metric) {
+			let request = https.request(_options, function (response) {
+				// data is streamed in chunks from the server
+				// so we have to handle the "data" event
+				let buffer
+				let data
+				let route
 
-        return new Promise((resolve, reject) => {
+				response.on('data', function (chunk) {
+					buffer += chunk
+				})
 
-            let _options = {
-                hostname: this.endpoint,
-                port: 443,
-                path: '/generic',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            };
+				response.on('end', function (err) {
+					resolve('metric sent')
+				})
+			})
 
-            let request = https.request(_options, function(response) {
-                // data is streamed in chunks from the server
-                // so we have to handle the "data" event
-                let buffer;
-                let data;
-                let route;
+			if (metric) {
+				metric.Solution = 'SO0053'
+				request.write(JSON.stringify(metric))
+			}
 
-                response.on('data', function(chunk) {
-                    buffer += chunk;
-                });
+			request.end()
 
-                response.on('end', function(err) {
-                    resolve('metric sent');
-                });
-            });
+			request.on('error', (e) => {
+				console.error(e)
+				reject(['Error occurred when sending metric request.', JSON.stringify(e)].join(' '))
+			})
+		})
+	}
 
-            if (metric) {
-                metric.Solution = 'SO0053';
-                request.write(JSON.stringify(metric));
-            }
+	sendAnonymousMetricIfCustomerEnabled (metric) {
+		return documentClient.get({
+			TableName: process.env.TABLE_SETTINGS,
+			Key: {
+				id: 'app-config',
+			},
+		}).promise().then(result => {
+			console.log('sendAnonymousMetricIfCustomerEnabled.settings:', result)
 
-            request.end();
+			if (result.Item && result.Item.setting && result.Item.setting.anonymousData === 'Yes' && result.Item.setting.uuid) {
+				metric.UUID = result.Item.setting.uuid
+				metric.TimeStamp = moment().utc().format('YYYY-MM-DD HH:mm:ss.S')
 
-            request.on('error', (e) => {
-                console.error(e);
-                reject(['Error occurred when sending metric request.', JSON.stringify(e)].join(' '));
-            });
-        });
+				return this.sendAnonymousMetric(metric).then(data => {
+					console.log('sendAnonymousMetricIfCustomerEnabled:', data)
 
-    }
+					return true
+				}).catch(err => {
+					console.error('ERROR', err)
 
-    sendAnonymousMetricIfCustomerEnabled(metric) {
-        return documentClient.get({
-            TableName: process.env.TABLE_SETTINGS,
-            Key: {
-                id: 'app-config'
-            }
-        }).promise().then(result => {
-            console.log('sendAnonymousMetricIfCustomerEnabled.settings:', result);
-            if (result.Item && result.Item.setting && result.Item.setting.anonymousData === 'Yes' && result.Item.setting.uuid) {
-                metric.UUID = result.Item.setting.uuid;
-                metric.TimeStamp = moment().utc().format('YYYY-MM-DD HH:mm:ss.S');
-                return this.sendAnonymousMetric(metric).then(data => {
-                    console.log('sendAnonymousMetricIfCustomerEnabled:', data);
-                    return true;
-                }).catch(err => {
-                    console.error('ERROR', err);
-                    return false;
-                });
-            } else {
-                return false;
-            }
-        });
-    }
+					return false
+				})
+			} else {
+				return false
+			}
+		})
+	}
 }
 
-module.exports = Metrics;
+module.exports = Metrics

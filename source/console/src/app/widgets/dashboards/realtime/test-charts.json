@@ -1,0 +1,136 @@
+{
+	"columns": 3,
+	"charts": [
+		{
+			"title":{"text":"Pressure"},
+			"columns": 3,
+			"xAxis":{"type":"time"},
+			"yAxis":{"type":"value"},
+			"series":[
+				{
+					"name":"Oil Pressure",
+					"type":"bar",
+					"datasetIndex":"oilPressure",
+					"encode":{"x":"timestamp","y":"value"},
+					"symbol":"none",
+					"large":true
+				}
+			]
+		},
+		{
+			"title":{"text":"Voltage"},
+			"columns": 3,
+			"xAxis":{"type":"time"},
+			"yAxis":{"type":"value"},
+			"series":[
+				{
+					"name":"Battery Voltage",
+					"type":"bar",
+					"datasetIndex":"batteryVoltage",
+					"encode":{"x":"timestamp","y":"value"},
+					"large":true
+				},
+				{
+					"name":"Voltage Three Phase",
+					"type":"bar",
+					"datasetIndex":"voltageThreePhase",
+					"encode":{"x":"timestamp","y":"value"},
+					"large":true
+				}
+			]
+		},
+		{
+			"title":{"text":"Water Tempurature"},
+			"xAxis":{"type":"time"},
+			"yAxis":{"type":"value"},
+			"series":[
+				{
+					"name":"Water Tempurature",
+					"type":"bar",
+					"datasetIndex":"waterTemperature",
+					"encode":{"x":"timestamp","y":"value"},
+					"markLine":{"silent":true,"data":[{"yAxis":50}]},
+					"large":true
+				}
+			]
+		},
+		{
+			"title":{"text":"Oil Pressure"},
+			"series":[
+				{
+					"type":"gauge",
+					"detail":{"formatter":"{value} kPa"},
+					"min":0,
+					"max":200,
+					"splitNumber":10,
+					"dataSource":{
+						"dataset":"core",
+						"encode":{
+							"x":{"dimension":"lastValue"},
+							"y":{"dimension":"property","value":"oilPressure"}
+						}
+					}
+				}
+			]
+		},
+		{
+			"title":{"text":"Engine Speed"},
+			"series":[
+				{
+					"type":"gauge",
+					"detail":{"formatter":"{value} RPM"},
+					"min":0,
+					"max":5000,
+					"splitNumber":10,
+					"dataSource":{
+						"dataset":"core",
+						"encode":{
+							"x":{"dimension":"lastValue"},
+							"y":{"dimension":"property","value":"engineSpeed"}
+						}
+					}
+				}
+			]
+		},
+		{
+			"title":{"text":"Frequency"},
+			"series":[
+				{
+					"type":"gauge",
+					"detail":{"formatter":"{value} Vdc"},
+					"min":0,
+					"max":300,
+					"splitNumber":10,
+					"dataSource":{
+						"dataset":"core",
+						"encode":{
+							"x":{"dimension":"lastValue"},
+							"y":{"dimension":"property","value":"frequency"}
+						}
+					}
+				}
+			]
+		},
+		{
+			"title":{"text":"Power"},
+			"series":[
+				{
+					"type":"gauge",
+					"detail":{"formatter":"{value}"},
+					"dataSource":{
+						"dataset":"core",
+						"encode":{
+							"x":{"dimension":"lastValue"},
+							"y":{"dimension":"property","value":"power"}
+						}
+					}
+				}
+			]
+		},
+		{
+			"title":{"text":"Geo Location"},
+			"type": "geo",
+			"columns": 2
+		}
+	]
+}

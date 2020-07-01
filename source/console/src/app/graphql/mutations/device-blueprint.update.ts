@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     mutation UpdateDeviceBlueprint(
@@ -27,4 +27,4 @@ export default gql`
             updatedAt
         }
     }
-`;
+`

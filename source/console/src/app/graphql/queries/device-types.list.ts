@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     query ListDeviceTypes($limit: Int, $nextToken: String) {
@@ -14,4 +14,4 @@ export default gql`
             nextToken
         }
     }
-`;
+`

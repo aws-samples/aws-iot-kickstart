@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     query GetData($thingName: String!, $metricName: String!, $timeAgoInSecs: Int!) {
@@ -10,4 +10,4 @@ export default gql`
             }
         }
     }
-`;
+`

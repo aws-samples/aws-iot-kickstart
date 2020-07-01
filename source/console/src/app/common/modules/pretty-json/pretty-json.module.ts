@@ -1,22 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-
+import { NgModule } from '@angular/core'
+import { CommonModule } from '@angular/common'
+import { FormsModule } from '@angular/forms'
 // Components
-import { PrettyJsonComponent } from './pretty-json.component';
-
+import { PrettyJsonComponent } from './pretty-json.component'
 // Pipes
-import { PipesModule } from '@pipes/pipes.module';
+import { PipesModule } from '@pipes/pipes.module'
 
 @NgModule({
-    declarations: [PrettyJsonComponent],
-    exports: [PrettyJsonComponent],
-    imports: [
-        CommonModule,
-        FormsModule,
+	declarations: [PrettyJsonComponent],
+	exports: [PrettyJsonComponent],
+	imports: [
+		CommonModule,
+		FormsModule,
 
-        // Pipes
-        PipesModule
-    ]
+		// Pipes
+		PipesModule,
+	],
 })
 export class PrettyJsonModule {}

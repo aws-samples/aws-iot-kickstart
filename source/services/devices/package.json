@@ -4,28 +4,28 @@
     "main": "libs.js",
     "license": "Amazon Software License (ASL)",
     "version": "0.0.1",
-    "private": "true",
+    "private": true,
     "dependencies": {
-        "moment": "*",
-        "sputnik-custom-resource-helper-utils": "../../resources/utils/",
-        "underscore": "*",
+        "moment": "2.24.0",
+        "sputnik-custom-resource-helper-utils": "file:../../resources/utils/",
+        "underscore": "1.10.2",
         "usage-metrics": "file:../../resources/usage-metrics/",
-        "aws-sdk": "*",
         "node-forge": "0.8.5",
         "shortid": "2.2.14"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "aws-sdk": "2.675.0"
+    },
     "scripts": {
-        "prestart": "yarn install",
+        "prestart": "npm install",
         "start": "node index.js",
         "build:init": "rm -rf dist && rm -rf node_modules",
         "build:zip": "zip -rq `jq -cr '.name' package.json`.zip .",
         "build:dist": "mkdir dist && mv `jq -cr '.name' package.json`.zip dist/",
-        "fast-build": "rm -rf dist && yarn run build:zip && yarn run build:dist",
-        "build": "yarn run build:init && yarn install --production && yarn run build:zip && yarn run build:dist"
+        "fast-build": "rm -rf dist && npm run build:zip && npm run build:dist",
+        "build": "npm run build:init && npm install --production ---no-package-lock && npm run build:zip && npm run build:dist"
     },
     "bundledDependencies": [
-        "aws-sdk",
         "moment",
         "underscore"
     ]

@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     query S3ListObjectsV2($params: AWSJSON!) {
@@ -11,4 +11,4 @@ export default gql`
             IsTruncated
         }
     }
-`;
+`

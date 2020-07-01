@@ -3,12 +3,12 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-    production: false,
-    appName: 'sputnik',
-    appVersion: '0.0.1',
-    isDebugMode: true,
-    refreshInterval: 30000
-};
+	production: false,
+	appName: 'sputnik',
+	appVersion: '0.0.1',
+	isDebugMode: true,
+	refreshInterval: 30000,
+}
 
 /*
  * In development mode, to ignore zone related error stack frames such as

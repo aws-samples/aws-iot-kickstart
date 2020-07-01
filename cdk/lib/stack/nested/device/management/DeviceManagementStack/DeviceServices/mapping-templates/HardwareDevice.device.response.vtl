@@ -1,0 +1,6 @@
+#set ($result = $ctx.result)
+
+## map thingId=>id
+$!{$result.put("id", $result.thingId)}
+
+$util.toJson($result)

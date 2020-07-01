@@ -1,13 +1,20 @@
 export class System {
     id: string;
+
     name = 'new';
+
     description = 'UNKNOWN';
+
     deviceIds: string[] = [];
-    systemBlueprintId: string; // = 'UNKNOWN';
+
+    systemBlueprintId: string;
+
+    // = 'UNKNOWN';
     createdAt: string;
+
     updatedAt: string;
 
-    constructor(values: Object = {}) {
-        Object.assign(this, values);
+    constructor (values: Record<string, any> = {}) {
+    	Object.assign(this, values)
     }
 }

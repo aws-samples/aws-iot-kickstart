@@ -1,0 +1,76 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "Infra (CDK)",
+			"path": "cdk"
+		},
+		{
+			"name": "Website",
+			"path": "source/console"
+		},
+		{
+			"name": "Documents",
+			"path": "docs"
+		},
+	],
+	"settings": {
+		"plantuml.diagramsRoot": "docs/diagrams/src",
+		"plantuml.exportOutDir": "diagrams/out",
+		"python.venvFolders": [".local/share/virtualenvs"],
+		"editor.autoIndent": "advanced",
+		// Formatting & Linting
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"prettier.configPath": ".prettierrc.yml",
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true,
+		"editor.formatOnType": false,
+		"editor.codeActionsOnSave": {
+			"source.fixAll": false,
+			"source.fixAll.eslint": true,
+			"source.organizeImports": false
+		},
+		"[javascript]": {
+			"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+			"editor.formatOnSave": false,
+			"editor.formatOnPaste": false
+		},
+		"[typescript]": {
+			"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+			"editor.formatOnSave": false,
+			"editor.formatOnPaste": false
+		},
+		"[json]": {
+			"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+			"editor.formatOnSave": false,
+			"editor.formatOnPaste": false
+		},
+		"[html]": {
+			"editor.defaultFormatter": "vscode.html-language-features",
+			"editor.formatOnSave": true
+		},
+		"[yaml]": {
+			"editor.insertSpaces": true,
+			"editor.tabSize": 2,
+			"editor.quickSuggestions": {
+				"other": true,
+				"comments": false,
+				"strings": true
+			},
+			"editor.formatOnSave": false,
+			"editor.formatOnPaste": false,
+			"editor.formatOnType": false,
+			"editor.autoIndent": "none"
+		},
+		"eslint.validate": [
+			"javascript",
+			"javascriptreact",
+			"typescript",
+			"typescriptreact",
+			"html",
+			"json"
+		]
+	}
+}

@@ -1,15 +1,14 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core'
 
 @Pipe({ name: 'certIdFromArn', pure: true })
 export class CertIdFromArnPipe implements PipeTransform {
+	constructor () {}
 
-    constructor() {}
-
-    transform(arn: string): string {
-        if (arn === undefined || arn === 'NOTSET') {
-            return 'Certificate Not Defined!';
-        } else {
-            return arn.split('cert/')[1];
-        }
-    }
+	transform (arn: string): string {
+		if (arn === undefined || arn === 'NOTSET') {
+			return 'Certificate Not Defined!'
+		} else {
+			return arn.split('cert/')[1]
+		}
+	}
 }

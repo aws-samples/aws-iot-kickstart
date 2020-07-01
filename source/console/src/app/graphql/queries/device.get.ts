@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     query GetDevice($thingId: String!) {
@@ -7,6 +7,7 @@ export default gql`
             thingName
             thingArn
             name
+            namespace
             deviceTypeId
             deviceBlueprintId
             certificateArn
@@ -16,9 +17,10 @@ export default gql`
             }
             spec
             greengrassGroupId
+            metadata
             lastDeploymentId
             createdAt
             updatedAt
         }
     }
-`;
+`

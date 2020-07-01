@@ -41,12 +41,14 @@
                 <ul class="navbar-nav mr-auto mt-md-0">
                     <!-- This is  -->
                     <li class="nav-item">
-                        <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)">
+                        <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark"
+                            href="javascript:void(0)">
                             <i class="mdi mdi-menu"></i>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)">
+                        <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark"
+                            href="javascript:void(0)">
                             <i class="ti-menu"></i>
                         </a>
                     </li>
@@ -54,18 +56,20 @@
                         <div class="">
                             <h3 style="color: white;">
                                 <small>
-                                <ol class="breadcrumb" style="display: flex; flex-wrap: wrap; list-style: none; background-color: transparent;">
-                                    <li class="breadcrumb-item">
-                                        <a style="color: white" href="/securehome">Home</a>
-                                    </li>
-                                    <li *ngFor="let c of crumbs" [class]="c.active ? 'breadcrumb-item active' : 'breadcrumb-item'">
-                                        <a *ngIf="!c.active" style="color: white;" href="/securehome/{{ c.link }}">{{
+                                    <ol class="breadcrumb"
+                                        style="display: flex; flex-wrap: wrap; list-style: none; background-color: transparent;">
+                                        <li class="breadcrumb-item">
+                                            <a style="color: white" href="/securehome">Home</a>
+                                        </li>
+                                        <li *ngFor="let c of crumbs"
+                                            [class]="c.active ? 'breadcrumb-item active' : 'breadcrumb-item'">
+                                            <a *ngIf="!c.active" style="color: white;" href="/securehome/{{ c.link }}">{{
                                             c.title
                                             }}</a>
-                                        <!-- <a *ngIf="c.link" href="/securehome/{{c.link}}" style="color: white;">{{c.title}}</a> -->
-                                        <span *ngIf="c.active" style="color: white;">{{ c.title }}</span>
-                                    </li>
-                                </ol>
+                                            <!-- <a *ngIf="c.link" href="/securehome/{{c.link}}" style="color: white;">{{c.title}}</a> -->
+                                            <span *ngIf="c.active" style="color: white;">{{ c.title }}</span>
+                                        </li>
+                                    </ol>
                                 </small>
                             </h3>
                         </div>
@@ -97,7 +101,7 @@
                             </div>
                         </div>
                     </li>
-                    <li class="nav-item">
+                    <li *ngIf="enableSystems" class="nav-item">
                         <div class="d-flex m-t-10 m-r-10 m-l-10 hidden-md-down">
                             <div class="chart-text">
                                 <h6 class="m-b-0" style="color: white">
@@ -121,8 +125,8 @@
                     <!-- Profile -->
                     <!-- ============================================================== -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href=""
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user-circle-o"></i>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right scale-up">
@@ -185,13 +189,15 @@
                         </a>
                     </li> -->
                     <li class="nav-small-cap">MENU</li>
-                    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/securehome/systems">
+                    <li *ngIf="enableSystems" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                        routerLink="/securehome/systems">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-car"></i>
                             <span class="hide-menu">Systems </span>
                         </a>
                     </li>
-                    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/securehome/devices">
+                    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                        routerLink="/securehome/devices">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-view-module"></i>
                             <span class="hide-menu">Devices </span>
@@ -205,8 +211,8 @@
                         </a>
                     </li> -->
                     <li class="nav-small-cap">MODULES</li>
-                    <li *ngIf="isAdminUser" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-                        routerLink="/securehome/system-blueprints">
+                    <li *ngIf="isAdminUser && enableSystems" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }" routerLink="/securehome/system-blueprints">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-sitemap"></i>
                             <span class="hide-menu">System Blueprints </span>
@@ -227,7 +233,8 @@
                         </a>
                     </li>
                     <li class="nav-small-cap" *ngIf="isAdminUser">ADMINISTRATION</li>
-                    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/securehome/profile">
+                    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+                        routerLink="/securehome/profile">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-account-card-details"></i>
                             <span class="hide-menu">My Profile </span>

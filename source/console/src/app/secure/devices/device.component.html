@@ -5,12 +5,16 @@
         <div class="card card-outline-info">
             <div class="card-body">
                 <div class="pull-right" role="group">
-                    <button *ngIf="isAdminUser" type="button" class="btn btn-success btn-sm" data-toggle="tooltip" title="Generate Certificate"
-                        data-placement="top" (click)="createCertificate()">
+                    <a *ngIf="thingsboardDashboardLink" class="btn btn-success btn-sm m-l-10" title="Dashboard Link"
+                        [href]="thingsboardDashboardLink" target="_blank">
+                        <i class="mdi mdi-monitor-dashboard"></i> Dashboard Link
+                    </a>
+                    <button *ngIf="isAdminUser" type="button" class="btn btn-success btn-sm m-l-10"
+                        data-toggle="tooltip" title="Generate Certificate" data-placement="top"
+                        (click)="createCertificate()">
                         <i class="mdi mdi-key"></i> Generate Cert</button>
                     <button type="button" class="btn btn-success btn-sm m-l-10" data-toggle="tooltip"
-                        title="Edit Device"
-                        data-placement="top" (click)="showEditForm()">
+                        title="Edit Device" data-placement="top" (click)="showEditForm()">
                         <i class="mdi mdi-pencil"></i> Edit</button>
                     <button type="button" class="btn btn-success btn-sm m-l-10" data-toggle="tooltip" title="Deploy"
                         data-placement="top" (click)="deploy()">
@@ -61,7 +65,8 @@
                                                 <i class="mdi mdi-link-variant"></i>
                                             </a>
                                         </p>
-                                        <p class="form-control-static" *ngIf="device.deviceTypeId === 'UNKNOWN'">{{device.deviceTypeId}}
+                                        <p class="form-control-static" *ngIf="device.deviceTypeId === 'UNKNOWN'">
+                                            {{device.deviceTypeId}}
                                         </p>
                                     </div>
                                 </div>
@@ -88,7 +93,8 @@
                                                 <i class="mdi mdi-link-variant"></i>
                                             </a>
                                         </p>
-                                        <p class="form-control-static" *ngIf="device.deviceBlueprintId === 'UNKNOWN'">{{device.deviceBlueprintId}}
+                                        <p class="form-control-static" *ngIf="device.deviceBlueprintId === 'UNKNOWN'">
+                                            {{device.deviceBlueprintId}}
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +109,14 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                                <div class="form-group row m-b-10">
+                                    <label class="col-md-4 control-label text-right ">Namespace:</label>
+                                    <div class="col-md-8 truncate">
+                                        <p class="form-control-static">{{device.namespace}}</p>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-group row m-b-10">
                                     <label class="col-md-4 control-label text-right">Cert:</label>
@@ -136,33 +149,54 @@
             <div class="modal-body" *ngIf="deviceForEdit">
                 <form name="attributeForm" #f="ngForm" class="form-control-line" (ngSubmit)="submitEditDevice(f.value)"
                     novalidate>
-                    <div [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-group has-danger' :'form-group has-success-alt') : 'form-group'">
+                    <div
+                        [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-group has-danger' :'form-group has-success-alt') : 'form-group'">
                         <label for="name" class="form-control-label">Preferred device name:</label>
-                        <input type="text" [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-control form-control-line form-control-danger' : 'form-control form-control-line form-control-success-alt') : 'form-control form-control-line'"
+                        <input type="text"
+                            [class]="(name.dirty || name.touched) ? (name.invalid ? 'form-control form-control-line form-control-danger' : 'form-control form-control-line form-control-success-alt') : 'form-control form-control-line'"
                             name="name" id="name" #name="ngModel" [(ngModel)]="deviceForEdit.name" required ngModel>
-                        <div *ngIf="!((name.invalid && (name.dirty || name.touched)) && name.errors)" class="form-control-feedback">
+                        <div *ngIf="!((name.invalid && (name.dirty || name.touched)) && name.errors)"
+                            class="form-control-feedback">
                             <small>Easy to remember name for your device.
                                 <br />(Not the thingName: {{deviceForEdit.thingName}})</small>
                         </div>
-                        <div *ngIf="(name.invalid && (name.dirty || name.touched)) && name.errors" class="form-control-feedback">
+                        <div *ngIf="(name.invalid && (name.dirty || name.touched)) && name.errors"
+                            class="form-control-feedback">
                             <small>Name of device is required.</small>
+                        </div>
+                    </div>
+                    <!-- TODO: make this a dropdown to select from customers -->
+                    <div
+                        [class]="(namespace.dirty || namespace.touched) ? (namespace.invalid ? 'form-group has-danger' :'form-group has-success-alt') : 'form-group'">
+                        <label for="namespace" class="form-control-label">Namespace:</label>
+                        <input type="text"
+                            [class]="(namespace.dirty || namespace.touched) ? (namespace.invalid ? 'form-control form-control-line form-control-danger' : 'form-control form-control-line form-control-success-alt') : 'form-control form-control-line'"
+                            name="namespace" id="namespace" #namespace="ngModel" [(ngModel)]="deviceForEdit.namespace"
+                            required ngModel>
+                        <div *ngIf="!((namespace.invalid && (namespace.dirty || namespace.touched)) && namespace.errors)"
+                            class="form-control-feedback">
+                            <small>Partition key for multi-tenancy (Customer)</small>
                         </div>
                     </div>
                     <div class="form-group" style="overflow: inherit;">
                         <label for="type" class="form-control-label">Device type:</label>
                         <select class="custom-select col-12" name="deviceTypeId" id="deviceTypeId" #type="ngModel"
-                            [(ngModel)]="deviceForEdit.deviceTypeId" required ngModel (change)="deviceTypeChanged($event.target.value)">
-                            <option value="UNKNOWN" ng-selected="deviceForEdit.deviceTypeId === 'UNKNOWN'">UNKNOWN</option>
-                            <option *ngFor="let item of deviceTypeService.deviceTypes; let i = index" value="{{item.id}}"
-                                ng-selected="deviceForEdit.deviceTypeId === item.id">{{item.name}}</option>
+                            [(ngModel)]="deviceForEdit.deviceTypeId" required ngModel
+                            (change)="deviceTypeChanged($event.target.value)">
+                            <option value="UNKNOWN" ng-selected="deviceForEdit.deviceTypeId === 'UNKNOWN'">UNKNOWN
+                            </option>
+                            <option *ngFor="let item of deviceTypeService.deviceTypes; let i = index"
+                                value="{{item.id}}" ng-selected="deviceForEdit.deviceTypeId === item.id">{{item.name}}
+                            </option>
                         </select>
                         <div class="form-control-feedback">
                             <small>Device type for the device.</small>
                         </div>
                         <label for="type" class="form-control-label">Device Blueprint:</label>
-                        <select class="custom-select col-12" name="deviceBlueprintId" id="deviceBlueprintId" #type="ngModel"
-                            [(ngModel)]="deviceForEdit.deviceBlueprintId" required ngModel>
-                            <option value="UNKNOWN" ng-selected="deviceForEdit.deviceBlueprintId === 'UNKNOWN'">UNKNOWN</option>
+                        <select class="custom-select col-12" name="deviceBlueprintId" id="deviceBlueprintId"
+                            #type="ngModel" [(ngModel)]="deviceForEdit.deviceBlueprintId" required ngModel>
+                            <option value="UNKNOWN" ng-selected="deviceForEdit.deviceBlueprintId === 'UNKNOWN'">UNKNOWN
+                            </option>
                             <option *ngFor="let item of deviceBlueprintsForEdit; let i = index" value="{{item.id}}"
                                 ng-selected="deviceForEdit.deviceBlueprintId === item.id">{{item.name}}</option>
                         </select>

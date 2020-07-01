@@ -1,9 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-
-import { WidgetComponent } from './widget.component';
+import { Component, Input, OnInit } from '@angular/core'
+import { WidgetComponent } from './widget.component'
 
 @Component({
-    template: `
+	template: `
         <div class="input-group input-group-sm mb-3">
             <input
                 type="text"
@@ -17,26 +16,26 @@ import { WidgetComponent } from './widget.component';
                 <button class="btn btn-outline-secondary" type="submit" (click)="submit()">Submit</button>
             </div>
         </div>
-    `
+    `,
 })
 export class InputTextWidgetComponent extends WidgetComponent {
     private _inputtext = '';
 
-    get inputText() {
-        if (typeof this.value === 'string') {
-            return this.value;
-        } else {
-            return '';
-        }
+    get inputText () {
+    	if (typeof this.value === 'string') {
+    		return this.value
+    	} else {
+    		return ''
+    	}
     }
 
-    set inputText(value) {
-        this._inputtext = value;
+    set inputText (value) {
+    	this._inputtext = value
     }
 
-    public submit() {
-        if (this._inputtext !== '') {
-            this.setValue(this._inputtext);
-        }
+    public submit () {
+    	if (this._inputtext !== '') {
+    		this.setValue(this._inputtext)
+    	}
     }
 }
