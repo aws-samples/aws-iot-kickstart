@@ -1,60 +1,67 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-
+import { Injectable } from '@angular/core'
+import { Subject } from 'rxjs'
 // Models
-import { System } from '@models/system.model';
-
+import { System } from '@models/system.model'
 // Services
-import { LoggerService } from './logger.service';
-import { AppSyncService, AddedSystem, UpdatedSystem, DeletedSystem } from './appsync.service';
+import { LoggerService } from './logger.service'
+import { AppSyncService, AddedSystem, UpdatedSystem, DeletedSystem } from './appsync.service'
 
 // Helpers
-import * as _ from 'underscore';
 
 @Injectable()
 export class SystemService implements AddedSystem, UpdatedSystem, DeletedSystem {
     private limit = 10;
+
     private systems: System[] = [];
 
-    constructor(private logger: LoggerService, private appSyncService: AppSyncService) {
-        const _self = this;
+    constructor (private logger: LoggerService, private appSyncService: AppSyncService) {
+    	const _self = this
 
-        _self.appSyncService.onAddedSystem(_self);
-        _self.appSyncService.onUpdatedSystem(_self);
-        _self.appSyncService.onDeletedSystem(_self);
+    	_self.appSyncService.onAddedSystem(_self)
+    	_self.appSyncService.onUpdatedSystem(_self)
+    	_self.appSyncService.onDeletedSystem(_self)
 
-        // _self.loadSystems();
+    	// _self.loadSystems();
     }
 
-    public list(limit: number, nextToken: string) {
-        return this.appSyncService.listSystems(limit, nextToken);
+    public list (limit: number, nextToken: string) {
+    	return this.appSyncService.listSystems(limit, nextToken)
     }
-    public get(id: string) {
-        return this.appSyncService.getSystem(id);
+
+    public get (id: string) {
+    	return this.appSyncService.getSystem(id)
     }
-    public getSystemStats() {
-        return this.appSyncService.getSystemStats();
+
+    public getSystemStats () {
+    	return this.appSyncService.getSystemStats()
     }
-    public add(name: string, description: string, deviceIds: string[], systemBlueprintId: string) {
-        return this.appSyncService.addSystem(name, description, deviceIds, systemBlueprintId).then(r => {
-            this.onAddedSystem(r);
-            return r;
-        });
+
+    public add (name: string, description: string, deviceIds: string[], systemBlueprintId: string) {
+    	return this.appSyncService.addSystem(name, description, deviceIds, systemBlueprintId).then(r => {
+    		this.onAddedSystem(r)
+
+    		return r
+    	})
     }
-    public update(id: string, name: string, description: string, deviceIds: string[]) {
-        return this.appSyncService.updateSystem(id, name, description, deviceIds).then(r => {
-            this.onUpdatedSystem(r);
-            return r;
-        });
+
+    public update (id: string, name: string, description: string, deviceIds: string[]) {
+    	return this.appSyncService.updateSystem(id, name, description, deviceIds).then(r => {
+    		this.onUpdatedSystem(r)
+
+    		return r
+    	})
     }
-    public delete(id: string) {
-        return this.appSyncService.deleteSystem(id).then(r => {
-            this.onDeletedSystem(r);
-            return r;
-        });
+
+    public delete (id: string) {
+    	return this.appSyncService.deleteSystem(id).then(r => {
+    		this.onDeletedSystem(r)
+
+    		return r
+    	})
     }
-    public refreshSystem(id: string) {
-        return this.appSyncService.refreshSystem(id);
+
+    public refreshSystem (id: string) {
+    	return this.appSyncService.refreshSystem(id)
     }
 
     // private pushNewSystems(systems: System[]) {
@@ -104,13 +111,15 @@ export class SystemService implements AddedSystem, UpdatedSystem, DeletedSystem 
     //     return this.systems;
     // }
 
-    onAddedSystem(result: System) {
-        // TODO: Improve this.
+    onAddedSystem (result: System) {
+    	// TODO: Improve this.
     }
-    onUpdatedSystem(result: System) {
-        // TODO: Improve this.
+
+    onUpdatedSystem (result: System) {
+    	// TODO: Improve this.
     }
-    onDeletedSystem(result: System) {
-        // TODO: Improve this.
+
+    onDeletedSystem (result: System) {
+    	// TODO: Improve this.
     }
 }

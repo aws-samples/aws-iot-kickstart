@@ -1,0 +1,12 @@
+.chart-container {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 2rem;
+}
+
+.chart-container > * {
+	justify-self: stretch;
+	border: 1px solid #cccccc;
+	border-radius: 4px;
+	box-shadow: 5px 5px 9px 0px #ccc;
+}

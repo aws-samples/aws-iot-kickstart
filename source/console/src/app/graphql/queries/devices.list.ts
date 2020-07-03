@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     query ListDevices($limit: Int, $nextToken: String) {
@@ -7,12 +7,14 @@ export default gql`
                 thingId
                 thingName
                 name
+                namespace
                 deviceTypeId
                 deviceBlueprintId
                 connectionState {
                     state
                     at
                 }
+                metadata
                 lastDeploymentId
                 createdAt
                 updatedAt
@@ -20,4 +22,4 @@ export default gql`
             nextToken
         }
     }
-`;
+`

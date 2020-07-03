@@ -1,97 +1,94 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-
+import { Component, Input, OnInit } from '@angular/core'
+import { Observable, Subject } from 'rxjs'
 // Components
-import { IoTPubSuberComponent } from '../../../common/iot-pubsuber.component';
-
+import { IoTPubSuberComponent } from '../../../common/iot-pubsuber.component'
 // Models
-import { Device } from '@models/device.model';
-import { DeviceBlueprint } from '@models/device-blueprint.model';
-
+import { Device } from '@models/device.model'
+import { DeviceBlueprint } from '@models/device-blueprint.model'
 // Services
-import { IoTService } from '@services/iot.service';
-import { AppSyncService } from '@services/appsync.service';
+import { IoTService } from '@services/iot.service'
+import { AppSyncService } from '@services/appsync.service'
 
 @Component({
-    selector: 'app-default-device',
-    template: `
-        <app-widgets *ngIf="widgets" [widgets]="widgets" [parent]="parent"></app-widgets>
-    `
+	selector: 'app-default-device',
+	template: `
+				<app-widgets *ngIf="widgets" [widgets]="widgets" [parent]="parent" [device]="device"></app-widgets>
+		`,
 })
 export class DefaultDeviceComponent extends IoTPubSuberComponent implements OnInit {
-    @Input() device: Device = new Device();
+		@Input() device: Device = new Device();
 
-    private widgetSubscriptionSubjects: any = {};
-    public widgetSubscriptionObservable$: any = {};
+		private widgetSubscriptionSubjects: any = {};
 
-    constructor(private iotService: IoTService, private appSyncService: AppSyncService) {
-        super(iotService);
-    }
+		public widgetSubscriptionObservable$: any = {};
 
-    public widgets: any[];
-    public parent: any;
+		constructor (private iotService: IoTService, private appSyncService: AppSyncService) {
+			super(iotService)
+		}
 
-    ngOnInit() {
-        const self = this;
+		public widgets: any[];
 
-        function defaultErrorCallback(err) {
-            console.error('Error:', err);
-        }
+		public parent: any;
 
-        self.appSyncService
-            .getDeviceBlueprint(self.device.deviceBlueprintId)
-            .then((deviceBlueprint: DeviceBlueprint) => {
-                if (deviceBlueprint && deviceBlueprint.spec.hasOwnProperty('View')) {
-                    self.parent = self;
+		async ngOnInit () {
+			const { device } = this
 
-                    self.iotService
-                        .getThingShadow({
-                            thingName: self.device.thingName
-                        })
-                        .then((shadow: any) => {
-                            self.shadow = shadow;
+			try {
+				const deviceBlueprint: DeviceBlueprint = await this.appSyncService.getDeviceBlueprint(device.deviceBlueprintId)
 
-                            const widgetSubscriptions = [];
-                            const view = JSON.parse(
-                                JSON.stringify(deviceBlueprint.spec.View)
-                                    .split('[CORE]')
-                                    .join(self.device.thingName)
-                                    .split('[THING_NAME]')
-                                    .join(self.device.thingName)
-                                    .split('[DEVICE_NAME]')
-                                    .join(self.device.name)
-                            );
+				if (deviceBlueprint.spec.View) {
+					this.parent = this // What does this do? From old code, but seems odd
 
-                            if (view.hasOwnProperty('subscriptions')) {
-                                const subs = view.subscriptions;
-                                for (let ref in subs) {
-                                    if (subs.hasOwnProperty(ref)) {
-                                        const topic = subs[ref];
-                                        // console.log('Subscription:', ref, topic);
-                                        self.widgetSubscriptionSubjects[ref] = new Subject<any>();
-                                        self.widgetSubscriptionObservable$[ref] = self.widgetSubscriptionSubjects[
-                                            ref
-                                        ].asObservable();
-                                        widgetSubscriptions.push({
-                                            topic: topic,
-                                            onMessage: message => {
-                                                // console.log('onMessage:', topic, message);
-                                                self.widgetSubscriptionSubjects[ref].next(message.value);
-                                            },
-                                            onError: defaultErrorCallback
-                                        });
-                                    }
-                                }
-                            }
+					try {
+						this.shadow = await this.iotService.getThingShadow({ thingName: device.thingName })
+					} catch (error) {
+						console.error(`Failed to get shadow for thingName "${device.thingName}"`, error)
+					}
 
-                            self.subscribe(widgetSubscriptions);
+					const widgetSubscriptions = []
+					const view = JSON.parse(
+						JSON.stringify(deviceBlueprint.spec.View)
+							.split('[CORE]')
+							.join(device.thingName)
+							.split('[THING_NAME]')
+							.join(device.thingName)
+							.split('[DEVICE_NAME]')
+							.join(device.name)
+					)
 
-                            if (view.hasOwnProperty('widgets')) {
-                                self.widgets = view.widgets;
-                            }
-                        });
-                }
-            })
-            .catch(defaultErrorCallback);
-    }
+					try {
+						if (view.subscriptions) {
+							const subs = view.subscriptions
+							for (let ref in subs) {
+								if (subs.ref) {
+									const topic = subs[ref]
+
+									this.widgetSubscriptionSubjects[ref] = new Subject<any>()
+									this.widgetSubscriptionObservable$[ref] = this.widgetSubscriptionSubjects[ref].asObservable()
+
+									widgetSubscriptions.push({
+										topic: topic,
+										onMessage: message => {
+											// console.log('onMessage:', topic, message);
+											this.widgetSubscriptionSubjects[ref].next(message.value)
+										},
+										onError: (error) => console.error(`WidgetSubscription:Error:${device.thingName}:topic/${topic}`, error),
+									})
+								}
+							}
+
+							this.subscribe(widgetSubscriptions)
+						}
+					} catch (error) {
+						console.error(`Failed to subscribe to subscriptions on device "${device.thingName}"`, error)
+					}
+
+					if (view.widgets) {
+						this.widgets = view.widgets
+					}
+				}
+			} catch (error) {
+				console.error('Failed to initialize device.', device, error)
+			}
+		}
 }

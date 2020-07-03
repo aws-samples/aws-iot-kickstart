@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     mutation UpdateDeviceType(
@@ -21,4 +21,4 @@ export default gql`
             updatedAt
         }
     }
-`;
+`

@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     mutation CreateCertificate($thingId: String!, $csr: String!) {
@@ -8,4 +8,4 @@ export default gql`
             certificatePem
         }
     }
-`;
+`

@@ -1,8 +1,8 @@
-import { Component, ContentChild, ElementRef } from '@angular/core';
+import { Component, ContentChild, ElementRef } from '@angular/core'
 
 @Component({
-    selector: 'app-card',
-    template: `
+	selector: 'app-card',
+	template: `
         <div class="card card-outline-info">
             <div class="card-header" *ngIf="header">
                 <ng-content select="card-header"></ng-content>
@@ -22,14 +22,18 @@ import { Component, ContentChild, ElementRef } from '@angular/core';
                 <ng-content select="card-footer"></ng-content>
             </div>
         </div>
-    `
+    `,
 })
 export class CardComponent {
-    @ContentChild('header') header: ElementRef;
-    @ContentChild('footer') footer: ElementRef;
-    @ContentChild('title') title: ElementRef;
-    @ContentChild('subtitle') subtitle: ElementRef;
-    @ContentChild('text') text: ElementRef;
+    @ContentChild('header', { static: true }) header: ElementRef;
 
-    constructor() {}
+    @ContentChild('footer', { static: true }) footer: ElementRef;
+
+    @ContentChild('title', { static: true }) title: ElementRef;
+
+    @ContentChild('subtitle', { static: true }) subtitle: ElementRef;
+
+    @ContentChild('text', { static: true }) text: ElementRef;
+
+    constructor () {}
 }

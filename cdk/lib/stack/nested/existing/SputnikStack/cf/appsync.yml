@@ -1,0 +1,1038 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'sputnik - AppSync'
+Parameters:
+    uniqueId:
+        Type: String
+        Description: Random string for resource naming
+    apiId:
+        Type: String
+        Description: Id of api
+    apiRole:
+        Type: String
+        Description: Nmae of role for api
+    apiRoleArn:
+        Type: String
+        Description: Arn of role for api
+
+    settingsTable:
+        Type: String
+        Description: DynamoDB Table for storing the application settings
+    dataStoreTable:
+        Type: String
+        Description: DynamoDB Table for the data store
+    deviceTypesTable:
+        Type: String
+        Description: DynamoDB Table for storing the device types
+    deviceBlueprintsTable:
+        Type: String
+        Description: DynamoDB Table for storing the device blueprints
+    deploymentsTable:
+        Type: String
+        Description: DynamoDB Table for storing the deployments
+    systemsTable:
+        Type: String
+        Description: DynamoDB Table for storing the systems
+    systemBlueprintsTable:
+        Type: String
+        Description: DynamoDB Table for storing the system blueprints
+    settingsServiceLambdaFunctionArn:
+        Type: String
+        Description: Settings Micro Service ARN
+    deploymentsServiceLambdaFunctionArn:
+        Type: String
+        Description: Deployments Micro Service ARN
+    systemsServiceLambdaFunctionArn:
+        Type: String
+        Description: Systems Micro Service ARN
+    utilsCustomResourceLambdaFunctionArn:
+        Type: String
+        Description: Utils Micro Service ARN
+
+Resources:
+
+    appSyncLambdaPolicy:
+        Type: 'AWS::IAM::ManagedPolicy'
+        Properties:
+            Description: 'Policy for the sputnik AppSync API to access Lambda.'
+            PolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    -
+                        Effect: 'Allow'
+                        Action:
+                            - 'lambda:InvokeFunction'
+                        Resource:
+                            - !Ref deploymentsServiceLambdaFunctionArn
+                            - !Ref settingsServiceLambdaFunctionArn
+                            - !Ref systemsServiceLambdaFunctionArn
+                            - !Ref utilsCustomResourceLambdaFunctionArn
+
+            Roles:
+                - !Ref apiRole
+
+    # DATA SOURCES - DynamoDB
+    appSyncDataSourceSettingsDynamoDB:
+        Type: 'AWS::AppSync::DataSource'
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceSettingsDynamoDB_${uniqueId}'
+            Description: The Settings DynamoDB table App Sync Data source
+            Type: AMAZON_DYNAMODB
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            DynamoDBConfig:
+                AwsRegion: !Ref 'AWS::Region'
+                TableName: !Ref settingsTable
+    appSyncDataSourceDataStoreDynamoDB:
+        Type: 'AWS::AppSync::DataSource'
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceDataStoreDynamoDB_${uniqueId}'
+            Description: The Data Store DynamoDB table App Sync Data Source
+            Type: AMAZON_DYNAMODB
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            DynamoDBConfig:
+                AwsRegion: !Ref 'AWS::Region'
+                TableName: !Ref dataStoreTable
+    appSyncDataSourceDeviceTypesDynamoDB:
+        Type: 'AWS::AppSync::DataSource'
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceDeviceTypesDynamoDB_${uniqueId}'
+            Description: The Device Types DynamoDB table App Sync Data Source
+            Type: AMAZON_DYNAMODB
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            DynamoDBConfig:
+                AwsRegion: !Ref 'AWS::Region'
+                TableName: !Ref deviceTypesTable
+    appSyncDataSourceDeviceBlueprintsDynamoDB:
+        Type: 'AWS::AppSync::DataSource'
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceDeviceBlueprintsDynamoDB_${uniqueId}'
+            Description: The Device Blueprints DynamoDB table App Sync Data Source
+            Type: AMAZON_DYNAMODB
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            DynamoDBConfig:
+                AwsRegion: !Ref 'AWS::Region'
+                TableName: !Ref deviceBlueprintsTable
+    appSyncDataSourceDeploymentsDynamoDB:
+        Type: 'AWS::AppSync::DataSource'
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceDeploymentsDynamoDB_${uniqueId}'
+            Description: The Deployments DynamoDB table App Sync Data Source
+            Type: AMAZON_DYNAMODB
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            DynamoDBConfig:
+                AwsRegion: !Ref 'AWS::Region'
+                TableName: !Ref deploymentsTable
+    appSyncDataSourceSystemsDynamoDB:
+        Type: 'AWS::AppSync::DataSource'
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceSystemsDynamoDB_${uniqueId}'
+            Description: The Systems DynamoDB table App Sync Data Source
+            Type: AMAZON_DYNAMODB
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            DynamoDBConfig:
+                AwsRegion: !Ref 'AWS::Region'
+                TableName: !Ref systemsTable
+    appSyncDataSourceSystemBlueprintsDynamoDB:
+        Type: 'AWS::AppSync::DataSource'
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceSystemBlueprintsDynamoDB_${uniqueId}'
+            Description: The System Blueprints DynamoDB table App Sync Data Source
+            Type: AMAZON_DYNAMODB
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            DynamoDBConfig:
+                AwsRegion: !Ref 'AWS::Region'
+                TableName: !Ref systemBlueprintsTable
+    appSyncDataSourceSettingsLambda:
+        Type: AWS::AppSync::DataSource
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceSettingsLambda_${uniqueId}'
+            Description: The Settings Lambda App Sync Data Source
+            Type: AWS_LAMBDA
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            LambdaConfig:
+                LambdaFunctionArn: !Ref settingsServiceLambdaFunctionArn
+    appSyncDataSourceDeploymentsLambda:
+        Type: AWS::AppSync::DataSource
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceDeploymentsLambda_${uniqueId}'
+            Description: The Deployments Lambda App Sync Data Source
+            Type: AWS_LAMBDA
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            LambdaConfig:
+                LambdaFunctionArn: !Ref deploymentsServiceLambdaFunctionArn
+    appSyncDataSourceSystemsLambda:
+        Type: AWS::AppSync::DataSource
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceSystemsLambda_${uniqueId}'
+            Description: The Systems Lambda App Sync Data Source
+            Type: AWS_LAMBDA
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            LambdaConfig:
+                LambdaFunctionArn: !Ref systemsServiceLambdaFunctionArn
+    appSyncDataSourceUtilsLambda:
+        Type: AWS::AppSync::DataSource
+        Properties:
+            ApiId: !Ref 'apiId'
+            Name: !Sub 'sputnik_appSyncDataSourceUtilsLambda_${uniqueId}'
+            Description: The Utils Lambda App Sync Data Source
+            Type: AWS_LAMBDA
+            ServiceRoleArn: !Ref 'apiRoleArn'
+            LambdaConfig:
+                LambdaFunctionArn: !Ref utilsCustomResourceLambdaFunctionArn
+
+    # ####################################################################################################
+    # ####################################################################################################
+    #
+    # RESOLVERS - Data Store
+    #
+    # ####################################################################################################
+    # ####################################################################################################
+
+    # RESOLVERS - QUERIES - Data Store - Get Data
+    appSyncResolverQueryGetData:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: getData
+            DataSourceName: !GetAtt appSyncDataSourceDataStoreDynamoDB.Name
+            RequestMappingTemplate: |
+                #set($thingName = ${ctx.args.thingName})
+                #set($startTimestamp = $util.time.nowEpochMilliSeconds()-${ctx.args.timeAgoInSecs}*1000)
+                #set($ThingNameAndMetric = "${thingName}-${ctx.args.metricName}")
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Query",
+                    "query" : {
+                        "expression" : "ThingNameAndMetric = :ThingNameAndMetric AND #t >= :startTimestamp",
+                        "expressionValues" : {
+                            ":ThingNameAndMetric": {"S": "${ThingNameAndMetric}"},
+                            ":startTimestamp": {"N": $startTimestamp}
+                        },
+                        "expressionNames": {
+                            "#t": "Timestamp"
+                        }
+                    }
+                }
+            ResponseMappingTemplate: |
+                {
+                    "Data": $util.toJson($ctx.result.items)
+                }
+
+    # ####################################################################################################
+    # ####################################################################################################
+    #
+    # RESOLVERS - DeviceTypes
+    #
+    # ####################################################################################################
+    # ####################################################################################################
+
+    # RESOLVERS - QUERIES - DeviceTypes - List Device Types
+    appSyncResolverQueryListDeviceTypes:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: listDeviceTypes
+            DataSourceName: !GetAtt appSyncDataSourceDeviceTypesDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Scan",
+                    #if( $ctx.args.limit )
+                        "limit": $ctx.args.limit,
+                    #end
+                    #if( ${ctx.args.nextToken} )
+                        "nextToken": "${ctx.args.nextToken}"
+                    #end
+                }
+            ResponseMappingTemplate: |
+                {
+                    "deviceTypes": $util.toJson($ctx.result.items),
+                    #if( ${ctx.result.nextToken} )
+                        "nextToken": "${ctx.result.nextToken}",
+                    #end
+                }
+    # RESOLVERS - QUERIES - DeviceTypes - Get Device Type
+    appSyncResolverQueryGetDeviceType:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: getDeviceType
+            DataSourceName: !GetAtt appSyncDataSourceDeviceTypesDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "GetItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toDynamoDBJson($ctx.args.id)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+
+    # RESOLVERS - MUTATIONS - DeviceTypes - Add Device Type
+    appSyncResolverMutationAddDeviceType:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: addDeviceType
+            DataSourceName: !GetAtt appSyncDataSourceDeviceTypesDynamoDB.Name
+            RequestMappingTemplate: |
+                #set( $validTypes = ["UNKNOWN", "SDK", "A:FreeRTOS", "GREENGRASS", "THING_ONLY"] )
+                #set( $temp = "UNKNOWN" )
+                #foreach($t in $validTypes)
+                    #if($t == $ctx.args.type)
+                        #set( $temp = $t )
+                    #end
+                #end
+                #set( $ctx.args.type = $temp )
+                #set( $values = $util.dynamodb.toMapValues($ctx.args) )
+                $!{values.put("createdAt", $util.dynamodb.toDynamoDB($util.time.nowISO8601()))}
+                $!{values.put("updatedAt", $values.get("createdAt"))}
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "PutItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($util.autoId())
+                    },
+                    "attributeValues" : $util.toJson($values)
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+    # RESOLVERS - MUTATIONS - DeviceTypes - Delete Device Type
+    appSyncResolverMutationDeleteDeviceType:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: deleteDeviceType
+            DataSourceName: !GetAtt appSyncDataSourceDeviceTypesDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "DeleteItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($ctx.args.id)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+    # RESOLVERS - MUTATIONS - DeviceTypes - Update Device Type
+    appSyncResolverMutationUpdateDeviceType:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: updateDeviceType
+            DataSourceName: !GetAtt appSyncDataSourceDeviceTypesDynamoDB.Name
+            RequestMappingTemplate: |
+                #set( $validTypes = ["UNKNOWN", "SDK", "A:FreeRTOS", "GREENGRASS", "THING_ONLY"] )
+                #set( $temp = "UNKNOWN" )
+                #foreach($t in $validTypes)
+                    #if($t == $ctx.args.type)
+                        #set( $temp = $t )
+                    #end
+                #end
+                #set( $ctx.args.type = $temp )
+                #set( $expression = "SET #n = :n, #t = :t, updatedAt = :updatedAt" )
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "UpdateItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($ctx.args.id)
+                    },
+                    "update" : {
+                        "expressionValues": {
+                            ":n" : $util.dynamodb.toStringJson($ctx.args.name),
+                            ":t" : $util.dynamodb.toStringJson($ctx.args.type),
+                            ":updatedAt" : $util.dynamodb.toStringJson($util.time.nowISO8601())
+                            #if($ctx.args.spec)
+                                #set( $expression = "$expression, spec = :spec" )
+                                ,
+                                ":spec" : $util.dynamodb.toMapJson($ctx.args.spec)
+                            #end
+                        },
+                        "expression" : "$expression",
+                        "expressionNames": {
+                            "#n": "name",
+                            "#t": "type"
+                        }
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+
+    # ####################################################################################################
+    # ####################################################################################################
+    #
+    # RESOLVERS - Settings
+    #
+    # ####################################################################################################
+    # ####################################################################################################
+
+    # RESOLVERS - QUERIES - Settings - Get Setting
+    appSyncResolverQueryGetSetting:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: getSetting
+            DataSourceName: !GetAtt appSyncDataSourceSettingsDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "GetItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toDynamoDBJson($ctx.args.id)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+
+    # RESOLVERS - MUTATIONS - Settings - Update Setting
+    appSyncResolverMutationUpdateSetting:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: updateSetting
+            DataSourceName: !GetAtt appSyncDataSourceSettingsDynamoDB.Name
+            RequestMappingTemplate: |
+                #set( $expression = "SET #t = :t, #uA = :uA" )
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "UpdateItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($ctx.args.id)
+                    },
+                    "update" : {
+                        "expressionValues": {
+                            #if( $ctx.args.setting )
+                                #set( $expression = "$expression, setting = :setting" )
+                                ":setting": $util.dynamodb.toMapJson($ctx.args.setting),
+                            #end
+                            ":t" : $util.dynamodb.toStringJson($ctx.args.type),
+                            ":uA" : $util.dynamodb.toStringJson($util.time.nowISO8601())
+                        },
+                        "expression" : "$expression",
+                        "expressionNames": {
+                            "#t": "type",
+                            "#uA": "updatedAt"
+                        }
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+
+    # ####################################################################################################
+    # ####################################################################################################
+    #
+    # RESOLVERS - Just In Time On Boarding
+    #
+    # ####################################################################################################
+    # ####################################################################################################
+
+    # RESOLVERS - QUERIES - Just In Time On Boarding - Get State
+    appSyncResolverQueryGetJustInTimeOnBoardingState:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: getJustInTimeOnBoardingState
+            DataSourceName: !GetAtt appSyncDataSourceSettingsLambda.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation": "Invoke",
+                    "payload": {
+                        "cmd": "getJustInTimeOnBoardingState",
+                        "arguments": $util.toJson($context.arguments)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+
+    # RESOLVERS - MUTATIONS - Just In Time On Boarding - Set State
+    appSyncResolverMutationSetJustInTimeOnBoardingState:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: setJustInTimeOnBoardingState
+            DataSourceName: !GetAtt appSyncDataSourceSettingsLambda.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation": "Invoke",
+                    "payload": {
+                        "cmd": "setJustInTimeOnBoardingState",
+                        "enabled": $context.arguments.enabled
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+
+    # ####################################################################################################
+    # ####################################################################################################
+    #
+    # RESOLVERS - Device Blueprints
+    #
+    # ####################################################################################################
+    # ####################################################################################################
+
+    # RESOLVERS - QUERIES - Device Blueprints - List
+    appSyncResolverQueryListDeviceBlueprints:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: listDeviceBlueprints
+            DataSourceName: !GetAtt appSyncDataSourceDeviceBlueprintsDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Scan",
+                    #if( $ctx.args.limit )
+                        "limit": $ctx.args.limit,
+                    #end
+                    #if( ${ctx.args.nextToken} )
+                        "nextToken": "${ctx.args.nextToken}"
+                    #end
+                }
+            ResponseMappingTemplate: |
+                {
+                    "deviceBlueprints": $util.toJson($ctx.result.items),
+                    #if( ${ctx.result.nextToken} )
+                        "nextToken": "${ctx.result.nextToken}",
+                    #end
+                }
+    # RESOLVERS - QUERIES - Device Blueprints - Get
+    appSyncResolverQueryGetDeviceBlueprint:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: getDeviceBlueprint
+            DataSourceName: !GetAtt appSyncDataSourceDeviceBlueprintsDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "GetItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toDynamoDBJson($ctx.args.id)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+
+    # RESOLVERS - MUTATIONS - Device Blueprints - Add
+    appSyncResolverMutationAddDeviceBlueprint:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: addDeviceBlueprint
+            DataSourceName: !GetAtt appSyncDataSourceDeviceBlueprintsDynamoDB.Name
+            RequestMappingTemplate: |
+                #set( $validTypes = ["UNKNOWN", "SDK", "A:FreeRTOS", "GREENGRASS", "THING_ONLY"] )
+                #set( $temp = "UNKNOWN" )
+                #foreach($t in $validTypes)
+                    #if($t == $ctx.args.type)
+                        #set( $temp = $t )
+                    #end
+                #end
+                #set( $ctx.args.type = $temp )
+                #set( $values = $util.dynamodb.toMapValues($ctx.args) )
+                $!{values.put("createdAt", $util.dynamodb.toDynamoDB($util.time.nowISO8601()))}
+                $!{values.put("updatedAt", $values.get("createdAt"))}
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "PutItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($util.autoId())
+                    },
+                    "attributeValues" : $util.toJson($values)
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+    # RESOLVERS - MUTATIONS - Device Blueprints - Delete
+    appSyncResolverMutationDeleteDeviceBlueprint:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: deleteDeviceBlueprint
+            DataSourceName: !GetAtt appSyncDataSourceDeviceBlueprintsDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "DeleteItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($ctx.args.id)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+    # RESOLVERS - MUTATIONS - Device Blueprints - Update
+    appSyncResolverMutationUpdateDeviceBlueprint:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: updateDeviceBlueprint
+            DataSourceName: !GetAtt appSyncDataSourceDeviceBlueprintsDynamoDB.Name
+            RequestMappingTemplate: |
+                #set( $validTypes = ["UNKNOWN", "SDK", "A:FreeRTOS", "GREENGRASS", "THING_ONLY"] )
+                #set( $temp = "UNKNOWN" )
+                #foreach($t in $validTypes)
+                    #if($t == $ctx.args.type)
+                        #set( $temp = $t )
+                    #end
+                #end
+                #set( $ctx.args.type = $temp )
+                #set( $expression = "SET #n = :n, #t = :t, #uA = :uA" )
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "UpdateItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($ctx.args.id)
+                    },
+                    "update" : {
+                        "expressionValues": {
+                            #if( $ctx.args.compatibility )
+                                ## Add compatibility to expression
+                                #set( $expression = "$expression, compatibility = :compatibility" )
+                                ":compatibility" : $util.dynamodb.toListJson($ctx.args.compatibility),
+                            #end
+                            #if( $ctx.args.deviceTypeMappings )
+                                ## Add deviceTypeMappings to expression
+                                #set( $expression = "$expression, deviceTypeMappings = :deviceTypeMappings" )
+                                ":deviceTypeMappings" : $util.dynamodb.toListJson($ctx.args.deviceTypeMappings),
+                            #end
+                            #if( $ctx.args.spec )
+                                ## Add spec to expression
+                                #set( $expression = "$expression, spec = :spec" )
+                                ":spec" :$util.dynamodb.toMapJson($ctx.args.spec),
+                            #end
+                            ":n" : $util.dynamodb.toStringJson($ctx.args.name),
+                            ":t" : $util.dynamodb.toStringJson($ctx.args.type),
+                            ":uA" : $util.dynamodb.toStringJson($util.time.nowISO8601())
+                        },
+                        "expression" : "$expression",
+                        "expressionNames": {
+                            "#n": "name",
+                            "#t": "type",
+                            "#uA": "updatedAt"
+                        }
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+
+    # ####################################################################################################
+    # ####################################################################################################
+    #
+    # RESOLVERS - Deployments
+    #
+    # ####################################################################################################
+    # ####################################################################################################
+
+    # RESOLVERS - QUERIES - Deployments - List
+    appSyncResolverQueryListDeployments:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: listDeployments
+            DataSourceName: !GetAtt appSyncDataSourceDeploymentsDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Scan",
+                    #if( $ctx.args.limit )
+                        "limit": $ctx.args.limit,
+                    #end
+                    #if( ${ctx.args.nextToken} )
+                        "nextToken": "${ctx.args.nextToken}"
+                    #end
+                }
+            ResponseMappingTemplate: |
+                {
+                    "deployments": $util.toJson($ctx.result.items),
+                    #if( ${ctx.result.nextToken} )
+                        "nextToken": "${ctx.result.nextToken}",
+                    #end
+                }
+
+    # RESOLVERS - MUTATIONS - Deployments - Add
+    appSyncResolverMutationAddDeployment:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: addDeployment
+            DataSourceName: !GetAtt appSyncDataSourceDeploymentsLambda.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Invoke",
+                    "payload": {
+                        "cmd": "addDeployment",
+                        "thingId": "$context.arguments.thingId"
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+
+    # ####################################################################################################
+    # ####################################################################################################
+    #
+    # RESOLVERS - Systems
+    #
+    # ####################################################################################################
+    # ####################################################################################################
+
+    # RESOLVERS - QUERIES - Systems - List
+    appSyncResolverQueryListSystems:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: 'listSystems'
+            DataSourceName: !GetAtt appSyncDataSourceSystemsDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Scan",
+                    #if( $ctx.args.limit )
+                        "limit": $ctx.args.limit,
+                    #end
+                    #if( ${ctx.args.nextToken} )
+                        "nextToken": "${ctx.args.nextToken}"
+                    #end
+                }
+            ResponseMappingTemplate: |
+                {
+                    "systems": $util.toJson($ctx.result.items),
+                    #if( ${ctx.result.nextToken} )
+                        "nextToken": "${ctx.result.nextToken}",
+                    #end
+                }
+    # RESOLVERS - QUERIES - Systems - Get
+    appSyncResolverQueryGetSystem:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: 'getSystem'
+            DataSourceName: !GetAtt appSyncDataSourceSystemsDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "GetItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toDynamoDBJson($ctx.args.id)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+    # RESOLVERS - QUERIES - Systems - Get Stats
+    appSyncResolverQueryGetSystemStats:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: getSystemStats
+            DataSourceName: !GetAtt appSyncDataSourceSystemsLambda.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Invoke",
+                    "payload": {
+                        "cmd": "getSystemStats"
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+
+    # RESOLVERS - MUTATIONS - Systems - Add
+    appSyncResolverMutationAddSystem:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: addSystem
+            DataSourceName: !GetAtt appSyncDataSourceSystemsDynamoDB.Name
+            RequestMappingTemplate: |
+                #set( $values = $util.dynamodb.toMapValues($ctx.args) )
+                $!{values.put("createdAt", $util.dynamodb.toDynamoDB($util.time.nowISO8601()))}
+                $!{values.put("updatedAt", $values.get("createdAt"))}
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "PutItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($util.autoId())
+                    },
+                    "attributeValues" : $util.toJson($values)
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+    # RESOLVERS - MUTATIONS - Systems - Delete
+    appSyncResolverMutationDeleteSystem:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: deleteSystem
+            DataSourceName: !GetAtt appSyncDataSourceSystemsDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "DeleteItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($ctx.args.id)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+    # RESOLVERS - MUTATIONS - Systems - Update
+    appSyncResolverMutationUpdateSystem:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: updateSystem
+            DataSourceName: !GetAtt appSyncDataSourceSystemsDynamoDB.Name
+            RequestMappingTemplate: |
+                #set( $expression = "SET #n = :n, description = :d, deviceIds = :deviceIds, updatedAt = :updatedAt" )
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "UpdateItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($ctx.args.id)
+                    },
+                    "update" : {
+                        "expressionValues": {
+                            ":n" : $util.dynamodb.toStringJson($ctx.args.name),
+                            ":d" : $util.dynamodb.toStringJson($ctx.args.description),
+                            ":updatedAt" : $util.dynamodb.toStringJson($util.time.nowISO8601()),
+                            ":deviceIds" : $util.dynamodb.toListJson($ctx.args.deviceIds)
+                        },
+                        "expression" : "$expression",
+                        "expressionNames": {
+                            "#n": "name"
+                        }
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+    # RESOLVERS - MUTATIONS - Systems - Refresh
+    appSyncResolverMutationRefreshSystem:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: refreshSystem
+            DataSourceName: !GetAtt appSyncDataSourceSystemsLambda.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Invoke",
+                    "payload": {
+                        "cmd": "refreshSystem",
+                        "id": "$context.arguments.id"
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+
+    # ####################################################################################################
+    # ####################################################################################################
+    #
+    # RESOLVERS - System Blueprints
+    #
+    # ####################################################################################################
+    # ####################################################################################################
+
+    # RESOLVERS - QUERIES - System Blueprints - List
+    appSyncResolverQueryListSystemBlueprints:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: 'listSystemBlueprints'
+            DataSourceName: !GetAtt appSyncDataSourceSystemBlueprintsDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Scan",
+                    #if( $ctx.args.limit )
+                        "limit": $ctx.args.limit,
+                    #end
+                    #if( ${ctx.args.nextToken} )
+                        "nextToken": "${ctx.args.nextToken}"
+                    #end
+                }
+            ResponseMappingTemplate: |
+                {
+                    "systemBlueprints": $util.toJson($ctx.result.items),
+                    #if( ${ctx.result.nextToken} )
+                        "nextToken": "${ctx.result.nextToken}",
+                    #end
+                }
+    # RESOLVERS - QUERIES - System Blueprints - Get
+    appSyncResolverQueryGetSystemBlueprint:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: 'getSystemBlueprint'
+            DataSourceName: !GetAtt appSyncDataSourceSystemBlueprintsDynamoDB.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "GetItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toDynamoDBJson($ctx.args.id)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+
+    # RESOLVERS - MUTATIONS - System Blueprints - Update
+    appSyncResolverMutationUpdateSystemBlueprint:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: updateSystemBlueprint
+            DataSourceName: !GetAtt appSyncDataSourceSystemBlueprintsDynamoDB.Name
+            RequestMappingTemplate: |
+                #set( $expression = "SET #n = :n, #d = :d, #p = :p, #uA = :uA" )
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "UpdateItem",
+                    "key" : {
+                        "id" : $util.dynamodb.toStringJson($ctx.args.id)
+                    },
+                    "update" : {
+                        "expressionValues": {
+                            #if( $ctx.args.spec )
+                                ## Add spec to expression
+                                #set( $expression = "$expression, spec = :spec" )
+                                ":spec" :$util.dynamodb.toMapJson($ctx.args.spec),
+                            #end
+                            ":n" : $util.dynamodb.toStringJson($ctx.args.name),
+                            ":d" : $util.dynamodb.toStringJson($ctx.args.description),
+                            ":p" : $util.dynamodb.toStringJson($ctx.args.prefix),
+                            ":uA" : $util.dynamodb.toStringJson($util.time.nowISO8601())
+                        },
+                        "expression" : "$expression",
+                        "expressionNames": {
+                            "#n": "name",
+                            "#d": "description",
+                            "#p": "prefix",
+                            "#uA": "updatedAt"
+                        }
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($ctx.result)'
+
+
+    # ####################################################################################################
+    # ####################################################################################################
+    #
+    # RESOLVERS - Utils
+    #
+    # ####################################################################################################
+    # ####################################################################################################
+
+    # RESOLVERS - QUERIES - Utils - Describe Endpoint
+    appSyncResolverQueryDescribeEndpoint:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: describeEndpoint
+            DataSourceName: !GetAtt appSyncDataSourceUtilsLambda.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Invoke",
+                    "payload": {
+                        "RequestType": "Utils",
+                        "cmd": "describeEndpoint",
+                        "endpointType": "$context.arguments.endpointType"
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+    # RESOLVERS - QUERIES - Utils - Get Thing Shadow
+    appSyncResolverQueryGetThingShadow:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: getThingShadow
+            DataSourceName: !GetAtt appSyncDataSourceUtilsLambda.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Invoke",
+                    "payload": {
+                        "RequestType": "Utils",
+                        "cmd": "iotdata.getThingShadow",
+                        "params": $util.toJson($context.arguments.params)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+    # RESOLVERS - QUERIES - Utils - S3 list Objects
+    appSyncResolverQueryS3ListObjectsV2:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Query
+            FieldName: s3ListObjectsV2
+            DataSourceName: !GetAtt appSyncDataSourceUtilsLambda.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Invoke",
+                    "payload": {
+                        "RequestType": "Utils",
+                        "cmd": "s3.listObjectsV2",
+                        "params": $util.toJson($context.arguments.params)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+
+    # RESOLVERS - MUTATIONS - Utils - Attach Principal Policy
+    appSyncResolverMutationAttachPrincipalPolicy:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: attachPrincipalPolicy
+            DataSourceName: !GetAtt appSyncDataSourceUtilsLambda.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Invoke",
+                    "payload": {
+                        "RequestType": "Utils",
+                        "cmd": "attachPrincipalPolicy",
+                        "policyName": "$context.arguments.policyName",
+                        "principal": "$context.arguments.principal"
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'
+    # RESOLVERS - MUTATIONS - Utils - Update Thing Shadow
+    appSyncResolverMutationUpdateThingShadow:
+        Type: 'AWS::AppSync::Resolver'
+        Properties:
+            ApiId: !Ref 'apiId'
+            TypeName: Mutation
+            FieldName: updateThingShadow
+            DataSourceName: !GetAtt appSyncDataSourceUtilsLambda.Name
+            RequestMappingTemplate: |
+                {
+                    "version" : "2017-02-28",
+                    "operation" : "Invoke",
+                    "payload": {
+                        "RequestType": "Utils",
+                        "cmd": "iotdata.updateThingShadow",
+                        "params": $util.toJson($context.arguments.params)
+                    }
+                }
+            ResponseMappingTemplate: '$util.toJson($context.result)'

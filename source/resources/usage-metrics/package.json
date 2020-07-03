@@ -5,10 +5,10 @@
     "author": {
         "name": "aws-solutions-builder"
     },
-    "private": "true",
+    "private": true,
     "main": "metrics.common.js",
     "dependencies": {
-        "moment": "*"
+        "moment": "2.24.0"
     },
     "devDependencies": {
         "aws-sdk": "*",

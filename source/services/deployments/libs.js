@@ -1,3 +1,3 @@
 module.exports = {
-    addDeployment: require('./lib/addDeployment')
-};
+	addDeployment: require('./lib/addDeployment'),
+}

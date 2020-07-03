@@ -1,0 +1,34 @@
+# compiled output
+**/dist
+**/open-source
+**/.zip
+**/tmp
+**/out-tsc
+
+# dependencies
+**/node_modules
+
+# e2e
+**/e2e/*.js
+**/e2e/*.map
+
+# misc
+**/npm-debug.log
+**/testem.log
+**/yarn.lock
+
+# System Files
+**/.DS_Store
+**/.sonarlint
+
+# Custom for ease of deployments
+deployment/deploy.sh
+
+# Python lambdas
+*.egg-info
+*.dist-info
+
+# docs
+docs/diagrams/out
+
+.local

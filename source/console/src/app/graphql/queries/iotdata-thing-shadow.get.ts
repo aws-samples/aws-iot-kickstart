@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     query GetThingShadow($params: AWSJSON!) {
@@ -6,4 +6,4 @@ export default gql`
             payload
         }
     }
-`;
+`

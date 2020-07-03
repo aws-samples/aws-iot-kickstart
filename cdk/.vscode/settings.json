@@ -1,0 +1,14 @@
+{
+	// Exclude build artifacts from search
+	"search.exclude": {
+		"**/build": true,
+		"**/lambda/**/*.js": false,
+		"{bin,lib,test}/**/*.{js,d.ts}": true,
+	},
+	// Exclude build artifacts from file tree
+	"files.exclude": {
+		"**/build": true,
+		// "**/lambda/**/*.js": false,
+		// "{bin,lib,test}/**/*.{js,d.ts}": true,
+	}
+}

@@ -19,8 +19,104 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+                "src/favicon.ico",
+                "src/assets",
+                { "glob": "**/*", "input": "./.local", "output": "/" },
+                {
+                    "glob": "underscore-min.js",
+                    "input": "./node_modules/underscore",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "jquery.min.js",
+                    "input": "./node_modules/jquery/dist",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "jquery.slimscroll.min.js",
+                    "input": "./node_modules/jquery-slimscroll",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "jquery.blockUI.js",
+                    "input": "./node_modules/jquery-blockui",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "popper.min.js",
+                    "input": "./node_modules/popper.js/dist/umd",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "bootstrap.min.js",
+                    "input": "./node_modules/bootstrap/dist/js",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "bootstrap.min.css",
+                    "input": "./node_modules/bootstrap/dist/css",
+                    "output": "./assets/css"
+                },
+                {
+                    "glob": "waves.min.js",
+                    "input": "./node_modules/node-waves/dist",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "sticky-kit.min.js",
+                    "input": "./node_modules/sticky-kit/dist",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "gauge.min.js",
+                    "input": "./node_modules/gaugeJS/dist",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "Chart.min.js",
+                    "input": "./node_modules/chart.js/dist",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "chartjs-plugin-annotation.min.js",
+                    "input": "./node_modules/chartjs-plugin-annotation",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "chartjs-plugin-draggable.min.js",
+                    "input": "./node_modules/chartjs-plugin-draggable/dist",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "owl.carousel.min.js",
+                    "input": "./node_modules/owl.carousel/dist",
+                    "output": "./assets/ui-js"
+                },
+                {
+                    "glob": "owl.carousel.min.css",
+                    "input": "./node_modules/owl.carousel/dist/assets",
+                    "output": "./assets/css"
+                },
+                {
+                    "glob": "font-awesome.min.css",
+                    "input": "./node_modules/font-awesome/css",
+                    "output": "./assets/css"
+                },
+                {
+                    "glob": "*.*",
+                    "input": "./node_modules/font-awesome/fonts",
+                    "output": "./assets/fonts"
+                },
+                {
+                    "glob": "materialdesignicons.min.css",
+                    "input": "./node_modules/@mdi/font/css",
+                    "output": "./assets/css"
+                },
+                {
+                    "glob": "*.*",
+                    "input": "./node_modules/@mdi/font/fonts",
+                    "output": "./assets/fonts"
+                }
             ],
             "styles": [
               "src/styles.css"
@@ -125,5 +221,10 @@
       }
     }
   },
-  "defaultProject": "MyThingsManagementWebsite"
+  "defaultProject": "MyThingsManagementWebsite",
+  "cli": {
+    "warnings": {
+      "typescriptMismatch": false
+    }
+  }
 }

@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     mutation UpdateSetting($id: String!, $type: String!, $setting: AWSJSON!) {
@@ -10,4 +10,4 @@ export default gql`
             updatedAt
         }
     }
-`;
+`

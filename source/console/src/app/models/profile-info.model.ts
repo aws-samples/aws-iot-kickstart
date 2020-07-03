@@ -1,20 +1,24 @@
 // declare let _: any;
-import * as _ from 'underscore';
+import { contains } from 'underscore'
 
 export class ProfileInfo {
     user_id: string;
+
     name: string;
+
     email: string;
+
     enabled: boolean;
+
     groups: any[];
+
     mapboxToken: string;
 
-    constructor(values: Object = {}) {
-        Object.assign(this, values);
+    constructor (values: Record<string, any> = {}) {
+    	Object.assign(this, values)
     }
 
-    isAdmin(): boolean {
-        return _.contains(this.groups, 'Administrators');
+    isAdmin (): boolean {
+    	return contains(this.groups, 'Administrators')
     }
-
 }

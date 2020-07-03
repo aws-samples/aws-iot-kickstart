@@ -1,4 +1,4 @@
-import gql from 'graphql-tag';
+import gql from 'graphql-tag'
 
 export default gql`
     query ListDevicesOfDeviceType($deviceTypeId: String!, $limit: Int, $nextToken: String) {
@@ -8,6 +8,7 @@ export default gql`
                 thingName
                 thingArn
                 name
+                namespace
                 deviceTypeId
                 deviceBlueprintId
                 connectionState {
@@ -15,6 +16,7 @@ export default gql`
                     at
                 }
                 spec
+                metadata
                 greengrassGroupId
                 createdAt
                 updatedAt
@@ -22,4 +24,4 @@ export default gql`
             nextToken
         }
     }
-`;
+`

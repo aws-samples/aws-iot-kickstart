@@ -1,0 +1,170 @@
+{
+	"id": "forklift-toyota",
+	"name": "Linux Greengrass with connector for Forklift Toyota",
+	"type": "GREENGRASS",
+	"compatibility": [
+		"linux-modbus-forklift-simulator.json",
+		"rpi-with-modbus-connector"
+	],
+	"deviceTypeMappings": [
+		{
+			"substitute": "MODBUS_MAPPING",
+			"value": {
+				"linux-modbus-forklift-simulator.json": {
+					"interval": 2,
+					"duration": 1440,
+					"connection": {
+						"type": "TCP",
+						"address": "127.0.0.1",
+						"options": {
+							"port": 8503
+						},
+						"unitId": 2
+					},
+					"holdingRegisters": {
+						"registers": [
+							{
+								"address": 40061,
+								"multiplier": 1,
+								"fieldName": "speed"
+							},
+							{
+								"address": 40062,
+								"multiplier": 1,
+								"fieldName": "weightOfLoad"
+							},
+							{
+								"address": 40063,
+								"multiplier": 1,
+								"fieldName": "battery"
+							},
+							{
+								"address": 40064,
+								"multiplier": 0.1,
+								"fieldName": "utilization"
+							},
+							{
+								"address": 40065,
+								"multiplier": 1,
+								"fieldName": "minorShockCount"
+							},
+							{
+								"address": 40066,
+								"multiplier": 1,
+								"fieldName": "mediumShockCount"
+							},
+							{
+								"address": 40067,
+								"multiplier": 1,
+								"fieldName": "majorShockCount",
+								"alert": {
+									"operator": "greaterThan",
+									"target": 5
+								}
+							}
+						]
+					},
+					"inputRegisters": {
+						"registers": []
+					},
+					"coils": {
+						"registers": []
+					},
+					"discreteInputs": {
+						"registers": []
+					},
+					"commands": [
+						{
+							"action": "immobilizer",
+							"target": "coil",
+							"address": 40001,
+							"value": true
+						}
+					]
+				},
+				"rpi-with-modbus-connector": {
+					"interval": 2,
+					"duration": 3,
+					"connection": {
+						"type": "TCP",
+						"address": "127.0.0.1",
+						"options": {
+							"port": 8503
+						},
+						"unitId": 2
+					},
+					"holdingRegisters": {
+						"registers": [
+							{
+								"address": 40061,
+								"multiplier": 1,
+								"fieldName": "speed"
+							},
+							{
+								"address": 40062,
+								"multiplier": 1,
+								"fieldName": "weightOfLoad"
+							},
+							{
+								"address": 40063,
+								"multiplier": 1,
+								"fieldName": "battery"
+							},
+							{
+								"address": 40064,
+								"multiplier": 0.1,
+								"fieldName": "utilization"
+							},
+							{
+								"address": 40065,
+								"multiplier": 1,
+								"fieldName": "minorShockCount"
+							},
+							{
+								"address": 40066,
+								"multiplier": 1,
+								"fieldName": "mediumShockCount"
+							},
+							{
+								"address": 40067,
+								"multiplier": 1,
+								"fieldName": "majorShockCount",
+								"alert": {
+									"operator": "greaterThan",
+									"target": 5
+								}
+							}
+						]
+					},
+					"commands": [
+						{
+							"action": "immobilizer",
+							"target": "coil",
+							"address": 40001,
+							"value": true
+						}
+					]
+				}
+			}
+		}
+	],
+	"spec": {
+		"ResourceDefinitionVersion": {
+			"Resources": [
+				{
+					"Id": "tmp",
+					"Name": "tmp_resource",
+					"ResourceDataContainer": {
+						"LocalVolumeResourceData": {
+							"DestinationPath": "/tmp",
+							"GroupOwnerSetting": {
+								"AutoAddGroupOwner": true
+							},
+							"SourcePath": "/tmp"
+						}
+					}
+				}
+			]
+		}
+	}
+}

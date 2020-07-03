@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card card-outline-info">
+            <div class="card-body">
+                <h5 class="card-title">Real-Time Dashboard</h5>
+                <div ngClass="chart-container"
+                    [style.grid-template-columns]="'repeat(' + config.columns || 3 + ', 1fr)'">
+                    <ng-container *ngFor="let chart of charts; let chartIndex = index" [ngSwitch]="chart.type">
+
+                        <geo id="chart-{{chartIndex}}" *ngSwitchCase="'geo'" [config]="chart"
+                            [style.grid-column-end]="'span ' + chart.columns || 1"></geo>
+
+                        <chart id="chart-{{chartIndex}}" *ngSwitchDefault [config]="chart"
+                            [style.grid-column-end]="'span ' + chart.columns || 1">
+                        </chart>
+
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

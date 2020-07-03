@@ -1,0 +1,158 @@
+{
+	"id": "generic-genset",
+	"name": "Linux Greengrass with connector for Generic Genset",
+	"type": "GREENGRASS",
+	"compatibility": ["linux-modbus-genset-connector.json"],
+	"deviceTypeMappings": [
+		{
+			"substitute": "MODBUS_MAPPING",
+			"value": {
+				"linux-modbus-genset-connector.json": {
+					"duration": 3,
+					"inputRegisters": {
+						"registers": [
+							{
+								"address": 1001,
+								"fieldName": "engineSpeed",
+								"multiplier": 1
+							},
+							{
+								"address": 1055,
+								"fieldName": "oilPressure",
+								"multiplier": 0.1
+							},
+							{
+								"address": 1056,
+								"fieldName": "waterTemperature",
+								"multiplier": 1
+							},
+							{
+								"address": 1053,
+								"fieldName": "batteryVoltage",
+								"multiplier": 0.1
+							},
+							{
+								"address": 1037,
+								"fieldName": "voltageL1",
+								"multiplier": 1
+							},
+							{
+								"address": 1038,
+								"fieldName": "voltageL2",
+								"multiplier": 1
+							},
+							{
+								"address": 1039,
+								"fieldName": "voltageL3",
+								"multiplier": 1
+							},
+							{
+								"address": 1040,
+								"fieldName": "voltageL1-L2",
+								"multiplier": 1
+							},
+							{
+								"address": 1041,
+								"fieldName": "voltageL2-L3",
+								"multiplier": 1
+							},
+							{
+								"address": 1042,
+								"fieldName": "voltageL3-L1",
+								"multiplier": 1
+							},
+							{
+								"address": 1036,
+								"fieldName": "frequency",
+								"multiplier": 0.1
+							},
+							{
+								"address": 1298,
+								"fieldName": "engineStatus",
+								"multiplier": 1
+							},
+							{
+								"address": 1028,
+								"fieldName": "power",
+								"multiplier": 1
+							},
+							{
+								"address": 4215,
+								"fieldName": "alarmOne",
+								"multiplier": 1,
+								"quantity": 27,
+								"type": "string"
+							},
+							{
+								"address": 4242,
+								"fieldName": "alarmTwo",
+								"multiplier": 1,
+								"quantity": 27,
+								"type": "string"
+							}
+						]
+					},
+					"holdingRegisters": {
+						"registers": [
+							{
+								"address": 3021,
+								"fieldName": "controllerMode",
+								"multiplier": 1
+							},
+							{
+								"address": 4207,
+								"fieldName": "status",
+								"multiplier": 1,
+								"quantity": 2,
+								"lowValueMultiplier": 1,
+								"type": "multi"
+							}
+						]
+					},
+					"interval": 2,
+					"connection": {
+						"address": "192.168.1.180",
+						"options": {
+							"port": 502
+						},
+						"unitId": 1,
+						"type": "TCP"
+					},
+					"commands": [
+						{
+							"address": 4207,
+							"action": "start",
+							"value": [510, 0, 1],
+							"target": "registers"
+						},
+						{
+							"address": 4207,
+							"action": "stop",
+							"value": [765, 0, 1],
+							"target": "registers"
+						}
+					]
+				}
+			}
+		}
+	],
+	"spec": {
+		"ResourceDefinitionVersion": {
+			"Resources": [
+				{
+					"Id": "tmp",
+					"Name": "tmp_resource",
+					"ResourceDataContainer": {
+						"LocalVolumeResourceData": {
+							"DestinationPath": "/tmp",
+							"GroupOwnerSetting": {
+								"AutoAddGroupOwner": true
+							},
+							"SourcePath": "/tmp"
+						}
+					}
+				}
+			]
+		}
+	}
+}

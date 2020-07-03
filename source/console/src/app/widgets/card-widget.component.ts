@@ -1,9 +1,8 @@
-import { Component, Input } from '@angular/core';
-
-import { WidgetComponent } from './widget.component';
+import { Component, Input } from '@angular/core'
+import { WidgetComponent } from './widget.component'
 
 @Component({
-    template: `
+	template: `
         <app-card>
             <card-header *ngIf="data.header" #header>
                 <app-widgets [widgets]="data.header" [parent]="parent"></app-widgets>
@@ -21,6 +20,6 @@ import { WidgetComponent } from './widget.component';
                 <app-widgets [widgets]="data.footer" [parent]="parent"></app-widgets>
             </card-footer>
         </app-card>
-    `
+    `,
 })
 export class CardWidgetComponent extends WidgetComponent {}
