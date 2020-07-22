@@ -1,7 +1,58 @@
 {
-    "python.pythonPath": "/usr/local/bin/python3",
-    "javascript.preferences.quoteStyle": "single",
-    "typescript.preferences.quoteStyle": "single",
-    "prettier.singleQuote": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+	"editor.autoIndent": "advanced",
+	// Formatting & Linting
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"prettier.configPath": ".prettierrc",
+	"editor.formatOnSave": false,
+	"editor.formatOnPaste": false,
+	"editor.formatOnType": false,
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true,
+		"source.fixAll.eslint": true,
+		"source.organizeImports": false
+	},
+	"eslint.enable": true,
+	"eslint.packageManager": "yarn",
+	"eslint.alwaysShowStatus": true,
+	"eslint.codeActionsOnSave.mode": "all",
+	"[javascript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+		"editor.formatOnSave": false,
+		"editor.formatOnPaste": false
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+		"editor.formatOnSave": false,
+		"editor.formatOnPaste": false,
+	},
+	"[json]": {
+		"editor.defaultFormatter": "dbaeumer.vscode-eslint",
+		"editor.formatOnSave": false,
+		"editor.formatOnPaste": false
+	},
+	"[html]": {
+		"editor.defaultFormatter": "vscode.html-language-features",
+		"editor.formatOnSave": true
+	},
+	"[yaml]": {
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2,
+		"editor.quickSuggestions": {
+			"other": true,
+			"comments": false,
+			"strings": true
+		},
+		"editor.formatOnSave": false,
+		"editor.formatOnPaste": false,
+		"editor.formatOnType": false,
+		"editor.autoIndent": "none"
+	},
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"html",
+		"json"
+	]
 }

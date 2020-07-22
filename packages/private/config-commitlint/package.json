@@ -1,0 +1,24 @@
+{
+  "private": true,
+  "name": "@deathstar/config-commitlint",
+  "description": "Config for linting git commits",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
+  "homepage": "https://github.com/aws-samples/aws-iot-kickstart",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aws-samples/aws-iot-kickstart"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@commitlint/cli": "^9.1.1",
+    "@commitlint/config-conventional": "^9.1.1",
+    "commitizen": "^4.1.2",
+    "cz-lerna-changelog": "^2.0.3",
+    "husky": "^4.2.5"
+  },
+  "peerDependencies": {
+    "husky": "^4.2.5"
+  }
+}

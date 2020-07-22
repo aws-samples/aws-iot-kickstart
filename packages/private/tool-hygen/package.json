@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "name": "@deathstar/tool-hygen",
+  "description": "Hygen tool related stuff",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
+  "homepage": "https://github.com/aws-samples/aws-iot-kickstart",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aws-samples/aws-iot-kickstart"
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "typings": "dist/index.d.ts",
+  "directories": {
+    "lib": "dist",
+    "test": "test"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc --project tsconfig.json",
+    "watch": "yarn build --watch",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@types/node-persist": "^3.1.0",
+    "node-persist": "^3.1.0"
+  }
+}

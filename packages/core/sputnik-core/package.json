@@ -1,0 +1,26 @@
+{
+  "name": "@deathstar/sputnik-core",
+  "description": "Sputnik core package",
+  "version": "0.0.0-alpha.0",
+  "license": "Apache-2.0",
+  "author": "jerjonas <jerjonas@example.com>",
+  "contributors": [
+    "Timothee Cruse <timothee.cruse@gmail.com>",
+    "Jeremy Jonas <jay.jonas@hotmail.com>",
+    "Greg Varga <contact@gergelyvarga.com>",
+    "Mirash Gjolaj <mirash.gjolaj@gmail.com>"
+  ],
+  "main": "dist/index.js",
+  "module": "dist/index.module.js",
+  "typings": "dist/index.d.ts",
+  "directories": {
+    "lib": "dist",
+    "test": "test"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc --project tsconfig.json",
+    "watch": "yarn build --watch",
+    "test": "jest"
+  }
+}

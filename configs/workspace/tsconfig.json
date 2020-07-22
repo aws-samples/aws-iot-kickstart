@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    // "traceResolution": true,
+    "noEmit": true,
+    "strict": true,
+    "allowJs": true,
+    "checkJs": false,
+    "jsx": "react",
+    "target": "ES2019",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "removeComments": true,
+    "resolveJsonModule": false,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "rootDir": "../../",
+    "baseUrl": ".",
+    "lib": ["dom", "esnext"],
+    "paths": {
+      "@deathstar/*": [
+        "packages/core/*/src",
+        "packages/ui/*/src",
+        "packages/private/*/src",
+      ],
+      "*": ["*", "@types/*"]
+    }
+  },
+  "include": ["jest-dom/extend-expect"]
+}

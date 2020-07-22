@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "noEmit": true,
+    "strict": true,
+    "jsx": "react",
+    "target": "ES2019",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "removeComments": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "outDir": ".out",
+    "paths": {
+      "@deathstar/*": [
+        "packages/core/*/src",
+        "packages/ui/*/src",
+        "packages/private/*/src",
+      ],
+      "*": ["*", "@types/*"]
+    }
+  },
+  "include": ["packages", "jest-dom/extend-expect"],
+  "exclude": ["node_modules", "dist", ".out"]
+}

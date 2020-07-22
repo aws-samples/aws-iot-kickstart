@@ -1,0 +1,26 @@
+{
+  "packages": [
+    "packages/*/*",
+    "kickstarter/infra"
+  ],
+  "version": "independent",
+  "useWorkspaces": true,
+  "npmClient": "yarn",
+  "command": {
+    "publish": {
+      "conventionalCommits": true,
+      "access": "public",
+      "npmClient": "yarn",
+      "allowBranch": ["master"],
+      "verifyAccess": false
+    },
+    "version": {
+      "message": "chore(release): publish",
+      "push": false
+    }
+  },
+  "ignoreChanges":[
+    "**/test/**",
+    "**/*.md"
+  ]
+}

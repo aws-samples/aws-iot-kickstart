@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "infra",
+  "version": "0.0.0",
+  "type": "module",
+  "bin": {
+    "infra": "bin/infra.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk",
+    "synth": "cdk synth",
+    "deploy": "npx cdk deploy --require-approval never SputnikKickstarter",
+    "bootstrap": "npx cdk bootstrap --cloudformationExecutionPolicies arn:aws:iam::aws:policy/AdministratorAccess"
+  },
+  "dependencies": {
+    "@aws-cdk/core": "1.45.0"
+  }
+}
