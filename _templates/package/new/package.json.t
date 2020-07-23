@@ -1,5 +1,6 @@
 ---
 to: <%= packageDir %>/package.json
+sh: cd <%= cwd %> && yarn install
 ---
 {
   <%_ if(locals.private){ -%>
@@ -27,6 +28,7 @@ to: <%= packageDir %>/package.json
     "url": "<%- repository %>"
   },
   <%_ } -%>
+  <%_ if(locals.type === 'nested'){ -%>
   "main": "dist/index.js",
   "module": "dist/index.module.js",
   "typings": "dist/index.d.ts",
@@ -34,9 +36,22 @@ to: <%= packageDir %>/package.json
     "lib": "dist",
     "test": "test"
   },
+  <%_ } -%>
+  <%_ if(locals.type === 'flat'){ -%>
+  "main": "index.js",
+  "module": "index.module.js",
+  "typings": "index.d.ts",
+  <%_ } -%>
   "scripts": {
+    <%_ if(locals.type === 'nested'){ -%>
     "clean": "rm -rf dist",
+    <%_ } -%>
+    <%_ if(locals.type === 'flat'){ -%>
+    "clean": "tsc --build --clean",
+    <%_ } -%>
+    "prebuild": "yarn clean",
     "build": "tsc --project tsconfig.json",
+    "prewatch": "yarn clean",
     "watch": "yarn build --watch",
     "test": "jest"
   }

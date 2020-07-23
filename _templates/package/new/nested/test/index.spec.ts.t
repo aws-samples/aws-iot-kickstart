@@ -1,5 +1,5 @@
 ---
-to: <%= packageDir %>/test/index.spec.ts
+to: "<%= type != 'nested' ? null : `${packageDir}/test/index.spec.ts` %>"
 ---
 import <%= h.changeCase.camel(name) %> from '../src'
 
