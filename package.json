@@ -10,9 +10,9 @@
   "description": "Monorepo for project deathstar",
   "scripts": {
     "//prebuild": "run-p tsc lint",
-    "build": "lerna run 'build' --stream --ignore infra --ignore @deathstar/sputnik-ui-angular",
-    "postbuild": "cd packages/ui/sputnik-ui-angular && yarn build",
-    "build:fast": "lerna run 'build' --stream --no-private",
+    "build": "yarn build:angular && yarn build:lambdas && yarn build:packages",
+    "build:packages": "lerna run 'build' --stream --no-private --ignore @deathstar/sputnik-ui-angular",
+    "build:angular": "cd packages/ui/sputnik-ui-angular && yarn build",
     "build:lambdas": "lerna run --parallel 'build' --scope @lambda/*",
     "watch": "lerna run --parallel 'watch' --no-private",
     "watch:since": "lerna run --parallel 'watch' --no-private --since",
