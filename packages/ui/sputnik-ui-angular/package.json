@@ -21,7 +21,7 @@
   "scripts": {
     "dev": "ng serve",
     "ng": "ng",
-    "build": "ng build --prod",
+    "build": "ng build --prod --verbose",
     "postbuild": "mkdir -p ./compiled && cd dist && zip ../compiled/sputnik-ui-angular.zip *",
     "clean": "rm -rf dist",
     "clean:deep": "yarn clean && rm -rf node_modules",
