@@ -14,12 +14,19 @@
     "paths": {
       "@deathstar/*": [
         "packages/core/*/src",
+        "packages/core/*",
+        "packages/infra/*/src",
+        "packages/infra/*",
+        "packages/api/*/src",
+        "packages/api/*",
         "packages/ui/*/src",
+        "packages/ui/*",
         "packages/private/*/src",
+        "packages/private/*",
       ],
       "*": ["*", "@types/*"]
     }
   },
-  "include": ["packages", "jest-dom/extend-expect"],
+  "include": ["packages", "jest-dom/extend-expect", "legacy/lambdas/command-handler"],
   "exclude": ["node_modules", "dist", ".out"]
 }

@@ -6,22 +6,24 @@ import { valid as validateSemver, SemVer } from 'semver'
 // @ts-ignore
 import Snippet from 'enquirer/lib/prompts/snippet'
 import { getPromptStoreValues, setPromptStoreValues } from '../store'
+import { EOF } from 'dns'
 
 const STORE_KEY = 'package-snippet'
 
 interface Options {
 	readonly packageDir: string
-  readonly scope: string
-  readonly license: 'Apache-2.0' | 'UNLICENSED'
-  readonly message?: string
-  readonly noAuthor?: boolean
-  readonly defaults?: {
-    readonly version?: string
-    readonly emailDomain?: string
-    readonly homepage?: string
-    readonly repository?: string
-  }
-  readonly prefix: boolean | string
+	readonly scope: string
+	readonly private?: boolean
+	readonly license: 'Apache-2.0' | 'UNLICENSED'
+	readonly message?: string
+	readonly noAuthor?: boolean
+	readonly defaults?: {
+		readonly version?: string
+		readonly emailDomain?: string
+		readonly homepage?: string
+		readonly repository?: string
+	}
+	readonly prefix: boolean | string
 }
 
 export class PackagePrompt extends Snippet {
@@ -66,14 +68,14 @@ export class PackagePrompt extends Snippet {
 				}
 
 				return `{
-  "name": "${options.scope}/${prefixField}\${name}'}",
-  "description": "\${description}",
-  "version": "\${version:${defaults.version}}",
-  "license": "\${license:${defaults.license}}",
-  ${options.noAuthor ? '' : `"author": "\${author_name:${defaults.author_name}} <\${author_email:${defaults.author_email}}>",`}
-  ...
+	"name": "${options.scope}/${prefixField}\${name}'}",
+	"description": "\${description}",
+	"version": "\${version:${defaults.version}}",
+	"license": "\${license:${defaults.license}}",
+	${options.noAuthor ? '' : `"author": "\${author_name:${defaults.author_name}} <\${author_email:${defaults.author_email}}>",`}
+	...
 }
-  `
+	`
 			},
 		})
 
@@ -83,9 +85,7 @@ export class PackagePrompt extends Snippet {
 	result (value: any) {
 		value = super.result(value)
 
-		console.log('VALUE:', value)
-
-		const { scope, noAuthor, packageDir } = this.packageOptions
+		const { scope, private: isPrivate, noAuthor, packageDir } = this.packageOptions
 		const { values } = value
 		const { prefix, name, author_name, author_email, homepage, repository } = values
 
@@ -101,11 +101,11 @@ export class PackagePrompt extends Snippet {
 
 		const result = {
 			...values,
-			private: packageDir === 'private',
+			private: isPrivate,
 			packageScope: scope,
 			noAuthor,
 			packageName,
-			packageDir: `packages/${packageDir}/${name}`,
+			packageDir: `packages/${packageDir}/${prefix}-${name}`,
 			author: `${author_name} <${author_email}>`,
 		}
 

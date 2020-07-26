@@ -1,0 +1,24 @@
+{
+  "extends": "../../../configs/workspace/tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "emitDeclarationOnly": false,
+    "skipLibCheck": true,
+    "declaration": true,
+    "baseUrl": "../../../",
+    "rootDir": "./",
+
+    // TODO: resolve all typescript recommended issues and remove these settings
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": false,
+		"strictPropertyInitialization": false,
+  },
+  "compileOnSave": true,
+  "exclude": ["node_modules", "__test__", "**/*.js"],
+  "include": ["**/*.ts"],
+  "files": [
+    "../sputnik-infra-lambda-code/src/index.ts"
+  ]
+}

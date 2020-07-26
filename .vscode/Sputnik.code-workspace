@@ -1,0 +1,43 @@
+{
+	"folders": [
+		{
+			"name": "Kickstarter",
+			"path": "../kickstarter/infra"
+		},
+		{
+			"name": "Package Infra",
+			"path": "../packages/infra/sputnik-infra"
+		},
+		{
+			"name": "Package Infra Lambdas",
+			"path": "../packages/infra/sputnik-infra-lambda-code"
+		},
+		{
+			"name": "Package UI Angular",
+			"path": "../packages/ui/sputnik-ui-angular"
+		},
+		{
+			"name": "Deathstar",
+			"path": ".."
+		},
+	],
+	"settings": {
+		"search.exclude": {
+			"**/node_modules": true,
+			"**/bower_components": true,
+			"**/*.code-search": true,
+			"**/dist": true,
+			"**/.cache": true,
+			"**/*.js": true,
+			"**/*.d.ts": true,
+			"**/*.map": true,
+			"**/yarn.lock": true,
+			"**/*.log": true,
+		},
+		"files.exclude": {
+			"**/.cache": true,
+			"**/*.d.ts": true,
+			"**/*.map": true,
+		}
+	}
+}

@@ -1,4 +1,4 @@
-import sputnikCore from '../src'
+import * as sputnikCore from '../src'
 
 describe('@deathstar/sputnik-core', () => {
 	test('TODO: write tests!', () => {

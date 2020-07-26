@@ -1,6 +1,7 @@
 {
   "packages": [
     "packages/*/*",
+    "packages/infra/sputnik-infra-lambda-code/@lambda/**",
     "kickstarter/infra"
   ],
   "version": "independent",

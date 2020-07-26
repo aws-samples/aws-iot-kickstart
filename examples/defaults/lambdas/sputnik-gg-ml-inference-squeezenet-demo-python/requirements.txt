@@ -1,3 +1,0 @@
-../libs/camera
-../libs/ggiot
-../libs/file_output

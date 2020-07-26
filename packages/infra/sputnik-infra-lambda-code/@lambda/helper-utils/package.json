@@ -1,0 +1,17 @@
+{
+    "private": true,
+    "name": "@lambda/helper-utils",
+    "description": "Utils for the app",
+    "main": "libs.js",
+    "version": "0.0.0",
+    "scripts": {
+        "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
+        "postbuild": "mkdir -p ../../dist/@lambda && cd dist && zip ../../../dist/$npm_package_name.zip *"
+    },
+    "dependencies": {
+        "@lambda/usage-metrics": "0.0.0",
+        "moment": "2.24.0",
+        "underscore": "1.10.2",
+        "uuid": "8.0.0"
+    }
+}

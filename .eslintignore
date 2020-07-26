@@ -2,3 +2,9 @@ dist/
 *.d.ts
 node_modules
 _templates
+.eslintrc.js
+package.json
+**/@lambda/**
+**/*.log
+**/yarn.lock
+**/.cache

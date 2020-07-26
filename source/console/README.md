@@ -1,1 +1,0 @@
-# sputnik website

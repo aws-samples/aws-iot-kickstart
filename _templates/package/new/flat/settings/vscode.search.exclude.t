@@ -1,6 +1,6 @@
 ---
 inject: true
-to: .vscode/settings.json
+to: "<%= type != 'flat' ? null : '.vscode/settings.json' %>"
 after: search.exclude
 append: true
 ---

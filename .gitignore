@@ -8,6 +8,17 @@ cdk.out
 # prevent commit pacakge-lock.json since we use yarn
 package-lock.json
 
+# typescript build artifacts
+*.d.ts
+!@types/*
+*.js.map
+# Ignore "flat" template style root index.js (from index.ts)
+packages/*/*/index.js
+# Ignore all sub-directory js files in packages
+packages/*/*/*/**/*.js
+!packages/**/lambda/**/*.js
+!packages/**/lambdas/**/*.js
+
 #############################################################################
 ## https://github.com/github/gitignore/blob/master/Node.gitignore
 #############################################################################

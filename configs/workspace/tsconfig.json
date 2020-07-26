@@ -21,8 +21,15 @@
     "paths": {
       "@deathstar/*": [
         "packages/core/*/src",
+        "packages/core/*",
+        "packages/infra/*/src",
+        "packages/infra/*",
+        "packages/api/*/src",
+        "packages/api/*",
         "packages/ui/*/src",
+        "packages/ui/*",
         "packages/private/*/src",
+        "packages/private/*",
       ],
       "*": ["*", "@types/*"]
     }

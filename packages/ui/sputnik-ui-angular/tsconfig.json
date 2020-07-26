@@ -1,16 +1,63 @@
 {
-  "extends": "../../../configs/workspace/tsconfig.json",
+	// "traceResolution": true,
   "compilerOptions": {
+		"target": "es2015",
+		"lib": ["es2017", "dom"],
+    "module": "esnext",
     "noEmit": false,
     "emitDeclarationOnly": false,
+    "downlevelIteration": true,
     "skipLibCheck": true,
-    "declaration": true,
-    "declarationDir": "./dist",
+		"sourceMap": true,
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"resolveJsonModule": true,
+    "esModuleInterop": true,
+    "removeComments": true,
+    "declaration": false,
     "rootDir": "./src",
-    "baseUrl": "../../../",
-    "outDir": "./dist"
+		"baseUrl": "./src/app/",
+    "outDir": "./out",
+		"paths": {
+			"@app/*": ["./*"],
+			"@assets/*": ["../assets/*"],
+			"@common-components/*": ["common/components/*"],
+			"@common-modules/*": ["common/modules/*"],
+			"@common-secure/*": ["secure/common/*"],
+			"@env/*": ["../environments/*"],
+			"@graphql/*": ["graphql/*"],
+			"@models/*": ["models/*"],
+			"@pipes/*": ["pipes/*"],
+			"@secure/*": ["secure/*"],
+			"@services/*": ["services/*"],
+			"@systems/*": ["secure/child-views/*"],
+			"@widgets/*": ["widgets/*"],
+		},
+		"typeRoots": [
+			"./node_modules/@types",
+			"../../../node_modules/@types",
+			"../../../@types",
+		],
+
+    // TODO: resolve all typescript recommended issues and remove these settings
+		"strict": false,
+		"noImplicitAny": false,
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": false,
+		"strictPropertyInitialization": false,
   },
-  "compileOnSave": true,
-  "exclude": ["node_modules", "dist"],
-  "include": ["src"]
+  "compileOnSave": false,
+  "exclude": ["node_modules", "dist", "test", "**/*.spec.*"],
+  "include": ["src"],
+	"files": [
+		"../../infra/sputnik-infra/stack/nested/identity/constants.ts",
+		"../../infra/sputnik-infra/stack/nested/device/management/constants.ts",
+		"../../infra/sputnik-infra/stack/nested/identity/UserGroups.ts"
+	],
+	"angularCompilerOptions": {
+		"disableTypeScriptVersionCheck": true
+	}
 }

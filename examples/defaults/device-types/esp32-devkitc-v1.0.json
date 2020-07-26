@@ -1,6 +1,0 @@
-{
-    "id": "esp32-devkitc-v1.0",
-    "name": "ESP32 DevKitC v1.0",
-    "type": "A:FreeRTOS",
-    "spec": {}
-}
