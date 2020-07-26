@@ -11,7 +11,7 @@
   "scripts": {
     "//prebuild": "run-p tsc lint",
     "build": "lerna run 'build' --stream --ignore infra --ignore @deathstar/sputnik-ui-angular",
-    "postbuild": "cd packages/infra/sputnik-ui-angular && yarn build",
+    "postbuild": "cd packages/ui/sputnik-ui-angular && yarn build",
     "build:fast": "lerna run 'build' --stream --no-private",
     "build:lambdas": "lerna run --parallel 'build' --scope @lambda/*",
     "watch": "lerna run --parallel 'watch' --no-private",
@@ -54,8 +54,7 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-push": "git branch | grep \"*\" | egrep -v \"^* master$\""
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "resolutions": {

@@ -1,9 +1,9 @@
-import * as path from 'path'
 import { Construct, App } from '@aws-cdk/core'
 import { PersistentStack } from '@deathstar/sputnik-infra/stack/root/PersistentStack'
 import { AppStack } from '@deathstar/sputnik-infra/stack/root/AppStack'
 import { Source } from '@aws-cdk/aws-s3-deployment'
 import { getAppContext } from '@deathstar/sputnik-infra/context'
+import { BUILD_ARTIFACT_ZIP } from '../../../packages/ui/sputnik-ui-angular/metadata'
 // import { PipelineStack } from '@deathstar/sputnik-infra/stack/root/PipelineStack'
 
 export class SputnikKickstarter extends Construct {
@@ -13,7 +13,7 @@ export class SputnikKickstarter extends Construct {
 		const context = getAppContext(app)
 
 		// TODO: use zip
-		const websiteSource = Source.asset(path.resolve(__dirname, '../../../node_modules', '@deathstar/sputnik-ui-angular/compiled/sputnik-ui-angular.zip'))
+		const websiteSource = Source.asset(BUILD_ARTIFACT_ZIP)
 
 		const persistentStack = new PersistentStack(app, 'PersistentStack', {
 			stackName: `${context.Namespace}-Persistent`,
