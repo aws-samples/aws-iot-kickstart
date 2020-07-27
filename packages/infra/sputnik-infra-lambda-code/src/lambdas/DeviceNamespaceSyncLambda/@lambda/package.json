@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "@lambda/device-namespace-sync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+      "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
+  },
+  "dependencies": {
+    "aws-appsync": "^3.0.3",
+    "cross-fetch": "^3.0.4",
+    "graphql-tag": "^2.10.3"
+  },
+  "workspaces": {
+      "nohoist": [
+          "**/aws-appsync", "**/aws-appsync/**",
+          "**/cross-fetch", "**/cross-fetch/**",
+          "**/graphql-tag", "**/graphql-tag/**"
+      ]
+  }
+}

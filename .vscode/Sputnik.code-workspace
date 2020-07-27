@@ -1,8 +1,12 @@
 {
 	"folders": [
 		{
-			"name": "Kickstarter",
+			"name": "Kickstarter (infra)",
 			"path": "../kickstarter/infra"
+		},
+		{
+			"name": "Kickstarter (web)",
+			"path": "../kickstarter/web"
 		},
 		{
 			"name": "Package Infra",

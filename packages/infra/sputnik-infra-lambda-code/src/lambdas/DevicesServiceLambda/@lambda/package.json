@@ -1,0 +1,28 @@
+{
+    "private": true,
+    "name": "@lambda/devices-service",
+    "description": "The devices microservice for the sputnik",
+    "main": "libs.js",
+    "version": "0.0.0",
+    "scripts": {
+        "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
+    },
+    "dependencies": {
+        "@lambda/helper-utils": "0.0.0",
+        "@lambda/usage-metrics": "0.0.0",
+        "moment": "2.24.0",
+        "underscore": "1.10.2",
+        "node-forge": "0.8.5",
+        "shortid": "2.2.14"
+    },
+    "workspaces": {
+        "nohoist": [
+            "**/@lambda/helper-utils", "**/@lambda/helper-utils/**",
+            "**/@lambda/usage-metrics", "**/@lambda/usage-metrics/**",
+            "**/moment", "**/moment/**",
+            "**/underscore",  "**/underscore/**",
+            "**/node-forge", "**/node-forge/**",
+            "**/shortid", "**/shortid/**"
+        ]
+    }
+}

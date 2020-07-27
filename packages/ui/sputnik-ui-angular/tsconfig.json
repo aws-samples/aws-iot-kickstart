@@ -15,25 +15,10 @@
 		"resolveJsonModule": true,
     "esModuleInterop": true,
     "removeComments": true,
-    "declaration": false,
-    "rootDir": "./src",
-		"baseUrl": "./src/app/",
-    "outDir": "./out",
-		"paths": {
-			"@app/*": ["./*"],
-			"@assets/*": ["../assets/*"],
-			"@common-components/*": ["common/components/*"],
-			"@common-modules/*": ["common/modules/*"],
-			"@common-secure/*": ["secure/common/*"],
-			"@env/*": ["../environments/*"],
-			"@graphql/*": ["graphql/*"],
-			"@models/*": ["models/*"],
-			"@pipes/*": ["pipes/*"],
-			"@secure/*": ["secure/*"],
-			"@services/*": ["services/*"],
-			"@systems/*": ["secure/child-views/*"],
-			"@widgets/*": ["widgets/*"],
-		},
+    "declaration": true,
+		// "outDir": "app",
+		// "declarationDir": "app",
+		// "rootDir": "src/app",
 		"typeRoots": [
 			"./node_modules/@types",
 			"../../../node_modules/@types",
@@ -50,13 +35,13 @@
 		"strictPropertyInitialization": false,
   },
   "compileOnSave": false,
-  "exclude": ["node_modules", "dist", "test", "**/*.spec.*"],
-  "include": ["src"],
-	"files": [
-		"../../infra/sputnik-infra/stack/nested/identity/constants.ts",
-		"../../infra/sputnik-infra/stack/nested/device/management/constants.ts",
-		"../../infra/sputnik-infra/stack/nested/identity/UserGroups.ts"
-	],
+  "exclude": ["node_modules", "test", "**/*.spec.*"],
+  "include": ["app"],
+	// "files": [
+	// 	"../../infra/sputnik-infra/stack/nested/identity/constants.ts",
+	// 	"../../infra/sputnik-infra/stack/nested/device/management/constants.ts",
+	// 	"../../infra/sputnik-infra/stack/nested/identity/UserGroups.ts"
+	// ],
 	"angularCompilerOptions": {
 		"disableTypeScriptVersionCheck": true
 	}

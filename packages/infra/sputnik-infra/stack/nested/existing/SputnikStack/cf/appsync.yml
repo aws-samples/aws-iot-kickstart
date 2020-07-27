@@ -44,7 +44,7 @@ Parameters:
     systemsServiceLambdaFunctionArn:
         Type: String
         Description: Systems Micro Service ARN
-    utilsCustomResourceLambdaFunctionArn:
+    HelperUtilsLambdaFunctionArn:
         Type: String
         Description: Utils Micro Service ARN
 
@@ -65,7 +65,7 @@ Resources:
                             - !Ref deploymentsServiceLambdaFunctionArn
                             - !Ref settingsServiceLambdaFunctionArn
                             - !Ref systemsServiceLambdaFunctionArn
-                            - !Ref utilsCustomResourceLambdaFunctionArn
+                            - !Ref HelperUtilsLambdaFunctionArn
 
             Roles:
                 - !Ref apiRole
@@ -187,7 +187,7 @@ Resources:
             Type: AWS_LAMBDA
             ServiceRoleArn: !Ref 'apiRoleArn'
             LambdaConfig:
-                LambdaFunctionArn: !Ref utilsCustomResourceLambdaFunctionArn
+                LambdaFunctionArn: !Ref HelperUtilsLambdaFunctionArn
 
     # ####################################################################################################
     # ####################################################################################################

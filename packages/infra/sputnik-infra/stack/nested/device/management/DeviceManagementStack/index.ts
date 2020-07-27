@@ -6,7 +6,7 @@ import { Construct, NestedStack, NestedStackProps, Duration } from '@aws-cdk/cor
 import { CfnPolicy as IotCfnPolicy } from '@aws-cdk/aws-iot'
 import { StartingPosition } from '@aws-cdk/aws-lambda'
 import { Queue } from '@aws-cdk/aws-sqs'
-import { DeviceNamespaceSyncCode } from '@deathstar/sputnik-infra-lambda-code'
+import { DeviceNamespaceSyncLambda } from '@deathstar/sputnik-infra-lambda-code'
 import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra/construct/api/graphql/ExtendableGraphQLApi'
 import { namespaced } from '@deathstar/sputnik-infra/utils/cdk-identity-utils'
 import { DEFAULT_NAMESPACE } from '../constants'
@@ -36,12 +36,7 @@ export class DeviceManagementStack extends NestedStack {
 			...props,
 		})
 
-		const deviceNamespaceSync = new lambda.Function(scope, 'DeviceNamespaceSync', {
-			...DeviceNamespaceSyncCode,
-			functionName: namespaced(this, 'DeviceNamespaceSync'),
-			description: 'Handles changed to Device.namespace and trigger MQTT topic to the device to update the information. Will also handle re-deployment in specific cases',
-			timeout: Duration.seconds(10),
-			memorySize: 256,
+		const deviceNamespaceSync = new DeviceNamespaceSyncLambda(scope, 'DeviceNamespaceSync', {
 			initialPolicy: [
 				new iam.PolicyStatement({
 					actions: ['appsync:GraphQL'],
@@ -59,7 +54,7 @@ export class DeviceManagementStack extends NestedStack {
 			environment: {
 				GRAPHQL_ENDPOINT: graphQLApi.graphQlUrl,
 				DEFAULT_NAMESPACE,
-			} as DeviceNamespaceSyncCode.Environment,
+			},
 		})
 
 		const deadLetterQueue = new Queue(this, 'DeadLetterQueue')

@@ -2,5 +2,7 @@
 	"search.exclude": {
 	},
 	"files.exclude": {
+		"src/lambdas/*/index.js": true,
+		"**/@lambda/**/*": false,
 	}
 }

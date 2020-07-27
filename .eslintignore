@@ -4,7 +4,7 @@ node_modules
 _templates
 .eslintrc.js
 package.json
-**/@lambda/**
+**/@lambda/**/*.js
 **/*.log
 **/yarn.lock
 **/.cache

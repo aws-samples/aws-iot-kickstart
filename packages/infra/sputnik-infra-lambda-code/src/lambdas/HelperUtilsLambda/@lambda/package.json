@@ -1,0 +1,24 @@
+{
+    "private": true,
+    "name": "@lambda/helper-utils",
+    "description": "Utils for the app",
+    "main": "libs.js",
+    "version": "0.0.0",
+    "scripts": {
+        "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
+    },
+    "dependencies": {
+        "@lambda/usage-metrics": "0.0.0",
+        "moment": "2.24.0",
+        "underscore": "1.10.2",
+        "uuid": "8.0.0"
+    },
+    "workspaces": {
+        "nohoist": [
+            "**/@lambda/usage-metrics", "**/@lambda/usage-metrics/**",
+            "**/moment", "**/moment/**",
+            "**/underscore", "**/underscore/**",
+            "**/uuid", "**/uuid/**"
+        ]
+    }
+}

@@ -1,1 +1,4 @@
-compiled/
+index.js
+*/**/*.js
+*/**/*.d.ts
+*/**/*.map

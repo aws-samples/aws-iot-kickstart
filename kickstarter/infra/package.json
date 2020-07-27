@@ -15,16 +15,14 @@
     "clean:deep": "yarn clean && find lib -type d -name node_modules -exec rm -rf {} \\;",
     "deploy": "cdk deploy --require-approval never AppStack",
 
-    "prod:pipeline:deploy": "cdk deploy --require-approval never Sputnik-Pipeline",
     "synth": "cdk synth",
     "dev:build": "yarn build",
-    "dev:deploy:pipeline": "cdk deploy --require-approval never Sputnik-Pipeline",
-    "dev:deploy:persistent": "cdk deploy --require-approval never Sputnik-Persistent",
-    "dev:DESTROY:persistent": "cdk destroy Sputnik-Persistent",
-    "dev:deploy:app": "cdk deploy --require-approval never SputnikKickstarter",
-    "dev:deploy:app:force": "cdk deploy --require-approval never SputnikKickstarter --force",
-    "dev:synth:app": "cdk synth SputnikKickstarter",
-    "dev:DESTROY:app": "cdk destroy SputnikKickstarter",
+    "dev:deploy:persistent": "cdk deploy --require-approval never PipelineStack",
+    "dev:DESTROY:persistent": "cdk destroy PipelineStack",
+    "dev:deploy:app": "cdk deploy --require-approval never AppStack",
+    "dev:deploy:app:force": "cdk deploy --require-approval never AppStack --force",
+    "dev:synth:app": "cdk synth",
+    "dev:DESTROY:app": "cdk destroy AppStack",
     "bootstrap": "CDK_NEW_BOOTSTRAP=3 cdk bootstrap --cloudformationExecutionPolicies arn:aws:iam::aws:policy/AdministratorAccess"
   },
   "devDependencies": {

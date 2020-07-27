@@ -1,6 +1,10 @@
 {
 	"search.exclude": {
+		"app/**/*.js": true,
+		"**/*.{d.ts,js.map}": true,
 	},
 	"files.exclude": {
+		// "app/**/*.js": false,
+		// "**/*.{d.ts,js.map}": false,
 	}
 }

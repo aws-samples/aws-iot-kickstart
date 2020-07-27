@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@deathstar/sputnik-ui-angular",
   "description": "Sputnik frontend using Angular framework",
   "version": "0.0.0-alpha.0",
@@ -11,32 +10,18 @@
     "Greg Varga <contact@gergelyvarga.com>",
     "Mirash Gjolaj <mirash.gjolaj@gmail.com>"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.module.js",
-  "typings": "dist/index.d.ts",
-  "directories": {
-    "lib": "dist",
-    "test": "test"
-  },
   "scripts": {
-    "dev": "ng serve",
-    "ng": "ng",
-    "build": "ng build --prod --verbose",
-    "postbuild": "mkdir -p ./compiled && cd dist && zip ../compiled/sputnik-ui-angular.zip *",
-    "clean": "rm -rf dist",
-    "clean:deep": "yarn clean && rm -rf node_modules",
+    "clean": "tsc --build --clean",
+    "prebuild": "yarn clean",
+    "build": "tsc --project tsconfig.json",
+    "prewatch": "yarn clean",
+    "watch": "yarn build --watch",
     "test": "jest"
   },
   "dependencies": {
-    "@deathstar/sputnik-infra": "0.0.0-alpha.0"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "~0.803.25",
+    "@deathstar/sputnik-infra": "0.0.0-alpha.0",
     "@angular/animations": "^8.2.14",
-    "@angular/cli": "^8.3.26",
     "@angular/common": "^8.2.14",
-    "@angular/compiler": "^8.2.14",
-    "@angular/compiler-cli": "^8.2.14",
     "@angular/core": "^8.2.14",
     "@angular/forms": "^8.2.14",
     "@angular/language-service": "^8.2.14",
@@ -102,11 +87,6 @@
     "uuid": "3.3.2",
     "zone.js": "~0.9.1",
 
-    "@types/mapbox-gl": "^1.10.2",
-    "mapbox-gl": "^1.10.1",
-    "ngx-mapbox-gl": "^4.5.0"
-  },
-  "brokenDependencies": {
     "@types/mapbox-gl": "^1.10.2",
     "mapbox-gl": "^1.10.1",
     "ngx-mapbox-gl": "^4.5.0"

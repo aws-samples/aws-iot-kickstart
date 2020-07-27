@@ -6,15 +6,15 @@ import { v1 as uuid } from 'uuid'
 import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
 import { Construct, CustomResource, Fn, NestedStack, NestedStackProps } from '@aws-cdk/core'
 import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra/construct/api/graphql/ExtendableGraphQLApi'
-import { uniqueIdHash, namespaced, namespacedBucket } from '@deathstar/sputnik-infra/utils/cdk-identity-utils'
+import { uniqueIdHash, namespaced } from '@deathstar/sputnik-infra/utils/cdk-identity-utils'
 import { PersistentStack } from '@deathstar/sputnik-infra/stack/root/PersistentStack'
 import {
-	DeploymentsServiceCode,
-	SettingsServiceCode,
-	SystemsServiceCode,
-	JITOnboardingServiceCode,
-	S3HelperCustomResourceCode,
-	UtilsCustomResourceCode,
+	DeploymentsServiceLambda,
+	SettingsServiceLambda,
+	SystemsServiceLambda,
+	JITOnboardingServiceLambda,
+	S3HelperLambda,
+	HelperUtilsLambda,
 } from '@deathstar/sputnik-infra-lambda-code'
 import { DeviceManagementStack } from '../../device/management/DeviceManagementStack'
 import { CognitoStack } from '../../identity/CognitoStack'
@@ -115,8 +115,8 @@ export class SputnikStack extends NestedStack {
 		this.lambdaHelpersStack = new IncludeStack(this, 'CFStackForLambdaHelpers', {
 			templateFile: getTemplateFile('lambda-helpers'),
 			parameters: {
-				customResourceS3Helper: S3HelperCustomResourceCode.code,
-				utilsCustomResourceLambdaFunction: UtilsCustomResourceCode.code,
+				customResourceS3Helper: S3HelperLambda.codeAsset,
+				HelperUtilsLambdaFunction: HelperUtilsLambda.codeAsset,
 				destBucketArn: persistent.websiteStack.websiteBucketArn,
 				dataBucketArn: persistent.dataBucketStack.dataBucketArn,
 				settingsTable: persistent.deviceManagementStack.settingTable.tableName,
@@ -128,7 +128,7 @@ export class SputnikStack extends NestedStack {
 				greengrassServiceRoleArn: this.greengrassServiceIAMRole.roleArn,
 			},
 		})
-		const utilsFunction = LambdaFunction.fromFunctionArn(this, 'UtilsFunction', this.lambdaHelpersStack.getOutput('utilsCustomResourceLambdaFunctionArn'))
+		const utilsFunction = LambdaFunction.fromFunctionArn(this, 'UtilsFunction', this.lambdaHelpersStack.getOutput('HelperUtilsLambdaFunctionArn'))
 		const s3HelperFunction = LambdaFunction.fromFunctionArn(this, 'S3HelperFunction', this.lambdaHelpersStack.getOutput('customResourceS3HelperArn'))
 
 		this.iotEndpoint = new CustomResource(this, 'iotEndpoint', {
@@ -144,10 +144,10 @@ export class SputnikStack extends NestedStack {
 			templateFile: getTemplateFile('lambda-services'),
 			parameters: {
 				tenantRoleArn: cognitoStack.tenantRole.roleArn,
-				deploymentsServiceLambdaFunction: DeploymentsServiceCode.code,
-				settingsServiceLambdaFunction: SettingsServiceCode.code,
-				systemsServiceLambdaFunction: SystemsServiceCode.code,
-				justInTimeOnBoardingServiceLambdaFunction: JITOnboardingServiceCode.code,
+				deploymentsServiceLambdaFunction: DeploymentsServiceLambda.codeAsset,
+				settingsServiceLambdaFunction: SettingsServiceLambda.codeAsset,
+				systemsServiceLambdaFunction: SystemsServiceLambda.codeAsset,
+				justInTimeOnBoardingServiceLambdaFunction: JITOnboardingServiceLambda.codeAsset,
 				dataBucket: persistent.dataBucketStack.dataBucket.bucketName,
 				settingsTable: persistent.deviceManagementStack.settingTable.tableName,
 				devicesTable: persistent.deviceManagementStack.deviceTable.tableName,
@@ -179,7 +179,7 @@ export class SputnikStack extends NestedStack {
 				settingsServiceLambdaFunctionArn: this.lambdaServiceStack.getOutput('settingsServiceLambdaFunctionArn'),
 				deploymentsServiceLambdaFunctionArn: this.lambdaServiceStack.getOutput('deploymentsServiceLambdaFunctionArn'),
 				systemsServiceLambdaFunctionArn: this.lambdaServiceStack.getOutput('systemsServiceLambdaFunctionArn'),
-				utilsCustomResourceLambdaFunctionArn: utilsFunction.functionArn,
+				HelperUtilsLambdaFunctionArn: utilsFunction.functionArn,
 			},
 		})
 

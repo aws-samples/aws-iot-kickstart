@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../.out",
+    "skipLibCheck": true,
+		"target": "es2015",
+		"lib": ["es2017", "dom"],
+    "module": "esnext",
+		"moduleResolution": "node",
+    "noEmit": false,
+  },
+  "exclude": ["**/node_modules/**", "**/test/**", "**/*.spec.*"],
+  // "include": ["./"],
+  // "files": [
+  //   "../../../node_modules/@deathstar/sputnik-ui-angular/app/app.module.ts",
+  //   "../../../node_modules/@deathstar/sputnik-ui-angular/app/environment/index.ts",
+  // ]
+}

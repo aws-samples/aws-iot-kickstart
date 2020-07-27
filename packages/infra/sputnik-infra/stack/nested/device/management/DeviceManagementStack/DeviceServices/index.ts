@@ -10,7 +10,7 @@ import { DynamoDB as DynamoDBActions, Logs as LogsActions, IoT as IoTActions, Gr
 import { uniqueIdHash } from '@deathstar/sputnik-infra/utils/cdk-identity-utils'
 import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra/construct/api/graphql/ExtendableGraphQLApi'
 import { MappingTemplate, DynamoDbDataSource, LambdaDataSource } from '@aws-cdk/aws-appsync'
-import { DevicesServiceCode } from '@deathstar/sputnik-infra-lambda-code'
+import { DevicesServiceLambda } from '@deathstar/sputnik-infra-lambda-code'
 import { DEFAULT_NAMESPACE } from '../../constants'
 
 export interface DeviceServicesProps {
@@ -125,12 +125,7 @@ export class DeviceServices extends Construct {
 			},
 		})
 
-		const lambdaFunction = new LambdaFunction(scope, 'LambdaFunction', {
-			...DevicesServiceCode,
-			functionName: `Sputnik_DeviceServices_${uniqueIdHash(this)}`,
-			description: 'Sputnik Devices microservice',
-			timeout: Duration.seconds(60),
-			memorySize: 256,
+		const lambdaFunction = new DevicesServiceLambda(scope, 'LambdaFunction', {
 			role: lambdaRole,
 			environment: {
 				DEFAULT_NAMESPACE,
@@ -138,7 +133,7 @@ export class DeviceServices extends Construct {
 				TABLE_DEVICE_TYPES: deviceTypeTable.tableName,
 				TABLE_SETTINGS: settingTable.tableName,
 				IOT_DEFAULT_CONNECT_POLICY: iotConnectPolicy.policyName as string,
-			} as DevicesServiceCode.Environment,
+			},
 		})
 
 		/***********************************************************************

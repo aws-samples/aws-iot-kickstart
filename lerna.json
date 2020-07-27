@@ -2,7 +2,7 @@
   "packages": [
     "packages/*/*",
     "packages/infra/sputnik-infra-lambda-code/@lambda/**",
-    "kickstarter/infra"
+    "kickstarter/*"
   ],
   "version": "independent",
   "useWorkspaces": true,

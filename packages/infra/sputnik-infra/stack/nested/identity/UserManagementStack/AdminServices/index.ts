@@ -2,13 +2,12 @@
 import * as path from 'path'
 import { Effect, PolicyDocument, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam'
 import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
-import { Construct, Duration, Stack } from '@aws-cdk/core'
+import { Construct, Stack } from '@aws-cdk/core'
 import { ServicePrincipals } from 'cdk-constants'
 import { Logs as LogsActions, IAM as IAMActions } from 'cdk-iam-actions/lib/actions'
 import { UserPool } from '@aws-cdk/aws-cognito'
 import { MappingTemplate } from '@aws-cdk/aws-appsync'
-import { AdminServiceCode } from '@deathstar/sputnik-infra-lambda-code'
-import { uniqueIdHash } from '@deathstar/sputnik-infra/utils/cdk-identity-utils'
+import { AdminServiceLambda } from '@deathstar/sputnik-infra-lambda-code'
 import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra/construct/api/graphql/ExtendableGraphQLApi'
 import { INTERNAL_GROUPS, INTERNAL_TENANT } from '../../constants'
 
@@ -95,19 +94,14 @@ export class AdminServices extends Construct {
 			},
 		})
 
-		const lambdaFunction = new LambdaFunction(scope, 'LambdaFunction', {
-			...AdminServiceCode,
-			functionName: `Sputnik_AdminServices_${uniqueIdHash(this)}`,
-			description: 'Sputnik Admin microservice',
-			timeout: Duration.seconds(10),
-			memorySize: 256,
+		const lambdaFunction = new AdminServiceLambda(scope, 'LambdaFunction', {
 			role: lambdaRole,
 			environment: {
 				USER_POOL_ID: userPool.userPoolId,
 				TENANT_ROLE_ARN: tenantRole.roleArn,
 				INTERNAL_TENANT,
 				INTERNAL_GROUPS: INTERNAL_GROUPS.join(','),
-			} as AdminServiceCode.Environment,
+			},
 		})
 
 		/***********************************************************************

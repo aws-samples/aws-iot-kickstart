@@ -1,10 +1,12 @@
+import * as path from 'path'
 import { Construct, App } from '@aws-cdk/core'
 import { PersistentStack } from '@deathstar/sputnik-infra/stack/root/PersistentStack'
 import { AppStack } from '@deathstar/sputnik-infra/stack/root/AppStack'
 import { Source } from '@aws-cdk/aws-s3-deployment'
 import { getAppContext } from '@deathstar/sputnik-infra/context'
-import { BUILD_ARTIFACT_ZIP } from '../../../packages/ui/sputnik-ui-angular/metadata'
-// import { PipelineStack } from '@deathstar/sputnik-infra/stack/root/PipelineStack'
+
+const ROOT_DIR = path.resolve(__dirname, '../../../')
+const WEBSITE_SOURCE = path.resolve(ROOT_DIR, 'kickstarter/web')
 
 export class SputnikKickstarter extends Construct {
 	constructor (app: App, id: string) {
@@ -12,31 +14,17 @@ export class SputnikKickstarter extends Construct {
 
 		const context = getAppContext(app)
 
-		// TODO: use zip
-		const websiteSource = Source.asset(BUILD_ARTIFACT_ZIP)
+		// Website must be built before call this
+		const websiteSource = Source.asset(path.join(WEBSITE_SOURCE, 'dist'))
 
 		const persistentStack = new PersistentStack(app, 'PersistentStack', {
 			stackName: `${context.Namespace}-Persistent`,
 			websiteSource,
 		})
 
-		const appStack = new AppStack(app, 'AppStack', {
+		new AppStack(app, 'AppStack', {
 			stackName: `${context.Namespace}-App`,
 			persistent: persistentStack,
 		})
-
-		// new PipelineStack(app, `${context.Namespace}-Pipeline`, {
-		// 	appStackName: appStack.stackName,
-		// 	appStackRegion: appStack.region,
-		// 	repositoryName: context.RepositoryName,
-		// 	repositoryBranch: context.RepositoryBranch,
-		// 	selfUpdate: false,
-		// 	env: {
-		// 		region: context.RepositoryRegion,
-		// 		// Required for cross-region to prevent "You need to specify an explicit
-		// 		// account when using CodePipeline's cross-region support"
-		// 		account: ACCOUNT,
-		// 	},
-		// })
 	}
 }

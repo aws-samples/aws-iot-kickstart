@@ -5,7 +5,7 @@ import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 import { CfnPolicy as CfnIoTPolicy } from '@aws-cdk/aws-iot'
-import { CognitoPreTokenGenerationCode } from '@deathstar/sputnik-infra-lambda-code'
+import { CognitoPreTokenGenerationLambda } from '@deathstar/sputnik-infra-lambda-code'
 import { retainResource } from '../../../../utils/resource-utils'
 import { namespaced, uniqueIdHash } from '../../../../utils/cdk-identity-utils'
 import { PolicyStatement, Effect, PolicyDocument } from '@aws-cdk/aws-iam'
@@ -83,11 +83,7 @@ export class CognitoPersistentStack extends NestedStack {
 			},
 		})
 		retainResource(userPool)
-		userPool.addTrigger(UserPoolOperation.PRE_TOKEN_GENERATION, new LambdaFunction(this, 'PreTokenGenerationTriggerLambda', {
-			...CognitoPreTokenGenerationCode,
-			description: 'Sputnik Cognito UserPool preTokenGeneration trigger',
-			timeout: Duration.seconds(5),
-			memorySize: 256,
+		userPool.addTrigger(UserPoolOperation.PRE_TOKEN_GENERATION, new CognitoPreTokenGenerationLambda(this, 'PreTokenGenerationTriggerLambda', {
 			initialPolicy: [
 				new PolicyStatement({
 					effect: Effect.ALLOW,
@@ -106,7 +102,7 @@ export class CognitoPersistentStack extends NestedStack {
 				INTERNAL_TENANT,
 				INTERNAL_NAMESPACE: DEFAULT_NAMESPACE,
 				INTERNAL_GROUPS: INTERNAL_GROUPS.join(','),
-			} as CognitoPreTokenGenerationCode.Environment,
+			},
 		}))
 
 		const adminCognitoGroup = new CfnUserPoolGroup(this, 'AdminCognitoGroup', {

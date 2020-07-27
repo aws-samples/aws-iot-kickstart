@@ -4,7 +4,7 @@ import { FieldLogLevel, GraphQLApi, GraphQLApiProps, UserPoolDefaultAction, CfnG
 import { IUserPool } from '@aws-cdk/aws-cognito'
 import { Table } from '@aws-cdk/aws-dynamodb'
 import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam'
-import { Function } from '@aws-cdk/aws-lambda'
+import { IFunction } from '@aws-cdk/aws-lambda'
 import { Construct } from '@aws-cdk/core'
 import { DynamoDB as DynamoDBActions, Lambda as LambdaActions } from 'cdk-iam-actions/lib/actions'
 import { printSchema } from './print-schema'
@@ -107,7 +107,7 @@ export class ExtendableGraphQLApi extends GraphQLApi {
 		this.extendSchema(schema)
 	}
 
-	grantLambdaInvoke (...lambdaFunctions: Function[]): void {
+	grantLambdaInvoke (...lambdaFunctions: IFunction[]): void {
 		const statement = new PolicyStatement({
 			effect: Effect.ALLOW,
 			// TODO: make this configurable
