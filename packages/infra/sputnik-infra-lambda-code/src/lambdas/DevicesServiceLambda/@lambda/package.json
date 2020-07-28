@@ -5,7 +5,8 @@
     "main": "libs.js",
     "version": "0.0.0",
     "scripts": {
-        "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
+        "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
+        "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
     },
     "dependencies": {
         "@lambda/helper-utils": "0.0.0",
@@ -15,7 +16,7 @@
         "node-forge": "0.8.5",
         "shortid": "2.2.14"
     },
-    "workspaces": {
+    "//workspaces": {
         "nohoist": [
             "**/@lambda/helper-utils", "**/@lambda/helper-utils/**",
             "**/@lambda/usage-metrics", "**/@lambda/usage-metrics/**",

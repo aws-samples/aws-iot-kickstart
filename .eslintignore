@@ -3,8 +3,10 @@ dist/
 node_modules
 _templates
 .eslintrc.js
+tsconfig.eslint.json
 package.json
 **/@lambda/**/*.js
 **/*.log
 **/yarn.lock
 **/.cache
+kickstarter/web

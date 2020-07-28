@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+		"target": "es2015",
+		"lib": ["es2017", "dom"],
+    "module": "esnext",
+		"moduleResolution": "node",
+    "noEmit": true,
+    "emitDeclarationOnly": false,
+    "downlevelIteration": true,
+    "skipLibCheck": true,
+		"sourceMap": true,
+		"allowJs": true,
+		"checkJs": false,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"resolveJsonModule": true,
+    "esModuleInterop": true,
+    "removeComments": true,
+    "declaration": false,
+    "outDir": ".out",
+		"typeRoots": [
+			"./node_modules/@types",
+			"../../node_modules/@types",
+			"../../@types",
+		],
+  },
+  "compileOnSave": false,
+  "exclude": ["**/node_modules/**", "dist"],
+  "include": [
+		"src",
+		"test"
+	]
+}

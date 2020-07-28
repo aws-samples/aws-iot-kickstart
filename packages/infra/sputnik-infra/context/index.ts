@@ -1,4 +1,4 @@
-import { envContext, getContext, Context } from './env-context';
+import { envContext, getContext, Context } from './env-context'
 import { Construct, Stack, App } from '@aws-cdk/core'
 
 export interface AppContext extends Context {

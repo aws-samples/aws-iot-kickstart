@@ -1,4 +1,4 @@
-import { Construct, Stack, StackProps } from '@aws-cdk/core'
+import { Construct, Stack, StackProps, NestedStack, NestedStackProps } from '@aws-cdk/core'
 import { DataBucketPersistentStack } from '../../nested/data/DataBucketPersistentStack'
 import { DataProcessingPersistentStack } from '../../nested/data/DataProcessingPersistentStack'
 import { DeviceManagementPersistentStack } from '../../nested/device/management/DeviceManagementPersistentStack'
@@ -8,15 +8,27 @@ import { setNamespace } from '../../../utils/cdk-identity-utils'
 import { getAppContext } from '../../../context'
 import { ISource } from '@aws-cdk/aws-s3-deployment'
 
-interface PersistentStackProps extends StackProps {
-	readonly namespace?: string
+export interface IPersistent {
+	readonly websiteStack: WebsitePersistentStack
+
+	readonly dataBucketStack: DataBucketPersistentStack
+
+	readonly cognitoStack: CognitoPersistentStack
+
+	readonly dataProcessingStack: DataProcessingPersistentStack
+
+	readonly deviceManagementStack: DeviceManagementPersistentStack
+}
+
+interface PersistentResourcesProps {
 	readonly websiteSource: ISource | ISource[]
 }
 
-/**
- * Stack that contains all persistent resources
- */
-export class PersistentStack extends Stack {
+interface PersistentStackProps extends PersistentResourcesProps {
+	readonly namespace?: string
+}
+
+export class PersistentResources extends Construct implements IPersistent {
 	readonly websiteStack: WebsitePersistentStack
 
 	readonly dataBucketStack: DataBucketPersistentStack
@@ -28,18 +40,15 @@ export class PersistentStack extends Stack {
 	readonly deviceManagementStack: DeviceManagementPersistentStack
 
 	constructor (scope: Construct, id: string, props: PersistentStackProps) {
-		super(scope, id, props)
+		super(scope, id)
 
 		const { websiteSource } = props
 
 		const {
-			Namespace,
 			AppFullName: appFullName,
 			AdministratorEmail: administratorEmail,
 			AdministratorName: administratorName,
 		} = getAppContext(this)
-
-		setNamespace(this, props.namespace || Namespace + 'P')
 
 		const deviceManagementStack = new DeviceManagementPersistentStack(this, 'DeviceManagement', {})
 
@@ -68,5 +77,65 @@ export class PersistentStack extends Stack {
 			dataProcessingStack,
 			deviceManagementStack,
 		})
+	}
+}
+
+export class PersistentStack extends Stack implements IPersistent {
+	readonly websiteStack: WebsitePersistentStack
+
+	readonly dataBucketStack: DataBucketPersistentStack
+
+	readonly cognitoStack: CognitoPersistentStack
+
+	readonly dataProcessingStack: DataProcessingPersistentStack
+
+	readonly deviceManagementStack: DeviceManagementPersistentStack
+
+	constructor (scope: Construct, id: string, props: PersistentStackProps & StackProps) {
+		super(scope, id, props)
+
+		const {
+			Namespace,
+		} = getAppContext(this)
+
+		setNamespace(this, props.namespace || Namespace || 'Sputnik')
+
+		const resources = new PersistentResources(this, 'Resources', props)
+
+		this.websiteStack = resources.websiteStack
+		this.dataBucketStack = resources.dataBucketStack
+		this.dataProcessingStack = resources.dataProcessingStack
+		this.dataProcessingStack = resources.dataProcessingStack
+		this.deviceManagementStack = resources.deviceManagementStack
+	}
+}
+
+export class PersistentNestedStack extends NestedStack implements IPersistent {
+	readonly websiteStack: WebsitePersistentStack
+
+	readonly dataBucketStack: DataBucketPersistentStack
+
+	readonly cognitoStack: CognitoPersistentStack
+
+	readonly dataProcessingStack: DataProcessingPersistentStack
+
+	readonly deviceManagementStack: DeviceManagementPersistentStack
+
+	constructor (scope: Construct, id: string, props: PersistentStackProps & NestedStackProps) {
+		super(scope, id, props)
+
+		const {
+			Namespace,
+		} = getAppContext(this)
+
+		setNamespace(this, props.namespace || Namespace || 'Sputnik')
+
+		const resources = new PersistentResources(this, 'Resources', props)
+
+		this.websiteStack = resources.websiteStack
+		this.dataBucketStack = resources.dataBucketStack
+		this.dataProcessingStack = resources.dataProcessingStack
+		this.dataProcessingStack = resources.dataProcessingStack
+		this.deviceManagementStack = resources.deviceManagementStack
 	}
 }

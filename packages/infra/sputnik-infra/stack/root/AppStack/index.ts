@@ -1,22 +1,41 @@
-import { Construct, Stack, ISynthesisSession, StackProps } from '@aws-cdk/core'
+import { Construct, Stack, ISynthesisSession, StackProps, NestedStack, NestedStackProps } from '@aws-cdk/core'
 import { ApiStack } from '../../nested/api/ApiStack'
 import { DataProcessingStack } from '../../nested/data/DataProcessingStack'
 import { DeviceManagementStack } from '../../nested/device/management/DeviceManagementStack'
 import { SputnikStack } from '../../nested/existing/SputnikStack'
 import { CognitoStack } from '../../nested/identity/CognitoStack'
-import { PersistentStack } from '../PersistentStack'
+import { IPersistent } from '../PersistentStack'
 import { UserManagementStack } from '../../nested/identity/UserManagementStack'
 import { setNamespace } from '../../../utils/cdk-identity-utils'
 import { validateStackParameterLimit } from '../../../utils/stack-utils'
 import { getAppContext } from '../../../context'
 
-export interface AppStackProps extends StackProps {
-	readonly namespace?: string
-	readonly persistent: PersistentStack
+export interface IApp {
+	readonly persistent: IPersistent
+
+	readonly cognitoStack: CognitoStack
+
+	readonly apiStack: ApiStack
+
+	readonly sputnikStack: SputnikStack
+
+	readonly userManagementStack: UserManagementStack
+
+	readonly dataProcessingStack: DataProcessingStack
+
+	readonly deviceManagementStack: DeviceManagementStack
 }
 
-export class AppStack extends Stack {
-	readonly persistent: PersistentStack
+interface AppResourcesProps {
+	readonly persistent: IPersistent
+}
+
+interface AppStackProps extends AppResourcesProps {
+	readonly namespace?: string
+}
+
+export class AppResources extends Construct implements IApp {
+	readonly persistent: IPersistent
 
 	readonly cognitoStack: CognitoStack
 
@@ -30,20 +49,17 @@ export class AppStack extends Stack {
 
 	readonly deviceManagementStack: DeviceManagementStack
 
-	constructor (scope: Construct, id: string, props: AppStackProps) {
-		super(scope, id, props)
+	constructor (scope: Construct, id: string, props: AppResourcesProps) {
+		super(scope, id)
 
 		const { persistent } = props
 
 		const {
-			Namespace,
 			AppFullName: appFullName,
 			AppShortName: appShortName,
 			AdministratorEmail: administratorEmail,
 			AdministratorName: administratorName,
 		} = getAppContext(this)
-
-		setNamespace(this, props.namespace || Namespace)
 
 		this.persistent = persistent
 
@@ -93,7 +109,6 @@ export class AppStack extends Stack {
 			userManagementStack,
 			deviceManagementStack,
 			cognitoStack,
-			// existing
 			administratorName,
 			administratorEmail,
 			appFullName,
@@ -110,6 +125,86 @@ export class AppStack extends Stack {
 			userManagementStack,
 			deviceManagementStack,
 		})
+	}
+}
+
+export class AppNestedStack extends NestedStack implements IApp {
+	readonly persistent: IPersistent
+
+	readonly cognitoStack: CognitoStack
+
+	readonly apiStack: ApiStack
+
+	readonly sputnikStack: SputnikStack
+
+	readonly userManagementStack: UserManagementStack
+
+	readonly dataProcessingStack: DataProcessingStack
+
+	readonly deviceManagementStack: DeviceManagementStack
+
+	constructor (scope: Construct, id: string, props: AppStackProps & NestedStackProps) {
+		super(scope, id, props)
+
+		const {
+			Namespace,
+		} = getAppContext(this)
+
+		setNamespace(this, props.namespace || Namespace || 'Sputnik')
+
+		const resources = new AppResources(this, 'Resources', props)
+
+		this.persistent = resources.persistent
+		this.cognitoStack = resources.cognitoStack
+		this.apiStack = resources.apiStack
+		this.sputnikStack = resources.sputnikStack
+		this.userManagementStack = resources.userManagementStack
+		this.dataProcessingStack = resources.dataProcessingStack
+		this.dataProcessingStack = resources.dataProcessingStack
+		this.deviceManagementStack = resources.deviceManagementStack
+	}
+
+	onSynthesize (session: ISynthesisSession): void {
+		super.onSynthesize(session)
+
+		validateStackParameterLimit(this)
+	}
+}
+
+export class AppStack extends Stack implements IApp {
+	readonly persistent: IPersistent
+
+	readonly cognitoStack: CognitoStack
+
+	readonly apiStack: ApiStack
+
+	readonly sputnikStack: SputnikStack
+
+	readonly userManagementStack: UserManagementStack
+
+	readonly dataProcessingStack: DataProcessingStack
+
+	readonly deviceManagementStack: DeviceManagementStack
+
+	constructor (scope: Construct, id: string, props: AppStackProps & StackProps) {
+		super(scope, id, props)
+
+		const {
+			Namespace,
+		} = getAppContext(this)
+
+		setNamespace(this, props.namespace || Namespace || 'Sputnik')
+
+		const resources = new AppResources(this, 'Resources', props)
+
+		this.persistent = resources.persistent
+		this.cognitoStack = resources.cognitoStack
+		this.apiStack = resources.apiStack
+		this.sputnikStack = resources.sputnikStack
+		this.userManagementStack = resources.userManagementStack
+		this.dataProcessingStack = resources.dataProcessingStack
+		this.dataProcessingStack = resources.dataProcessingStack
+		this.deviceManagementStack = resources.deviceManagementStack
 	}
 
 	onSynthesize (session: ISynthesisSession): void {

@@ -4,5 +4,7 @@
 	"files.exclude": {
 		"src/lambdas/*/index.js": true,
 		"**/@lambda/**/*": false,
+		"src/*.js": true,
+		"**/*.{d.ts,js.map}": true,
 	}
 }

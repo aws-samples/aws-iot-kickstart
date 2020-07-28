@@ -5,13 +5,14 @@
     "main": "libs.js",
     "version": "0.0.0",
     "scripts": {
-        "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
+        "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
+        "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
     },
     "dependencies": {
         "moment": "2.24.0",
         "underscore": "1.10.2"
     },
-    "workspaces": {
+    "//workspaces": {
         "nohoist": [
             "**/moment", "**/moment/**",
             "**/underscore", "**/underscore/**"

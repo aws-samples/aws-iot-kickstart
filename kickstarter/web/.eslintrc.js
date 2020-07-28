@@ -2,7 +2,7 @@ module.exports = {
 	root: true,
 	extends: '@deathstar/eslint-config',
 	parserOptions: {
-		project: './tsconfig.json',
+		project: './tsconfig.eslint.json',
 	},
 	plugins: [
 		'@angular-eslint/eslint-plugin',

@@ -19,7 +19,7 @@
         "npm-run-all": "*",
         "proxyquire": "*"
     },
-    "workspaces": {
+    "//workspaces": {
         "nohoist": [
             "**/moment", "**/moment/**"
         ]

@@ -7,7 +7,6 @@ import { DeviceStats, SystemStats } from '@deathstar/sputnik-ui-angular/app/mode
 import { LoggerService } from './logger.service'
 import { AppSyncService } from './appsync.service'
 
-
 const environment = getEnvironment()
 
 // Helpers

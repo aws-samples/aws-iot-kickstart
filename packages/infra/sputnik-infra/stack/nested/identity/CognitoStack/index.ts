@@ -2,7 +2,7 @@
 import { CfnIdentityPool, CfnIdentityPoolRoleAttachment, UserPool, UserPoolClient } from '@aws-cdk/aws-cognito'
 import { Effect, PolicyDocument, PolicyStatement } from '@aws-cdk/aws-iam'
 import { Bucket } from '@aws-cdk/aws-s3'
-import { NestedStack, NestedStackProps, Stack } from '@aws-cdk/core'
+import { NestedStack, NestedStackProps, Stack, Construct } from '@aws-cdk/core'
 import { CognitoFederatedRole, CognitoFederatedRoleMappingKey } from '../../../../construct/identity/cognito/CognitoFederatedRole'
 import { namespaced } from '../../../../utils/cdk-identity-utils'
 
@@ -45,7 +45,7 @@ export class CognitoStack extends NestedStack {
 		return this.websiteClient.userPoolClientId
 	}
 
-	constructor (scope: Stack, id: string, props: CognitoStackProps) {
+	constructor (scope: Construct, id: string, props: CognitoStackProps) {
 		super(scope, id, props)
 
 		const { userPool, websiteClient, dataBucket } = props
