@@ -15,13 +15,24 @@
         "underscore": "1.10.2",
         "uuid": "8.0.0"
     },
+    "devDependencies": {
+        "aws-sdk": "*"
+    },
+    "externals": [
+        "aws-sdk"
+    ],
     "//workspaces": {
         "nohoist": [
-            "**/moment", "**/moment/**",
-            "**/underscore", "**/underscore/**",
-            "**/deep-diff", "**/deep-diff/**",
-            "**/deepmerge", "**/deepmerge/**",
-            "**/uuid", "**/uuid/**"
+            "**/moment",
+            "**/moment/**",
+            "**/underscore",
+            "**/underscore/**",
+            "**/deep-diff",
+            "**/deep-diff/**",
+            "**/deepmerge",
+            "**/deepmerge/**",
+            "**/uuid",
+            "**/uuid/**"
         ]
     }
 }

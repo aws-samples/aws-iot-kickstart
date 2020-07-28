@@ -16,6 +16,12 @@
         "node-forge": "0.8.5",
         "shortid": "2.2.14"
     },
+    "devDependencies": {
+        "aws-sdk": "*"
+    },
+    "externals": [
+        "aws-sdk"
+    ],
     "//workspaces": {
         "nohoist": [
             "**/@lambda/devices-service", "**/@lambda/devices-service/**",

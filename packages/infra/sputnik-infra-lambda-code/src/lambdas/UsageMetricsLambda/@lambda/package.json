@@ -19,6 +19,9 @@
         "npm-run-all": "*",
         "proxyquire": "*"
     },
+    "externals": [
+        "aws-sdk"
+    ],
     "//workspaces": {
         "nohoist": [
             "**/moment", "**/moment/**"

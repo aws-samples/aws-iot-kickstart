@@ -7,6 +7,12 @@
         "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
         "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
     },
+    "devDependencies": {
+        "aws-sdk": "*"
+    },
+    "externals": [
+        "aws-sdk"
+    ],
     "//workspaces": {
         "nohoist": [
         ]

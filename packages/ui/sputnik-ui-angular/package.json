@@ -90,5 +90,8 @@
     "@types/mapbox-gl": "^1.10.2",
     "mapbox-gl": "^1.10.1",
     "ngx-mapbox-gl": "^4.5.0"
+  },
+  "devDependencies": {
+    "@angular-eslint/eslint-plugin": "0.0.1-alpha.32"
   }
 }

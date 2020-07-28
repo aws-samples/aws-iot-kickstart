@@ -12,6 +12,12 @@
         "moment": "2.24.0",
         "underscore": "1.10.2"
     },
+    "devDependencies": {
+        "aws-sdk": "*"
+    },
+    "externals": [
+        "aws-sdk"
+    ],
     "//workspaces": {
         "nohoist": [
             "**/moment", "**/moment/**",
