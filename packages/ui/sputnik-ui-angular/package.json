@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-ui-angular",
   "description": "Sputnik frontend using Angular framework",
-  "version": "0.0.0-alpha.0",
+  "version": "0.0.0-alpha.1",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "contributors": [
@@ -19,7 +19,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@deathstar/sputnik-infra": "0.0.0-alpha.0",
     "@angular/animations": "^8.2.14",
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14",
@@ -28,12 +27,14 @@
     "@angular/platform-browser": "^8.2.14",
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
+    "@deathstar/sputnik-infra": "^0.0.0-alpha.1",
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",
     "@sweetalert2/ngx-sweetalert2": "5.1.0",
     "@types/echarts": "^4.6.0",
     "@types/jasmine": "^2.8.11",
     "@types/jasminewd2": "^2.0.6",
+    "@types/mapbox-gl": "^1.10.2",
     "@types/node": "~10.12.6",
     "@types/underscore": "^1.10.0",
     "aws-amplify": "1.1.36",
@@ -63,11 +64,13 @@
     "karma-coverage-istanbul-reporter": "~2.x.x",
     "karma-jasmine": "~1.1.1",
     "karma-jasmine-html-reporter": "^1.4.0",
+    "mapbox-gl": "^1.10.1",
     "moment": "2.24.0",
     "ng-block-ui": "2.1.7",
     "ng2-charts": "2.2.0",
     "ngx-color-picker": "7.5.0",
     "ngx-echarts": "^5.0.0",
+    "ngx-mapbox-gl": "^4.5.0",
     "node-forge": "0.8.5",
     "node-waves": "^0.7.6",
     "owl.carousel": "^2.3.4",
@@ -85,11 +88,7 @@
     "underscore": "^1.10.2",
     "underscore-deep-extend": "1.1.5",
     "uuid": "3.3.2",
-    "zone.js": "~0.9.1",
-
-    "@types/mapbox-gl": "^1.10.2",
-    "mapbox-gl": "^1.10.1",
-    "ngx-mapbox-gl": "^4.5.0"
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
     "@angular-eslint/eslint-plugin": "0.0.1-alpha.32"

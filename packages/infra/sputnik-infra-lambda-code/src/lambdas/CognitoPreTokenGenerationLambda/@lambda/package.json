@@ -2,7 +2,7 @@
     "private": true,
     "name": "@lambda/cognito-pre-token-generation",
     "main": "index.js",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "scripts": {
         "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
         "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
@@ -14,7 +14,6 @@
         "aws-sdk"
     ],
     "//workspaces": {
-        "nohoist": [
-        ]
+        "nohoist": []
     }
 }

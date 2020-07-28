@@ -1,30 +1,30 @@
 {
     "private": true,
     "name": "@lambda/usage-metrics",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "Usage metrics is an auxiliary class to capture metrics pertinent for feedback on the solution",
     "main": "metrics.common.js",
-    "scripts": {
-    },
+    "scripts": {},
     "dependencies": {
         "moment": "2.24.0"
     },
     "devDependencies": {
         "aws-sdk": "*",
-        "chai": "*",
-        "sinon": "*",
-        "sinon-chai": "*",
-        "mocha": "*",
         "aws-sdk-mock": "*",
+        "chai": "*",
+        "mocha": "*",
         "npm-run-all": "*",
-        "proxyquire": "*"
+        "proxyquire": "*",
+        "sinon": "*",
+        "sinon-chai": "*"
     },
     "externals": [
         "aws-sdk"
     ],
     "//workspaces": {
         "nohoist": [
-            "**/moment", "**/moment/**"
+            "**/moment",
+            "**/moment/**"
         ]
     }
 }

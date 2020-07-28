@@ -3,7 +3,7 @@
     "name": "@lambda/admin-service",
     "description": "The admin microservice for the sputnik",
     "main": "libs.js",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "scripts": {
         "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
         "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
@@ -20,8 +20,10 @@
     ],
     "//workspaces": {
         "nohoist": [
-            "**/moment", "**/moment/**",
-            "**/underscore", "**/underscore/**"
+            "**/moment",
+            "**/moment/**",
+            "**/underscore",
+            "**/underscore/**"
         ]
     }
 }

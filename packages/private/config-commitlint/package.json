@@ -2,7 +2,7 @@
   "private": true,
   "name": "@deathstar/config-commitlint",
   "description": "Config for linting git commits",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "homepage": "https://github.com/aws-samples/aws-iot-kickstart",
