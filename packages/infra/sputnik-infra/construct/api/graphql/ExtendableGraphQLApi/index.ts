@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { FieldLogLevel, GraphQLApi, GraphQLApiProps, UserPoolDefaultAction, CfnGraphQLApi } from '@aws-cdk/aws-appsync'
+import { FieldLogLevel, GraphQLApi, GraphQLApiProps, UserPoolDefaultAction, CfnGraphQLApi, AuthorizationType } from '@aws-cdk/aws-appsync'
 import { IUserPool } from '@aws-cdk/aws-cognito'
 import { Table } from '@aws-cdk/aws-dynamodb'
 import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam'
@@ -49,19 +49,20 @@ export class ExtendableGraphQLApi extends GraphQLApi {
 			logConfig: logConfig || {
 				fieldLogLevel: FieldLogLevel.ALL,
 			},
-			authorizationConfig: authorizationConfig || {
+			authorizationConfig: authorizationConfig || (userPool && {
 				defaultAuthorization: {
-					userPool,
-					defaultAction: UserPoolDefaultAction.ALLOW,
+					authorizationType: AuthorizationType.USER_POOL,
+					userPoolConfig: {
+						userPool,
+						defaultAction: UserPoolDefaultAction.ALLOW,
+					},
 				},
-				// TODO: Add this in once suppored
-				// https://github.com/aws/aws-cdk/blob/fa8c13c753c0a6e195eed313d59ce74f1505cf6e/packages/%40aws-cdk/aws-appsync/lib/graphqlapi.ts#L302
-				// additionalAuthorizationModes: [
-				//	{
-				//		authenticationType: 'AWS_IAM',
-				//	},
-				// ],
-			},
+				additionalAuthorizationModes: [
+					{
+						authorizationType: AuthorizationType.IAM,
+					},
+				],
+			}),
 		}
 	}
 

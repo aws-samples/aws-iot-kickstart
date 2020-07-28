@@ -31,7 +31,7 @@
     "tsc": "tsc",
     "hygen": "hygen",
     "create-package": "hygen package new",
-    "upgrade:cdk": "yarn upgrade --scope @aws-cdk --exact --latest && yarn upgrade aws-cdk --exact --latest  && lerna run --parallel 'yarn upgrade --scope @aws-cdk --exact --latest'"
+    "upgrade:cdk": "export CDK_VERSION=$1 && yarn upgrade --scope @aws-cdk@$CDK_VERSION --exact && yarn upgrade aws-cdk@$CDK_VERSION --exact  && lerna run --parallel 'yarn upgrade --scope @aws-cdk@$CDK_VERSION --exact'"
   },
   "homepage": "https://github.com/aws-samples/aws-iot-kickstart",
   "repository": {

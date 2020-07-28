@@ -26,7 +26,7 @@
     "bootstrap": "CDK_NEW_BOOTSTRAP=3 cdk bootstrap --cloudformationExecutionPolicies arn:aws:iam::aws:policy/AdministratorAccess"
   },
   "devDependencies": {
-    "@aws-cdk/assert": "1.45.0",
-    "aws-cdk": "1.45.0"
+    "@aws-cdk/assert": "1.51.0",
+    "aws-cdk": "1.51.0"
   }
 }

@@ -7,7 +7,7 @@ import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
 import { Construct, CustomResource, Fn, NestedStack, NestedStackProps } from '@aws-cdk/core'
 import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra/construct/api/graphql/ExtendableGraphQLApi'
 import { uniqueIdHash, namespaced } from '@deathstar/sputnik-infra/utils/cdk-identity-utils'
-import { PersistentStack } from '@deathstar/sputnik-infra/stack/root/PersistentStack'
+import { IPersistent } from '@deathstar/sputnik-infra/stack/root/PersistentStack'
 import {
 	DeploymentsServiceLambda,
 	SettingsServiceLambda,
@@ -28,7 +28,7 @@ function getTemplateFile (templateName: string): string {
 export interface SputnikStackProps extends NestedStackProps {
 	readonly includeCloudTrail?: boolean
 
-	readonly persistent: PersistentStack
+	readonly persistent: IPersistent
 
 	readonly graphQLApi: ExtendableGraphQLApi
 	readonly userPool: IUserPool
