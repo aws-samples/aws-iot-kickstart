@@ -5,12 +5,12 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import swal from 'sweetalert2'
 // Models
-import { SystemBlueprint } from '@deathstar/sputnik-ui-angular/app/models/system-blueprint.model'
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
+import { SystemBlueprint } from '../../models/system-blueprint.model'
+import { ProfileInfo } from '../../models/profile-info.model'
 // Services
-import { BreadCrumbService, Crumb } from '@deathstar/sputnik-ui-angular/app/services/bread-crumb.service'
-import { SystemBlueprintService } from '@deathstar/sputnik-ui-angular/app/services/system-blueprint.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
+import { SystemBlueprintService } from '../../services/system-blueprint.service'
+import { LoggerService } from '../../services/logger.service'
 
 @Component({
 	selector: 'app-root-system-blueprint',

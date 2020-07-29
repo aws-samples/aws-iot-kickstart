@@ -5,7 +5,7 @@ import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 import { CfnPolicy as CfnIoTPolicy } from '@aws-cdk/aws-iot'
-import { CognitoPreTokenGenerationLambda } from '@deathstar/sputnik-infra-lambda-code'
+import { CognitoPreTokenGenerationLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
 import { retainResource } from '../../../../utils/resource-utils'
 import { namespaced, uniqueIdHash } from '../../../../utils/cdk-identity-utils'
 import { PolicyStatement, Effect, PolicyDocument } from '@aws-cdk/aws-iam'
@@ -53,6 +53,8 @@ export class CognitoPersistentStack extends NestedStack {
 		super(scope, id, props)
 
 		const { administratorEmail, administratorName, websiteURL, appFullName } = props
+
+		console.log('CognitoPersistentStackProps:props', props.userPool, props)
 
 		const userPool = props.userPool || new UserPool(this, 'UserPool', {
 			userPoolName: namespaced(this, 'UserPool'),

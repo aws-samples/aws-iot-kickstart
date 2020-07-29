@@ -1,8 +1,8 @@
 import { Component, Input, NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 // Models
-import { Device } from '@deathstar/sputnik-ui-angular/app/models/device.model'
-import { System } from '@deathstar/sputnik-ui-angular/app/models/system.model'
+import { Device } from '../../../models/device.model'
+import { System } from '../../../models/system.model'
 // Systems
 import { DefaultSystemModule } from './default-system/default-system.module'
 

@@ -21,10 +21,14 @@
     "dist"
   ],
   "scripts": {
-    "//clean": "rm -rf dist",
+    "clean": "tsc --build --clean",
     "build": "tsc --project tsconfig.json",
     "build:lambdas": "cd ../../../ && lerna run --stream 'build' --scope @lambda/*",
     "watch": "yarn build --watch",
     "test": "jest"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-lambda": "1.51.0",
+    "@aws-cdk/core": "1.51.0"
   }
 }

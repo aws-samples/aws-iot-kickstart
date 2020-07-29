@@ -3,11 +3,11 @@ import { Observable, Subject } from 'rxjs'
 // Components
 import { IoTPubSuberComponent } from '../../../common/iot-pubsuber.component'
 // Models
-import { Device } from '@deathstar/sputnik-ui-angular/app/models/device.model'
-import { DeviceBlueprint } from '@deathstar/sputnik-ui-angular/app/models/device-blueprint.model'
+import { Device } from '../../../../models/device.model'
+import { DeviceBlueprint } from '../../../../models/device-blueprint.model'
 // Services
-import { IoTService } from '@deathstar/sputnik-ui-angular/app/services/iot.service'
-import { AppSyncService } from '@deathstar/sputnik-ui-angular/app/services/appsync.service'
+import { IoTService } from '../../../../services/iot.service'
+import { AppSyncService } from '../../../../services/appsync.service'
 
 @Component({
 	selector: 'app-default-device',

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms'
 // Components
 import { PrettyJsonComponent } from './pretty-json.component'
 // Pipes
-import { PipesModule } from '@deathstar/sputnik-ui-angular/app/pipes/pipes.module'
+import { PipesModule } from '../../../pipes/pipes.module'
 
 @NgModule({
 	declarations: [PrettyJsonComponent],

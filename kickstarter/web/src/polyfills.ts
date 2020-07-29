@@ -1,1 +1,1 @@
-import '@deathstar/sputnik-ui-angular/app/polyfills'
+import '@deathstar/sputnik-ui-angular/dist/app/polyfills'

@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core'
 // Components
-import { IoTPubSuberComponent } from '@deathstar/sputnik-ui-angular/app/secure/common/iot-pubsuber.component'
+import { IoTPubSuberComponent } from '../../../../secure/common/iot-pubsuber.component'
 // Models
-import { Device } from '@deathstar/sputnik-ui-angular/app/models/device.model'
+import { Device } from '../../../../models/device.model'
 // Services
-import { IoTService } from '@deathstar/sputnik-ui-angular/app/services/iot.service'
+import { IoTService } from '../../../../services/iot.service'
 
 @Component({
 	selector: 'app-ml-demo-squeezenet-v1-0',

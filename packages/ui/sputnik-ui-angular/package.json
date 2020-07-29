@@ -11,7 +11,7 @@
     "Mirash Gjolaj <mirash.gjolaj@gmail.com>"
   ],
   "scripts": {
-    "clean": "tsc --build --clean",
+    "clean": "tsc --build --clean && rm -rf dist",
     "prebuild": "yarn clean",
     "build": "tsc --project tsconfig.json",
     "prewatch": "yarn clean",
@@ -46,6 +46,7 @@
     "chartjs-plugin-streaming": "1.8.0",
     "codelyzer": "^5.0.1",
     "core-js": "2.6.9",
+    "cpy-cli": "^3.1.1",
     "echarts": "^4.8.0",
     "file-saver": "2.0.2",
     "font-awesome": "^4.7.0",
@@ -84,13 +85,14 @@
     "systemjs": "0.21.5",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.5",
+    "typescript": "^3.9.7",
     "underscore": "^1.10.2",
     "underscore-deep-extend": "1.1.5",
     "uuid": "3.3.2",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-eslint/eslint-plugin": "0.0.1-alpha.32"
+    "@angular-eslint/eslint-plugin": "0.0.1-alpha.32",
+    "reflect-metadata": "^0.1.13"
   }
 }

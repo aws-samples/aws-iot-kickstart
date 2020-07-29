@@ -1,6 +1,6 @@
 import { Component, NgZone, NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
-import { IoTService } from '@deathstar/sputnik-ui-angular/app/services/iot.service'
+import { IoTService } from '../../../services/iot.service'
 import { PipesModule } from '../../../pipes/pipes.module'
 import { ChartModule } from './chart'
 import { WidgetComponent } from '../../widget.component'

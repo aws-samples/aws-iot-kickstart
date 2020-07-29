@@ -1,7 +1,7 @@
 import { Component, Input, NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 // Models
-import { Device } from '@deathstar/sputnik-ui-angular/app/models/device.model'
+import { Device } from '../../../models/device.model'
 // Devices
 import { DefaultDeviceModule } from './default-device/default-device.module'
 import { MLDemoSqueezenetV10Module } from './ml-demo-squeezenet-v1.0/ml-demo-squeezenet-v1.0.module'

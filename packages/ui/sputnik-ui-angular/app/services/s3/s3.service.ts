@@ -4,7 +4,7 @@ import { Subject } from 'rxjs'
 import * as AWS from 'aws-sdk'
 import { AmplifyService } from 'aws-amplify-angular'
 // Services
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { LoggerService } from '../logger.service'
 
 declare let appVariables: any
 

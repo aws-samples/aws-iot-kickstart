@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
-import { getEnvironment } from '@deathstar/sputnik-ui-angular/app/environment'
+import { getEnvironment } from '../environment'
 // Models
-import { DeviceStats, SystemStats } from '@deathstar/sputnik-ui-angular/app/models/stats.model'
+import { DeviceStats, SystemStats } from '../models/stats.model'
 // Services
 import { LoggerService } from './logger.service'
 import { AppSyncService } from './appsync.service'

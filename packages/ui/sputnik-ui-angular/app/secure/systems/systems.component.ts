@@ -7,13 +7,13 @@ import swal from 'sweetalert2'
 // SubComponents
 import { SystemsModalComponent } from './systems.modal.component'
 // Models
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
-import { System } from '@deathstar/sputnik-ui-angular/app/models/system.model'
+import { ProfileInfo } from '../../models/profile-info.model'
+import { System } from '../../models/system.model'
 // Services
-import { BreadCrumbService, Crumb } from '@deathstar/sputnik-ui-angular/app/services/bread-crumb.service'
-import { SystemService } from '@deathstar/sputnik-ui-angular/app/services/system.service'
-import { StatService, Stats } from '@deathstar/sputnik-ui-angular/app/services/stat.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
+import { SystemService } from '../../services/system.service'
+import { StatService, Stats } from '../../services/stat.service'
+import { LoggerService } from '../../services/logger.service'
 
 declare let $: any
 

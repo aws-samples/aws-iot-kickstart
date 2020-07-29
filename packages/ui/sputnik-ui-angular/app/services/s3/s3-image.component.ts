@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core'
 // Services
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
-import { S3Service } from '@deathstar/sputnik-ui-angular/app/services/s3/s3.service'
+import { LoggerService } from '../logger.service'
+import { S3Service } from './s3.service'
 
 declare let appVariables: any
 

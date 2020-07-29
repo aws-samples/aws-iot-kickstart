@@ -4,11 +4,11 @@ import { LocalStorage } from '@ngx-pwa/local-storage'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import swal from 'sweetalert2'
 // Models
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
-import { User } from '@deathstar/sputnik-ui-angular/app/models/user.model'
+import { ProfileInfo } from '../../models/profile-info.model'
+import { User } from '../../models/user.model'
 // Services
-import { AdminService } from '@deathstar/sputnik-ui-angular/app/services/admin.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { AdminService } from '../../services/admin.service'
+import { LoggerService } from '../../services/logger.service'
 import { Subscription } from 'rxjs/Subscription'
 import { filter } from 'underscore'
 

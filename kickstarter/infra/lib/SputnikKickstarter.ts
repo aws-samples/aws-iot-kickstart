@@ -1,9 +1,9 @@
 import * as path from 'path'
 import { Construct, App } from '@aws-cdk/core'
-import { PersistentStack } from '@deathstar/sputnik-infra/stack/root/PersistentStack'
-import { AppStack } from '@deathstar/sputnik-infra/stack/root/AppStack'
+import { PersistentStack } from '@deathstar/sputnik-infra/dist/stack/root/PersistentStack'
+import { AppStack } from '@deathstar/sputnik-infra/dist/stack/root/AppStack'
 import { Source } from '@aws-cdk/aws-s3-deployment'
-import { getAppContext } from '@deathstar/sputnik-infra/context'
+import { getAppContext } from '@deathstar/sputnik-infra/dist/context'
 
 const ROOT_DIR = path.resolve(__dirname, '../../../')
 const WEBSITE_SOURCE = path.resolve(ROOT_DIR, 'kickstarter/web')

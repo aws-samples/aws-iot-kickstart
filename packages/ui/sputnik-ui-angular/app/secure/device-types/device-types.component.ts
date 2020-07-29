@@ -4,12 +4,12 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import swal from 'sweetalert2'
 // Models
-import { DeviceType } from '@deathstar/sputnik-ui-angular/app/models/device-type.model'
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
+import { DeviceType } from '../../models/device-type.model'
+import { ProfileInfo } from '../../models/profile-info.model'
 // Services
-import { BreadCrumbService, Crumb } from '@deathstar/sputnik-ui-angular/app/services/bread-crumb.service'
-import { DeviceTypeService } from '@deathstar/sputnik-ui-angular/app/services/device-type.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
+import { DeviceTypeService } from '../../services/device-type.service'
+import { LoggerService } from '../../services/logger.service'
 
 @Component({
 	selector: 'app-root-device-types',

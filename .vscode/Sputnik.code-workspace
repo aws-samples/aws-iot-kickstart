@@ -40,8 +40,8 @@
 		},
 		"files.exclude": {
 			"**/.cache": true,
-			"**/*.d.ts": true,
-			"**/*.map": true,
+			// "**/*.d.ts": true,
+			// "**/*.map": true,
 		}
 	}
 }

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { TestsComponent } from './tests.component'
 import { CardModule } from '../../common/modules/card/card.module'
 import { GaugeModule } from '../../common/modules/gauge/gauge.module'
-import { WidgetsModule } from '@deathstar/sputnik-ui-angular/app/widgets/widgets.module'
+import { WidgetsModule } from '../../widgets/widgets.module'
 // Pipes
 import { PipesModule } from '../../pipes/pipes.module'
 

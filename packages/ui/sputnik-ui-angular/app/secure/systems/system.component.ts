@@ -17,15 +17,15 @@ import swal from 'sweetalert2'
 // SubComponents
 import { SystemEditModalComponent } from './system.edit.modal.component'
 // Models
-import { Device } from '@deathstar/sputnik-ui-angular/app/models/device.model'
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
-import { System } from '@deathstar/sputnik-ui-angular/app/models/system.model'
+import { Device } from '../../models/device.model'
+import { ProfileInfo } from '../../models/profile-info.model'
+import { System } from '../../models/system.model'
 // Services
-import { BreadCrumbService, Crumb } from '@deathstar/sputnik-ui-angular/app/services/bread-crumb.service'
-import { DeploymentService } from '@deathstar/sputnik-ui-angular/app/services/deployment.service'
-import { DeviceService } from '@deathstar/sputnik-ui-angular/app/services/device.service'
-import { SystemService } from '@deathstar/sputnik-ui-angular/app/services/system.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
+import { DeploymentService } from '../../services/deployment.service'
+import { DeviceService } from '../../services/device.service'
+import { SystemService } from '../../services/system.service'
+import { LoggerService } from '../../services/logger.service'
 
 declare let $: any
 

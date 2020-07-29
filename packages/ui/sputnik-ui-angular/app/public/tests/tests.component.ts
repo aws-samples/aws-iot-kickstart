@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { Observable, Subject } from 'rxjs'
 // import { }
-import { IoTPubSuberComponent } from '@deathstar/sputnik-ui-angular/app/secure/common/iot-pubsuber.component'
-import { IoTService } from '@deathstar/sputnik-ui-angular/app/services/iot.service'
-import { Device } from '@deathstar/sputnik-ui-angular/app/models/device.model'
+import { IoTPubSuberComponent } from '../../secure/common/iot-pubsuber.component'
+import { IoTService } from '../../services/iot.service'
+import { Device } from '../../models/device.model'
 
 // <app-widgets [widgets]="widgets" [parent]="self" style="color: black;"></app-widgets>
 // <div class="row">

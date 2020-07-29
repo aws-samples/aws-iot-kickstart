@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Observable'
 // import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular/common/http';
 // Models
-import { Invitation } from '@deathstar/sputnik-ui-angular/app/models/invitation.model'
-import { User } from '@deathstar/sputnik-ui-angular/app/models/user.model'
+import { Invitation } from '../models/invitation.model'
+import { User } from '../models/user.model'
 // Services
-import { AppSyncService, AddedTenant } from '@deathstar/sputnik-ui-angular/app/services/appsync.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { AppSyncService, AddedTenant } from '../services/appsync.service'
+import { LoggerService } from '../services/logger.service'
 import { Subject } from 'rxjs'
 import { Group } from '../models/group.model'
 

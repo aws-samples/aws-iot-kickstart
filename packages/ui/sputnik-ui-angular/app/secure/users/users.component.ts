@@ -4,18 +4,18 @@ import { Router } from '@angular/router'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import swal from 'sweetalert2'
-import { INTERNAL_TENANT } from '@deathstar/sputnik-infra/stack/nested/identity/constants'
-import { UserGroups } from '@deathstar/sputnik-infra/stack/nested/identity/UserGroups'
+import { INTERNAL_TENANT } from '@deathstar/sputnik-infra/dist/stack/nested/identity/constants'
+import { UserGroups } from '@deathstar/sputnik-infra/dist/stack/nested/identity/UserGroups'
 // Models
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
-import { Invitation } from '@deathstar/sputnik-ui-angular/app/models/invitation-model'
-import { User } from '@deathstar/sputnik-ui-angular/app/models/user.model'
+import { ProfileInfo } from '../../models/profile-info.model'
+import { Invitation } from '../../models/invitation-model'
+import { User } from '../../models/user.model'
 // Services
-import { AdminService } from '@deathstar/sputnik-ui-angular/app/services/admin.service'
-import { BreadCrumbService, Crumb } from '@deathstar/sputnik-ui-angular/app/services/bread-crumb.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
-import { StatService, Stats } from '@deathstar/sputnik-ui-angular/app/services/stat.service'
-import { UserLoginService } from '@deathstar/sputnik-ui-angular/app/services/user-login.service'
+import { AdminService } from '../../services/admin.service'
+import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
+import { LoggerService } from '../../services/logger.service'
+import { StatService, Stats } from '../../services/stat.service'
+import { UserLoginService } from '../../services/user-login.service'
 
 declare let jquery: any
 declare let $: any

@@ -2,11 +2,11 @@ import { Inject, Injectable } from '@angular/core'
 // AWS
 import { AmplifyService } from 'aws-amplify-angular'
 // Models
-import { RegistrationUser } from '@deathstar/sputnik-ui-angular/app/models/registration-user.model'
-import { NewPasswordUser } from '@deathstar/sputnik-ui-angular/app/models/new-password-user.model'
+import { RegistrationUser } from '../models/registration-user.model'
+import { NewPasswordUser } from '../models/new-password-user.model'
 // Services
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
-import { CognitoCallback } from '@deathstar/sputnik-ui-angular/app/services/user-login.service'
+import { LoggerService } from '../services/logger.service'
+import { CognitoCallback } from '../services/user-login.service'
 
 // TODO: test this whole flow cause not sure any of this works.
 

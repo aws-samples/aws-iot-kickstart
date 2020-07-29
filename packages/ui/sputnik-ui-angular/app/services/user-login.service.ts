@@ -9,9 +9,9 @@ import { Observable } from 'rxjs'
 import { AmplifyService } from 'aws-amplify-angular'
 // import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 // Models
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
+import { ProfileInfo } from '../models/profile-info.model'
 // Services
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { LoggerService } from './logger.service'
 
 export interface CognitoCallbackError {
 		message: string

@@ -5,6 +5,7 @@
     "emitDeclarationOnly": false,
     "skipLibCheck": true,
     "declaration": true,
+    "sourceMap": true,
     "declarationDir": "./dist",
     "rootDir": "./src",
     "baseUrl": "../../../",

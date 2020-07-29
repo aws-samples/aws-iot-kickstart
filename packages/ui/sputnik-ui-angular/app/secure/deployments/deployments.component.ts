@@ -5,12 +5,12 @@ import { LocalStorage } from '@ngx-pwa/local-storage'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import swal from 'sweetalert2'
 // Models
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
-import { Deployment } from '@deathstar/sputnik-ui-angular/app/models/deployment.model'
+import { ProfileInfo } from '../../models/profile-info.model'
+import { Deployment } from '../../models/deployment.model'
 // Services
-import { BreadCrumbService, Crumb } from '@deathstar/sputnik-ui-angular/app/services/bread-crumb.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
-import { DeploymentService } from '@deathstar/sputnik-ui-angular/app/services/deployment.service'
+import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
+import { LoggerService } from '../../services/logger.service'
+import { DeploymentService } from '../../services/deployment.service'
 // Helpers
 import moment from 'moment'
 
