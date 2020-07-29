@@ -7,6 +7,7 @@ import { WebsitePersistentStack } from '../../nested/web/WebsitePersistentStack'
 import { setNamespace } from '../../../utils/cdk-identity-utils'
 import { getAppContext } from '../../../context'
 import { ISource } from '@aws-cdk/aws-s3-deployment'
+import { UserPool } from '@aws-cdk/aws-cognito'
 
 export interface IPersistent {
 	readonly websiteStack: WebsitePersistentStack
@@ -22,6 +23,7 @@ export interface IPersistent {
 
 interface PersistentResourcesProps {
 	readonly websiteSource: ISource | ISource[]
+	readonly userPool?: UserPool
 }
 
 interface PersistentStackProps extends PersistentResourcesProps {
@@ -42,7 +44,7 @@ export class PersistentResources extends Construct implements IPersistent {
 	constructor (scope: Construct, id: string, props: PersistentStackProps) {
 		super(scope, id)
 
-		const { websiteSource } = props
+		const { websiteSource, userPool } = props
 
 		const {
 			AppFullName: appFullName,
@@ -59,6 +61,7 @@ export class PersistentResources extends Construct implements IPersistent {
 		})
 
 		const cognitoStack = new CognitoPersistentStack(this, 'Cognito', {
+			userPool,
 			administratorEmail,
 			administratorName,
 			appFullName,
