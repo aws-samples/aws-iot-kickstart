@@ -9,7 +9,7 @@
   "private": true,
   "description": "Monorepo for project deathstar",
   "scripts": {
-    "prebuild": "yarn lint",
+    "prebuild": "yarn lint --quiet",
     "build": "yarn build:lambdas && yarn build:packages",
     "build:packages": "lerna run 'build' --stream --no-private",
     "build:lambdas": "lerna run --stream 'build' --scope @lambda/*",
@@ -18,7 +18,7 @@
     "clean": "lerna run --parallel 'clean' && (jest --clearCache &> /dev/null) || exit 0;",
     "clean:deep": "yarn clean && (find . -type d -name node_modules -exec rm -rf {} \\; &> /dev/null) || exit 0;",
     "commit": "git-cz",
-    "fix": "run-p -c 'lint:* --fix'",
+    "fix": "yarn lint --fix",
     "lint": "export NODE_OPTIONS=\"--max-old-space-size=6144\" && eslint '**/*.{ts,tsx}'",
     "prerelease": "yarn test && yarn build",
     "release": "yarn version:release",

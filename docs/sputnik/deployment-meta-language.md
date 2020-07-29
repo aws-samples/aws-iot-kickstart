@@ -25,8 +25,8 @@ Example: ml-demo-squeezenet-v1.0
         "Functions": [{
             "FunctionArn": "arn:aws:lambda:[AWS_REGION]:[AWS_ACCOUNT]:function:sputnik-gg-ml-inference-squeezenet-demo-python:Prod",
             "FunctionConfiguration": {
-            		...
-            
+		...
+
 ```
 
 ## Business logic metadata
@@ -82,9 +82,9 @@ Example: sample-system-v1.0
             ...
             "ref": "GATEWAY",
             "spec": {
-            		...
+		...
             }
           }
     }
 }
-``` 
+```

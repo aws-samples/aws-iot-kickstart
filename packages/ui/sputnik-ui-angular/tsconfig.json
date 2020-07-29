@@ -43,6 +43,6 @@
 		// "../../../node_modules/reflect-metadata",
 	],
 	// "angularCompilerOptions": {
-	// 	"disableTypeScriptVersionCheck": true
+	//	"disableTypeScriptVersionCheck": true
 	// }
 }

@@ -79,13 +79,13 @@ Region for both app and pipeline (CI/CD) stacks will use region of AWS profile e
 		"context": {
 				...
 				// Namespace for stack and resources deployed
- 				"Namespace": "Sputnik",
+				"Namespace": "Sputnik",
 
 				// Name of the admin user
- 				"AdministratorName": "Administrator",
+				"AdministratorName": "Administrator",
 
 				 // Email address of admin user (REQUIRED)
- 				"AdministratorEmail": "################",
+				"AdministratorEmail": "################",
 
 				 // Name of the CodeCommit repository where project code is stored
 				"RepositoryName": "Sputnik",
@@ -95,7 +95,7 @@ Region for both app and pipeline (CI/CD) stacks will use region of AWS profile e
 
 				// Report where the CodeCommit repository is located (us-west-2, ap-southeast-1)
 				// If not specified will use process.env.CDK_DEFAULT_REGION
-  			"RepositoryRegion": "${CDK_DEFAULT_REGION}"
+			"RepositoryRegion": "${CDK_DEFAULT_REGION}"
 
 				// Region where you want the application to be deployed (us-west-2, ap-southeast-1)
 				// If not specified will use process.env.CDK_DEFAULT_REGION

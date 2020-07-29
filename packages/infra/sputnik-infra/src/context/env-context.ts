@@ -46,9 +46,9 @@ export function getContext<TContext extends Context> (scope: Construct, keys: st
 }
 
 // export function propagateContext(scope: Construct, keys: string[]): void {
-// 	const context = getContext(scope, keys)
+//	const context = getContext(scope, keys)
 
-// 	keys.forEach((key) => {
-// 		scope.node.setContext(key, context[key])
-// 	})
+//	keys.forEach((key) => {
+//		scope.node.setContext(key, context[key])
+//	})
 // }
