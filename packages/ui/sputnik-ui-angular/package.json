@@ -10,6 +10,10 @@
     "Greg Varga <contact@gergelyvarga.com>",
     "Mirash Gjolaj <mirash.gjolaj@gmail.com>"
   ],
+  "files": [
+    "dist",
+    "assets"
+  ],
   "scripts": {
     "clean": "tsc --build --clean && rm -rf dist",
     "prebuild": "yarn clean",

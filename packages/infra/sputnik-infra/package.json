@@ -11,8 +11,10 @@
     "Mirash Gjolaj <mirash.gjolaj@gmail.com>"
   ],
   "main": "index.js",
-  "module": "index.module.js",
   "typings": "index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "clean": "tsc --build --clean && rm -rf dist",
     "prebuild": "yarn clean && yarn copy-files",
