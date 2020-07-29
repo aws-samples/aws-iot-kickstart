@@ -1,7 +1,7 @@
 import { enableProdMode } from '@angular/core'
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
-import { setEnvironment } from '@deathstar/sputnik-ui-angular/app/environment'
-import { AppModule } from '@deathstar/sputnik-ui-angular/app/app.module'
+import { setEnvironment } from '@deathstar/sputnik-ui-angular/dist/app/environment'
+import * as app from '@deathstar/sputnik-ui-angular/dist/app/app.module'
 import { environment } from './environments/environment'
 // AWS related
 import Amplify from '@aws-amplify/core'
@@ -29,5 +29,5 @@ if (environment.production) {
 }
 
 platformBrowserDynamic()
-.bootstrapModule(AppModule)
+.bootstrapModule(app.AppModule)
 .catch(err => console.log(err))

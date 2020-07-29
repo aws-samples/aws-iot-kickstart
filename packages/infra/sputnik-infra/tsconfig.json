@@ -6,7 +6,7 @@
     "skipLibCheck": true,
     "declaration": true,
     "sourceMap": true,
-    "rootDir": ".",
+    "rootDir": "src",
     "outDir": "dist",
     // TODO: resolve all typescript recommended issues and remove these settings
     "noUnusedLocals": false,
@@ -17,5 +17,5 @@
   },
   "compileOnSave": true,
   "exclude": ["node_modules", "__test__", "**/*.js", "dist/*"],
-  "include": ["**/*.ts"]
+  "include": ["src"]
 }

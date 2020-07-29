@@ -14,7 +14,6 @@
     "clean": "tsc --build --clean && rm -rf dist",
     "prebuild": "yarn clean",
     "build": "tsc --project tsconfig.json",
-    "postbuild": "cpy --cwd=app --parents '**/*' '!**/*.ts' ../dist",
     "prewatch": "yarn clean",
     "watch": "yarn build --watch",
     "test": "jest"
@@ -86,13 +85,14 @@
     "systemjs": "0.21.5",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.5",
+    "typescript": "^3.9.7",
     "underscore": "^1.10.2",
     "underscore-deep-extend": "1.1.5",
     "uuid": "3.3.2",
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-eslint/eslint-plugin": "0.0.1-alpha.32"
+    "@angular-eslint/eslint-plugin": "0.0.1-alpha.32",
+    "reflect-metadata": "^0.1.13"
   }
 }

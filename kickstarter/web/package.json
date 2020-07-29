@@ -21,7 +21,7 @@
   "scripts": {
     "ng": "ng",
     "dev": "ng serve",
-    "build": "ng build --prod --verbose",
+    "build": "ng build --prod",
     "clean": "rm -rf dist",
     "clean:deep": "yarn clean && rm -rf node_modules",
     "test": "jest"

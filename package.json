@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "workspaces": [
     "packages/*/*",
-    "packages/**/src/**/@lambda",
+    "packages/**/@lambda",
     "kickstarter/*"
   ],
   "private": true,

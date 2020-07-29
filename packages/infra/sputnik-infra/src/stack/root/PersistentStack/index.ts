@@ -102,6 +102,7 @@ export class PersistentStack extends Stack implements IPersistent {
 
 		const resources = new PersistentResources(this, 'Resources', props)
 
+		this.cognitoStack = resources.cognitoStack
 		this.websiteStack = resources.websiteStack
 		this.dataBucketStack = resources.dataBucketStack
 		this.dataProcessingStack = resources.dataProcessingStack
@@ -132,6 +133,7 @@ export class PersistentNestedStack extends NestedStack implements IPersistent {
 
 		const resources = new PersistentResources(this, 'Resources', props)
 
+		this.cognitoStack = resources.cognitoStack
 		this.websiteStack = resources.websiteStack
 		this.dataBucketStack = resources.dataBucketStack
 		this.dataProcessingStack = resources.dataProcessingStack
