@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 // Models
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
+import { ProfileInfo } from '../../../models/profile-info.model'
 // Services
-import { CognitoCallbackError, UserLoginService } from '@deathstar/sputnik-ui-angular/app/services/user-login.service'
-import { UserRegistrationService } from '@deathstar/sputnik-ui-angular/app/services/user-registration.service'
+import { CognitoCallbackError, UserLoginService } from '../../../services/user-login.service'
+import { UserRegistrationService } from '../../../services/user-registration.service'
 
 declare let jquery: any
 declare let $: any

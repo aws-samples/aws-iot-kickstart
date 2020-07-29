@@ -16,7 +16,7 @@
     "esModuleInterop": true,
     "removeComments": true,
     "declaration": true,
-		// "outDir": "app",
+		"outDir": "dist",
 		// "declarationDir": "app",
 		// "rootDir": "src/app",
 		"typeRoots": [

@@ -4,12 +4,12 @@ import { Router } from '@angular/router'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 // Models
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
-import { Setting } from '@deathstar/sputnik-ui-angular/app/models/setting.model'
+import { ProfileInfo } from '../../models/profile-info.model'
+import { Setting } from '../../models/setting.model'
 // Services
-import { BreadCrumbService, Crumb } from '@deathstar/sputnik-ui-angular/app/services/bread-crumb.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
-import { SettingService } from '@deathstar/sputnik-ui-angular/app/services/setting.service'
+import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
+import { LoggerService } from '../../services/logger.service'
+import { SettingService } from '../../services/setting.service'
 
 declare let mapboxgl: any
 declare let $: any

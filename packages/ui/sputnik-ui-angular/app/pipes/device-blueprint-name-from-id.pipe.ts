@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core'
-import { DeviceBlueprint } from '@deathstar/sputnik-ui-angular/app/models/device-blueprint.model'
-import { DeviceBlueprintService } from '@deathstar/sputnik-ui-angular/app/services/device-blueprint.service'
+import { DeviceBlueprint } from '../models/device-blueprint.model'
+import { DeviceBlueprintService } from '../services/device-blueprint.service'
 
 @Pipe({ name: 'deviceBlueprintNameFromId', pure: true })
 export class DeviceBlueprintNameFromIdPipe implements PipeTransform {

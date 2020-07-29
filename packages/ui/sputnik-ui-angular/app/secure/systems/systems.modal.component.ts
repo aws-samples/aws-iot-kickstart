@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core'
 import { Subject } from 'rxjs'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 // Models
-import { Device } from '@deathstar/sputnik-ui-angular/app/models/device.model'
-import { System } from '@deathstar/sputnik-ui-angular/app/models/system.model'
-import { SystemBlueprint } from '@deathstar/sputnik-ui-angular/app/models/system-blueprint.model'
+import { Device } from '../../models/device.model'
+import { System } from '../../models/system.model'
+import { SystemBlueprint } from '../../models/system-blueprint.model'
 // Services
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
-import { DeviceService } from '@deathstar/sputnik-ui-angular/app/services/device.service'
-import { SystemService } from '@deathstar/sputnik-ui-angular/app/services/system.service'
-import { SystemBlueprintService } from '@deathstar/sputnik-ui-angular/app/services/system-blueprint.service'
+import { LoggerService } from '../../services/logger.service'
+import { DeviceService } from '../../services/device.service'
+import { SystemService } from '../../services/system.service'
+import { SystemBlueprintService } from '../../services/system-blueprint.service'
 
 @Component({
 	selector: 'app-root-systems-modal',

@@ -56,7 +56,7 @@ import { DeviceTypesModule } from './secure/device-types/device-types.module'
 import { SystemsModule } from './secure/systems/systems.module'
 import { SystemBlueprintsModule } from './secure/system-blueprints/system-blueprints.module'
 // System Modules
-import { ChildViewsModule } from '@deathstar/sputnik-ui-angular/app/secure/child-views/child-views.module'
+import { ChildViewsModule } from './secure/child-views/child-views.module'
 import { TestsModule } from './public/tests/tests.module'
 
 // Addons compilation

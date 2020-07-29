@@ -1,11 +1,11 @@
 import { Component } from '@angular/core'
 import { Router } from '@angular/router'
 // Models
-import { NewPasswordUser } from '@deathstar/sputnik-ui-angular/app/models/new-password-user.model'
+import { NewPasswordUser } from '../../../models/new-password-user.model'
 // Services
-import { UserRegistrationService } from '@deathstar/sputnik-ui-angular/app/services/user-registration.service'
-import { UserLoginService, CognitoCallback } from '@deathstar/sputnik-ui-angular/app/services/user-login.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { UserRegistrationService } from '../../../services/user-registration.service'
+import { UserLoginService, CognitoCallback } from '../../../services/user-login.service'
+import { LoggerService } from '../../../services/logger.service'
 
 /**
  * This component is responsible for displaying and controlling

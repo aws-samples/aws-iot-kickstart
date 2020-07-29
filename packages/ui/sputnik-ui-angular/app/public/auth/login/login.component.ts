@@ -1,16 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
-import { getEnvironment } from '@deathstar/sputnik-ui-angular/app/environment'
+import { getEnvironment } from '../../../environment'
 // Models
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
+import { ProfileInfo } from '../../../models/profile-info.model'
 // Services
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { LoggerService } from '../../../services/logger.service'
 import {
 	UserLoginService,
 	CognitoCallback,
 	LoggedInCallback,
 	CognitoCallbackError,
-} from '@deathstar/sputnik-ui-angular/app/services/user-login.service'
+} from '../../../services/user-login.service'
 
 declare let appVariables: any
 

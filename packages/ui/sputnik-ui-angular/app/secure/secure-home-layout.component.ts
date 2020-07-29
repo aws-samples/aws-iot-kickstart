@@ -3,19 +3,19 @@ import { Router, ActivatedRoute } from '@angular/router'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 // Models
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
-import { DeviceStats, SystemStats } from '@deathstar/sputnik-ui-angular/app/models/stats.model'
+import { ProfileInfo } from '../models/profile-info.model'
+import { DeviceStats, SystemStats } from '../models/stats.model'
 // Services
-import { BreadCrumbService, Crumb } from '@deathstar/sputnik-ui-angular/app/services/bread-crumb.service'
-import { UserLoginService, LoggedInCallback } from '@deathstar/sputnik-ui-angular/app/services/user-login.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
-import { StatService, Stats } from '@deathstar/sputnik-ui-angular/app/services/stat.service'
-import { IoTService } from '@deathstar/sputnik-ui-angular/app/services/iot.service'
+import { BreadCrumbService, Crumb } from '../services/bread-crumb.service'
+import { UserLoginService, LoggedInCallback } from '../services/user-login.service'
+import { LoggerService } from '../services/logger.service'
+import { StatService, Stats } from '../services/stat.service'
+import { IoTService } from '../services/iot.service'
 // import { AddonIoTService } from 'services/addon.iot/addon-iot.service';
 // Services that cache
-import { DeviceTypeService } from '@deathstar/sputnik-ui-angular/app/services/device-type.service'
-import { DeviceBlueprintService } from '@deathstar/sputnik-ui-angular/app/services/device-blueprint.service'
-import { SystemBlueprintService } from '@deathstar/sputnik-ui-angular/app/services/system-blueprint.service'
+import { DeviceTypeService } from '../services/device-type.service'
+import { DeviceBlueprintService } from '../services/device-blueprint.service'
+import { SystemBlueprintService } from '../services/system-blueprint.service'
 
 // Helpers
 declare let jquery: any

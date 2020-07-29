@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { Router } from '@angular/router'
 // Services
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { LoggerService } from '../../../services/logger.service'
 
 export class TableHeader {
 		attr: string;

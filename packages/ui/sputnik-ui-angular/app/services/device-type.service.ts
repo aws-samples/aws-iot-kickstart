@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 // Models
-import { DeviceType } from '@deathstar/sputnik-ui-angular/app/models/device-type.model'
+import { DeviceType } from '../models/device-type.model'
 // Services
 import { LoggerService } from './logger.service'
 import { AppSyncService, AddedDeviceType, UpdatedDeviceType, DeletedDeviceType } from './appsync.service'

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 // Models
-import { DeviceBlueprint } from '@deathstar/sputnik-ui-angular/app/models/device-blueprint.model'
+import { DeviceBlueprint } from '../models/device-blueprint.model'
 // Services
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { LoggerService } from '../services/logger.service'
 import {
 	AppSyncService,
 	AddedDeviceBlueprint,

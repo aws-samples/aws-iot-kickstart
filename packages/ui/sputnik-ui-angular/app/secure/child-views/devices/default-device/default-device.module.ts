@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { DefaultDeviceComponent } from './default-device.component'
-import { WidgetsModule } from '@deathstar/sputnik-ui-angular/app/widgets/widgets.module'
+import { WidgetsModule } from '../../../../widgets/widgets.module'
 // Pipes
 import { PipesModule } from '../../../../pipes/pipes.module'
 

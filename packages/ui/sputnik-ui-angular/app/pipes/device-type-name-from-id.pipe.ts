@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core'
-import { DeviceType } from '@deathstar/sputnik-ui-angular/app/models/device-type.model'
-import { DeviceTypeService } from '@deathstar/sputnik-ui-angular/app/services/device-type.service'
+import { DeviceType } from '../models/device-type.model'
+import { DeviceTypeService } from '../services/device-type.service'
 
 @Pipe({ name: 'deviceTypeNameFromId', pure: true })
 // export class DeviceTypeNameFromIdPipe implements PipeTransform {

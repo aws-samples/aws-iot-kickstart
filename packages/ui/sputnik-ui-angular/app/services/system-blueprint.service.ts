@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 // Models
-import { SystemBlueprint } from '@deathstar/sputnik-ui-angular/app/models/system-blueprint.model'
+import { SystemBlueprint } from '../models/system-blueprint.model'
 // Services
 import { LoggerService } from './logger.service'
 import {

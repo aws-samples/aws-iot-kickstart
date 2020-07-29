@@ -11,9 +11,10 @@
     "Mirash Gjolaj <mirash.gjolaj@gmail.com>"
   ],
   "scripts": {
-    "clean": "tsc --build --clean",
+    "clean": "tsc --build --clean && rm -rf dist",
     "prebuild": "yarn clean",
     "build": "tsc --project tsconfig.json",
+    "postbuild": "cpy --cwd=app --parents '**/*' '!**/*.ts' ../dist",
     "prewatch": "yarn clean",
     "watch": "yarn build --watch",
     "test": "jest"
@@ -46,6 +47,7 @@
     "chartjs-plugin-streaming": "1.8.0",
     "codelyzer": "^5.0.1",
     "core-js": "2.6.9",
+    "cpy-cli": "^3.1.1",
     "echarts": "^4.8.0",
     "file-saver": "2.0.2",
     "font-awesome": "^4.7.0",

@@ -4,10 +4,10 @@ import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 // Models
-import { ProfileInfo } from '@deathstar/sputnik-ui-angular/app/models/profile-info.model'
+import { ProfileInfo } from '../../models/profile-info.model'
 // Services
-import { UserLoginService } from '@deathstar/sputnik-ui-angular/app/services/user-login.service'
-import { LoggerService } from '@deathstar/sputnik-ui-angular/app/services/logger.service'
+import { UserLoginService } from '../../services/user-login.service'
+import { LoggerService } from '../../services/logger.service'
 import moment from 'moment'
 
 // Helpers

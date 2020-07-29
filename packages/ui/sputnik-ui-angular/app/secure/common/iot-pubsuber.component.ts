@@ -1,8 +1,8 @@
 import { Component, Input, OnDestroy } from '@angular/core'
 import { Subscription, Subject } from 'rxjs'
-import { Device } from '@deathstar/sputnik-ui-angular/app/models/device.model'
+import { Device } from '../../models/device.model'
 // Services
-import { IoTService } from '@deathstar/sputnik-ui-angular/app/services/iot.service'
+import { IoTService } from '../../services/iot.service'
 import { mixin } from 'underscore'
 import * as _ from 'underscore'
 import * as underscoreDeepExtend from 'underscore-deep-extend'

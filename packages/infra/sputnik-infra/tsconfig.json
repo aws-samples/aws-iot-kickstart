@@ -5,20 +5,17 @@
     "emitDeclarationOnly": false,
     "skipLibCheck": true,
     "declaration": true,
-    "baseUrl": "../../../",
-    "rootDir": "./",
-
+    "sourceMap": true,
+    "rootDir": ".",
+    "outDir": "dist",
     // TODO: resolve all typescript recommended issues and remove these settings
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": false,
-		"strictPropertyInitialization": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": false,
+    "strictPropertyInitialization": false
   },
   "compileOnSave": true,
-  "exclude": ["node_modules", "__test__", "**/*.js"],
-  "include": ["**/*.ts"],
-  "files": [
-    "../sputnik-infra-lambda-code/src/index.ts"
-  ]
+  "exclude": ["node_modules", "__test__", "**/*.js", "dist/*"],
+  "include": ["**/*.ts"]
 }

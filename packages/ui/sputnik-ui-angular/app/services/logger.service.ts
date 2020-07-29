@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { getEnvironment } from '@deathstar/sputnik-ui-angular/app/environment'
+import { getEnvironment } from '../environment'
 
 const environment = getEnvironment()
 
