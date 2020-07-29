@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-ui-angular",
   "description": "Sputnik frontend using Angular framework",
-  "version": "0.0.0-alpha.2",
+  "version": "0.0.0-alpha.3",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "contributors": [
@@ -31,7 +31,7 @@
     "@angular/platform-browser": "^8.2.14",
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
-    "@deathstar/sputnik-infra": "^0.0.0-alpha.2",
+    "@deathstar/sputnik-infra": "^0.0.0-alpha.3",
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",
     "@sweetalert2/ngx-sweetalert2": "5.1.0",

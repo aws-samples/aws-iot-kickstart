@@ -2,7 +2,7 @@
   "private": true,
   "name": "kitckstarter-web",
   "description": "Sputnik frontend using Angular framework",
-  "version": "0.0.0-alpha.2",
+  "version": "0.0.0-alpha.3",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "contributors": [
@@ -27,7 +27,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@deathstar/sputnik-ui-angular": "^0.0.0-alpha.2"
+    "@deathstar/sputnik-ui-angular": "^0.0.0-alpha.3"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.25",
