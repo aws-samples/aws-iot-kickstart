@@ -9,7 +9,7 @@
   "private": true,
   "description": "Monorepo for project deathstar",
   "scripts": {
-    "prebuild": "yarn lint --quiet",
+    "//prebuild": "yarn lint --quiet",
     "build": "yarn build:lambdas && yarn build:packages",
     "build:packages": "lerna run 'build' --stream --no-private",
     "build:lambdas": "lerna run --stream 'build' --scope @lambda/*",
