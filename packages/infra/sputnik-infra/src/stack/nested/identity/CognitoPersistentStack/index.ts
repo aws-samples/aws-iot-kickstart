@@ -7,7 +7,7 @@ import { join } from 'path'
 import { CfnPolicy as CfnIoTPolicy } from '@aws-cdk/aws-iot'
 import { CognitoPreTokenGenerationLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
 import { retainResource } from '../../../../utils/resource-utils'
-import { namespaced, uniqueIdHash } from '../../../../utils/cdk-identity-utils'
+import { namespaced, regionalNamespaced } from '../../../../utils/cdk-identity-utils'
 import { PolicyStatement, Effect, PolicyDocument } from '@aws-cdk/aws-iam'
 import { CognitoIDP as CognitoIDPActions } from 'cdk-iam-actions/lib/actions'
 import { DEFAULT_NAMESPACE } from '../../device/management/constants'
@@ -155,7 +155,7 @@ export class CognitoPersistentStack extends NestedStack {
 
 		// TODO: [SECURITY] Lock this down to tenant/namespace
 		const websiteCognitoIoTPolicy = new CfnIoTPolicy(this, 'WebsiteCognitoIoTPolicy', {
-			policyName: `WebsiteCognitoIoTPolicy-${uniqueIdHash(this)}`,
+			policyName: regionalNamespaced(this, 'WebsiteCognitoIoTPolicy'),
 			policyDocument: PolicyDocument.fromJson({
 				Statement: [{ Effect: 'Allow', Action: ['iot:*'], Resource: ['*'] }],
 			}),
