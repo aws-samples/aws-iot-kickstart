@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "sputnik-ui-angular",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -20,6 +20,7 @@
     ]
   },
   "dependencies": {
+    "@angular-eslint/eslint-plugin": "0.0.1-alpha.32",
     "@angular/animations": "~8.2.14",
     "@angular/common": "~8.2.14",
     "@angular/compiler": "~8.2.14",
@@ -28,11 +29,6 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
-    "rxjs": "~6.4.0",
-    "tslib": "^1.10.0",
-    "zone.js": "~0.9.1",
-
-    "@angular-eslint/eslint-plugin": "0.0.1-alpha.32",
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",
     "@sweetalert2/ngx-sweetalert2": "5.1.0",
@@ -67,14 +63,17 @@
     "node-waves": "^0.7.6",
     "owl.carousel": "^2.3.4",
     "popper.js": "^1.15.0",
+    "rxjs": "~6.4.0",
     "shortid": "2.2.14",
     "sticky-kit": "^1.1.3",
     "stream": "0.0.2",
     "sweetalert2": "^8.17.1",
     "systemjs": "0.21.5",
+    "tslib": "^1.10.0",
     "underscore": "^1.10.2",
     "underscore-deep-extend": "1.1.5",
-    "uuid": "3.3.2"
+    "uuid": "3.3.2",
+    "zone.js": "~0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.29",
@@ -83,11 +82,11 @@
     "@angular/compiler-cli": "~8.2.14",
     "@angular/language-service": "~8.2.14",
     "@types/echarts": "^4.6.0",
-    "@types/mapbox-gl": "^1.10.2",
-    "@types/underscore": "^1.10.0",
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
+    "@types/mapbox-gl": "^1.10.2",
     "@types/node": "~8.9.4",
+    "@types/underscore": "^1.10.0",
     "codelyzer": "^5.0.1",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",

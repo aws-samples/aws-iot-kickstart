@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-infra",
   "description": "Sputnik CDK infra",
-  "version": "0.0.0-alpha.3",
+  "version": "0.0.0-alpha.4",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "contributors": [

@@ -1,15 +1,12 @@
 {
   "name": "@deathstar/sputnik-ui-angular",
-  "version": "0.0.0-alpha.3",
-
+  "version": "0.0.0-alpha.4",
   "publishConfig": {
     "directory": "dist"
   },
-
   "scripts": {
     "build": "cd ../../ && yarn build sputnik"
   },
-
   "main": "dist/bundles/deathstar-sputnik-ui-angular.umd.js",
   "module": "dist/fesm5/deathstar-sputnik-ui-angular.js",
   "es2015": "dist/fesm2015/deathstar-sputnik-ui-angular.js",
@@ -19,10 +16,8 @@
   "fesm2015": "dist/fesm2015/deathstar-sputnik-ui-angular.js",
   "typings": "dist/deathstar-sputnik-ui-angular.d.ts",
   "metadata": "dist/deathstar-sputnik-ui-angular.metadata.json",
-
   "dependencies": {
-    "@deathstar/sputnik-infra": "^0.0.0-alpha.3",
-
+    "@deathstar/sputnik-infra": "^0.0.0-alpha.4",
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",
     "aws-amplify": "1.1.36",
