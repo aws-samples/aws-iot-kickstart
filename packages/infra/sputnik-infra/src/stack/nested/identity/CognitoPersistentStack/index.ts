@@ -54,8 +54,6 @@ export class CognitoPersistentStack extends NestedStack {
 
 		const { administratorEmail, administratorName, websiteURL, appFullName } = props
 
-		console.log('CognitoPersistentStackProps:props', props.userPool, props)
-
 		const userPool = props.userPool || new UserPool(this, 'UserPool', {
 			userPoolName: namespaced(this, 'UserPool'),
 			selfSignUpEnabled: false,

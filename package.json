@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "workspaces": [
     "packages/*/*",
+    "packages/ui/sputnik-ui-angular/projects/*",
     "packages/**/@lambda",
     "kickstarter/*"
   ],
@@ -12,10 +13,11 @@
     "build": "yarn build:lambdas && yarn build:packages",
     "build:packages": "lerna run 'build' --stream --no-private",
     "build:lambdas": "lerna run --stream 'build' --scope @lambda/*",
+    "build:angular": "lerna run --stream 'build' --scope sputnik-ui-angular",
     "watch": "lerna run --parallel 'watch' --no-private",
     "watch:since": "lerna run --parallel 'watch' --no-private --since",
     "clean": "lerna run --parallel 'clean' && (jest --clearCache &> /dev/null) || exit 0;",
-    "clean:deep": "yarn clean && (find . -type d -name node_modules -exec rm -rf {} \\; &> /dev/null) || exit 0;",
+    "clean:deep": "(yarn clean &> /dev/null) && (find . -type d -name node_modules -exec rm -rf {} \\; &> /dev/null) || exit 0;",
     "commit": "git-cz",
     "fix": "yarn lint --fix",
     "lint": "export NODE_OPTIONS=\"--max-old-space-size=6144\" && eslint '**/*.{ts,tsx}'",
@@ -87,6 +89,7 @@
     "prettier": "^2.0.5",
     "ts-jest": "25",
     "ts-node": "^8.1.0",
+    "tsickle": "^0.39.1",
     "typescript": "^3.9.5"
   }
 }

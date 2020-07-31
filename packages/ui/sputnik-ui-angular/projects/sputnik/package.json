@@ -1,56 +1,41 @@
 {
-  "private": true,
-  "name": "kickstarter-web",
-  "description": "Sputnik frontend using Angular framework",
+  "name": "@deathstar/sputnik-ui-angular",
   "version": "0.0.0-alpha.3",
-  "license": "Apache-2.0",
-  "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
-  "contributors": [
-    "Timothee Cruse <timothee.cruse@gmail.com>",
-    "Jeremy Jonas <jay.jonas@hotmail.com>",
-    "Greg Varga <contact@gergelyvarga.com>",
-    "Mirash Gjolaj <mirash.gjolaj@gmail.com>"
-  ],
-  "main": "dist/index.js",
-  "module": "dist/index.module.js",
-  "typings": "dist/index.d.ts",
-  "directories": {
-    "lib": "dist",
-    "test": "test"
+
+  "publishConfig": {
+    "directory": "dist"
   },
+
   "scripts": {
-    "ng": "ng",
-    "dev": "ng serve",
-    "build": "ng build --prod",
-    "clean": "rm -rf dist",
-    "clean:deep": "yarn clean && rm -rf node_modules",
-    "test": "jest"
+    "build": "cd ../../ && yarn build sputnik"
   },
+
+  "main": "dist/bundles/deathstar-sputnik-ui-angular.umd.js",
+  "module": "dist/fesm5/deathstar-sputnik-ui-angular.js",
+  "es2015": "dist/fesm2015/deathstar-sputnik-ui-angular.js",
+  "esm5": "dist/esm5/deathstar-sputnik-ui-angular.js",
+  "esm2015": "dist/esm2015/deathstar-sputnik-ui-angular.js",
+  "fesm5": "dist/fesm5/deathstar-sputnik-ui-angular.js",
+  "fesm2015": "dist/fesm2015/deathstar-sputnik-ui-angular.js",
+  "typings": "dist/deathstar-sputnik-ui-angular.d.ts",
+  "metadata": "dist/deathstar-sputnik-ui-angular.metadata.json",
+
   "dependencies": {
-    "@deathstar/sputnik-ui-angular": "^0.0.0-alpha.3"
+    "@deathstar/sputnik-infra": "^0.0.0-alpha.3"
   },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "~0.803.25",
+  "peerDependencies": {
     "@angular/animations": "^8.2.14",
-    "@angular/cli": "^8.3.26",
     "@angular/common": "^8.2.14",
-    "@angular/compiler": "^8.2.14",
-    "@angular/compiler-cli": "^8.2.14",
     "@angular/core": "^8.2.14",
     "@angular/forms": "^8.2.14",
     "@angular/language-service": "^8.2.14",
     "@angular/platform-browser": "^8.2.14",
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
+
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",
     "@sweetalert2/ngx-sweetalert2": "5.1.0",
-    "@types/echarts": "^4.6.0",
-    "@types/jasmine": "^2.8.11",
-    "@types/jasminewd2": "^2.0.6",
-    "@types/mapbox-gl": "^1.10.2",
-    "@types/node": "~10.12.6",
-    "@types/underscore": "^1.10.0",
     "aws-amplify": "1.1.36",
     "aws-amplify-angular": "3.0.11",
     "bootstrap": "^4.3.1",
@@ -60,6 +45,7 @@
     "chartjs-plugin-streaming": "1.8.0",
     "codelyzer": "^5.0.1",
     "core-js": "2.6.9",
+    "cpy-cli": "^3.1.1",
     "echarts": "^4.8.0",
     "file-saver": "2.0.2",
     "font-awesome": "^4.7.0",
@@ -67,17 +53,10 @@
     "gaugeJS": "^1.3.7",
     "graphql": "14.0.2",
     "graphql-tag": "2.10.0",
-    "jasmine-core": "~3.3.0",
-    "jasmine-spec-reporter": "~4.2.1",
     "jquery": "^3.4.1",
     "jquery-blockui": "^2.7.0",
     "jquery-slimscroll": "^1.3.8",
     "jszip": "3.2.2",
-    "karma": "~3.1.1",
-    "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "~2.x.x",
-    "karma-jasmine": "~1.1.1",
-    "karma-jasmine-html-reporter": "^1.4.0",
     "mapbox-gl": "^1.10.1",
     "moment": "2.24.0",
     "ng-block-ui": "2.1.7",
@@ -96,9 +75,6 @@
     "stream": "0.0.2",
     "sweetalert2": "^8.17.1",
     "systemjs": "0.21.5",
-    "ts-node": "~7.0.0",
-    "tslint": "~5.11.0",
-    "typescript": "~3.5",
     "underscore": "^1.10.2",
     "underscore-deep-extend": "1.1.5",
     "uuid": "3.3.2",

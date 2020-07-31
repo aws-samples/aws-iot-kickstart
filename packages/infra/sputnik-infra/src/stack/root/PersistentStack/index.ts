@@ -30,56 +30,42 @@ interface PersistentStackProps extends PersistentResourcesProps {
 	readonly namespace?: string
 }
 
-export class PersistentResources extends Construct implements IPersistent {
-	readonly websiteStack: WebsitePersistentStack
+function createResources (scope: Construct, props: PersistentResourcesProps): IPersistent {
+	const { websiteSource, userPool } = props
 
-	readonly dataBucketStack: DataBucketPersistentStack
+	const {
+		AppFullName: appFullName,
+		AdministratorEmail: administratorEmail,
+		AdministratorName: administratorName,
+	} = getAppContext(scope)
 
-	readonly cognitoStack: CognitoPersistentStack
+	const deviceManagementStack = new DeviceManagementPersistentStack(scope, 'DeviceManagement', {})
 
-	readonly dataProcessingStack: DataProcessingPersistentStack
+	const dataBucketStack = new DataBucketPersistentStack(scope, 'DataBucket', {})
 
-	readonly deviceManagementStack: DeviceManagementPersistentStack
+	const websiteStack = new WebsitePersistentStack(scope, 'Website', {
+		source: websiteSource,
+	})
 
-	constructor (scope: Construct, id: string, props: PersistentStackProps) {
-		super(scope, id)
+	const cognitoStack = new CognitoPersistentStack(scope, 'Cognito', {
+		userPool,
+		administratorEmail,
+		administratorName,
+		appFullName,
+		websiteURL: websiteStack.websiteURL,
+	})
 
-		const { websiteSource, userPool } = props
+	const dataProcessingStack = new DataProcessingPersistentStack(scope, 'DataProcessing', {
+		administratorName,
+		administratorEmail,
+	})
 
-		const {
-			AppFullName: appFullName,
-			AdministratorEmail: administratorEmail,
-			AdministratorName: administratorName,
-		} = getAppContext(this)
-
-		const deviceManagementStack = new DeviceManagementPersistentStack(this, 'DeviceManagement', {})
-
-		const dataBucketStack = new DataBucketPersistentStack(this, 'DataBucket', {})
-
-		const websiteStack = new WebsitePersistentStack(this, 'Website', {
-			source: websiteSource,
-		})
-
-		const cognitoStack = new CognitoPersistentStack(this, 'Cognito', {
-			userPool,
-			administratorEmail,
-			administratorName,
-			appFullName,
-			websiteURL: websiteStack.websiteURL,
-		})
-
-		const dataProcessingStack = new DataProcessingPersistentStack(this, 'DataProcessing', {
-			administratorName,
-			administratorEmail,
-		})
-
-		Object.assign(this, {
-			dataBucketStack,
-			websiteStack,
-			cognitoStack,
-			dataProcessingStack,
-			deviceManagementStack,
-		})
+	return {
+		dataBucketStack,
+		websiteStack,
+		cognitoStack,
+		dataProcessingStack,
+		deviceManagementStack,
 	}
 }
 
@@ -103,14 +89,7 @@ export class PersistentStack extends Stack implements IPersistent {
 
 		setNamespace(this, props.namespace || Namespace || 'Sputnik')
 
-		const resources = new PersistentResources(this, 'Resources', props)
-
-		this.cognitoStack = resources.cognitoStack
-		this.websiteStack = resources.websiteStack
-		this.dataBucketStack = resources.dataBucketStack
-		this.dataProcessingStack = resources.dataProcessingStack
-		this.dataProcessingStack = resources.dataProcessingStack
-		this.deviceManagementStack = resources.deviceManagementStack
+		Object.assign(this, createResources(this, props))
 	}
 }
 
@@ -134,13 +113,6 @@ export class PersistentNestedStack extends NestedStack implements IPersistent {
 
 		setNamespace(this, props.namespace || Namespace || 'Sputnik')
 
-		const resources = new PersistentResources(this, 'Resources', props)
-
-		this.cognitoStack = resources.cognitoStack
-		this.websiteStack = resources.websiteStack
-		this.dataBucketStack = resources.dataBucketStack
-		this.dataProcessingStack = resources.dataProcessingStack
-		this.dataProcessingStack = resources.dataProcessingStack
-		this.deviceManagementStack = resources.deviceManagementStack
+		Object.assign(this, createResources(this, props))
 	}
 }

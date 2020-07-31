@@ -1,48 +1,37 @@
 {
-	// "traceResolution": true,
-  "compilerOptions": {
-		"target": "ESNext",
-		// "lib": ["es2018", "dom"],
-    "module": "ESNext",
-    "noEmit": false,
-    "emitDeclarationOnly": false,
-    // "downlevelIteration": true,
-    "skipLibCheck": true,
-		"sourceMap": true,
-		"moduleResolution": "node",
-
-		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true,
-
-		// "resolveJsonModule": true,
-    "esModuleInterop": true,
-    // "removeComments": true,
-    "declaration": true,
-		"outDir": "dist",
-		"declarationDir": "dist",
-		"rootDir": "./",
-		"typeRoots": [
-			"./node_modules/@types",
-			"../../../node_modules/@types",
-			"../../../@types",
-		],
-
-    // TODO: resolve all typescript recommended issues and remove these settings
-		// "strict": false,
-		"noImplicitAny": false,
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": false,
-		"strictPropertyInitialization": false,
-  },
   "compileOnSave": false,
-  "exclude": ["node_modules", "test", "**/*.spec.*"],
-  "include": [
-		"app",
-		// "../../../node_modules/reflect-metadata",
-	],
-	// "angularCompilerOptions": {
-	//	"disableTypeScriptVersionCheck": true
-	// }
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "paths": {
+      "sputnik": [
+        "projects/sputnik/dist"
+      ],
+      "sputnik/*": [
+        "projects/sputnik/dist/*"
+      ]
+    }
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    // "annotationsAs": "decorators"
+  }
 }

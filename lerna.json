@@ -1,9 +1,4 @@
 {
-  "packages": [
-    "packages/*/*",
-    "packages/infra/sputnik-infra-lambda-code/@lambda/**",
-    "kickstarter/*"
-  ],
   "version": "independent",
   "useWorkspaces": true,
   "npmClient": "yarn",

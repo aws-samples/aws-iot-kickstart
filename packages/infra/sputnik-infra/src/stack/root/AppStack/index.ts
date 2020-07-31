@@ -34,97 +34,77 @@ interface AppStackProps extends AppResourcesProps {
 	readonly namespace?: string
 }
 
-export class AppResources extends Construct implements IApp {
-	readonly persistent: IPersistent
+function createResources (scope: Construct, props: AppResourcesProps): IApp {
+	const { persistent } = props
 
-	readonly cognitoStack: CognitoStack
+	const {
+		AppFullName: appFullName,
+		AppShortName: appShortName,
+		AdministratorEmail: administratorEmail,
+		AdministratorName: administratorName,
+	} = getAppContext(scope)
 
-	readonly apiStack: ApiStack
+	const cognitoStack = new CognitoStack(scope, 'Cognito', {
+		userPool: persistent.cognitoStack.userPool,
+		websiteClient: persistent.cognitoStack.websiteClient,
+		dataBucket: persistent.dataBucketStack.dataBucket,
+	})
 
-	readonly sputnikStack: SputnikStack
+	const { userPool } = cognitoStack
 
-	readonly userManagementStack: UserManagementStack
+	const apiStack = new ApiStack(scope, 'Api', {
+		userPool,
+	})
 
-	readonly dataProcessingStack: DataProcessingStack
+	const { graphQLApi } = apiStack
 
-	readonly deviceManagementStack: DeviceManagementStack
+	const userManagementStack = new UserManagementStack(scope, 'UserManagement', {
+		graphQLApi,
+		userPool,
+		tenantRole: cognitoStack.tenantRole,
+	})
 
-	constructor (scope: Construct, id: string, props: AppResourcesProps) {
-		super(scope, id)
+	const dataProcessingStack = new DataProcessingStack(scope, 'DataProcessing', {
+		snsAlertsTopic: persistent.dataProcessingStack.snsAlertsTopic,
+		iotEventBucket: persistent.dataProcessingStack.iotEventBucket,
+		iotErrorsBucket: persistent.dataProcessingStack.iotErrorsBucket,
+	})
 
-		const { persistent } = props
+	const deviceManagementStack = new DeviceManagementStack(scope, 'DeviceManagement', {
+		graphQLApi,
+		dataStoreTable: persistent.deviceManagementStack.dataStoreTable,
+		deviceTable: persistent.deviceManagementStack.deviceTable,
+		deviceTypeTable: persistent.deviceManagementStack.deviceTypeTable,
+		deviceBlueprintTable: persistent.deviceManagementStack.deviceBlueprintTable,
+		systemTable: persistent.deviceManagementStack.systemTable,
+		systemBlueprintTable: persistent.deviceManagementStack.systemBlueprintTable,
+		deploymentTable: persistent.deviceManagementStack.deploymentTable,
+		settingTable: persistent.deviceManagementStack.settingTable,
+		iotConnectPolicy: persistent.deviceManagementStack.iotConnectPolicy,
+	})
 
-		const {
-			AppFullName: appFullName,
-			AppShortName: appShortName,
-			AdministratorEmail: administratorEmail,
-			AdministratorName: administratorName,
-		} = getAppContext(this)
+	const sputnikStack = new SputnikStack(scope, 'Sputnik', {
+		persistent,
+		userPool,
+		graphQLApi,
+		userManagementStack,
+		deviceManagementStack,
+		cognitoStack,
+		administratorName,
+		administratorEmail,
+		appFullName,
+		appShortName,
+		sendAnonymousUsageData: false,
+	})
 
-		this.persistent = persistent
-
-		const cognitoStack = new CognitoStack(this, 'Cognito', {
-			userPool: persistent.cognitoStack.userPool,
-			websiteClient: persistent.cognitoStack.websiteClient,
-			dataBucket: persistent.dataBucketStack.dataBucket,
-		})
-
-		const { userPool } = cognitoStack
-
-		const apiStack = new ApiStack(this, 'Api', {
-			userPool,
-		})
-
-		const { graphQLApi } = apiStack
-
-		const userManagementStack = new UserManagementStack(this, 'UserManagement', {
-			graphQLApi,
-			userPool,
-			tenantRole: cognitoStack.tenantRole,
-		})
-
-		const dataProcessingStack = new DataProcessingStack(this, 'DataProcessing', {
-			snsAlertsTopic: persistent.dataProcessingStack.snsAlertsTopic,
-			iotEventBucket: persistent.dataProcessingStack.iotEventBucket,
-			iotErrorsBucket: persistent.dataProcessingStack.iotErrorsBucket,
-		})
-
-		const deviceManagementStack = new DeviceManagementStack(this, 'DeviceManagement', {
-			graphQLApi,
-			dataStoreTable: persistent.deviceManagementStack.dataStoreTable,
-			deviceTable: persistent.deviceManagementStack.deviceTable,
-			deviceTypeTable: persistent.deviceManagementStack.deviceTypeTable,
-			deviceBlueprintTable: persistent.deviceManagementStack.deviceBlueprintTable,
-			systemTable: persistent.deviceManagementStack.systemTable,
-			systemBlueprintTable: persistent.deviceManagementStack.systemBlueprintTable,
-			deploymentTable: persistent.deviceManagementStack.deploymentTable,
-			settingTable: persistent.deviceManagementStack.settingTable,
-			iotConnectPolicy: persistent.deviceManagementStack.iotConnectPolicy,
-		})
-
-		const sputnikStack = new SputnikStack(this, 'Sputnik', {
-			persistent,
-			userPool,
-			graphQLApi,
-			userManagementStack,
-			deviceManagementStack,
-			cognitoStack,
-			administratorName,
-			administratorEmail,
-			appFullName,
-			appShortName,
-			sendAnonymousUsageData: false,
-		})
-
-		// Assign all stacks to instance
-		Object.assign(this, {
-			dataProcessingStack,
-			cognitoStack,
-			apiStack,
-			sputnikStack,
-			userManagementStack,
-			deviceManagementStack,
-		})
+	return {
+		persistent,
+		dataProcessingStack,
+		cognitoStack,
+		apiStack,
+		sputnikStack,
+		userManagementStack,
+		deviceManagementStack,
 	}
 }
 
@@ -152,16 +132,7 @@ export class AppNestedStack extends NestedStack implements IApp {
 
 		setNamespace(this, props.namespace || Namespace || 'Sputnik')
 
-		const resources = new AppResources(this, 'Resources', props)
-
-		this.persistent = resources.persistent
-		this.cognitoStack = resources.cognitoStack
-		this.apiStack = resources.apiStack
-		this.sputnikStack = resources.sputnikStack
-		this.userManagementStack = resources.userManagementStack
-		this.dataProcessingStack = resources.dataProcessingStack
-		this.dataProcessingStack = resources.dataProcessingStack
-		this.deviceManagementStack = resources.deviceManagementStack
+		Object.assign(this, createResources(this, props))
 	}
 
 	onSynthesize (session: ISynthesisSession): void {
@@ -195,21 +166,6 @@ export class AppStack extends Stack implements IApp {
 
 		setNamespace(this, props.namespace || Namespace || 'Sputnik')
 
-		const resources = new AppResources(this, 'Resources', props)
-
-		this.persistent = resources.persistent
-		this.cognitoStack = resources.cognitoStack
-		this.apiStack = resources.apiStack
-		this.sputnikStack = resources.sputnikStack
-		this.userManagementStack = resources.userManagementStack
-		this.dataProcessingStack = resources.dataProcessingStack
-		this.dataProcessingStack = resources.dataProcessingStack
-		this.deviceManagementStack = resources.deviceManagementStack
-	}
-
-	onSynthesize (session: ISynthesisSession): void {
-		super.onSynthesize(session)
-
-		validateStackParameterLimit(this)
+		Object.assign(this, createResources(this, props))
 	}
 }
