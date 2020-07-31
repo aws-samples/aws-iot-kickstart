@@ -58,7 +58,19 @@
   "resolutions": {
     "eslint": "^7.3.1",
     "jest": "^25.5.4",
-    "@angular/*": "~8.2.14"
+    "@angular-devkit/build-angular": "~0.803.29",
+    "@angular-devkit/build-ng-packagr": "~0.803.29",
+    "@angular/animations": "~8.2.14",
+    "@angular/cli": "~8.3.29",
+    "@angular/common": "~8.2.14",
+    "@angular/compiler": "~8.2.14",
+    "@angular/compiler-cli": "~8.2.14",
+    "@angular/core": "~8.2.14",
+    "@angular/forms": "~8.2.14",
+    "@angular/language-service": "~8.2.14",
+    "@angular/platform-browser": "~8.2.14",
+    "@angular/platform-browser-dynamic": "~8.2.14",
+    "@angular/router": "~8.2.14"
   },
   "dependencies": {
     "@types/js-yaml": "^3.12.5",
