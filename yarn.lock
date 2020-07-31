@@ -121,7 +121,7 @@
 
 "@angular-eslint/eslint-plugin@0.0.1-alpha.32", "@angular-eslint/eslint-plugin@^0.0.1-alpha.32":
   version "0.0.1-alpha.32"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/@angular-eslint/eslint-plugin/-/eslint-plugin-0.0.1-alpha.32.tgz#5c137b77ed7054cb58868d966fb4c6572d1d03c5"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-0.0.1-alpha.32.tgz#5c137b77ed7054cb58868d966fb4c6572d1d03c5"
   integrity sha512-QZWDK8ze+rFRXlrqrwxQTj9IVJ/GyoRNFTGUsMjkw1usREghQZmrl3zHLm7YvjPQp8vT+QUKrWu8jP7lB/+pKg==
   dependencies:
     "@typescript-eslint/experimental-utils" "2.31.0"
@@ -3730,7 +3730,7 @@
 
 "@types/jasmine@~3.3.8":
   version "3.3.16"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/@types/jasmine/-/jasmine-3.3.16.tgz#7c84074f5d7f84da9a14f816ccfb9aeb4da13f27"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.3.16.tgz#7c84074f5d7f84da9a14f816ccfb9aeb4da13f27"
   integrity sha512-Nveep4zKGby8uIvG2AEUyYOwZS8uVeHK9TgbuWYSawUDDdIgfhCKz28QzamTo//Jk7Ztt9PO3f+vzlB6a4GV1Q==
 
 "@types/jasminewd2@~2.0.3":
@@ -3811,7 +3811,7 @@
 
 "@types/node@~8.9.4":
   version "8.9.5"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/@types/node/-/node-8.9.5.tgz#162b864bc70be077e6db212b322754917929e976"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.9.5.tgz#162b864bc70be077e6db212b322754917929e976"
   integrity sha512-jRHfWsvyMtXdbhnz5CVHxaBgnV6duZnPlQuRSo/dm/GnmikNcmZhxIES4E9OZjUmQ8C+HCl4KJux+cXN/ErGDQ==
 
 "@types/normalize-package-data@^2.4.0":
@@ -7419,7 +7419,7 @@ date-fns@^2.0.1:
 
 date-format@^2.0.0:
   version "2.1.0"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/date-format/-/date-format-2.1.0.tgz#31d5b5ea211cf5fd764cd38baf9d033df7e125cf"
+  resolved "https://registry.yarnpkg.com/date-format/-/date-format-2.1.0.tgz#31d5b5ea211cf5fd764cd38baf9d033df7e125cf"
   integrity sha512-bYQuGLeFxhkxNOF3rcMtiZxvCBAquGzZm6oWA1oZ0g2THUzivaRhv8uOhdr19LmoobSOLoIAxeUK2RdbM8IFTA==
 
 dateformat@^3.0.0:
@@ -11118,7 +11118,7 @@ iterate-value@^1.0.0:
 
 jasmine-core@^3.3:
   version "3.6.0"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/jasmine-core/-/jasmine-core-3.6.0.tgz#491f3bb23941799c353ceb7a45b38a950ebc5a20"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-3.6.0.tgz#491f3bb23941799c353ceb7a45b38a950ebc5a20"
   integrity sha512-8uQYa7zJN8hq9z+g8z1bqCfdC8eoDAeVnM5sfqs7KHv9/ifoJ500m018fpFc7RDaO6SWCLCXwo/wPSNcdYTgcw==
 
 jasmine-core@~2.8.0:
@@ -11128,7 +11128,7 @@ jasmine-core@~2.8.0:
 
 jasmine-core@~3.4.0:
   version "3.4.0"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/jasmine-core/-/jasmine-core-3.4.0.tgz#2a74618e966026530c3518f03e9f845d26473ce3"
+  resolved "https://registry.yarnpkg.com/jasmine-core/-/jasmine-core-3.4.0.tgz#2a74618e966026530c3518f03e9f845d26473ce3"
   integrity sha512-HU/YxV4i6GcmiH4duATwAbJQMlE0MsDIR5XmSVxURxKHn3aGAdbY1/ZJFmVRbKtnLwIxxMJD7gYaPsypcbYimg==
 
 jasmine-spec-reporter@~4.2.1:
@@ -11825,7 +11825,7 @@ karma-chrome-launcher@~2.2.0:
 
 karma-coverage-istanbul-reporter@~2.0.1:
   version "2.0.6"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/karma-coverage-istanbul-reporter/-/karma-coverage-istanbul-reporter-2.0.6.tgz#7b6e9c88781447bb87aa6ac24bf74b93e558adc3"
+  resolved "https://registry.yarnpkg.com/karma-coverage-istanbul-reporter/-/karma-coverage-istanbul-reporter-2.0.6.tgz#7b6e9c88781447bb87aa6ac24bf74b93e558adc3"
   integrity sha512-WFh77RI8bMIKdOvI/1/IBmgnM+Q7NOLhnwG91QJrM8lW+CIXCjTzhhUsT/svLvAkLmR10uWY4RyYbHMLkTglvg==
   dependencies:
     istanbul-api "^2.1.6"
@@ -11838,7 +11838,7 @@ karma-jasmine-html-reporter@^1.4.0:
 
 karma-jasmine@~2.0.1:
   version "2.0.1"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/karma-jasmine/-/karma-jasmine-2.0.1.tgz#26e3e31f2faf272dd80ebb0e1898914cc3a19763"
+  resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-2.0.1.tgz#26e3e31f2faf272dd80ebb0e1898914cc3a19763"
   integrity sha512-iuC0hmr9b+SNn1DaUD2QEYtUxkS1J+bSJSn7ejdEexs7P8EYvA1CWkEdrDQ+8jVH3AgWlCNwjYsT1chjcNW9lA==
   dependencies:
     jasmine-core "^3.3"
@@ -11852,7 +11852,7 @@ karma-source-map-support@1.4.0:
 
 karma@~4.1.0:
   version "4.1.0"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/karma/-/karma-4.1.0.tgz#d07387c9743a575b40faf73e8a3eb5421c2193e1"
+  resolved "https://registry.yarnpkg.com/karma/-/karma-4.1.0.tgz#d07387c9743a575b40faf73e8a3eb5421c2193e1"
   integrity sha512-xckiDqyNi512U4dXGOOSyLKPwek6X/vUizSy2f3geYevbLj+UIdvNwbn7IwfUIL2g1GXEPWt/87qFD1fBbl/Uw==
   dependencies:
     bluebird "^3.3.0"
@@ -12317,7 +12317,7 @@ log-symbols@^2.2.0:
 
 log4js@^4.0.0:
   version "4.5.1"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/log4js/-/log4js-4.5.1.tgz#e543625e97d9e6f3e6e7c9fc196dd6ab2cae30b5"
+  resolved "https://registry.yarnpkg.com/log4js/-/log4js-4.5.1.tgz#e543625e97d9e6f3e6e7c9fc196dd6ab2cae30b5"
   integrity sha512-EEEgFcE9bLgaYUKuozyFfytQM2wDHtXn4tAN41pkaxpNjAykv11GVdeI4tHtmPWW4Xrgh9R/2d7XYghDVjbKKw==
   dependencies:
     date-format "^2.0.0"
@@ -15189,7 +15189,7 @@ protractor@~5.4.1:
 
 protractor@~7.0.0:
   version "7.0.0"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/protractor/-/protractor-7.0.0.tgz#c3e263608bd72e2c2dc802b11a772711a4792d03"
+  resolved "https://registry.yarnpkg.com/protractor/-/protractor-7.0.0.tgz#c3e263608bd72e2c2dc802b11a772711a4792d03"
   integrity sha512-UqkFjivi4GcvUQYzqGYNe0mLzfn5jiLmO8w9nMhQoJRLhy2grJonpga2IWhI6yJO30LibWXJJtA4MOIZD2GgZw==
   dependencies:
     "@types/q" "^0.0.32"
@@ -17111,7 +17111,7 @@ stream@0.0.2:
 
 streamroller@^1.0.6:
   version "1.0.6"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/streamroller/-/streamroller-1.0.6.tgz#8167d8496ed9f19f05ee4b158d9611321b8cacd9"
+  resolved "https://registry.yarnpkg.com/streamroller/-/streamroller-1.0.6.tgz#8167d8496ed9f19f05ee4b158d9611321b8cacd9"
   integrity sha512-3QC47Mhv3/aZNFpDDVO44qQb9gwB9QggMEE0sQmkTAwBVYdBRWISdsywlkfm5II1Q5y/pmrHflti/IgmIzdDBg==
   dependencies:
     async "^2.6.2"
@@ -17991,7 +17991,7 @@ tsickle@^0.37.0:
 
 tsickle@^0.39.1:
   version "0.39.1"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/tsickle/-/tsickle-0.39.1.tgz#7ccf672cde5b430f5dd0b281ee49e170ef390ff9"
+  resolved "https://registry.yarnpkg.com/tsickle/-/tsickle-0.39.1.tgz#7ccf672cde5b430f5dd0b281ee49e170ef390ff9"
   integrity sha512-CCc9cZhZbKoNizVM+K3Uqgit/go8GacjpqTv1cpwG/n2P0gB9GMoWZbxrUULDE9Wz26Lh86CGf6QyIPUVV1lnQ==
 
 tslib@1.10.0:
@@ -18011,7 +18011,7 @@ tslib@^2.0.0:
 
 tslint@~5.15.0:
   version "5.15.0"
-  resolved "https://play-310715130258.d.codeartifact.ap-southeast-1.amazonaws.com:443/npm/play/tslint/-/tslint-5.15.0.tgz#6ffb180986d63afa1e531feb2a134dbf961e27d3"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.15.0.tgz#6ffb180986d63afa1e531feb2a134dbf961e27d3"
   integrity sha512-6bIEujKR21/3nyeoX2uBnE8s+tMXCQXhqMmaIPJpHmXJoBJPTLcI7/VHRtUwMhnLVdwLqqY3zmd8Dxqa5CVdJA==
   dependencies:
     babel-code-frame "^6.22.0"
