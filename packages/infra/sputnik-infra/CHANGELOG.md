@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.5](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.4...@deathstar/sputnik-infra@0.0.0-alpha.5) (2020-07-31)
+
+
+### Bug Fixes
+
+* **infra:** namespace WebsiteCognitoIoTPolicy ([999c4a2](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/999c4a256f5e51e106af46eda0ce751fcaa2df7b))
+
+
+
+
+
 # [0.0.0-alpha.4](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.3...@deathstar/sputnik-infra@0.0.0-alpha.4) (2020-07-31)
 
 
