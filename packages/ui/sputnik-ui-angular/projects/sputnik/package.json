@@ -10,22 +10,21 @@
     "build": "cd ../../ && yarn build sputnik"
   },
 
+  "main": "dist/bundles/deathstar-sputnik-ui-angular.umd.js",
+  "module": "dist/fesm5/deathstar-sputnik-ui-angular.js",
+  "es2015": "dist/fesm2015/deathstar-sputnik-ui-angular.js",
+  "esm5": "dist/esm5/deathstar-sputnik-ui-angular.js",
+  "esm2015": "dist/esm2015/deathstar-sputnik-ui-angular.js",
+  "fesm5": "dist/fesm5/deathstar-sputnik-ui-angular.js",
+  "fesm2015": "dist/fesm2015/deathstar-sputnik-ui-angular.js",
+  "typings": "dist/deathstar-sputnik-ui-angular.d.ts",
+  "metadata": "dist/deathstar-sputnik-ui-angular.metadata.json",
+
   "dependencies": {
-    "@deathstar/sputnik-infra": "^0.0.0-alpha.3"
-  },
-  "peerDependencies": {
-    "@angular/animations": "^8.2.14",
-    "@angular/common": "^8.2.14",
-    "@angular/core": "^8.2.14",
-    "@angular/forms": "^8.2.14",
-    "@angular/language-service": "^8.2.14",
-    "@angular/platform-browser": "^8.2.14",
-    "@angular/platform-browser-dynamic": "^8.2.14",
-    "@angular/router": "^8.2.14",
+    "@deathstar/sputnik-infra": "^0.0.0-alpha.3",
 
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",
-    "@sweetalert2/ngx-sweetalert2": "5.1.0",
     "aws-amplify": "1.1.36",
     "aws-amplify-angular": "3.0.11",
     "bootstrap": "^4.3.1",
@@ -69,5 +68,16 @@
     "underscore-deep-extend": "1.1.5",
     "uuid": "3.3.2",
     "zone.js": "~0.9.1"
+  },
+  "peerDependencies": {
+    "@angular/animations": "^8.2.14",
+    "@angular/common": "^8.2.14",
+    "@angular/core": "^8.2.14",
+    "@angular/forms": "^8.2.14",
+    "@angular/language-service": "^8.2.14",
+    "@angular/platform-browser": "^8.2.14",
+    "@angular/platform-browser-dynamic": "^8.2.14",
+    "@angular/router": "^8.2.14",
+    "@sweetalert2/ngx-sweetalert2": "5.1.0"
   }
 }

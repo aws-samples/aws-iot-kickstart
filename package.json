@@ -57,7 +57,8 @@
   },
   "resolutions": {
     "eslint": "^7.3.1",
-    "jest": "^25.5.4"
+    "jest": "^25.5.4",
+    "@angular/*": "~8.2.14"
   },
   "dependencies": {
     "@types/js-yaml": "^3.12.5",

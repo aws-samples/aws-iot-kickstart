@@ -1,11 +1,11 @@
 import { enableProdMode } from '@angular/core'
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
-import { setEnvironment, AppModule } from '@deathstar/sputnik-ui-angular'
+import * as sputnik from '@deathstar/sputnik-ui-angular'
 import { environment } from './environments/environment'
 // AWS related
 import Amplify from '@aws-amplify/core'
 
-setEnvironment(environment)
+sputnik.setEnvironment(environment)
 
 declare let appVariables: any
 
@@ -28,5 +28,5 @@ if (environment.production) {
 }
 
 platformBrowserDynamic()
-.bootstrapModule(app.AppModule)
+.bootstrapModule(sputnik.SputnikModule)
 .catch(err => console.log(err))
