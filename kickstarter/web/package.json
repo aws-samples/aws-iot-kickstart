@@ -34,7 +34,14 @@
     "test": "jest"
   },
   "dependencies": {
-    "@deathstar/sputnik-ui-angular": "^0.0.0-alpha.5"
+    "@deathstar/sputnik-ui-angular": "^0.0.0-alpha.5",
+
+    "@sweetalert2/ngx-sweetalert2": "5.1.0",
+    "ng-block-ui": "2.1.7",
+    "ngx-echarts": "^5.0.0",
+    "ng2-charts": "2.2.0",
+    "ngx-color-picker": "7.5.0",
+    "ngx-mapbox-gl": "^4.5.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.29",
@@ -50,7 +57,6 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
-    "@sweetalert2/ngx-sweetalert2": "5.1.0",
     "tslib": "^1.10.0"
   }
 }
