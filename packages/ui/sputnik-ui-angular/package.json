@@ -10,6 +10,15 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
+  "workspaces": {
+    "nohoist": [
+      "ng-packagr",
+      "@angular/*",
+      "@angular-devkit/*",
+      "aws-amplify-angular",
+      "ng-block-ui"
+    ]
+  },
   "dependencies": {
     "@angular/animations": "~8.2.14",
     "@angular/common": "~8.2.14",

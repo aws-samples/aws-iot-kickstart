@@ -10,16 +10,6 @@
     "build": "cd ../../ && yarn build sputnik"
   },
 
-  "main": "dist/bundles/deathstar-sputnik-ui-angular.umd.js",
-  "module": "dist/fesm5/deathstar-sputnik-ui-angular.js",
-  "es2015": "dist/fesm2015/deathstar-sputnik-ui-angular.js",
-  "esm5": "dist/esm5/deathstar-sputnik-ui-angular.js",
-  "esm2015": "dist/esm2015/deathstar-sputnik-ui-angular.js",
-  "fesm5": "dist/fesm5/deathstar-sputnik-ui-angular.js",
-  "fesm2015": "dist/fesm2015/deathstar-sputnik-ui-angular.js",
-  "typings": "dist/deathstar-sputnik-ui-angular.d.ts",
-  "metadata": "dist/deathstar-sputnik-ui-angular.metadata.json",
-
   "dependencies": {
     "@deathstar/sputnik-infra": "^0.0.0-alpha.3"
   },
