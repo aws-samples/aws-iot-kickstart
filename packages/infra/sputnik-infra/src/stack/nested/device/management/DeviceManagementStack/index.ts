@@ -11,10 +11,10 @@ import {
 import { CfnPolicy as IotCfnPolicy } from '@aws-cdk/aws-iot'
 import { StartingPosition } from '@aws-cdk/aws-lambda'
 import { Queue } from '@aws-cdk/aws-sqs'
+import { DEFAULT_NAMESPACE } from '@deathstar/sputnik-core'
 import { DeviceNamespaceSyncLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
 import { ExtendableGraphQLApi } from '../../../../../construct/api/graphql/ExtendableGraphQLApi'
 import { namespaced } from '../../../../../utils/cdk-identity-utils'
-import { DEFAULT_NAMESPACE } from '../constants'
 import { DeviceServices } from './DeviceServices'
 
 export interface DeviceManagementStackProps extends NestedStackProps {

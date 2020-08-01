@@ -40,12 +40,6 @@
   "exclude": ["**/node_modules/**", "dist", "test", "**/*.spec.*"],
   "include": [
 		"src",
-		// // https://github.com/angular/angular/issues/20292
-		// "../../node_modules/@deathstar/sputnik-ui-angular/app",
-		// "../../node_modules/@deathstar/sputnik-infra/stack/nested/device/management/constants.ts",
-		// "../../node_modules/@deathstar/sputnik-infra/stack/nested/identity/UserGroups.ts",
-		// "../../node_modules/@deathstar/sputnik-infra/stack/nested/identity/constants.ts",
-		// "../../node_modules/@deathstar/sputnik-infra/stack/nested/identity/CognitoPersistentStack/UserGroups.ts",
 	],
 	"angularCompilerOptions": {
 		"disableTypeScriptVersionCheck": true

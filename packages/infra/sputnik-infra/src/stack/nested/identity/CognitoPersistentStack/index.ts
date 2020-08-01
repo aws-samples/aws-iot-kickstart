@@ -6,13 +6,11 @@ import { readFileSync } from 'fs'
 import { join } from 'path'
 import { CfnPolicy as CfnIoTPolicy } from '@aws-cdk/aws-iot'
 import { CognitoPreTokenGenerationLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
+import { UserGroups, CLAIM_PREFIX, INTERNAL_GROUPS, INTERNAL_TENANT, DEFAULT_NAMESPACE } from '@deathstar/sputnik-core'
+import { CognitoIDP as CognitoIDPActions } from 'cdk-iam-actions/lib/actions'
 import { retainResource } from '../../../../utils/resource-utils'
 import { namespaced, regionalNamespaced } from '../../../../utils/cdk-identity-utils'
 import { PolicyStatement, Effect, PolicyDocument } from '@aws-cdk/aws-iam'
-import { CognitoIDP as CognitoIDPActions } from 'cdk-iam-actions/lib/actions'
-import { DEFAULT_NAMESPACE } from '../../device/management/constants'
-import { CLAIM_PREFIX, INTERNAL_GROUPS, INTERNAL_TENANT } from '../constants'
-import { UserGroups } from './UserGroups'
 
 export interface CognitoPersistentStackProps extends NestedStackProps {
 	readonly administratorName: string

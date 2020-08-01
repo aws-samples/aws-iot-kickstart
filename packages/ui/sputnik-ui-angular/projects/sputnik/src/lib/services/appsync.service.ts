@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
 // eslint-disable-next-line import/no-unresolved
-import { DEFAULT_NAMESPACE } from '@deathstar/sputnik-infra/dist/stack/nested/device/management/constants'
+import { DEFAULT_NAMESPACE } from '@deathstar/sputnik-core'
 // AWS
 import { AmplifyService } from 'aws-amplify-angular'
 // Models

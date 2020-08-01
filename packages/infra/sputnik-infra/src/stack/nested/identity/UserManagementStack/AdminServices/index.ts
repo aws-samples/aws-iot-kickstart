@@ -16,9 +16,9 @@ import {
 } from 'cdk-iam-actions/lib/actions'
 import { UserPool } from '@aws-cdk/aws-cognito'
 import { MappingTemplate } from '@aws-cdk/aws-appsync'
+import { INTERNAL_GROUPS, INTERNAL_TENANT } from '@deathstar/sputnik-core'
 import { AdminServiceLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
 import { ExtendableGraphQLApi } from '../../../../../construct/api/graphql/ExtendableGraphQLApi'
-import { INTERNAL_GROUPS, INTERNAL_TENANT } from '../../constants'
 
 export interface AdminServicesProps {
 	readonly graphQLApi: ExtendableGraphQLApi

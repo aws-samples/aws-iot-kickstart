@@ -38,6 +38,7 @@
     "typescript": "~3.7.2"
   },
   "dependencies": {
+    "@deathstar/sputnik-core": "^0.0.0-alpha.1",
     "@aws-cdk/app-delivery": "1.51.0",
     "@aws-cdk/assets": "1.51.0",
     "@aws-cdk/aws-apigateway": "1.51.0",

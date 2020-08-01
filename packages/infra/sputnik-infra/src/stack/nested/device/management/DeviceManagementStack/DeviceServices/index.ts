@@ -18,7 +18,7 @@ import {
 	IoT as IoTActions,
 	Greengrass as GreengrassActions,
 } from 'cdk-iam-actions/lib/actions'
-import { uniqueIdHash } from '../../../../../../utils/cdk-identity-utils'
+import { DEFAULT_NAMESPACE } from '@deathstar/sputnik-core'
 import { ExtendableGraphQLApi } from '../../../../../../construct/api/graphql/ExtendableGraphQLApi'
 import {
 	MappingTemplate,
@@ -26,7 +26,6 @@ import {
 	LambdaDataSource,
 } from '@aws-cdk/aws-appsync'
 import { DevicesServiceLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
-import { DEFAULT_NAMESPACE } from '../../constants'
 
 export interface DeviceServicesProps {
 	readonly graphQLApi: ExtendableGraphQLApi

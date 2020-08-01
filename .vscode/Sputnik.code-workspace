@@ -9,15 +9,19 @@
 			"path": "../kickstarter/web"
 		},
 		{
-			"name": "Package Infra",
+			"name": "Core",
+			"path": "../packages/core/sputnik-core"
+		},
+		{
+			"name": "Infra",
 			"path": "../packages/infra/sputnik-infra"
 		},
 		{
-			"name": "Package Infra Lambdas",
+			"name": "Infra Lambdas",
 			"path": "../packages/infra/sputnik-infra-lambda-code"
 		},
 		{
-			"name": "Package UI Angular",
+			"name": "UI Angular",
 			"path": "../packages/ui/sputnik-ui-angular"
 		},
 		{

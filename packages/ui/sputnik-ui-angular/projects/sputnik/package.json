@@ -17,7 +17,7 @@
   "typings": "dist/deathstar-sputnik-ui-angular.d.ts",
   "metadata": "dist/deathstar-sputnik-ui-angular.metadata.json",
   "dependencies": {
-    "@deathstar/sputnik-infra": "^0.0.0-alpha.5",
+    "@deathstar/sputnik-core": "^0.0.0-alpha.1",
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",
     "aws-amplify": "1.1.36",
