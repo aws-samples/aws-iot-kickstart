@@ -1,0 +1,18 @@
+
+type Setting
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	id: String!
+	type: String!
+	setting: AWSJSON
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
+}
+
+extend type Query {
+	getSetting(id: String!): Setting
+}
+
+extend type Mutation {
+	updateSetting(id: String!, type: String!, setting: AWSJSON!): Setting
+}

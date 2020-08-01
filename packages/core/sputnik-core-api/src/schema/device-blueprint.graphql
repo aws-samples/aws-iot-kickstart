@@ -1,0 +1,63 @@
+
+type DeviceBlueprint
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	id: String!
+	name: String!
+	type: String!
+	compatibility: [String]
+	deviceTypeMappings: AWSJSON
+	spec: AWSJSON
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
+}
+
+type DeviceBlueprintConnection implements PaginationResponse
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])  {
+    limit: Int
+    nextToken: String
+    deviceBlueprints: [DeviceBlueprint!]!
+}
+
+extend type Query {
+	## Device Blueprints
+	listDeviceBlueprints(
+		limit: Int
+		nextToken: String
+	): DeviceBlueprintConnection
+	getDeviceBlueprint(id: String!): DeviceBlueprint
+}
+
+extend type Mutation {
+	## Device Blueprints
+	addDeviceBlueprint(
+		name: String!
+		type: String!
+		compatibility: [String]!
+		deviceTypeMappings: AWSJSON!
+		spec: AWSJSON!
+	): DeviceBlueprint!
+
+	deleteDeviceBlueprint(id: String!): DeviceBlueprint
+
+	updateDeviceBlueprint(
+		id: String!
+		name: String!
+		type: String!
+		compatibility: [String]!
+		deviceTypeMappings: AWSJSON!
+		spec: AWSJSON!
+	): DeviceBlueprint
+}
+
+extend type Subscription {
+	addedDeviceBlueprint: DeviceBlueprint
+		@aws_subscribe(mutations: ["addDeviceBlueprint"])
+
+	updatedDeviceBlueprint: DeviceBlueprint
+		@aws_subscribe(mutations: ["updateDeviceBlueprint"])
+
+	deletedDeviceBlueprint: DeviceBlueprint
+		@aws_subscribe(mutations: ["deleteDeviceBlueprint"])
+}

@@ -1,0 +1,39 @@
+
+type S3Keys
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	Key: String
+}
+type S3ListObjectsResponse
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	Contents: [S3Keys]
+	KeyCount: Int
+	NextContinuationToken: String
+	IsTruncated: Boolean
+}
+
+type Data
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	ThingNameAndMetric: String
+	Timestamp: String
+	ExpirationTime: String
+	Data: AWSJSON
+}
+type PaginatedData
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	Data: [Data]
+}
+
+extend type Query {
+	# Data Store
+	getData(
+		thingName: String!
+		metricName: String!
+		timeAgoInSecs: Int!
+	): PaginatedData
+
+	s3ListObjectsV2(params: AWSJSON!): S3ListObjectsResponse
+}

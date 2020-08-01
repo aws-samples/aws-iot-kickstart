@@ -1,0 +1,16 @@
+{
+  "extends": "../../../configs/workspace/tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "emitDeclarationOnly": false,
+    "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "declarationDir": "./lib",
+    "rootDir": "./generated",
+    "outDir": "./lib"
+  },
+  "compileOnSave": true,
+  "exclude": ["node_modules", "dist"],
+  "include": ["generated"]
+}

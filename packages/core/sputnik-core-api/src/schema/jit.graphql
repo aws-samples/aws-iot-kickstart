@@ -1,0 +1,10 @@
+
+extend type Query {
+	getJustInTimeOnBoardingState: Boolean
+		@aws_iam
+		@aws_cognito_user_pools(cognito_groups: ["Administrators"])
+}
+
+extend type Mutation {
+	setJustInTimeOnBoardingState(enabled: Boolean!): Boolean
+}

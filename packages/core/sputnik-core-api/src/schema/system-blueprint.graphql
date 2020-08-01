@@ -1,0 +1,65 @@
+
+type SystemBlueprint
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	id: String!
+	name: String!
+	description: String
+	prefix: String!
+	spec: AWSJSON
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
+}
+
+type SystemBlueprintConnection implements PaginationResponse
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])  {
+    limit: Int
+    nextToken: String
+    systemBlueprints: [SystemBlueprint!]!
+}
+
+type SystemBlueprintStat
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	total: Int!
+}
+
+extend type Query {
+	listSystemBlueprints(
+		limit: Int
+		nextToken: String
+	): SystemBlueprintConnection
+
+	getSystemBlueprint(id: String!): SystemBlueprint
+}
+
+extend type Mutation {
+	addSystemBlueprint(
+		name: String!
+		description: String
+		prefix: String!
+		spec: AWSJSON!
+	): SystemBlueprint!
+
+	deleteSystemBlueprint(id: String!): SystemBlueprint
+
+	updateSystemBlueprint(
+		id: String!
+		name: String!
+		description: String
+		prefix: String!
+		spec: AWSJSON!
+	): SystemBlueprint
+}
+
+extend type Subscription {
+	addedSystemBlueprint: [SystemBlueprint]
+		@aws_subscribe(mutations: ["addSystemBlueprint"])
+
+	updatedSystemBlueprint: [SystemBlueprint]
+		@aws_subscribe(mutations: ["updateSystemBlueprint"])
+
+	deletedSystemBlueprint: [SystemBlueprint]
+		@aws_subscribe(mutations: ["deleteSystemBlueprint"])
+}

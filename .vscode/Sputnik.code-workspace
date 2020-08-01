@@ -13,6 +13,10 @@
 			"path": "../packages/core/sputnik-core"
 		},
 		{
+			"name": "Core API",
+			"path": "../packages/core/sputnik-core-api"
+		},
+		{
 			"name": "Infra",
 			"path": "../packages/infra/sputnik-infra"
 		},

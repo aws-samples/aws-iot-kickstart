@@ -1,0 +1,22 @@
+
+type ThingShadowResponse
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	payload: String
+}
+
+extend type Query {
+	describeEndpoint(endpointType: String): String
+
+	getThingShadow(params: AWSJSON!): ThingShadowResponse
+}
+
+extend type Mutation {
+	attachPrincipalPolicy(policyName: String!, principal: String!): Boolean
+		@aws_iam
+		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
+
+	updateThingShadow(params: AWSJSON!): ThingShadowResponse
+		@aws_iam
+		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
+}

@@ -1,0 +1,62 @@
+
+type System
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	id: String!
+	name: String!
+	description: String
+	thingIds: [String]
+	deviceIds: [String]!
+	systemBlueprintId: String!
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
+}
+
+type SystemConnection implements PaginationResponse
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])  {
+    limit: Int
+    nextToken: String
+    systems: [System!]!
+}
+
+type SystemStat
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	total: Int!
+}
+
+extend type Query {
+	## Systems
+	listSystems(limit: Int, nextToken: String): SystemConnection
+	getSystem(id: String!): System
+	getSystemStats: SystemStat
+}
+
+extend type Mutation {
+	addSystem(
+		name: String!
+		description: String
+		deviceIds: [String]!
+		systemBlueprintId: String!
+	): System!
+
+	deleteSystem(id: String!): System
+
+	updateSystem(
+		id: String!
+		name: String!
+		description: String
+		deviceIds: [String]!
+	): System
+
+	refreshSystem(id: String!): Boolean
+}
+
+extend type Subscription {
+	addedSystem: [System] @aws_subscribe(mutations: ["addSystem"])
+
+	updatedSystem: [System] @aws_subscribe(mutations: ["updateSystem"])
+
+	deletedSystem: [System] @aws_subscribe(mutations: ["deleteSystem"])
+}

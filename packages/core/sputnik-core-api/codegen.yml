@@ -1,0 +1,31 @@
+overwrite: true
+schema:
+  [
+    './src/schema/appsync.graphql',
+    './schema.graphql',
+  ]
+documents: 'src/operation/**/*.graphql'
+generates:
+  generated/types.ts:
+    plugins:
+      - 'typescript'
+    config:
+      nonOptionalTypename: true
+  generated/apollo-angular.ts:
+    preset: import-types
+    presetConfig:
+      typesPath: ./types
+    plugins:
+      - 'typescript-operations'
+      - 'typescript-apollo-angular'
+    config:
+      serviceName: SputnikApiService
+      sdkClass: true
+      nonOptionalTypename: true
+  generated/graphql-request.ts:
+    preset: import-types
+    presetConfig:
+      typesPath: ./types
+    plugins:
+      - 'typescript-operations'
+      - 'typescript-graphql-request'

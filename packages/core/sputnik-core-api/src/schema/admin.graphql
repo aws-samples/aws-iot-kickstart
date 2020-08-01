@@ -1,0 +1,93 @@
+type UserAttributes
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	Name: String
+	Value: String
+}
+
+type Group
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	GroupName: String
+	UserPoolId: String
+	Description: String
+	RoleArn: String
+	Precedence: Int
+	LastModifiedDate: AWSDateTime
+	CreationDate: AWSDateTime
+}
+
+type GroupConnection implements PaginationResponse
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])  {
+    limit: Int
+    nextToken: String
+    groups: [Group!]!
+}
+
+type UserGroup
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	name: String
+	_state: String
+}
+
+type User
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	user_id: String
+	name: String
+	email: String
+	enabled: Boolean
+	groups: [UserGroup]
+	created_at: AWSDateTime
+	updated_at: AWSDateTime
+	status: String
+}
+
+type UserConnection implements PaginationResponse
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])  {
+    limit: Int
+    nextToken: String
+    users: [User!]!
+}
+
+type AddTenantPayload {
+	tenant: String!
+	group: Group!
+}
+
+extend type Query {
+	getUser(username: String!): User
+		@aws_iam
+		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
+
+	listGroups(limit: Int, nextToken: String): GroupConnection
+		@aws_iam
+		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
+
+	listUsers(limit: Int, nextToken: String): UserConnection
+		@aws_iam
+		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
+
+	listTenants: [String]
+}
+
+extend type Mutation {
+	deleteUser(username: String!): User
+
+	disableUser(username: String!): User
+
+	enableUser(username: String!): User
+
+	inviteUser(name: String!, email: String!, groups: AWSJSON!): Boolean
+
+	updateUser(username: String!, groups: AWSJSON!): User
+
+	addTenant(name: String!): AddTenantPayload!
+}
+
+extend type Subscription {
+	addedTenant: AddTenantPayload @aws_subscribe(mutations: ["addTenant"])
+}

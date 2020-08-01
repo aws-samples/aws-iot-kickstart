@@ -1,0 +1,47 @@
+
+type DeviceType
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+	id: String!
+	name: String!
+	type: String!
+	spec: AWSJSON
+	createdAt: AWSDateTime
+	updatedAt: AWSDateTime
+}
+
+type DeviceTypeConnection implements PaginationResponse
+	@aws_iam
+	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])  {
+    limit: Int
+    nextToken: String
+    deviceTypes: [DeviceType!]!
+}
+
+extend type Query {
+	listDeviceTypes(limit: Int, nextToken: String): DeviceTypeConnection
+	getDeviceType(id: String!): DeviceType
+}
+
+extend type Mutation {
+	addDeviceType(name: String!, type: String!, spec: AWSJSON): DeviceType!
+
+	deleteDeviceType(id: String!): DeviceType
+
+	updateDeviceType(
+		id: String!
+		name: String!
+		type: String!
+		spec: AWSJSON
+	): DeviceType
+}
+
+extend type Subscription {
+	addedDeviceType: DeviceType @aws_subscribe(mutations: ["addDeviceType"])
+
+	updatedDeviceType: DeviceType
+		@aws_subscribe(mutations: ["updateDeviceType"])
+
+	deletedDeviceType: DeviceType
+		@aws_subscribe(mutations: ["deleteDeviceType"])
+}
