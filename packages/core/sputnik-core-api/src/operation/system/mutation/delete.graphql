@@ -1,0 +1,11 @@
+mutation DeleteSystem($id: String!) {
+  deleteSystem(id: $id) {
+    id
+    name
+    description
+    deviceIds
+    systemBlueprintId
+    createdAt
+    updatedAt
+  }
+}

@@ -1,0 +1,12 @@
+subscription AddedDeviceBlueprint {
+  addedDeviceBlueprint {
+    id
+    name
+    type
+    compatibility
+    deviceTypeMappings
+    spec
+    createdAt
+    updatedAt
+  }
+}

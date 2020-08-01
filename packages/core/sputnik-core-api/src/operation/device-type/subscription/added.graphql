@@ -1,0 +1,10 @@
+subscription AddedDeviceType {
+  addedDeviceType {
+    id
+    name
+    type
+    spec
+    createdAt
+    updatedAt
+  }
+}

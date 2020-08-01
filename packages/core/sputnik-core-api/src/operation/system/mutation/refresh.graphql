@@ -1,0 +1,3 @@
+mutation RefreshSystem($id: String!) {
+  refreshSystem(id: $id)
+}

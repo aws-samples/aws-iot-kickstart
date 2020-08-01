@@ -1,0 +1,12 @@
+mutation DeleteDeviceBlueprint($id: String!) {
+  deleteDeviceBlueprint(id: $id) {
+    id
+    name
+    type
+    compatibility
+    deviceTypeMappings
+    spec
+    createdAt
+    updatedAt
+  }
+}

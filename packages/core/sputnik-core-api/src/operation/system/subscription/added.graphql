@@ -1,0 +1,10 @@
+subscription AddedSystem {
+  addedSystem {
+    id
+    deviceIds
+    name
+    systemBlueprintId
+    createdAt
+    updatedAt
+  }
+}

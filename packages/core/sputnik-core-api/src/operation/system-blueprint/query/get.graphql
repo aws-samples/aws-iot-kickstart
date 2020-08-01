@@ -1,0 +1,11 @@
+query GetSystemBlueprint($id: String!) {
+  getSystemBlueprint(id: $id) {
+    id
+    name
+    description
+    prefix
+    spec
+    createdAt
+    updatedAt
+  }
+}

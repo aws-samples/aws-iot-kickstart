@@ -1,0 +1,10 @@
+query GetDeviceType($id: String!) {
+  getDeviceType(id: $id) {
+    id
+    name
+    type
+    spec
+    createdAt
+    updatedAt
+  }
+}

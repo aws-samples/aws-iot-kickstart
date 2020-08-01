@@ -1,0 +1,10 @@
+subscription DeletedDeviceType {
+  deletedDeviceType {
+    id
+    name
+    type
+    spec
+    createdAt
+    updatedAt
+  }
+}

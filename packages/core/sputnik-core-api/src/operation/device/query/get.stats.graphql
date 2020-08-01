@@ -1,0 +1,7 @@
+query GetDeviceStats {
+  getDeviceStats {
+    total
+    connected
+    disconnected
+  }
+}

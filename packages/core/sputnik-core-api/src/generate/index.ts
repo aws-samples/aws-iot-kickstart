@@ -4,7 +4,8 @@ import { printSchema } from './print-schema'
 import typeDefs from './type-defs'
 import { RootSchemaConfig } from './root-schema-config'
 
-const SCHEMA_FILE = path.join(__dirname, '../../schema.graphql')
+const OUTPUT_DIR = path.join(__dirname, '../../lib')
+const SCHEMA_FILE = path.join(OUTPUT_DIR, 'schema.graphql')
 
 export default () => {
 	const config: RootSchemaConfig = {
@@ -18,6 +19,7 @@ export default () => {
 			directives: '@aws_iam @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])'
 		}
 	}
+	fs.mkdirSync(OUTPUT_DIR, { recursive: true })
 
 	const schema = printSchema(config, ...typeDefs)
 	fs.writeFile(SCHEMA_FILE, schema, { encoding: 'utf-8' }, () => {

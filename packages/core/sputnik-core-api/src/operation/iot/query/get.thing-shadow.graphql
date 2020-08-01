@@ -1,0 +1,5 @@
+query GetThingShadow($params: AWSJSON!) {
+  getThingShadow(params: $params) {
+    payload
+  }
+}

@@ -1,0 +1,3 @@
+mutation AttachPrincipalPolicy($policyName: String!, $principal: String!) {
+  attachPrincipalPolicy(policyName: $policyName, principal: $principal)
+}

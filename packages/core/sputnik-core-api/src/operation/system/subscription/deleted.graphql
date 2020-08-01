@@ -1,0 +1,10 @@
+subscription DeletedSystem {
+  deletedSystem {
+    id
+    deviceIds
+    name
+    systemBlueprintId
+    createdAt
+    updatedAt
+  }
+}

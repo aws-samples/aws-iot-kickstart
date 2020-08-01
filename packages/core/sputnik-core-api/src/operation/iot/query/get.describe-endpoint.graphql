@@ -1,0 +1,3 @@
+query DescribeEndpoint($endpointType: String) {
+  describeEndpoint(endpointType: $endpointType)
+}

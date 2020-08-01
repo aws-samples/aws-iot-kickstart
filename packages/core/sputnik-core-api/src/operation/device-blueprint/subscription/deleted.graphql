@@ -1,0 +1,12 @@
+subscription DeletedDeviceBlueprint {
+  deletedDeviceBlueprint {
+    id
+    name
+    type
+    compatibility
+    deviceTypeMappings
+    spec
+    createdAt
+    updatedAt
+  }
+}

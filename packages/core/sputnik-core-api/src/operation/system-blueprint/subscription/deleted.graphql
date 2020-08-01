@@ -1,0 +1,10 @@
+subscription DeletedSystemBlueprint {
+  deletedSystemBlueprint {
+    id
+    name
+    description
+    spec
+    createdAt
+    updatedAt
+  }
+}

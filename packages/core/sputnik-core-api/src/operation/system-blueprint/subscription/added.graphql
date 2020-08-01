@@ -1,0 +1,10 @@
+subscription AddedSystemBlueprint {
+  addedSystemBlueprint {
+    id
+    name
+    description
+    spec
+    createdAt
+    updatedAt
+  }
+}

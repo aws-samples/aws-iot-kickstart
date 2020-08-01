@@ -1,0 +1,14 @@
+subscription AddedTenant {
+  addedTenant {
+    tenant
+    group {
+      GroupName
+      UserPoolId
+      Description
+      RoleArn
+      Precedence
+      LastModifiedDate
+      CreationDate
+    }
+  }
+}

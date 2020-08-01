@@ -1,0 +1,3 @@
+mutation SetJustInTimeOnBoardingState($enabled: Boolean!) {
+  setJustInTimeOnBoardingState(enabled: $enabled)
+}
