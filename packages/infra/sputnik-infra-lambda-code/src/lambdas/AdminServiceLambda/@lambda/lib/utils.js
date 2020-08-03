@@ -14,11 +14,11 @@ function getAttribute (attributes, name, defaultValue) {
 	return defaultValue
 }
 
-function mapUser ({ Username, Attributes, Enabled, UserCreateDate, UserLastModifiedDate }) {
+function mapUser ({ Username, Attributes, UserAttributes, Enabled, UserCreateDate, UserLastModifiedDate }) {
 	return {
 		user_id: Username,
-		name: getAttribute(Attributes, 'nickname', ''),
-		email: getAttribute(Attributes, 'email', ''),
+		name: getAttribute(Attributes || UserAttributes, 'nickname', ''),
+		email: getAttribute(Attributes || UserAttributes, 'email', ''),
 		groups: [],
 		enabled: Enabled,
 		created_at: UserCreateDate,

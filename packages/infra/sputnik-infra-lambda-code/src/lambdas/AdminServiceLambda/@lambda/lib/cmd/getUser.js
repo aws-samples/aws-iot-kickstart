@@ -14,7 +14,7 @@ async function getUser (username) {
 	const { Groups: groups } = await cognito.adminListGroupsForUser(params).promise()
 
 	const user = mapUser(userResult)
-	user.groups = groups.map((group) => group.GroupName)
+	user.groups = groups.map((group) => ({ name: group.GroupName }))
 
 	return user
 }
