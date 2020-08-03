@@ -19,6 +19,8 @@ const typeDefs = [
 	'deployment',
 	'jit',
 	'utils',
+	'greengrass',
+	'spec',
 ]
 
 export default typeDefs.map(name => getTypeDef(name))

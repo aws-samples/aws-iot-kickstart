@@ -9,8 +9,6 @@ generates:
   generated/types.ts:
     plugins:
       - 'typescript'
-    config:
-      nonOptionalTypename: true
   generated/apollo-angular.ts:
     preset: import-types
     presetConfig:
@@ -21,7 +19,6 @@ generates:
     config:
       serviceName: SputnikApiService
       sdkClass: true
-      nonOptionalTypename: true
   generated/graphql-request.ts:
     preset: import-types
     presetConfig:

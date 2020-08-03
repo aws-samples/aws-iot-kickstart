@@ -18,6 +18,8 @@
     "lib",
     "schema.graphql"
   ],
+  "main": "lib/types.js",
+  "typings": "lib/types.d.ts",
   "scripts": {
     "clean": "rm -rf lib generated",
     "prebuild": "yarn clean && yarn generate",

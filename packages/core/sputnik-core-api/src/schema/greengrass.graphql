@@ -1,0 +1,228 @@
+###############################################################################
+## Greengrass Types
+## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/AWS_Greengrass.html
+## Currently there are no operations or usage of types defined in this file.
+## For now is used to generate Typescript types for defining device specs.
+## Later the api resolvers will handle merging device specs and returning
+## these types as fields of device (Device.mergedSpec?)
+###############################################################################
+
+###############################################################################
+## CoreDefinition
+## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-greengrass-coredefinition.html
+###############################################################################
+
+type Greengrass_CoreDefinition_Core {
+  Id: String!
+  CertificateArn: String!
+  SyncShadow: Boolean
+  ThingArn: String!
+}
+
+type Greengrass_CoreDefinition_CoreDefinitionVersion {
+  Cores: [Greengrass_CoreDefinition_Core!]!
+}
+
+###############################################################################
+## FunctionDefinition
+## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-greengrass-functiondefinition.html
+###############################################################################
+
+type Greengrass_FunctionDefinition_RunAs {
+  Gid: Int
+  Uid: Int
+}
+
+type Greengrass_FunctionDefinition_Execution {
+  IsolationMode: String
+  RunAs: Greengrass_FunctionDefinition_RunAs!
+}
+
+type Greengrass_FunctionDefinition_DefaultConfig {
+  Execution: Greengrass_FunctionDefinition_Execution!
+}
+
+type Greengrass_FunctionDefinition_ResourceAccessPolicy {
+  Permission: String
+  ResourceId: String!
+}
+
+type Greengrass_FunctionDefinition_Environment {
+  AccessSysfs: Boolean
+  Execution: Greengrass_FunctionDefinition_Execution
+  ResourceAccessPolicies: [Greengrass_FunctionDefinition_ResourceAccessPolicy!]!
+  Variables: String
+}
+
+type Greengrass_FunctionDefinition_FunctionConfiguration {
+  EncodingType: String
+  Environment: Greengrass_FunctionDefinition_Environment
+  ExecArgs: String
+  Executable: String
+  MemorySize: Int
+  Pinned: Boolean
+  Timeout: Int
+}
+
+type Greengrass_FunctionDefinition_Function {
+  FunctionArn: String!
+  FunctionConfiguration: Greengrass_FunctionDefinition_FunctionConfiguration!
+  Id: String!
+}
+
+type Greengrass_FunctionDefinition_FunctionDefinitionVersion {
+  DefaultConfig: Greengrass_FunctionDefinition_DefaultConfig
+  Functions: [Greengrass_FunctionDefinition_Function!]!
+}
+
+###############################################################################
+## LoggerDefinition
+## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-greengrass-loggerdefinition.html
+###############################################################################
+
+type Greengrass_LoggerDefinition_Logger {
+  Component: String!
+  Id: String!
+  Level: String!
+  Space: Int
+  Type: String!
+}
+
+type Greengrass_LoggerDefinition_LoggerDefinitionVersion {
+  Loggers: [Greengrass_LoggerDefinition_Logger!]!
+}
+
+###############################################################################
+## ResourceDefinition
+## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-greengrass-resourcedefinition.html
+###############################################################################
+
+type Greengrass_ResourceDefinition_GroupOwnerSetting {
+  AutoAddGroupOwner: Boolean!
+  GroupOwner: String!
+}
+
+type Greengrass_ResourceDefinition_ResourceDownloadOwnerSetting {
+  GroupOwner: Boolean!
+  GroupPermission: String!
+}
+
+type Greengrass_ResourceDefinition_LocalDeviceResourceData {
+  GroupOwnerSetting: Greengrass_ResourceDefinition_GroupOwnerSetting
+  SourcePath: String!
+}
+type Greengrass_ResourceDefinition_LocalVolumeResourceData {
+  DestinationPath: String!
+  GroupOwnerSetting: Greengrass_ResourceDefinition_GroupOwnerSetting
+  SourcePath: String!
+}
+type Greengrass_ResourceDefinition_S3MachineLearningModelResourceData {
+  DestinationPath: String!
+  OwnerSetting: Greengrass_ResourceDefinition_ResourceDownloadOwnerSetting
+  S3Uri: String!
+}
+type Greengrass_ResourceDefinition_SageMakerMachineLearningModelResourceData {
+  DestinationPath: String!
+  OwnerSetting: Greengrass_ResourceDefinition_ResourceDownloadOwnerSetting
+  SageMakerJobArn: String!
+}
+type Greengrass_ResourceDefinition_SecretsManagerSecretResourceData {
+  AdditionalStagingLabelsToDownload: [String!]!
+  ARN: String!
+}
+
+type Greengrass_ResourceDefinition_ResourceDataContainer {
+  LocalDeviceResourceData: Greengrass_ResourceDefinition_LocalDeviceResourceData
+  LocalVolumeResourceData: Greengrass_ResourceDefinition_LocalVolumeResourceData
+  S3MachineLearningModelResourceData: Greengrass_ResourceDefinition_S3MachineLearningModelResourceData
+  SageMakerMachineLearningModelResourceData: Greengrass_ResourceDefinition_SageMakerMachineLearningModelResourceData
+  SecretsManagerSecretResourceData: Greengrass_ResourceDefinition_SecretsManagerSecretResourceData
+}
+
+type Greengrass_ResourceDefinition_ResourceInstance {
+  Id: String!
+  Name: String!
+  ResourceDataContainer: Greengrass_ResourceDefinition_ResourceDataContainer!
+}
+
+type Greengrass_ResourceDefinition_ResourceDefinitionVersion {
+  Resources: [Greengrass_ResourceDefinition_ResourceInstance!]!
+}
+
+###############################################################################
+## SubscriptionDefinition
+## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-greengrass-subscriptiondefinition.html
+###############################################################################
+
+type Greengrass_SubscriptionDefinition_Subscription {
+  Id: String!
+  Source: String!
+  Subject: String!
+  Target: String!
+}
+
+type Greengrass_SubscriptionDefinition_SubscriptionDefinitionVersion {
+  Subscriptions: [Greengrass_SubscriptionDefinition_Subscription!]!
+}
+
+###############################################################################
+## ConnectorDefinition
+## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-greengrass-connectordefinition.html
+###############################################################################
+
+type Greengrass_ConnectorDefinition_Connector {
+  ConnectorArn: String!
+  Id: String!
+  Parameters: String!
+}
+
+type Greengrass_ConnectorDefinition_ConnectorDefinitionVersion {
+  Connectors: [Greengrass_ConnectorDefinition_Connector!]!
+}
+
+###############################################################################
+## DeviceDefinition
+## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-greengrass-devicedefinition.html
+###############################################################################
+
+type Greengrass_DeviceDefinition_Device {
+  CertificateArn: String!
+  Id: String!
+  SyncShadow: Boolean
+  ThingArn: String!
+}
+
+type Greengrass_DeviceDefinition_DeviceDefinitionVersion {
+  Devices: [Greengrass_DeviceDefinition_Device!]!
+}
+
+###############################################################################
+## Greengrass GroupVersion
+## https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-greengrass-group.html
+###############################################################################
+
+type Greengrass_GroupVersion {
+  ConnectorDefinitionVersionArn: String
+  CoreDefinitionVersionArn: String
+  DeviceDefinitionVersionArn: String
+  FunctionDefinitionVersionArn: String
+  LoggerDefinitionVersionArn: String
+  ResourceDefinitionVersionArn: String
+  SubscriptionDefinitionVersionArn: String
+}
+
+###############################################################################
+## Greengrass GroupVersion (Definition)
+## Greengrass "GroupVersion" defines "xxArn" values, but in sputnik we generate that during deployment
+## so all "GroupVersion" in context of data are "implicit definition" instead of "explicit arn"
+###############################################################################
+
+interface IGreengrass_GroupVersionDefinition {
+  ConnectorDefinitionVersion: Greengrass_ConnectorDefinition_ConnectorDefinitionVersion
+  CoreDefinitionVersion: Greengrass_CoreDefinition_CoreDefinitionVersion
+  DeviceDefinitionVersion: Greengrass_DeviceDefinition_DeviceDefinitionVersion
+  FunctionDefinitionVersion: Greengrass_FunctionDefinition_FunctionDefinitionVersion
+  LoggerDefinitionVersion: Greengrass_LoggerDefinition_LoggerDefinitionVersion
+  ResourceDefinitionVersion: Greengrass_ResourceDefinition_ResourceDefinitionVersion
+  SubscriptionDefinitionVersion: Greengrass_SubscriptionDefinition_SubscriptionDefinitionVersion
+}

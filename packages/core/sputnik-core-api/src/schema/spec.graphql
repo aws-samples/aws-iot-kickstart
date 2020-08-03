@@ -1,0 +1,17 @@
+type SpecViewDefinition {
+  subscriptions: AWSJSON
+  widgets: AWSJSON
+}
+
+type SpecDefinition implements IGreengrass_GroupVersionDefinition {
+  ConnectorDefinitionVersion: Greengrass_ConnectorDefinition_ConnectorDefinitionVersion
+  CoreDefinitionVersion: Greengrass_CoreDefinition_CoreDefinitionVersion
+  DeviceDefinitionVersion: Greengrass_DeviceDefinition_DeviceDefinitionVersion
+  FunctionDefinitionVersion: Greengrass_FunctionDefinition_FunctionDefinitionVersion
+  LoggerDefinitionVersion: Greengrass_LoggerDefinition_LoggerDefinitionVersion
+  ResourceDefinitionVersion: Greengrass_ResourceDefinition_ResourceDefinitionVersion
+  SubscriptionDefinitionVersion: Greengrass_SubscriptionDefinition_SubscriptionDefinitionVersion
+
+  View: SpecViewDefinition
+  Shadow: AWSJSON
+}
