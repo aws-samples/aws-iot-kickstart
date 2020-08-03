@@ -20,7 +20,7 @@ type Group
 type PaginatedGroups
 	@aws_iam
 	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
-	Groups: [Group]
+	groups: [Group]
 	NextToken: String
 }
 
@@ -47,8 +47,8 @@ type User
 type PaginatedUsers
 	@aws_iam
 	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
-	Users: [User]
-	PaginationToken: String
+	users: [User]
+	nextToken: String
 }
 
 type AddTenantPayload {
@@ -65,7 +65,7 @@ extend type Query {
 		@aws_iam
 		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
 
-	listUsers(limit: Int, paginationToken: String): PaginatedUsers
+	listUsers(limit: Int, nextToken: String): PaginatedUsers
 		@aws_iam
 		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
 

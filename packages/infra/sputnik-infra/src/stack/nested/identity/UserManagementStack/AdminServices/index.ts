@@ -144,16 +144,16 @@ export class AdminServices extends Construct {
 									,
 									"limit": \${context.arguments.limit}
 							#end
-							#if( \${context.arguments.paginationToken} )
+							#if( \${context.arguments.nextToken} )
 									,
-									"paginationToken": "\${context.arguments.paginationToken}"
+									"nextToken": "\${context.arguments.nextToken}"
 							#end
 					}
 			}`),
 			responseMappingTemplate: MappingTemplate.fromString(`{
-					"Users": $util.toJson($ctx.result.Users),
-					#if( \${ctx.result.PaginationToken} )
-							"PaginationToken": "\${ctx.result.PaginationToken}",
+					"users": $util.toJson($ctx.result.users),
+					#if( \${ctx.result.nextToken} )
+							"nextToken": "\${ctx.result.nextToken}",
 					#end
 			}`),
 		})
@@ -189,9 +189,9 @@ export class AdminServices extends Construct {
 					}
 			}`),
 			responseMappingTemplate: MappingTemplate.fromString(`{
-					"Groups": $util.toJson($ctx.result.Groups),
-					#if( \${ctx.result.NextToken} )
-							"NextToken": "\${ctx.result.NextToken}",
+					"groups": $util.toJson($ctx.result.groups),
+					#if( \${ctx.result.nextToken} )
+							"nextToken": "\${ctx.result.nextToken}",
 					#end
 			}`),
 		})
