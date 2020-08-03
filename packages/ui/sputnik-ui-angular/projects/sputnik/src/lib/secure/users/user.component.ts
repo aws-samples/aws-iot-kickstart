@@ -116,7 +116,7 @@ export class UserComponent implements OnInit {
 		.listGroups()
 		.then(data => {
 			// TODO: deal with pagination in the case of too may groups !
-			data.Groups.forEach(group => {
+			data.groups.forEach(group => {
 				this.groups.push({
 					name: group.GroupName,
 					isMember: false,

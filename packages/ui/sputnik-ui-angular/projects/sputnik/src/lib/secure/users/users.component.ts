@@ -113,7 +113,7 @@ export class UsersComponent implements OnInit {
 		.listUsers(this.pages.pageSize) // TODO: add pagination properly with the token etc ...
 		.then((data: any) => {
 			this.blockUI.stop()
-			this.users = data.Users
+			this.users = data.users
 		})
 		.catch(err => {
 			this.blockUI.stop()

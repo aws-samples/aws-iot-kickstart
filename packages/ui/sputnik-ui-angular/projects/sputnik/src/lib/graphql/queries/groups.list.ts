@@ -3,7 +3,7 @@ import gql from 'graphql-tag'
 export default gql`
 		query ListGroups($limit: Int, $nextToken: String) {
 				listGroups(limit: $limit, nextToken: $nextToken) {
-						Groups {
+						groups {
 								GroupName
 								UserPoolId
 								Description
@@ -12,7 +12,7 @@ export default gql`
 								LastModifiedDate
 								CreationDate
 						}
-						NextToken
+						nextToken
 				}
 		}
 `

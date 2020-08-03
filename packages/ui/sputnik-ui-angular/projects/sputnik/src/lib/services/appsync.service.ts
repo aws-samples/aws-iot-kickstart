@@ -215,10 +215,10 @@ export class AppSyncService {
 		return this.query(listGroups, { limit: limit, nextToken: nextToken }).then(r => r.data.listGroups)
 	}
 
-	public listUsers (limit: number, paginationToken: string) {
+	public listUsers (limit: number, nextToken: string) {
 		return this.query(listUsers, {
 			limit: limit,
-			paginationToken: paginationToken,
+			nextToken: nextToken,
 		}).then(r => r.data.listUsers)
 	}
 

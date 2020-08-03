@@ -1,9 +1,9 @@
 import gql from 'graphql-tag'
 
 export default gql`
-		query ListUsers($limit: Int, $paginationToken: String) {
-				listUsers(limit: $limit, paginationToken: $paginationToken) {
-						Users {
+		query ListUsers($limit: Int, $nextToken: String) {
+				listUsers(limit: $limit, nextToken: $nextToken) {
+						users {
 								user_id
 								name
 								email
@@ -16,7 +16,7 @@ export default gql`
 								created_at
 								updated_at
 						}
-						PaginationToken
+						nextToken
 				}
 		}
 `

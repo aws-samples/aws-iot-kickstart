@@ -41,8 +41,8 @@ export class AdminService implements AddedTenant {
 		return this.appSyncService.listGroups(limit, nextToken)
 	}
 
-	public listUsers (limit = 0, paginationToken: string = null) {
-		return this.appSyncService.listUsers(limit, paginationToken)
+	public listUsers (limit = 0, nextToken: string = null) {
+		return this.appSyncService.listUsers(limit, nextToken)
 	}
 
 	public deleteUser (username: string) {
