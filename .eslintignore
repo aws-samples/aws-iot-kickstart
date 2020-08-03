@@ -10,3 +10,4 @@ package.json
 **/yarn.lock
 **/.cache
 kickstarter/web
+generated
