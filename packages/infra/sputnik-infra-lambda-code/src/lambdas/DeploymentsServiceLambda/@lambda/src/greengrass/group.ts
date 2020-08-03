@@ -1,14 +1,12 @@
-import { Greengrass } from 'aws-sdk'
-import {} from 'lodash'
-import { SpecDefinition } from '@deathstar/sputnik-core-api'
+import { Greengrass, Iot } from 'aws-sdk'
 import { GroupVersion } from 'aws-sdk/clients/greengrass'
 import { v4 as uuid } from 'uuid'
-
-// const utils = require('./utils').default
-// const uuid = require('uuid')
-// const diff = require('deep-diff').diff
+import { SpecDefinition } from '@deathstar/sputnik-core-api'
+import { getDefinitionVersionNaming, isDefinitionVersionEqual, autogenFieldIds } from './utils'
+import { GetDefintionResponse, GetDefinitionVersionResponse, CreateDefinitionVersionResponse } from './types'
 
 const greengrass = new Greengrass()
+const iot = new Iot()
 
 export async function getGreengrassGroupVersionDefinition (greengrassGroupId: string): Promise<GroupVersion | null> {
 	try {
@@ -30,164 +28,106 @@ export async function getGreengrassGroupVersionDefinition (greengrassGroupId: st
 	}
 }
 
-async function getDefinition () {
-
-}
-
-export async function syncGreengrassGroupVersion (greengrassGroupId: string, spec: SpecDefinition): GroupVersion {
+export async function syncGreengrassGroupVersion (greengrassGroupId: string, spec: SpecDefinition): Promise<Greengrass.CreateGroupVersionResponse> {
 	const currentGroupVersion = await getGreengrassGroupVersionDefinition(greengrassGroupId)
+	console.debug('Greengrass::GroupVersion:current', currentGroupVersion)
 
-	await Promise.all(Object.entries(spec).map(async ([key, value]) => {ype
-		const [,rootDefinition,definitionType] = /(())
-		const definitionType = key.replace(/Version$/, '')
-		const groupVersionKey = `${key}Arn`
-		let definition
+	const groupVersion: Greengrass.CreateGroupVersionRequest = {
+		GroupId: greengrassGroupId,
+	}
+
+	const results = await Promise.all(Object.entries(spec).map(async ([key, specDefinitionVersion]): Promise<GetDefinitionVersionResponse> => {
+		const {
+			type,
+			typeId,
+			field,
+			groupVersionKey,
+			definitionVersionId,
+			getDefinitionMethod,
+			getDefinitionVersionMethod,
+			createDefinitionMethod,
+			createDefinitionVersionMethod,
+		} = getDefinitionVersionNaming(key)
+		let definition: GetDefintionResponse
 
 		if (currentGroupVersion && currentGroupVersion[groupVersionKey] != null) {
 			// definition exists in current group
-			definition = greengrass['get' + definitionType]({
-				[definitionType + 'Id']: (currentGroupVersion[groupVersionKey] as string).split('/')[4]
+			definition = greengrass[getDefinitionMethod]({
+				[typeId]: (currentGroupVersion[groupVersionKey] as string).split('/')[4]
 			}).promise()
 		} else {
 			// definition does not exist in current group
-			definition = await greengrass['create' + definitionType]({
+			definition = await greengrass[createDefinitionMethod]({
 				Name: uuid(),
 			}).promise()
 		}
+
+		// Add uuid to missing fields
+		specDefinitionVersion = autogenFieldIds(specDefinitionVersion, field)
+
+		if (definition.LatestVersion) {
+			// This means that it already exists. Check if it has changed from existing
+			const currentVersion: GetDefinitionVersionResponse = await greengrass[getDefinitionVersionMethod]({
+				[definitionVersionId]: definition.LatestVersion,
+			}).promise()
+
+			if (isDefinitionVersionEqual(currentVersion.Definition as unknown, specDefinitionVersion)) {
+				// Map arn in group version
+				groupVersion[groupVersionKey] = currentVersion.Arn
+
+				// There is no change from existing
+				return currentVersion
+			} else {
+				const createResponse: CreateDefinitionVersionResponse = await greengrass[createDefinitionVersionMethod](specDefinitionVersion).promise()
+
+				// Map arn in group version
+				groupVersion[groupVersionKey] = createResponse.Arn
+
+				return greengrass[getDefinitionVersionMethod]({
+					[definitionVersionId]: createResponse.Version,
+				}).promise()
+			}
+		} else {
+			// Does not exist yet so lets create it
+			const createResponse: CreateDefinitionVersionResponse = await greengrass[createDefinitionVersionMethod](specDefinitionVersion).promise()
+
+			// Map arn in group version
+			groupVersion[groupVersionKey] = createResponse.Arn
+
+			return greengrass[getDefinitionVersionMethod]({
+				[definitionVersionId]: createResponse.Version,
+			}).promise()
+		}
 	}))
+
+	console.debug('Greengrass::GroupVersion:sync:definition:results', results)
+
+	return greengrass.createGroupVersion(groupVersion).promise()
 }
 
-module.exports = function (key, spec, currentGreengrassGroupDefinitionVersion) {
-	const tag = 'createGreengrass' + key + 'DefinitionVersion:'
-	console.log(tag)
+interface GroupVersionPermissionOptions {
+	roleArn: string
+	iotPolicyName: string
+	iotPrincipal: string
+}
 
-	// Simple version: We'll just create it rather than check.
-	if (!spec.hasOwnProperty(key + 'DefinitionVersion')) {
-		console.log(tag, key + 'DefinitionVersion not found in spec. Returning.')
+export async function applyGroupPermissions (groupId: string, options: GroupVersionPermissionOptions) {
+	await greengrass.associateRoleToGroup({
+		RoleArn: options.roleArn,
+		GroupId: groupId,
+	}).promise()
 
-		return Promise.resolve(null)
-	} else {
-		// let promise
+	await iot.attachPrincipalPolicy({
+		policyName: options.iotPolicyName,
+		principal: options.iotPrincipal,
+	}).promise()
+}
 
-		// if (!currentGreengrassGroupDefinitionVersion || !currentGreengrassGroupDefinitionVersion.Definition[key + 'DefinitionVersionArn']) {
-		// 	console.log(tag, key + 'DefinitionVersion needs creating')
-		// 	promise = gg['create' + key + 'Definition']({
-		// 		Name: uuid.v4(),
-		// 	}).promise()
-		// } else {
-		// 	console.log(tag, key + 'DefinitionVersion exists', currentGreengrassGroupDefinitionVersion)
-		// 	let params = {}
-		// 	params[key + 'DefinitionId'] = currentGreengrassGroupDefinitionVersion.Definition[key + 'DefinitionVersionArn'].split('/')[4]
-		// 	promise = gg['get' + key + 'Definition'](params).promise()
-		// }
-
-		return promise.then(definition => {
-			console.log('Using definition Id', definition.Id, definition)
-			let params = {}
-			params[key + 'DefinitionId'] = definition.Id
-
-			if (definition.hasOwnProperty('LatestVersion')) {
-				// This means that it already exists. Then lets remove the Ids and stringify to compare with the spec.
-
-				console.log(tag, 'Definition already exists, lets remove the Ids and compare')
-
-				params[key + 'DefinitionVersionId'] = definition.LatestVersion
-
-				return gg['get' + key + 'DefinitionVersion'](params).promise().then(definitionVersion => {
-					delete params[key + 'DefinitionVersionId']
-
-					let originalToCompare = definitionVersion.Definition[key + 's']
-					const xDefinition = utils.distinct(spec[key + 'DefinitionVersion'][key + 's'])
-
-					xDefinition.forEach(o => {
-						if (!o.hasOwnProperty('Id')) {
-							o.Id = uuid.v4()
-						}
-					})
-
-					params[key + 's'] = xDefinition
-
-					return gg['create' + key + 'DefinitionVersion'](params).promise().then(tempVersion => {
-						delete params[key + 's']
-						params[key + 'DefinitionVersionId'] = tempVersion.Version
-
-						return gg['get' + key + 'DefinitionVersion'](params).promise().then(tempFullVersion => {
-							console.log(tag, tempFullVersion)
-							let newToCompare = tempFullVersion.Definition[key + 's']
-							console.log(tag, 'Removing all Ids from original:', originalToCompare)
-							originalToCompare.forEach(item => {
-								delete item.Id
-							})
-							console.log(tag, 'Removing all Ids from new:', newToCompare)
-							newToCompare.forEach(item => {
-								delete item.Id
-							})
-							console.log(tag, 'Compare:', JSON.stringify(originalToCompare), JSON.stringify(newToCompare))
-
-							if (diff(originalToCompare, newToCompare)) {
-								console.log(tag, 'Its different, stick to the new')
-
-								return tempFullVersion
-							} else {
-								console.log(tag, 'Its same, stick to the old')
-
-								return definitionVersion
-							}
-						})
-					})
-
-					// let newToCompare = JSON.parse(JSON.stringify(spec[key + 'DefinitionVersion'][key + 's']));
-
-					// console.log(tag, 'Removing all Ids from original:', originalToCompare);
-					// originalToCompare.forEach(item => {
-					//     delete item.Id;
-					// });
-					// console.log(tag, 'Removing all Ids from new:', newToCompare);
-					// newToCompare.forEach(item => {
-					//     delete item.Id;
-					// });
-
-					// console.log(tag, 'Ids removed: Comparing:', JSON.stringify(originalToCompare), JSON.stringify(newToCompare));
-
-					// if (diff(originalToCompare, newToCompare)) {
-
-					//     console.log(tag, 'Its different: build the Ids and create the DefinitionVersion');
-					//     spec[key + 'DefinitionVersion'][key + 's'].forEach(o => {
-					//         if (!o.hasOwnProperty('Id')) {
-					//             o.Id = uuid.v4();
-					//         }
-					//     });
-
-					//     params[key + 's'] = spec[key + 'DefinitionVersion'][key + 's'];
-					//     return gg['create' + key + 'DefinitionVersion'](params).promise();
-
-					// } else {
-					//     // They are the same: don't do anything !
-					//     console.log(tag, 'Its the same, return the definition version as is', definitionVersion);
-					//     return definitionVersion;
-					// }
-				})
-			} else {
-				// Simple, doesnt exist, so lets create.
-
-				console.log(tag, 'Definition doesnt exist: build the Ids and create the DefinitionVersion')
-				const xDefinition = utils.distinct(spec[key + 'DefinitionVersion'][key + 's'])
-
-				xDefinition.forEach(o => {
-					if (!o.hasOwnProperty('Id')) {
-						o.Id = uuid.v4()
-					}
-				})
-
-				params[key + 's'] = xDefinition
-				console.log(tag, 'create' + key + 'DefinitionVersion:', params, 'for', spec)
-
-				return gg['create' + key + 'DefinitionVersion'](params).promise()
-			}
-		}).then(result => {
-			console.log(tag, 'result', JSON.stringify(result))
-
-			return result
-		})
-	}
+export async function createDeployment (groupId: string, version: string, type: string = 'NewDeployment'): Promise<Greengrass.CreateDeploymentResponse> {
+	return greengrass.createDeployment({
+		GroupId: groupId,
+		DeploymentId: uuid(),
+		DeploymentType: type,
+		GroupVersionId: version,
+	}).promise()
 }
