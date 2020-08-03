@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`substitue should substitute tokens: substitutions 1`] = `
+Object {
+  "CoreDefinitionVersion": Object {
+    "Cores": Array [
+      Object {
+        "CertificateArn": "!!cert-arn!!",
+        "Id": "Id",
+        "ThingArn": "!!thing-arn!!",
+      },
+    ],
+  },
+  "DeviceDefinitionVersion": Object {
+    "Devices": Array [
+      Object {
+        "CertificateArn": "!!cert-arn!!",
+        "Id": "Id",
+        "ThingArn": "!!thing-arn!!",
+      },
+    ],
+  },
+  "FunctionDefinitionVersion": Object {
+    "Functions": Array [
+      Object {
+        "FunctionArn": "!!function-arn!!",
+        "FunctionConfiguration": Object {},
+        "Id": "!!acount!!-Id",
+      },
+    ],
+  },
+}
+`;

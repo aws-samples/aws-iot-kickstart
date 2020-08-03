@@ -1,0 +1,173 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`merge should merge all specs: merge-all 1`] = `
+Object {
+  "ConnectorDefinitionVersion": Object {
+    "Connectors": Array [
+      Object {
+        "ConnectorArn": "device-blueprint-ConnectorArn",
+        "Id": "device-blueprint-Id",
+        "Parameters": "device-blueprint-Parameters",
+      },
+      Object {
+        "ConnectorArn": "device-type-ConnectorArn",
+        "Id": "device-type-Id",
+        "Parameters": "device-type-Parameters",
+      },
+      Object {
+        "ConnectorArn": "device-ConnectorArn",
+        "Id": "device-Id",
+        "Parameters": "device-Parameters",
+      },
+    ],
+  },
+  "CoreDefinitionVersion": Object {
+    "Cores": Array [
+      Object {
+        "CertificateArn": "device-CertificateArn",
+        "Id": "device-Id",
+        "ThingArn": "device-ThingArn",
+      },
+    ],
+  },
+  "DeviceDefinitionVersion": Object {
+    "Devices": Array [
+      Object {
+        "CertificateArn": "device-blueprint-CertificateArn",
+        "Id": "device-blueprint-Id",
+        "ThingArn": "device-blueprint-ThingArn",
+      },
+      Object {
+        "CertificateArn": "device-type-CertificateArn",
+        "Id": "device-type-Id",
+        "ThingArn": "device-type-ThingArn",
+      },
+      Object {
+        "CertificateArn": "device-CertificateArn",
+        "Id": "device-Id",
+        "ThingArn": "device-ThingArn",
+      },
+    ],
+  },
+  "FunctionDefinitionVersion": Object {
+    "DefaultConfig": Object {
+      "Execution": Object {
+        "RunAs": Object {
+          "Gid": 111,
+          "Uid": 111,
+        },
+      },
+    },
+    "Functions": Array [
+      Object {
+        "FunctionArn": "device-blueprint-FunctionArn",
+        "FunctionConfiguration": Object {
+          "EncodingType": "device-blueprint-EncodingType",
+        },
+        "Id": "device-blueprint-Id",
+      },
+      Object {
+        "FunctionArn": "device-type-FunctionArn",
+        "FunctionConfiguration": Object {
+          "EncodingType": "device-type-EncodingType",
+        },
+        "Id": "device-type-Id",
+      },
+      Object {
+        "FunctionArn": "device-FunctionArn",
+        "FunctionConfiguration": Object {
+          "EncodingType": "device-EncodingType",
+        },
+        "Id": "device-Id",
+      },
+    ],
+  },
+  "LoggerDefinitionVersion": Object {
+    "Loggers": Array [
+      Object {
+        "Component": "device-blueprint-Component",
+        "Id": "device-blueprint-Id",
+        "Level": "device-blueprint-Level",
+        "Type": "device-blueprint-Type",
+      },
+      Object {
+        "Component": "device-type-Component",
+        "Id": "device-type-Id",
+        "Level": "device-type-Level",
+        "Type": "device-type-Type",
+      },
+      Object {
+        "Component": "device-Component",
+        "Id": "device-Id",
+        "Level": "device-Level",
+        "Type": "device-Type",
+      },
+    ],
+  },
+  "ResourceDefinitionVersion": Object {
+    "Resources": Array [
+      Object {
+        "Id": "device-blueprint-Id",
+        "Name": "device-blueprint-Name",
+        "ResourceDataContainer": Object {
+          "LocalDeviceResourceData": Object {
+            "SourcePath": "device-blueprint-SourcePath",
+          },
+          "LocalVolumeResourceData": Object {
+            "DestinationPath": "device-blueprint-DestinationPath",
+            "SourcePath": "device-blueprint-SourcePath",
+          },
+        },
+      },
+      Object {
+        "Id": "device-type-Id",
+        "Name": "device-type-Name",
+        "ResourceDataContainer": Object {
+          "LocalDeviceResourceData": Object {
+            "SourcePath": "device-type-SourcePath",
+          },
+          "LocalVolumeResourceData": Object {
+            "DestinationPath": "device-type-DestinationPath",
+            "SourcePath": "device-type-SourcePath",
+          },
+        },
+      },
+      Object {
+        "Id": "device-Id",
+        "Name": "device-Name",
+        "ResourceDataContainer": Object {
+          "LocalDeviceResourceData": Object {
+            "SourcePath": "device-SourcePath",
+          },
+          "LocalVolumeResourceData": Object {
+            "DestinationPath": "device-DestinationPath",
+            "SourcePath": "device-SourcePath",
+          },
+        },
+      },
+    ],
+  },
+  "SubscriptionDefinitionVersion": Object {
+    "Subscriptions": Array [
+      Object {
+        "Id": "device-blueprint-Id",
+        "Source": "device-blueprint-Source",
+        "Subject": "device-blueprint-Subject",
+        "Target": "device-blueprint-Target",
+      },
+      Object {
+        "Id": "device-type-Id",
+        "Source": "device-type-Source",
+        "Subject": "device-type-Subject",
+        "Target": "device-type-Target",
+      },
+      Object {
+        "Id": "device-Id",
+        "Source": "device-Source",
+        "Subject": "device-Subject",
+        "Target": "device-Target",
+      },
+    ],
+  },
+}
+`;
