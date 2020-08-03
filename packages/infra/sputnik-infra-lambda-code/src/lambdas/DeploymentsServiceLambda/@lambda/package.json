@@ -9,6 +9,7 @@
         "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
     },
     "dependencies": {
+        "@deathstar/sputnik-core": "^0.0.0-alpha.1",
         "deep-diff": "1.0.2",
         "deepmerge": "2.2.1",
         "moment": "2.25.3",
