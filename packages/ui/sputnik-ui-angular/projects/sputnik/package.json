@@ -1,6 +1,6 @@
 {
   "name": "@deathstar/sputnik-ui-angular",
-  "version": "0.0.0-alpha.5",
+  "version": "0.0.0-alpha.6",
   "publishConfig": {
     "directory": "dist"
   },
@@ -17,7 +17,7 @@
   "typings": "dist/deathstar-sputnik-ui-angular.d.ts",
   "metadata": "dist/deathstar-sputnik-ui-angular.metadata.json",
   "dependencies": {
-    "@deathstar/sputnik-infra": "^0.0.0-alpha.5",
+    "@deathstar/sputnik-infra": "^0.0.0-alpha.6",
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",
     "aws-amplify": "1.1.36",
@@ -69,11 +69,10 @@
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
     "@sweetalert2/ngx-sweetalert2": "5.1.0",
-
     "ng-block-ui": "2.1.7",
-    "ngx-echarts": "^5.0.0",
     "ng2-charts": "2.2.0",
     "ngx-color-picker": "7.5.0",
+    "ngx-echarts": "^5.0.0",
     "ngx-mapbox-gl": "^4.5.0"
   },
   "gitHead": "0fc5b1cc7ca8b97af8b19ec5cea42ed0817559e7"
