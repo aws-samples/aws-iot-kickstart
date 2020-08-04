@@ -1,5 +1,6 @@
 import { enableProdMode } from '@angular/core'
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic'
+import { AppModule } from './app.module'
 import * as sputnik from '@deathstar/sputnik-ui-angular'
 import { environment } from './environments/environment'
 // AWS related
@@ -28,5 +29,5 @@ if (environment.production) {
 }
 
 platformBrowserDynamic()
-.bootstrapModule(sputnik.SputnikModule)
+.bootstrapModule(AppModule)
 .catch(err => console.log(err))
