@@ -26,11 +26,17 @@
       ],
       "sputnik/*": [
         "projects/sputnik/dist/*"
+      ],
+      "api": [
+        "dist/api"
+      ],
+      "api/*": [
+        "dist/api/*"
       ]
     }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
-    "strictInjectionParameters": true,
+    "strictInjectionParameters": true
   }
 }

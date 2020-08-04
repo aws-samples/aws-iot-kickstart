@@ -7,7 +7,8 @@
   "whitelistedNonPeerDependencies": [
     "tslib",
 
-    "@deathstar/sputnik-infra",
+    "@deathstar/sputnik-core",
+    "@deathstar/sputnik-ui-angular-api",
 
     "@mdi/font",
     "@ngx-pwa/local-storage",

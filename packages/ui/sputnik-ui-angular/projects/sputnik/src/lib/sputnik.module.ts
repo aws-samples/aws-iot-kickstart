@@ -1,4 +1,4 @@
-import { COMPILER_OPTIONS, CompilerFactory, Compiler, NgModule, NO_ERRORS_SCHEMA } from '@angular/core'
+import { COMPILER_OPTIONS, CompilerFactory, Compiler, NgModule, NO_ERRORS_SCHEMA, NgZone } from '@angular/core'
 import { JitCompilerFactory } from '@angular/platform-browser-dynamic'
 import { HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
@@ -10,6 +10,14 @@ import { ChartsModule } from 'ng2-charts'
 import { SputnikRoutingModule } from './sputnik.routes'
 // AWS Specific
 // import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular'
+// API
+import { ApiService, ApiProviderModule } from '@deathstar/sputnik-ui-angular-api'
+// import { ApiProviderModule } from './api.module'
+// Config
+import {
+	APP_SYNC_GRAPHQL_ENDPOINT,
+	REGION,
+} from './app-variables'
 // Components
 import { SputnikComponent } from './sputnik.component'
 // Components - Common
@@ -133,6 +141,14 @@ export function createCompiler (fn: CompilerFactory): Compiler {
 		// Services
 		AppServicesModule,
 
+		// API
+		// ApolloModule,
+		// ApiProviderModule,
+		ApiProviderModule.forRoot({
+			url: APP_SYNC_GRAPHQL_ENDPOINT,
+			region: REGION,
+		}),
+
 		TestsModule,
 
 		MapsModule,
@@ -157,7 +173,7 @@ export function createCompiler (fn: CompilerFactory): Compiler {
 			deps: [CompilerFactory],
 		},
 	],
-	bootstrap: [SputnikComponent],
+	// bootstrap: [SputnikComponent],
 	schemas: [NO_ERRORS_SCHEMA],
 })
 export class SputnikModule {}

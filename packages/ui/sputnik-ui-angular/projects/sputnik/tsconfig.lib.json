@@ -20,7 +20,6 @@
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,
     "enableResourceInlining": true,
-    // "annotationsAs": "decorators"
   },
   "exclude": [
     "src/test.ts",

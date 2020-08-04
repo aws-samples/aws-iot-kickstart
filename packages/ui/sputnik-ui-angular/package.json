@@ -5,7 +5,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "yarn build:api && yarn build:app",
+    "build:api": "ng build api",
+    "build:app": "ng build sputnik",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -16,7 +18,8 @@
       "@angular/*",
       "@angular-devkit/*",
       "aws-amplify-angular",
-      "ng-block-ui"
+      "ng-block-ui",
+      "apollo-*"
     ]
   },
   "dependencies": {
@@ -73,7 +76,15 @@
     "underscore": "^1.10.2",
     "underscore-deep-extend": "1.1.5",
     "uuid": "3.3.2",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+
+
+    "apollo-angular": "^1.10.0",
+    "apollo-angular-link-http": "^1.11.0",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link": "^1.2.14",
+    "apollo-link-error": "^1.1.13"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.29",
