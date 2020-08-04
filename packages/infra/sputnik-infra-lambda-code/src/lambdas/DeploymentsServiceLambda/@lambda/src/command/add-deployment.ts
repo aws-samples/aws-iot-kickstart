@@ -24,7 +24,7 @@ const {
 
 const documentClient = new DynamoDB.DocumentClient()
 
-export const ADD_DEPLOYMENT_CMD = 'addDeployment'
+export const CMD_ADD_DEPLOYMENT = 'addDeployment'
 
 async function getDevice (thingId: string): Promise<Device> {
 	return documentClient.get({

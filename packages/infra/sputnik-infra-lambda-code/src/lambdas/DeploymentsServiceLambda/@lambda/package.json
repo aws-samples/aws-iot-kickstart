@@ -5,15 +5,12 @@
     "main": "libs.js",
     "version": "0.0.1",
     "scripts": {
-        "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
+        "build": "yarn parcel build src/index.ts --target=node --global handler -o dist/index.js --bundle-node-modules",
         "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
     },
     "dependencies": {
         "@deathstar/sputnik-core": "^0.0.0-alpha.1",
-        "deep-diff": "1.0.2",
-        "deepmerge": "2.2.1",
-        "moment": "2.25.3",
-        "underscore": "1.10.2",
+        "lodash": "^4.17.19",
         "uuid": "8.0.0"
     },
     "devDependencies": {
