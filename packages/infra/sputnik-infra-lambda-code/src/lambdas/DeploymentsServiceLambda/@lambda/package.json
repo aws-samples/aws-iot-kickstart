@@ -5,8 +5,9 @@
     "main": "libs.js",
     "version": "0.0.1",
     "scripts": {
-        "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
-        "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
+        "//build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
+        "//postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *",
+        "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
     "dependencies": {
         "deep-diff": "1.0.2",
@@ -21,18 +22,18 @@
     "externals": [
         "aws-sdk"
     ],
-    "//workspaces": {
+    "workspaces": {
         "nohoist": [
-            "**/moment",
-            "**/moment/**",
-            "**/underscore",
-            "**/underscore/**",
-            "**/deep-diff",
-            "**/deep-diff/**",
-            "**/deepmerge",
-            "**/deepmerge/**",
-            "**/uuid",
-            "**/uuid/**"
+            "moment",
+            "moment/**",
+            "underscore",
+            "underscore/**",
+            "deep-diff",
+            "deep-diff/**",
+            "deepmerge",
+            "deepmerge/**",
+            "uuid",
+            "uuid/**"
         ]
     }
 }
