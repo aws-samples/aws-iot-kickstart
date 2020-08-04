@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, Route, UrlTree } from '@angular/router'
 import { Observable } from 'rxjs'
+import { Auth } from 'aws-amplify'
 import { AmplifyService } from 'aws-amplify-angular'
+import { LOCAL_STORAGE_TOKEN_KEY } from '@deathstar/sputnik-ui-angular-api'
 // import { AuthenticationDetails, CognitoUser } from 'amazon-cognito-identity-js';
 // Models
 import { ProfileInfo } from '../models/profile-info.model'
@@ -49,38 +51,41 @@ export class UserLoginService implements CanActivate {
 		})
 	}
 
-	authenticate (username: string, password: string, callback: CognitoCallback) {
-		const self = this
-		self.logger.info('UserLoginService.authenticate: starting the authentication')
-		self.amplifyService
-		.auth()
-		.signIn(username, password)
-		.then(user => {
-			self.logger.info('UserLoginService.authenticate: successfully logged in', user)
+	async authenticate (username: string, password: string, callback: CognitoCallback) {
+		try {
+			this.logger.info('UserLoginService.authenticate: starting the authentication')
+			const user = await this.amplifyService.auth().signIn(username, password)
+			this.logger.info('UserLoginService.authenticate: successfully logged in', user)
+
+			this.localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY)
 
 			if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-				self.logger.warn('UserLoginService.authenticate: User needs to set password.')
+				this.logger.warn('UserLoginService.authenticate: User needs to set password.')
 				callback.cognitoCallback({
 					message: 'User needs to set password.',
 				}, null)
 			} else {
-				self
-				.getUserInfo()
-				.then((data: ProfileInfo) => {
-					self.localStorage.setItem('profile', data).subscribe(() => {})
+				const session = await Auth.currentSession()
+
+				// store token in local storage
+				this.localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, session.getIdToken().getJwtToken())
+
+				try {
+					const profileInfo: ProfileInfo = await this.getUserInfo()
+
+					this.localStorage.setItem('profile', profileInfo).subscribe(() => {})
 					callback.cognitoCallback(null, user)
-				})
-				.catch(err2 => {
-					self.logger.error('[Error] Error occurred retrieving user info to validate admin role.')
-					self.logger.error(err2)
+				} catch (error) {
+					this.logger.error('[Error] Error occurred retrieving user info to validate admin role.')
+					this.logger.error(error)
 					callback.cognitoCallback(null, user)
-				})
+				}
 			}
-		})
-		.catch(err => {
-			self.logger.error(err)
-			callback.cognitoCallback(err, null)
-		})
+		} catch (error) {
+			this.logger.error(error)
+			// TODO: look into how callback is handled
+			callback.cognitoCallback(error, null)
+		}
 	}
 
 	forgotPassword (username: string, callback: CognitoCallback) {

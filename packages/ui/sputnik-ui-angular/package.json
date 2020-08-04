@@ -12,7 +12,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
-  "workspaces": {
+  "//workspaces": {
     "nohoist": [
       "ng-packagr",
       "@angular/*",
@@ -42,15 +42,19 @@
     "chartjs-plugin-annotation": "0.5.7",
     "chartjs-plugin-draggable": "0.1.6",
     "chartjs-plugin-streaming": "1.8.0",
-    "core-js": "2.6.9",
     "cpy-cli": "^3.1.1",
     "echarts": "^4.8.0",
     "file-saver": "2.0.2",
     "font-awesome": "^4.7.0",
     "fs-extra": "7.0.1",
     "gaugeJS": "^1.3.7",
-    "graphql": "14.0.2",
-    "graphql-tag": "2.10.0",
+
+    "core-js": "2.6.9",
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.11.0",
+    "rxjs": "~6.4.0",
+    "uuid": "3.3.2",
+
     "jquery": "^3.4.1",
     "jquery-blockui": "^2.7.0",
     "jquery-slimscroll": "^1.3.8",
@@ -66,7 +70,6 @@
     "node-waves": "^0.7.6",
     "owl.carousel": "^2.3.4",
     "popper.js": "^1.15.0",
-    "rxjs": "~6.4.0",
     "shortid": "2.2.14",
     "sticky-kit": "^1.1.3",
     "stream": "0.0.2",
@@ -75,7 +78,6 @@
     "tslib": "^1.10.0",
     "underscore": "^1.10.2",
     "underscore-deep-extend": "1.1.5",
-    "uuid": "3.3.2",
     "zone.js": "~0.9.1",
 
 

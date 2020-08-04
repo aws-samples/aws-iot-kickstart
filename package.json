@@ -70,7 +70,17 @@
     "@angular/language-service": "~8.2.14",
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
-    "@angular/router": "~8.2.14"
+    "@angular/router": "~8.2.14",
+    "ng-packagr": "^5.4.0",
+    "protractor": "~7.0.0",
+    "ts-jest": "25",
+    "ts-node": "^8.1.0",
+    "tsickle": "^0.39.1",
+    "typescript": "^3.9.5",
+
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.11.0",
+    "rxjs": "~6.4.0"
   },
   "dependencies": {
     "@types/js-yaml": "^3.12.5",

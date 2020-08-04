@@ -7,7 +7,7 @@ import swal from 'sweetalert2'
 import { INTERNAL_TENANT } from '@deathstar/sputnik-core'
 import { UserGroups } from '@deathstar/sputnik-core'
 import { User } from '@deathstar/sputnik-core-api'
-import { ApiService, ListTenantsGQL, ListUsersGQL, ListUsersQuery, ListTenantsQuery } from '@deathstar/sputnik-ui-angular-api'
+import { SputnikApiService, ListTenantsGQL, ListUsersGQL } from '@deathstar/sputnik-ui-angular-api'
 // Models
 import { ProfileInfo } from '../../models/profile-info.model'
 import { Invitation } from '../../models/invitation-model'
@@ -67,7 +67,7 @@ export class UsersComponent implements OnInit {
 		private statService: StatService,
 		private ngZone: NgZone,
 
-		private apiService: ApiService,
+		private apiService: SputnikApiService,
 		private listTenantGQL: ListTenantsGQL,
 		private listUsersGQL: ListUsersGQL,
 	) {

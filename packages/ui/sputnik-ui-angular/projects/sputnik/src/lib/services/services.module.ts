@@ -1,7 +1,9 @@
-import { NgModule } from '@angular/core'
+import { NgModule, Injectable } from '@angular/core'
 import { CommonModule } from '@angular/common'
 // AWS Specific
 import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular'
+// API
+// import { ApiService } from '@deathstar/sputnik-ui-angular-api'
 // Modules
 import { S3Module } from './s3/s3.module'
 // Services
@@ -28,6 +30,11 @@ import { RealTimeDataService } from './realtime-data/service'
 @NgModule({
 	imports: [AmplifyAngularModule, CommonModule, S3Module],
 	providers: [
+		// // AppSync API service
+		// ApiService,
+
+		// Explict services defined in UI
+		// TODO: replace these with API service above when possible
 		AdminService,
 		AmplifyService,
 		AppSyncService,

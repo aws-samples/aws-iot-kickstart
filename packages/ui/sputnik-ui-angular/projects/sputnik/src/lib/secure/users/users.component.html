@@ -48,7 +48,7 @@
                                     <div class="form-group">
                                         <label for="group" class="form-control-label">Group (Tenant):</label>
                                         <select class="custom-select col-12" name="group" id="group">
-                                            <option *ngFor="let tenant of tenants" [ngValue]="tenant">
+                                            <option *ngFor="let tenant of tenants | async" [ngValue]="tenant">
                                                 {{tenant}}
                                             </option>
                                         </select>
@@ -121,7 +121,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let user of users" routerLink="{{user.user_id}}">
+                            <tr *ngFor="let user of users | async" routerLink="{{user.user_id}}">
                                 <td><span class="round round-success"><i class="mdi mdi-account"></i></span></td>
                                 <td>
                                     <h6>{{user.user_id}}</h6>

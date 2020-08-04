@@ -5,9 +5,6 @@ import * as sputnik from '@deathstar/sputnik-ui-angular'
 	imports: [
 		sputnik.SputnikModule,
 	],
-	providers: [
-		NgZone,
-	],
 	bootstrap: [sputnik.SputnikComponent],
 	schemas: [NO_ERRORS_SCHEMA],
 })

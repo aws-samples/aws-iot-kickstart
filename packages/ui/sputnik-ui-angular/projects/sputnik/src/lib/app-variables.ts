@@ -11,12 +11,8 @@ interface AppVariables {
 }
 
 declare global {
-	// interface Window {
 	const appVariables: AppVariables
-	// }
 }
-
-// const appVariables = window.appVariables
 
 export default appVariables
 

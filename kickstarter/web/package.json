@@ -15,7 +15,7 @@
     "lib": "dist",
     "test": "test"
   },
-  "workspaces": {
+  "//workspaces": {
     "nohoist": [
       "@deathstar/sputnik-ui-angular",
       "ng-packagr",
