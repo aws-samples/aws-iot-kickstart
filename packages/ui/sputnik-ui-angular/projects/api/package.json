@@ -1,0 +1,54 @@
+{
+  "name": "@deathstar/sputnik-ui-angular-api",
+  "description": "Sputnik UI angular api service",
+  "version": "0.0.0",
+  "main": "dist/bundles/deathstar-sputnik-ui-angular-api.umd.js",
+  "module": "dist/fesm5/deathstar-sputnik-ui-angular-api.js",
+  "es2015": "dist/fesm2015/deathstar-sputnik-ui-angular-api.js",
+  "esm5": "dist/esm5/deathstar-sputnik-ui-angular-api.js",
+  "esm2015": "dist/esm2015/deathstar-sputnik-ui-angular-api.js",
+  "fesm5": "dist/fesm5/deathstar-sputnik-ui-angular-api.js",
+  "fesm2015": "dist/fesm2015/deathstar-sputnik-ui-angular-api.js",
+  "typings": "dist/deathstar-sputnik-ui-angular-api.d.ts",
+  "metadata": "dist/deathstar-sputnik-ui-angular-api.metadata.json",
+  "scripts": {
+    "prebuild": "yarn generate",
+    "build": "cd ../../ && yarn build:api",
+    "watch": "yarn build --watch",
+    "generate": "graphql-codegen --config codegen.yml"
+  },
+  "dependencies": {
+    "@deathstar/sputnik-core-api": "^0.0.0"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.17.6",
+    "@graphql-codegen/import-types-preset": "^1.17.6",
+    "@graphql-codegen/typescript": "^1.17.6",
+    "@graphql-codegen/typescript-apollo-angular": "^1.17.0",
+    "@graphql-codegen/typescript-graphql-request": "^1.17.6",
+    "@graphql-codegen/typescript-operations": "^1.17.6",
+    "@graphql-codegen/typescript-react-apollo": "^1.17.6",
+    "apollo-angular-link-http": "^1.11.0",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-link": "^1.2.14",
+    "apollo-link-error": "^1.1.13",
+    "graphql-tag": "^2.11.0",
+    "apollo-angular": "^1.10.0",
+    "apollo-client": "^2.6.10",
+    "aws-appsync-auth-link": "^2.0.2",
+    "aws-appsync-subscription-link": "^2.2.0",
+    "graphql": "^15.3.0"
+  },
+  "peerDependencies": {
+    "@angular/common": "^8.2.14",
+    "@angular/core": "^8.2.14",
+    "apollo-angular": "^1.10.0",
+    "apollo-angular-link-http": "^1.11.0",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link": "^1.2.14",
+    "apollo-link-error": "^1.1.13",
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.11.0"
+  }
+}

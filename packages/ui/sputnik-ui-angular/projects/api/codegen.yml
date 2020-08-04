@@ -1,0 +1,14 @@
+overwrite: true
+schema: '../../../../core/sputnik-core-api/lib/schema.dev.graphql'
+documents: '../../../../core/sputnik-core-api/src/operation/**/*.graphql'
+generates:
+  ./src/lib/generated.ts:
+    preset: import-types
+    presetConfig:
+      typesPath: '@deathstar/sputnik-core-api'
+    plugins:
+      - 'typescript-operations'
+      - 'typescript-apollo-angular'
+    config:
+      serviceName: ApiService
+      sdkClass: true
