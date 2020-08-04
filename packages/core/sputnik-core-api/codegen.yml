@@ -9,16 +9,16 @@ generates:
   generated/types.ts:
     plugins:
       - 'typescript'
-  generated/apollo-angular.ts:
-    preset: import-types
-    presetConfig:
-      typesPath: ./types
-    plugins:
-      - 'typescript-operations'
-      - 'typescript-apollo-angular'
-    config:
-      serviceName: SputnikApiService
-      sdkClass: true
+  # generated/apollo-angular.ts:
+  #   preset: import-types
+  #   presetConfig:
+  #     typesPath: ./types
+  #   plugins:
+  #     - 'typescript-operations'
+  #     - 'typescript-apollo-angular'
+  #   config:
+  #     serviceName: SputnikApiService
+  #     sdkClass: true
   generated/graphql-request.ts:
     preset: import-types
     presetConfig:

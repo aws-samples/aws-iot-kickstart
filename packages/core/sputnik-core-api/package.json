@@ -18,14 +18,16 @@
     "lib",
     "schema.graphql"
   ],
-  "main": "lib/types.js",
+  "main": "lib/index.js",
   "typings": "lib/types.d.ts",
   "scripts": {
     "clean": "rm -rf lib generated",
     "prebuild": "yarn clean && yarn generate",
     "build": "tsc --project tsconfig.json",
+    "postbuild": "cat src/schema/appsync.graphql > lib/schema.dev.graphql && cat lib/schema.graphql >> lib/schema.dev.graphql",
     "test": "jest",
-    "generate": "yarn generate:schema && yarn generate:code",
+    "generate": "yarn generate:schema && yarn generate:code && yarn generate:src",
+    "generate:src": "cp src/schema-file.ts generated/schema-file.ts",
     "generate:schema": "ts-node ./bin/generate-schema.js",
 		"generate:code": "graphql-codegen --config codegen.yml",
     "prewatch": "yarn clean",
