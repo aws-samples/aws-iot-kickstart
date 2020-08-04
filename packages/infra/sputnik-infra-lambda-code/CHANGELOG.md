@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.3](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.2...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.3) (2020-08-04)
+
+
+### Bug Fixes
+
+* **@lambda/deployments-server:** change pure zip to resolve missing deepmerge dependency in bundle ([20d39bc](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/20d39bc6c432d2441d2f6fe204ae9b017eba5563))
+
+
+
+
+
 # [0.0.0-alpha.2](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.1...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.2) (2020-07-29)
 
 **Note:** Version bump only for package @deathstar/sputnik-infra-lambda-code
