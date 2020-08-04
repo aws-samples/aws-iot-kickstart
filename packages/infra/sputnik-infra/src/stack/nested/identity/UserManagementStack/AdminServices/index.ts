@@ -37,11 +37,6 @@ export class AdminServices extends Construct {
 		const { userPool, tenantRole, graphQLApi } = props
 
 		/***********************************************************************
-		 *** SCHEMA
-		 ***********************************************************************/
-		graphQLApi.extendSchemaFile(path.join(__dirname, 'schema.admin.graphql'))
-
-		/***********************************************************************
 		 *** LAMBDA
 		 ***********************************************************************/
 
