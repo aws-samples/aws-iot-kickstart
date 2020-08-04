@@ -1,9 +1,8 @@
 import * as apollo from 'apollo-angular'
 import { Apollo, ApolloModule } from 'apollo-angular'
 import { InMemoryCache } from "apollo-cache-inmemory"
-import { NgModule, ModuleWithProviders, NgZone, Provider } from '@angular/core'
+import { NgModule, ModuleWithProviders } from '@angular/core'
 import { Auth } from 'aws-amplify'
-import { StorageMap } from '@ngx-pwa/local-storage'
 import { ApolloLink } from 'apollo-link'
 import { onError } from 'apollo-link-error'
 import { createAuthLink, AuthOptions } from 'aws-appsync-auth-link'
@@ -21,7 +20,6 @@ export class ApiProviderConfig {
   ],
   providers: [
     Apollo,
-    StorageMap,
   ],
 })
 export class ApiProviderModule {
@@ -37,10 +35,10 @@ export class ApiProviderModule {
     }
   }
 
-  protected token: string
+  protected token: string | null
 
-  constructor(config: ApiProviderConfig, apollo: Apollo, storage: StorageMap) {
-    storage.watch<string>(LOCAL_STORAGE_TOKEN_KEY, { type: 'string' }).subscribe(token => this.token = token)
+  constructor(config: ApiProviderConfig, apollo: Apollo) {
+    this.token = window.localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY) || null
 
     config.auth = Object.assign({
       type: 'AMAZON_COGNITO_USER_POOLS',
@@ -48,7 +46,7 @@ export class ApiProviderModule {
         if (this.token == null) {
           const session = await Auth.currentSession()
           this.token = session.getIdToken().getJwtToken()
-          storage.set(LOCAL_STORAGE_TOKEN_KEY, this.token).subscribe(() => {})
+          window.localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, this.token)
         }
 
         return this.token

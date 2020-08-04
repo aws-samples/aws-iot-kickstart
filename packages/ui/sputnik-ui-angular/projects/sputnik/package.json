@@ -21,7 +21,7 @@
     "@deathstar/sputnik-ui-angular-api": "^0.0.0",
     "@deathstar/sputnik-core": "^0.0.0-alpha.1",
     "@mdi/font": "^4.7.95",
-    "@ngx-pwa/local-storage": "^10.0.1",
+    "@ngx-pwa/local-storage": "^7.0.0",
     "aws-amplify": "1.1.36",
     "aws-amplify-angular": "3.0.11",
     "bootstrap": "^4.3.1",
