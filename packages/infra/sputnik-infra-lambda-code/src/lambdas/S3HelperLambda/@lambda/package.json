@@ -5,16 +5,13 @@
     "main": "index.js",
     "version": "0.0.1",
     "scripts": {
-        "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
-        "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
+        "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
-    "devDependencies": {
-        "aws-sdk": "*"
-    },
-    "externals": [
-        "aws-sdk"
-    ],
-    "//workspaces": {
-        "nohoist": []
+    "peerDependencies": {
+        "@lambda/npm-dependencies": "0.0.1",
+        "@lambda/sputnik-lib": "0.0.1",
+        "aws-sdk": "*",
+        "moment": "2.24.0",
+        "underscore": "1.10.2"
     }
 }

@@ -2,35 +2,14 @@
     "private": true,
     "name": "@lambda/deployments-service",
     "description": "The deployments microservice for the sputnik",
-    "main": "libs.js",
+    "main": "index.js",
     "version": "0.0.1",
     "scripts": {
-        "build": "yarn parcel build src/index.ts --target=node --global handler -o dist/index.js --bundle-node-modules",
-        "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
+        "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
-    "dependencies": {
-        "@deathstar/sputnik-core": "^0.0.0-alpha.1",
-        "lodash": "^4.17.19",
-        "uuid": "8.0.0"
-    },
-    "devDependencies": {
+    "peerDependencies": {
+        "@lambda/npm-dependencies": "0.0.1",
+        "@lambda/sputnik-lib": "0.0.1",
         "aws-sdk": "*"
-    },
-    "externals": [
-        "aws-sdk"
-    ],
-    "//workspaces": {
-        "nohoist": [
-            "**/moment",
-            "**/moment/**",
-            "**/underscore",
-            "**/underscore/**",
-            "**/deep-diff",
-            "**/deep-diff/**",
-            "**/deepmerge",
-            "**/deepmerge/**",
-            "**/uuid",
-            "**/uuid/**"
-        ]
     }
 }

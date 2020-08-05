@@ -1,32 +1,16 @@
 {
     "private": true,
     "name": "@lambda/device-namespace-sync",
-    "version": "1.0.1",
-    "description": "",
     "main": "index.js",
+    "version": "0.0.1",
     "scripts": {
-        "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
-        "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
+        "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
-    "dependencies": {
+    "peerDependencies": {
+        "@lambda/npm-dependencies": "0.0.1",
+        "@lambda/sputnik-lib": "0.0.1",
         "aws-appsync": "^3.0.3",
         "cross-fetch": "^3.0.4",
         "graphql-tag": "^2.10.3"
-    },
-    "devDependencies": {
-        "aws-sdk": "*"
-    },
-    "externals": [
-        "aws-sdk"
-    ],
-    "//workspaces": {
-        "nohoist": [
-            "**/aws-appsync",
-            "**/aws-appsync/**",
-            "**/cross-fetch",
-            "**/cross-fetch/**",
-            "**/graphql-tag",
-            "**/graphql-tag/**"
-        ]
     }
 }

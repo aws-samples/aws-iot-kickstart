@@ -1,0 +1,32 @@
+{
+    "private": true,
+    "name": "@lambda/sputnik-lib",
+    "description": "Sputnik library for all service lambdas",
+    "version": "0.0.1",
+    "type": "module",
+    "scripts": {
+        "clean": "tsc --build --clean",
+        "prebuild": "yarn clean",
+        "build": "tsc --project ./tsconfig.json",
+        "postbuild": "yarn make:dist && yarn make:zip",
+        "make:dist": "mkdir -p dist/node_modules/$npm_package_name && rsync -am lib package.json dist/node_modules/$npm_package_name",
+        "make:zip": "mkdir -p ../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *",
+        "watch": "yarn build --watch"
+    },
+    "devDependencies": {
+        "aws-appsync": "^3.0.3",
+        "cross-fetch": "^3.0.4",
+        "graphql": "^15.3.0",
+        "graphql-tag": "^2.11.0",
+        "lodash": "^4.17.19",
+        "moment": "^2.27.0",
+        "node-forge": "^0.8.5",
+        "shortid": "^2.2.15",
+        "underscore": "^1.10.2",
+        "uuid": "^8.0.0",
+        "typescript": "^3.9.5"
+    },
+    "peerDependencies": {
+        "@lambda/npm-dependencies": "0.0.1"
+    }
+}

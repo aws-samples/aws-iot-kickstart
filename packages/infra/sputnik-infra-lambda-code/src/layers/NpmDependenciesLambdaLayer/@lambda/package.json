@@ -1,0 +1,36 @@
+{
+    "private": true,
+    "name": "@lambda/npm-dependencies",
+    "description": "Common npm dependencies in lambda layer",
+    "version": "0.0.1",
+    "scripts": {
+        "build": "mkdir -p ../../../dist/@lambda && zip -FSrq ../../../dist/$npm_package_name.zip *"
+    },
+    "dependencies": {
+        "aws-appsync": "^3.0.3",
+        "cross-fetch": "^3.0.4",
+        "graphql": "^15.3.0",
+        "graphql-tag": "^2.11.0",
+        "lodash": "^4.17.19",
+        "moment": "^2.27.0",
+        "node-forge": "^0.8.5",
+        "shortid": "^2.2.15",
+        "underscore": "^1.10.2",
+        "uuid": "^8.0.0"
+    },
+    "//workspaces": "NOTE: All dependencies and transient dependencies need to be `nohoist`",
+    "workspaces": {
+        "nohoist": [
+            "aws-appsync", "aws-appsync/**",
+            "cross-fetch", "cross-fetch/**",
+            "graphql", "graphql/**",
+            "graphql-tag", "graphql-tag/**",
+            "lodash", "lodash/**",
+            "moment", "moment/**",
+            "node-forge", "node-forge/**",
+            "shortid", "shortid/**",
+            "underscore", "underscore/**",
+            "uuid", "uuid/**"
+        ]
+    }
+}

@@ -2,7 +2,8 @@ import * as path from 'path'
 import { sync as findup } from 'find-up'
 import { Duration, Construct } from '@aws-cdk/core'
 import { Runtime, SingletonFunction, SingletonFunctionProps, IFunction, L } from '@aws-cdk/aws-lambda'
-import { NpmDependenciesLambdaLayer } from './lambdas/layers/NpmDependenciesLambdaLayer'
+import { NpmDependenciesLambdaLayer } from './layers/NpmDependenciesLambdaLayer'
+import { SputnikLibraryLambdaLayer } from './layers/SputnikLibraryLambdaLayer'
 
 export function lambdaPath (name: string): string {
 	const dist = findup('dist', { cwd: __dirname, type: 'directory' })
@@ -43,6 +44,7 @@ export class CompiledLambdaFunction<TEnvironment extends LambdaEnvironment>
 			runtime: Runtime.NODEJS_12_X,
 			layers: [
 				NpmDependenciesLambdaLayer.getLayer(scope),
+				SputnikLibraryLambdaLayer.getLayer(scope),
 			],
 		}, props)
 		super(scope, id, props as unknown as SingletonFunctionProps)
