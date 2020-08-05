@@ -32,6 +32,7 @@ function getDeviceStatsRecursive (lastEvalKey) {
 		_stats.total = results.Items.length
 
 		if (results.LastEvaluatedKey) {
+			// @ts-ignore
 			return getDeviceStatsRecursive(result.LastEvaluatedKey).then(data => {
 				_stats.connected += data.connected
 				_stats.disconnected += data.disconnected

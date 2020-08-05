@@ -6,10 +6,10 @@ const https = require('https')
 const url = require('url')
 const UUID = require('uuid')
 const moment = require('moment')
-const DDBHelper = require('./helperdynamodb-helper')
-const S3Helper = require('./helpers3-helper')
-const IOTHelper = require('./helperiot-helper')
-const GREENGRASSHelper = require('./helpergreengrass-helper')
+const DDBHelper = require('../helper/dynamodb-helper')
+const S3Helper = require('../helper/s3-helper')
+const IOTHelper = require('../helper/iot-helper')
+const GREENGRASSHelper = require('../helper/greengrass-helper')
 const UsageMetrics = require('../../metrics/metrics.common')
 
 /**
@@ -131,9 +131,10 @@ exports.handler = (event, context, callback) => {
 				iotHelper.attachPrincipalPolicy(event.policyName, event.principal).then(result => callback(null, result)).catch(err => callback(err, null))
 				break
 			case 'blueprintParser':
-				const BlueprintParser = require('./lib/blueprint-parser')
+				const BlueprintParser = require('../helper/blueprint-parser')
 
 				const blueprintParser = new BlueprintParser()
+				// @ts-ignore
 				blueprintParser.parse(event.message).then(result => callback(null, result)).catch(err => callback(err, null))
 				break
 			case 'describeEndpoint':

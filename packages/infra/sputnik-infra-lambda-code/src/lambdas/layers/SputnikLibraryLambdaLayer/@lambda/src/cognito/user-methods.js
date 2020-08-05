@@ -12,10 +12,12 @@ exports.getUser = async (username, userPoolId) => {
 	const { Groups: groups } = await cognitoISP.adminListGroupsForUser(params).promise()
 
 	const sortedGroupNames = groups.map((group) => group.GroupName).sort((a, b) => {
+		// @ts-ignore
 		if (a.Precedence < b.Precedence) {
 			return -1
 		}
 
+		// @ts-ignore
 		if (a.Precedence > b.Precedence) {
 			return 1
 		}
@@ -30,6 +32,7 @@ exports.getUser = async (username, userPoolId) => {
 				[attr.Name]: attr.Value,
 			}
 		}, {}),
+		// @ts-ignore
 		creationDate: user.CreationDate,
 		enabled: user.Enabled,
 		groups: sortedGroupNames,

@@ -135,19 +135,20 @@ module.exports = function (event, context) {
 			}
 		})
 		.then(systemBlueprint => {
+			// @ts-ignore
 			_systemBlueprint = systemBlueprint.Item
 
+			// @ts-ignore
 			if (!_systemBlueprint) {
 				throw 'SystemBlueprint ' + _system.systemBlueprintId + ' does not exist.'
 			} else {
-				if (
-					!_systemBlueprint.spec.hasOwnProperty('Devices') &&
-                    _system.deviceIds.length !== _systemBlueprint.spec.Devices.length
-				) {
+				// @ts-ignore
+				if (!_systemBlueprint.spec.hasOwnProperty('Devices') && _system.deviceIds.length !== _systemBlueprint.spec.Devices.length) {
 					// throw 'System has inconsistent deviceIds and devices length in spec';
 					return []
 				} else {
 					return Promise.all(
+						// @ts-ignore
 						_system.deviceIds.map(thingId => {
 							return documentClient
 								.get({
@@ -158,6 +159,7 @@ module.exports = function (event, context) {
 								})
 								.promise()
 								.then(device => {
+									// @ts-ignore
 									device = device.Item
 
 									if (!device) {
@@ -174,6 +176,7 @@ module.exports = function (event, context) {
 		.then(devices => {
 			console.log(tag, 'end:', devices)
 
+			// @ts-ignore
 			return processDeviceList(_systemBlueprint.spec.Devices, devices)
 		})
 }

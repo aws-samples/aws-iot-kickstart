@@ -26,6 +26,7 @@ function getSystemStatsRecursive (lastEvalKey) {
 		}
 
 		if (results.LastEvaluatedKey) {
+			// @ts-ignore
 			return getSystemStatsRecursive(result.LastEvaluatedKey).then(data => {
 				// _stats.connected += data.connected;
 				// _stats.disconnected += data.disconnected;

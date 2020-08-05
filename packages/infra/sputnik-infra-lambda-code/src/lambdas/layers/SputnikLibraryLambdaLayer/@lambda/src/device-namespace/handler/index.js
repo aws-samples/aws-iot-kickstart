@@ -1,6 +1,7 @@
+import * as api from '../api'
+import config from '../config'
+
 const AWS = require('aws-sdk')
-const api = require('../api')
-const config = require('../config').default
 
 async function handler (event) {
 	console.log('Recieved Event:', JSON.stringify(event, null, 2))

@@ -7,6 +7,7 @@ const _ = require('underscore')
 module.exports = function (event, context) {
 	return documentClient.query({
 		TableName: process.env.TABLE_DEVICES,
+		// @ts-ignore
 		Index: 'deviceBlueprintId',
 		KeyConditionExpression: 'deviceBlueprintId = :deviceBlueprintId',
 		ExpressionAttributeValues: {

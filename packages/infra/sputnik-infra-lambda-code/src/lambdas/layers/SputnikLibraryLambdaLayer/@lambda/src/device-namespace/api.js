@@ -1,7 +1,8 @@
+import gql from 'graphql-tag'
+import config from './config'
+
 const AWS = require('aws-sdk')
 const appsync = require('aws-appsync')
-const gql = require('graphql-tag')
-const config = require('./config').default
 
 require('cross-fetch/polyfill')
 
@@ -65,7 +66,7 @@ function computeMessage (namespace) {
 	}
 }
 
-exports.deploy = async function (thingId) {
+export async function deploy (thingId) {
 	try {
 		console.log(`deploying bp for the following thing ${thingId}`)
 
@@ -87,7 +88,7 @@ exports.deploy = async function (thingId) {
 	return null
 }
 
-exports.publishNamespace = async function (thingName, namespace) {
+export async function publishNamespace(thingName, namespace) {
 	const iotData = await getIoTData()
 
 	return iotData

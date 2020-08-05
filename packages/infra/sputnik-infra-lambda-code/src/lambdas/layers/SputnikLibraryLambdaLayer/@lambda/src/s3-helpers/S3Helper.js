@@ -50,6 +50,7 @@ class s3Helper {
 
 		let s3 = new AWS.S3()
 
+		// @ts-ignore
 		return s3.putObject(params).promise().then((data) => {
 			console.log(data)
 

@@ -44,10 +44,13 @@ module.exports = function (event, context) {
 					})
 					.promise()
 					.then(principals => {
+						// @ts-ignore
 						principals = principals.principals
+						// @ts-ignore
 						console.log(tag, 'Found', principals.length, 'certificates to be deleted.')
 
 						return Promise.all(
+							// @ts-ignore
 							principals.map(principalArn => {
 								return iot
 									.listPrincipalPolicies({
@@ -55,15 +58,18 @@ module.exports = function (event, context) {
 									})
 									.promise()
 									.then(policies => {
+										// @ts-ignore
 										policies = policies.policies
 										console.log(
 											tag,
 											'Found',
+											// @ts-ignore
 											policies.length,
 											'policies to be detached.'
 										)
 
 										return Promise.all(
+											// @ts-ignore
 											policies.map(policy => {
 												console.log(
 													tag,

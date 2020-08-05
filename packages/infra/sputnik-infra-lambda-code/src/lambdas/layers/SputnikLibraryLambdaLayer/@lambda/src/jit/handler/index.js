@@ -43,6 +43,7 @@ function handler (event, context, callback) {
 		})
 		.then(cert => {
 			_cert = cert
+			// @ts-ignore
 			console.log(tag, 'Found certificate:', _cert.certificateArn)
 
 			return iot
@@ -123,6 +124,7 @@ function handler (event, context, callback) {
 					},
 				})
 				.promise()
+				// @ts-ignore
 				.then(device => {
 					if (!device.Item) {
 						console.log(tag, 'Device does not exist. Create it.')

@@ -26,6 +26,7 @@ async function listTenants () {
 
 module.exports = {
 	listTenants: async function (event) {
+		// @ts-ignore
 		return listTenants(event.limit, event.nextToken)
 	},
 }

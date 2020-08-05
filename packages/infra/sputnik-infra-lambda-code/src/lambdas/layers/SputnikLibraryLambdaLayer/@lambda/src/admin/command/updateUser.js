@@ -1,7 +1,7 @@
 const { setUserGroups } = require('../utils')
 
 async function updateUser (username, groups) {
-	return setUserGroups(process.env.USER_POOL_ID, username, groups, 0)
+	return setUserGroups(process.env.USER_POOL_ID, username, groups)
 }
 
 module.exports = {

@@ -1,4 +1,4 @@
-const { getUser } = require('./user-methods')
+const { getUser } = require('../../user-methods')
 
 const CLAIM_PREFIX = process.env.CLAIM_PREFIX
 const INTERNAL_TENANT = process.env.INTERNAL_TENANT
@@ -6,7 +6,7 @@ const INTERNAL_NAMESPACE = process.env.INTERNAL_NAMESPACE
 const INTERNAL_GROUPS = process.env.INTERNAL_GROUPS.split(',')
 
 if (!CLAIM_PREFIX || !INTERNAL_TENANT || !INTERNAL_NAMESPACE || !INTERNAL_GROUPS) {
-	console.warning('Required Env', { CLAIM_PREFIX, INTERNAL_TENANT, INTERNAL_NAMESPACE, INTERNAL_GROUPS })
+	console.warn('Required Env', { CLAIM_PREFIX, INTERNAL_TENANT, INTERNAL_NAMESPACE, INTERNAL_GROUPS })
 	throw new Error('Missing required environment variables.')
 }
 
