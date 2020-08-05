@@ -106,6 +106,7 @@ export class WebsitePersistentStack extends NestedStack {
 			distribution: webDistribution,
 			distributionPaths: ['/*'],
 			retainOnDelete: true,
+			prune: false,
 			// TODO: remove once https://github.com/aws/aws-cdk/issues/8541 is resolved
 			role: new Role(this, 'WebsiteBucketDeployment-Role', {
 				assumedBy: new ServicePrincipal(ServicePrincipals.LAMBDA),
