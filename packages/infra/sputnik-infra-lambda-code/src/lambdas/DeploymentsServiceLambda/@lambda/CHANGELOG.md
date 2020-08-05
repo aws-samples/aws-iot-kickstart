@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.4](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/deployments-service@0.0.3...@lambda/deployments-service@0.0.4) (2020-08-05)
+
+
+### Bug Fixes
+
+* **@lambda/deployments-service:** disable associateRoleToGroup and attachPrincipalPolicy ([6572286](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/6572286b571b3bbabc49be08cbb04e719a823792))
+
+
+
+
+
 ## [0.0.3](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/deployments-service@0.0.1...@lambda/deployments-service@0.0.3) (2020-08-05)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.5](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.4...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.5) (2020-08-05)
+
+
+### Bug Fixes
+
+* **@lambda/deployments-service:** disable associateRoleToGroup and attachPrincipalPolicy ([6572286](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/6572286b571b3bbabc49be08cbb04e719a823792))
+
+
+
+
+
 # [0.0.0-alpha.4](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.2...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.4) (2020-08-05)
 
 

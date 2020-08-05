@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.8](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.7...@deathstar/sputnik-ui-angular@0.0.0-alpha.8) (2020-08-05)
+
+**Note:** Version bump only for package @deathstar/sputnik-ui-angular
+
+
+
+
+
 # [0.0.0-alpha.7](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.5...@deathstar/sputnik-ui-angular@0.0.0-alpha.7) (2020-08-05)
 
 **Note:** Version bump only for package @deathstar/sputnik-ui-angular
