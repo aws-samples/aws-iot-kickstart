@@ -261,25 +261,25 @@ module.exports = function (event, context) {
 			}).then(groupVersion => {
 				_groupVersion = groupVersion
 
-				console.log(`Created group version: ${JSON.stringify(_groupVersion, null, 2)}`)
+				// console.log(`Created group version: ${JSON.stringify(_groupVersion, null, 2)}`)
 
-				console.log('Attach IAM role to group just in case')
+				// console.log('Attach IAM role to group just in case')
 
-				return gg.associateRoleToGroup({
-					RoleArn: process.env.IAM_ROLE_ARN_FOR_GREENGRASS_GROUPS,
-					GroupId: _device.greengrassGroupId,
-				}).promise()
+				// return gg.associateRoleToGroup({
+				// 	RoleArn: process.env.IAM_ROLE_ARN_FOR_GREENGRASS_GROUPS,
+				// 	GroupId: _device.greengrassGroupId,
+				// }).promise()
 			}).then(result => {
-				console.log('Attach IOT Greengrass policy to group just in case')
+				// console.log('Attach IOT Greengrass policy to group just in case')
 
-				// TODO: this should ideally be in the specs!
+				// // TODO: this should ideally be in the specs!
 
-				return iot
-					.attachPrincipalPolicy({
-						policyName: process.env.IOT_POLICY_GREENGRASS_CORE,
-						principal: _certificateArn,
-					})
-					.promise()
+				// return iot
+				// 	.attachPrincipalPolicy({
+				// 		policyName: process.env.IOT_POLICY_GREENGRASS_CORE,
+				// 		principal: _certificateArn,
+				// 	})
+				// 	.promise()
 			}).then(result => {
 				console.log('Deploy group:')
 
