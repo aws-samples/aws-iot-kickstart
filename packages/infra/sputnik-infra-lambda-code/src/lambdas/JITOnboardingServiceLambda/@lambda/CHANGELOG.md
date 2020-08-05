@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.3](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/jit-onboarding-service@0.0.1...@lambda/jit-onboarding-service@0.0.3) (2020-08-05)
+
+**Note:** Version bump only for package @lambda/jit-onboarding-service
+
+
+
+
+
 ## [0.0.2](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/jit-onboarding-service@0.0.1...@lambda/jit-onboarding-service@0.0.2) (2020-08-04)
 
 **Note:** Version bump only for package @lambda/jit-onboarding-service

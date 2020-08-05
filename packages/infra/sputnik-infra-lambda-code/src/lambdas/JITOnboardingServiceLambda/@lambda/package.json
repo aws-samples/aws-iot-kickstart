@@ -3,13 +3,13 @@
     "name": "@lambda/jit-onboarding-service",
     "description": "The Just In Time On Boarding microservice for sputnik",
     "main": "index.js",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "scripts": {
         "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
         "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
     },
     "dependencies": {
-        "@lambda/deployments-service": "^0.0.2",
+        "@lambda/deployments-service": "^0.0.3",
         "@lambda/devices-service": "^0.0.1",
         "moment": "2.24.0",
         "node-forge": "0.8.5",
