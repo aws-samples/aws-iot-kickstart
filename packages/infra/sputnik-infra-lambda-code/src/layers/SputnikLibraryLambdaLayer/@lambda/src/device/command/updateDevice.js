@@ -1,11 +1,11 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
+import { isEmpty, isString } from 'underscore'
+import * as moment from 'moment'
+import listGreengrassGroupIdsForThingArn from '../../utils/helper/list-greengrass-group-ids-for-thingarn'
 
 // const iot = new AWS.Iot()
 const gg = new AWS.Greengrass()
 const documentClient = new AWS.DynamoDB.DocumentClient()
-const { isEmpty, isString } = require('underscore')
-const moment = require('moment')
-const listGreengrassGroupIdsForThingArn = require('../../utils/helper/list-greengrass-group-ids-for-thingarn')
 
 function asObject (value, defaultValue = {}) {
 	if (isString(value)) {
@@ -15,7 +15,7 @@ function asObject (value, defaultValue = {}) {
 	return value || defaultValue
 }
 
-module.exports = function (event, context) {
+export function updateDevice (event, context) {
 	const DEFAULT_NAMESPACE = process.env.DEFAULT_NAMESPACE || 'default'
 
 	const tag = `updateDevice(${event.thingId}):`
@@ -191,3 +191,5 @@ module.exports = function (event, context) {
 		return device.Item
 	})
 }
+
+export default updateDevice

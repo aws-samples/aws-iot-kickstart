@@ -1,9 +1,9 @@
-const AWS = require('aws-sdk')
-const { setUserGroups } = require('../utils')
+import { CognitoIdentityServiceProvider } from 'aws-sdk'
+import { setUserGroups } from '../utils'
 
-const cognito = new AWS.CognitoIdentityServiceProvider()
+const cognito = new CognitoIdentityServiceProvider()
 
-async function inviteUser (name, email, groups) {
+export async function inviteUser (name, email, groups) {
 	console.log('inviteUser:', name, email, groups)
 
 	const username = email
@@ -40,8 +40,8 @@ async function inviteUser (name, email, groups) {
 	return true
 }
 
-module.exports = {
-	inviteUser: async function (event) {
+export async function handler(event) {
 		return inviteUser(event.name, event.email, event.groups)
-	},
 }
+
+export default handler

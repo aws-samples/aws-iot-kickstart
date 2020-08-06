@@ -1,8 +1,8 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
+import * as moment from 'moment'
 
 const iot = new AWS.Iot()
 const documentClient = new AWS.DynamoDB.DocumentClient()
-const moment = require('moment')
 
 const lib = 'createCertificate'
 
@@ -11,7 +11,7 @@ const lib = 'createCertificate'
 // - .csr: CSR in pem format
 // - .thingId: Device Thind Id
 
-module.exports = function (event, context) {
+export function createCertificate(event, context) {
 	const tag = `${lib}(${event.thingId}):`
 
 	console.log(tag, 'Start: Request cert creation from CSR:', event.csr)
@@ -168,3 +168,5 @@ module.exports = function (event, context) {
 	//         throw err;
 	//     });
 }
+
+export default createCertificate

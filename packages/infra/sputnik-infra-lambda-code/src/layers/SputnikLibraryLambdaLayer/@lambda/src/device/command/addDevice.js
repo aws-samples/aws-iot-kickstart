@@ -1,11 +1,11 @@
-const AWS = require('aws-sdk')
+import { Iot, DynamoDB } from 'aws-sdk'
+import { property, isString, omit } from 'underscore'
+import * as moment from 'moment'
+import UsageMetrics from '../../metrics/metrics.common'
+import * as shortid from 'shortid'
 
-const iot = new AWS.Iot()
-const documentClient = new AWS.DynamoDB.DocumentClient()
-const { property, isString, omit } = require('underscore')
-const moment = require('moment')
-const UsageMetrics = require('../../metrics/metrics.common')
-const shortid = require('shortid')
+const iot = new Iot()
+const documentClient = new DynamoDB.DocumentClient()
 
 const lib = 'addDevice'
 
@@ -21,7 +21,7 @@ function asObject (value, defaultValue = {}) {
 	return value || defaultValue
 }
 
-module.exports = function (event, context) {
+export function addDevice (event, context) {
 	const usageMetrics = new UsageMetrics()
 
 	if (event.thingName === undefined) {
@@ -116,3 +116,5 @@ module.exports = function (event, context) {
 				})
 		})
 }
+
+export default addDevice

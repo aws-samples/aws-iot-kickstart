@@ -1,8 +1,8 @@
-const AWS = require('aws-sdk')
+import { CognitoIdentityServiceProvider } from 'aws-sdk'
 
-const cognito = new AWS.CognitoIdentityServiceProvider()
+const cognito = new CognitoIdentityServiceProvider()
 
-async function addTenant (name) {
+export async function addTenant (name) {
 	let params = {
 		UserPoolId: process.env.USER_POOL_ID,
 		RoleArn: process.env.TENANT_ROLE_ARN,
@@ -26,8 +26,8 @@ async function addTenant (name) {
 	}
 }
 
-module.exports = {
-	addTenant: async function (event) {
+export async function handler(event) {
 		return addTenant(event.name)
-	},
 }
+
+export default handler

@@ -4,6 +4,7 @@
     "description": "The systems microservice for the sputnik",
     "main": "index.js",
     "version": "0.0.1",
+
     "scripts": {
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },

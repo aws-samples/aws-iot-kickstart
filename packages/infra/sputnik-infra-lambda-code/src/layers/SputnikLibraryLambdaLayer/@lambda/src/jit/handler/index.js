@@ -1,14 +1,14 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
+import * as moment from 'moment'
+import * as shortid from 'shortid'
+import { addDevice } from '../../device/command/addDevice'
+import { addDeployment } from '../../deployment/command/add-deployment'
 
 const documentClient = new AWS.DynamoDB.DocumentClient()
 const iot = new AWS.Iot()
-const moment = require('moment')
-const shortid = require('shortid')
 
 const lib = 'justInTimeOnBoarding'
 
-const addDevice = require('../../device/command/addDevice')
-const { addDeployment } = require('../../deployment/command/add-deployment')
 
 export function handler (event, context, callback) {
 	const tag = `${lib}(${event.clientId}):`

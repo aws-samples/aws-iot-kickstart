@@ -10,8 +10,8 @@
   "private": true,
   "description": "Monorepo for project deathstar",
   "scripts": {
-    "build": "yarn build:lambdas && yarn build:packages",
-    "build:packages": "lerna run 'build' --stream --no-private",
+    "build": "yarn build:packages && yarn build:lambdas",
+    "build:packages": "lerna run 'build' --stream --scope @deathstar/*",
     "build:lambdas": "lerna run --stream 'build' --scope @lambda/*",
     "build:angular": "lerna run --stream 'build' --scope sputnik-ui-angular",
     "watch": "lerna run --parallel 'watch' --no-private",

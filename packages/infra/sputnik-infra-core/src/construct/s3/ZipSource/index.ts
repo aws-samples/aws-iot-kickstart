@@ -52,7 +52,7 @@ export class ZipSource extends Construct {
 
 	readonly outputFile: string
 
-	readonly isInline: false
+	readonly isInline: boolean = false
 
 	readonly _assetSource: ISource
 

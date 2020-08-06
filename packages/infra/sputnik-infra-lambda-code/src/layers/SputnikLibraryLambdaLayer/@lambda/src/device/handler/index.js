@@ -1,4 +1,4 @@
-const commands = require('../command')
+import { commands } from '../command'
 
 export function handler (event, context, callback) {
 	console.log('Event:', JSON.stringify(event, null, 2))
@@ -26,10 +26,12 @@ export function handler (event, context, callback) {
 			break
 		default:
 			callback('Unknown cmd, unable to resolve for arguments: ' + event, null)
-			break
+
+			return
 	}
 
 	if (promise) {
+		// @ts-ignore
 		promise(event, context).then(result => {
 			callback(null, result)
 		}).catch(err => {

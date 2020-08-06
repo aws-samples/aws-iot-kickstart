@@ -1,10 +1,9 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
+import * as _ from 'underscore'
 
 const iot = new AWS.Iot()
 const gg = new AWS.Greengrass()
 const documentClient = new AWS.DynamoDB.DocumentClient()
-const _ = require('underscore')
-const moment = require('moment')
 
 const lib = 'deleteDevice'
 
@@ -12,7 +11,7 @@ const lib = 'deleteDevice'
 // Inputs:
 // .thingId: device identified by thingId to delete
 
-module.exports = function (event, context) {
+export function deleteDevice (event, context) {
 	const tag = `${lib}(${event.thingId}):`
 
 	return documentClient
@@ -191,3 +190,5 @@ module.exports = function (event, context) {
 			return event.device
 		})
 }
+
+export default deleteDevice

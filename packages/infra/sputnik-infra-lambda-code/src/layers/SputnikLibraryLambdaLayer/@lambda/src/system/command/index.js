@@ -1,5 +1,11 @@
-module.exports = {
-	deleteSystem: require('./delete-system'),
-	getSystemStats: require('./get-system-stats'),
-	refreshSystem: require('./refresh-system'),
+import { deleteSystem } from './delete-system'
+import { getSystemStats } from './get-system-stats'
+import { refreshSystem } from './refresh-system'
+
+export const commands = {
+	deleteSystem,
+	getSystemStats,
+	refreshSystem,
 }
+
+export default commands

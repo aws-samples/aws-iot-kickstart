@@ -1,11 +1,11 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
+import * as _ from 'underscore'
 
 const documentClient = new AWS.DynamoDB.DocumentClient()
-const _ = require('underscore')
 
 const lib = 'getDeviceStats'
 
-function getDeviceStatsRecursive (lastEvalKey) {
+export function getDeviceStatsRecursive (lastEvalKey) {
 	let params = {
 		TableName: process.env.TABLE_DEVICES,
 		Limit: 75,
@@ -46,6 +46,8 @@ function getDeviceStatsRecursive (lastEvalKey) {
 	})
 }
 
-module.exports = function (event, context) {
+export function getDeviceStats (event, context) {
 	return getDeviceStatsRecursive()
 }
+
+export default getDeviceStats

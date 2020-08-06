@@ -1,6 +1,11 @@
-import { Construct } from '@aws-cdk/core'
+import { Construct, Stack } from '@aws-cdk/core'
 import { Code, AssetCode } from '@aws-cdk/aws-lambda'
-import { CompiledLambdaFunction, CompiledLambdaProps, LambdaProps, LambdaEnvironment, lambdaPath } from '../../CompiledLambdaFunction'
+import { IRole } from '@aws-cdk/aws-iam'
+import { ITable } from '@aws-cdk/aws-dynamodb'
+import { IBucket } from '@aws-cdk/aws-s3'
+import { CfnPolicy as CfnIotPolicy } from '@aws-cdk/aws-iot'
+import { namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
+import { CompiledLambdaFunction, CompiledLambdaProps, ExposedLambdaProps, LambdaEnvironment, lambdaPath } from '../../CompiledLambdaFunction'
 
 interface Environment extends LambdaEnvironment {
 	TABLE_DEVICES: string
@@ -15,21 +20,56 @@ interface Environment extends LambdaEnvironment {
 	IOT_ENDPOINT: string
 }
 
+interface Dependencies {
+	readonly deviceTable: ITable
+	readonly deviceTypeTable: ITable
+	readonly deviceBlueprintTable: ITable
+	readonly deploymentTable: ITable
+	readonly settingTable: ITable
+	readonly greengrassGroupsIAMRole: IRole
+	readonly iotPolicyForGreengrassCores: CfnIotPolicy
+	readonly dataBucket: IBucket
+	readonly iotEndpoint: string
+}
+
 type TCompiledProps = CompiledLambdaProps<Environment>
-type TLambdaProps = LambdaProps<Environment>
+type TLambdaProps = ExposedLambdaProps<Dependencies>
+
+// TODO: refactor sputnik-infra/src/stack/nested/existing/SputnikStack/cf/lambda-services.yml to
+// be full cdk and use this, currently just gets the asset path
 
 export class DeploymentsServiceLambda extends CompiledLambdaFunction<Environment> {
 	static get codeAsset (): AssetCode {
 		return Code.fromAsset(lambdaPath('deployments-service'))
 	}
 
-	constructor (scope: Construct, id: string, props: TLambdaProps) {
-		super(scope, id, Object.assign({}, props, {
-			uuid: 'b7fd16c2-4397-4b19-8626-196fb37e5770',
-			// TODO: name this namespace, but that lives in infra which reference this package so would be circular dep
-			functionName: 'Sputnik_DeploymentsServices',
+	// TODO: private until refactored
+	private constructor (scope: Construct, id: string, props: TLambdaProps) {
+		const {
+			deviceTable, deviceTypeTable, deviceBlueprintTable, deploymentTable, settingTable,
+			greengrassGroupsIAMRole, iotPolicyForGreengrassCores,
+			dataBucket, iotEndpoint,
+		} = props.dependencies
+
+		const compiledProps: TCompiledProps = {
+			functionName: namespaced(scope, 'DeploymentsServices'),
 			description: 'Sputnik Deployments microservice',
 			code: DeploymentsServiceLambda.codeAsset,
-		}) as unknown as TCompiledProps)
+			environment: {
+				TABLE_DEVICES: deviceTable.tableName,
+				TABLE_DEVICE_TYPES: deviceTypeTable.tableName,
+				TABLE_DEVICE_BLUEPRINTS: deviceBlueprintTable.tableName,
+				TABLE_DEPLOYMENTS: deploymentTable.tableName,
+				TABLE_SETTINGS: settingTable.tableName,
+				AWS_ACCOUNT: Stack.of(scope).account,
+				IAM_ROLE_ARN_FOR_GREENGRASS_GROUPS: greengrassGroupsIAMRole.roleArn,
+				IOT_POLICY_GREENGRASS_CORE: iotPolicyForGreengrassCores.ref,
+				DATA_BUCKET: dataBucket.bucketName,
+				IOT_ENDPOINT: iotEndpoint,
+			},
+			// TODO: add initial policy from cf yaml
+		}
+
+		super(scope, id, compiledProps)
 	}
 }

@@ -1,14 +1,13 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
+import * as _ from 'underscore'
+import * as moment from 'moment'
 
 const iot = new AWS.Iot()
 const documentClient = new AWS.DynamoDB.DocumentClient()
-const _ = require('underscore')
-const moment = require('moment')
-const shortid = require('shortid')
 
 const lib = 'refreshSystem'
 
-function processDeviceList (deviceListSpec, deviceList) {
+export function processDeviceList (deviceListSpec, deviceList) {
 	const tag = `${lib}(processDeviceList):`
 
 	function deviceByRef (ref) {
@@ -97,7 +96,7 @@ function processDeviceList (deviceListSpec, deviceList) {
 	}, Promise.resolve([]).then(arrayOfResults => arrayOfResults))
 }
 
-module.exports = function (event, context) {
+export function refreshSystem (event, context) {
 	const tag = `${lib}:`
 	// Event:
 	// {
@@ -180,3 +179,5 @@ module.exports = function (event, context) {
 			return processDeviceList(_systemBlueprint.spec.Devices, devices)
 		})
 }
+
+export default refreshSystem

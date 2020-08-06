@@ -1,7 +1,6 @@
+import * as AWS from 'aws-sdk'
 import * as api from '../api'
 import config from '../config'
-
-const AWS = require('aws-sdk')
 
 export async function handler (event) {
 	console.log('Recieved Event:', JSON.stringify(event, null, 2))
@@ -79,9 +78,11 @@ export async function handleRecord (record) {
 			default:
 				console.log(`Unsupported event name '${eventName}'`)
 		}
-	} catch (err) {
+	} catch (error) {
 		console.error('Unexpected exception')
-		console.error(err)
+		console.error(error)
+
+		throw error
 	}
 	console.log(`End processing event: ${eventID}`)
 }

@@ -1,4 +1,4 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
 
 const iot = new AWS.Iot()
 // const dynamodb = new AWS.DynamoDB()

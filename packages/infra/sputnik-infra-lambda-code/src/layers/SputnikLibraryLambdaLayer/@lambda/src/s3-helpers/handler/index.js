@@ -1,11 +1,7 @@
-'use strict'
-
-console.log('Loading function')
-
-const AWS = require('aws-sdk')
-const https = require('https')
-const url = require('url')
-const S3Helper = require('../S3Helper')
+import * as AWS from 'aws-sdk'
+import * as https from 'https'
+import * as url from 'url'
+import { S3Helper } from '../S3Helper'
 
 /**
  * Request handler.

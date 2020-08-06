@@ -1,4 +1,4 @@
-import { Construct, Stack, ISynthesisSession, StackProps, NestedStack, NestedStackProps } from '@aws-cdk/core'
+import { Construct, Stack, ISynthesisSession, StackProps, NestedStack, NestedStackProps, Duration } from '@aws-cdk/core'
 import { ApiStack } from '../../nested/api/ApiStack'
 import { DataProcessingStack } from '../../nested/data/DataProcessingStack'
 import { DeviceManagementStack } from '../../nested/device/management/DeviceManagementStack'
@@ -6,9 +6,9 @@ import { SputnikStack } from '../../nested/existing/SputnikStack'
 import { CognitoStack } from '../../nested/identity/CognitoStack'
 import { IPersistent } from '../PersistentStack'
 import { UserManagementStack } from '../../nested/identity/UserManagementStack'
-import { setNamespace } from '../../../utils/cdk-identity-utils'
-import { validateStackParameterLimit } from '../../../utils/stack-utils'
-import { getAppContext } from '../../../context'
+import { setNamespace } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
+import { validateStackParameterLimit } from '@deathstar/sputnik-infra-core/lib/utils/stack-utils'
+import { getAppContext } from '@deathstar/sputnik-infra-core/lib/context'
 
 export interface IApp {
 	readonly persistent: IPersistent
@@ -17,7 +17,7 @@ export interface IApp {
 
 	readonly apiStack: ApiStack
 
-	readonly sputnikStack: SputnikStack
+	readonly sputnikStack?: SputnikStack
 
 	readonly userManagementStack: UserManagementStack
 
@@ -95,6 +95,7 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 		appFullName,
 		appShortName,
 		sendAnonymousUsageData: false,
+		timeout: Duration.minutes(15),
 	})
 
 	return {

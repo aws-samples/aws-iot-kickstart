@@ -1,6 +1,12 @@
 import { Construct } from '@aws-cdk/core'
 import { Code, AssetCode } from '@aws-cdk/aws-lambda'
-import { CompiledLambdaFunction, CompiledLambdaProps, LambdaProps, LambdaEnvironment, lambdaPath } from '../../CompiledLambdaFunction'
+import { IRole } from '@aws-cdk/aws-iam'
+import { ITable } from '@aws-cdk/aws-dynamodb'
+import { namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
+import { CompiledLambdaFunction, CompiledLambdaProps, ExposedLambdaProps, LambdaEnvironment, lambdaPath } from '../../CompiledLambdaFunction'
+
+// TODO: refactor sputnik-infra/src/stack/nested/existing/SputnikStack/cf/lambda-helpers.yml to use this completely
+// currently just gets code asset path
 
 interface Environment extends LambdaEnvironment {
 	TABLE_DEVICES: string
@@ -12,21 +18,44 @@ interface Environment extends LambdaEnvironment {
 	GREENGRASS_SERVICE_ROLE_ARN: string
 }
 
+interface Dependencies {
+	readonly deviceTable: ITable
+	readonly deviceTypeTable: ITable
+	readonly deviceBlueprintTable: ITable
+	readonly systemTable: ITable
+	readonly systemBlueprintTable: ITable
+	readonly settingTable: ITable
+	readonly greengrassServiceRole: IRole
+}
+
 type TCompiledProps = CompiledLambdaProps<Environment>
-type TLambdaProps = LambdaProps<Environment>
+type TLambdaProps = ExposedLambdaProps<Dependencies>
 
 export class HelperUtilsLambda extends CompiledLambdaFunction<Environment> {
 	static get codeAsset (): AssetCode {
 		return Code.fromAsset(lambdaPath('helper-utils'))
 	}
 
-	constructor (scope: Construct, id: string, props: TLambdaProps) {
-		super(scope, id, Object.assign({}, props, {
-			uuid: 'c4a605c8-cfec-11ea-87d0-0242ac130003',
-			// TODO: name this namespace, but that lives in infra which reference this package so would be circular dep
-			functionName: 'Sputnik_HelperUtils',
+	// TODO: private until refactored
+	private constructor (scope: Construct, id: string, props: TLambdaProps) {
+		const { deviceTable, deviceTypeTable, deviceBlueprintTable, settingTable, systemBlueprintTable, systemTable, greengrassServiceRole } = props.dependencies
+
+		const compiledProps: TCompiledProps = {
+			functionName: namespaced(scope, 'HelperUtils'),
 			description: 'Sputnik Helper Utils microservice',
 			code: HelperUtilsLambda.codeAsset,
-		}) as unknown as TCompiledProps)
+			environment: {
+				TABLE_DEVICES: deviceTable.tableName,
+				TABLE_DEVICE_BLUEPRINTS: deviceBlueprintTable.tableName,
+				TABLE_DEVICE_TYPES: deviceTypeTable.tableName,
+				TABLE_SYSTEMS: systemTable.tableName,
+				TABLE_SYSTEM_BLUEPRINTS: systemBlueprintTable.tableName,
+				TABLE_SETTINGS: settingTable.tableName,
+				GREENGRASS_SERVICE_ROLE_ARN: greengrassServiceRole.roleArn,
+			},
+			// TODO: add initial policy from cf yaml
+		}
+
+		super(scope, id, compiledProps)
 	}
 }

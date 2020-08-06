@@ -1,11 +1,11 @@
-const { setUserGroups } = require('../utils')
+import { setUserGroups } from '../utils'
 
 async function updateUser (username, groups) {
 	return setUserGroups(process.env.USER_POOL_ID, username, groups)
 }
 
-module.exports = {
-	updateUser: async function (event, context) {
+export async function handler(event) {
 		return updateUser(event.username, event.groups)
-	},
 }
+
+export default handler

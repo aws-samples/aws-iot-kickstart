@@ -26,9 +26,10 @@
     ]
   },
   "scripts": {
-    "ng": "ng",
-    "dev": "ng serve",
-    "build": "ng build --prod",
+    "ng": "export NODE_OPTIONS=\"--max-old-space-size=6144\" && ng",
+    "dev": "yarn ng serve",
+    "prebuild": "yarn clean",
+    "build": "yarn ng build --prod",
     "clean": "rm -rf dist",
     "clean:deep": "yarn clean && rm -rf node_modules",
     "test": "jest"

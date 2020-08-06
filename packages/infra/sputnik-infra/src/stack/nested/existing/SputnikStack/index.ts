@@ -11,8 +11,8 @@ import {
 	NestedStack,
 	NestedStackProps,
 } from '@aws-cdk/core'
-import { ExtendableGraphQLApi } from '../../../../construct/api/graphql/ExtendableGraphQLApi'
-import { uniqueIdHash, namespaced } from '../../../../utils/cdk-identity-utils'
+import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra-core/lib/construct/api/graphql/ExtendableGraphQLApi'
+import { uniqueIdHash, namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 import { IPersistent } from '../../../../stack/root/PersistentStack'
 import {
 	DeploymentsServiceLambda,
@@ -21,6 +21,8 @@ import {
 	JITOnboardingServiceLambda,
 	S3HelperLambda,
 	HelperUtilsLambda,
+	NpmDependenciesLambdaLayer,
+	SputnikLibraryLambdaLayer,
 } from '@deathstar/sputnik-infra-lambda-code/dist'
 import { DeviceManagementStack } from '../../device/management/DeviceManagementStack'
 import { CognitoStack } from '../../identity/CognitoStack'
@@ -135,6 +137,8 @@ export class SputnikStack extends NestedStack {
 			{
 				templateFile: getTemplateFile('lambda-helpers'),
 				parameters: {
+					npmDependenciesLayerArn: NpmDependenciesLambdaLayer.getLayer(this).layerVersionArn,
+          sputnikLibLayerArn: SputnikLibraryLambdaLayer.getLayer(this).layerVersionArn,
 					customResourceS3Helper: S3HelperLambda.codeAsset,
 					HelperUtilsLambdaFunction: HelperUtilsLambda.codeAsset,
 					destBucketArn: persistent.websiteStack.websiteBucketArn,
@@ -179,6 +183,8 @@ export class SputnikStack extends NestedStack {
 			{
 				templateFile: getTemplateFile('lambda-services'),
 				parameters: {
+					npmDependenciesLayerArn: NpmDependenciesLambdaLayer.getLayer(this).layerVersionArn,
+          sputnikLibLayerArn: SputnikLibraryLambdaLayer.getLayer(this).layerVersionArn,
 					tenantRoleArn: cognitoStack.tenantRole.roleArn,
 					deploymentsServiceLambdaFunction: DeploymentsServiceLambda.codeAsset,
 					settingsServiceLambdaFunction: SettingsServiceLambda.codeAsset,

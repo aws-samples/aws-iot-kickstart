@@ -1,7 +1,7 @@
 import { Effect, ManagedPolicy, PolicyStatement } from '@aws-cdk/aws-iam'
 import { Bucket, HttpMethods } from '@aws-cdk/aws-s3'
 import { NestedStack, NestedStackProps, RemovalPolicy, Stack, Construct } from '@aws-cdk/core'
-import { namespaced, namespacedBucket } from '../../../../utils/cdk-identity-utils'
+import { namespaced, namespacedBucket } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 
 export type DataBucketPersistentStackProps = NestedStackProps
 

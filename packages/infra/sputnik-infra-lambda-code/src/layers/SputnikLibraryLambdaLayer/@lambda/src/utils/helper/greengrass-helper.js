@@ -1,14 +1,12 @@
-'use strict'
-
-let AWS = require('aws-sdk')
-const fs = require('fs')
-const moment = require('moment')
+import * as AWS from 'aws-sdk'
+import * as fs from 'fs'
+import * as moment from 'moment'
 
 /**
  *
  * @class greengrassHelper
  */
-class greengrassHelper {
+export class greengrassHelper {
 	/**
      * @class greengrassHelper
      * @constructor
@@ -31,4 +29,4 @@ class greengrassHelper {
 	}
 }
 
-module.exports = greengrassHelper
+export default greengrassHelper

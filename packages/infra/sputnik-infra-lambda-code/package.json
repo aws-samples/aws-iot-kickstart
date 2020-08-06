@@ -29,6 +29,8 @@
   },
   "dependencies": {
     "@aws-cdk/aws-lambda": "1.51.0",
-    "@aws-cdk/core": "1.51.0"
+    "@aws-cdk/core": "1.51.0",
+    "@deathstar/sputnik-core": "0.0.0-alpha.1",
+    "@deathstar/sputnik-infra-core": "0.0.0-alpha.0"
   }
 }

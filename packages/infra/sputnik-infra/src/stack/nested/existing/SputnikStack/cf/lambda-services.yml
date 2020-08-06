@@ -2,6 +2,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: 'sputnik - Lambda'
 
 Parameters:
+    npmDependenciesLayerArn:
+        Type: String
+    sputnikLibLayerArn:
+        Type: String
     tenantRoleArn:
         Type: String
         Description: Role given to new tenant groups
@@ -134,6 +138,9 @@ Resources:
             Role: !GetAtt deploymentsServiceLambdaFunctionIAMRole.Arn
             Timeout: 60
             MemorySize: 256
+            Layers:
+                - !Ref npmDependenciesLayerArn
+                - !Ref sputnikLibLayerArn
             Environment:
                 Variables:
                     TABLE_DEVICES: !Ref devicesTable
@@ -211,6 +218,9 @@ Resources:
             Role: !GetAtt settingsServiceLambdaFunctionIAMRole.Arn
             Timeout: 60
             MemorySize: 256
+            Layers:
+                - !Ref npmDependenciesLayerArn
+                - !Ref sputnikLibLayerArn
             Environment:
                 Variables:
                     IOT_JUST_IN_TIME_ON_BOARDING_TOPIC_RULE: !Ref justInTimeOnBoardingIoTTopicRule
@@ -286,6 +296,9 @@ Resources:
             Role: !GetAtt systemsServiceLambdaFunctionIAMRole.Arn
             Timeout: 60
             MemorySize: 256
+            Layers:
+                - !Ref npmDependenciesLayerArn
+                - !Ref sputnikLibLayerArn
             Environment:
                 Variables:
                     TABLE_DEVICES: !Ref devicesTable
@@ -392,6 +405,9 @@ Resources:
             Role: !GetAtt justInTimeOnBoardingServiceLambdaFunctionIAMRole.Arn
             Timeout: 60
             MemorySize: 256
+            Layers:
+                - !Ref npmDependenciesLayerArn
+                - !Ref sputnikLibLayerArn
             Environment:
                 Variables:
                     TABLE_DEVICES: !Ref devicesTable

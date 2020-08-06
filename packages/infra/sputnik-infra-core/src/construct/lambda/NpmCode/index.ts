@@ -74,7 +74,7 @@ export class NpmCode extends Construct {
 
 	readonly path: string
 
-	readonly isInline: false
+	readonly isInline: boolean = false
 
 	readonly assetCode: AssetCode
 

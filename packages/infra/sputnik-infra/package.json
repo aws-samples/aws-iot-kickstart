@@ -10,16 +10,16 @@
     "Greg Varga <contact@gergelyvarga.com>",
     "Mirash Gjolaj <mirash.gjolaj@gmail.com>"
   ],
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "files": [
-    "dist"
+    "lib"
   ],
   "scripts": {
-    "clean": "tsc --build --clean && rm -rf dist",
+    "clean": "tsc --build --clean && rm -rf lib",
     "prebuild": "yarn clean && yarn copy-files",
     "build": "tsc --project tsconfig.json",
-    "copy-files": "rsync -avm --exclude='*.ts' src/ dist",
+    "copy-files": "rsync -avm --exclude='*.ts' src/ lib",
     "prewatch": "yarn clean && yarn copy-files",
     "watch": "yarn build --watch",
     "test": "jest"
@@ -35,10 +35,11 @@
     "jest": "^25.5.4",
     "ts-jest": "^25",
     "ts-node": "^8.1.0",
-    "typescript": "~3.7.2"
+    "typescript": "^3.9.5"
   },
   "dependencies": {
     "@deathstar/sputnik-core": "^0.0.0-alpha.1",
+    "@deathstar/sputnik-infra-core": "^0.0.0-alpha.0",
     "@aws-cdk/app-delivery": "1.51.0",
     "@aws-cdk/assets": "1.51.0",
     "@aws-cdk/aws-apigateway": "1.51.0",

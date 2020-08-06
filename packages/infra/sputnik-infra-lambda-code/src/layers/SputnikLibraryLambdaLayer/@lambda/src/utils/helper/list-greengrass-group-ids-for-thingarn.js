@@ -1,8 +1,8 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
+import * as _ from 'underscore'
 
 const iot = new AWS.Iot()
 const gg = new AWS.Greengrass()
-const _ = require('underscore')
 
 function _recursiveListGroups (nextToken) {
 	return gg.listGroups({
@@ -21,7 +21,7 @@ function _recursiveListGroups (nextToken) {
 	})
 }
 
-module.exports = function listGreengrassGroupIdsForThingArn (thingArn) {
+export function listGreengrassGroupIdsForThingArn (thingArn) {
 	const tag = 'listGreengrassGroupsForThingArn: ' + thingArn + ': '
 
 	return _recursiveListGroups().then(groups => {
@@ -63,3 +63,5 @@ module.exports = function listGreengrassGroupIdsForThingArn (thingArn) {
 		})
 	})
 }
+
+export default listGreengrassGroupIdsForThingArn

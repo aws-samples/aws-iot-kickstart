@@ -1,8 +1,8 @@
-const AWS = require('aws-sdk')
+import { CognitoIdentityServiceProvider } from 'aws-sdk'
 
-const cognito = new AWS.CognitoIdentityServiceProvider()
+const cognito = new CognitoIdentityServiceProvider()
 
-async function disableUser (username) {
+export async function disableUser (username) {
 	const params = {
 		UserPoolId: process.env.USER_POOL_ID,
 		Username: username,
@@ -11,8 +11,8 @@ async function disableUser (username) {
 	return cognito.adminDisableUser(params).promise()
 }
 
-module.exports = {
-	disableUser: async function (event, context) {
+export async function handler(event) {
 		return disableUser(event.username)
-	},
 }
+
+export default handler

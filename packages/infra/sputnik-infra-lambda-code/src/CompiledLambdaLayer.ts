@@ -18,8 +18,8 @@ export class CompiledLambdaLayer extends LayerVersion {
 		// Set defaults
 		props = Object.assign({
 			compatibleRuntimes: [
-				// We use "import/export" so require NodeJS 12+
-				Runtime.NODEJS_12_X
+				Runtime.NODEJS_10_X,
+				Runtime.NODEJS_12_X,
 			],
 		}, props)
 		super(scope, id, props as unknown as LayerVersionProps)

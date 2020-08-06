@@ -1,20 +1,15 @@
 import { Table } from '@aws-cdk/aws-dynamodb'
-import * as iam from '@aws-cdk/aws-iam'
-import * as lambda from '@aws-cdk/aws-lambda'
 import { DynamoEventSource, SqsDlq } from '@aws-cdk/aws-lambda-event-sources'
 import {
 	Construct,
 	NestedStack,
 	NestedStackProps,
-	Duration,
 } from '@aws-cdk/core'
 import { CfnPolicy as IotCfnPolicy } from '@aws-cdk/aws-iot'
 import { StartingPosition } from '@aws-cdk/aws-lambda'
 import { Queue } from '@aws-cdk/aws-sqs'
-import { DEFAULT_NAMESPACE } from '@deathstar/sputnik-core'
 import { DeviceNamespaceSyncLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
-import { ExtendableGraphQLApi } from '../../../../../construct/api/graphql/ExtendableGraphQLApi'
-import { namespaced } from '../../../../../utils/cdk-identity-utils'
+import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra-core/lib/construct/api/graphql/ExtendableGraphQLApi'
 import { DeviceServices } from './DeviceServices'
 
 export interface DeviceManagementStackProps extends NestedStackProps {
@@ -45,24 +40,9 @@ export class DeviceManagementStack extends NestedStack {
 			scope,
 			'DeviceNamespaceSync',
 			{
-				initialPolicy: [
-					new iam.PolicyStatement({
-						actions: ['appsync:GraphQL'],
-						resources: [
-							graphQLApi.arn + '/types/Mutation/fields/addDeployment',
-						],
-						effect: iam.Effect.ALLOW,
-					}),
-					new iam.PolicyStatement({
-						actions: ['iot:Connect', 'iot:Publish', 'iot:DescribeEndpoint'],
-						resources: ['*'],
-						effect: iam.Effect.ALLOW,
-					}),
-				],
-				environment: {
-					GRAPHQL_ENDPOINT: graphQLApi.graphQlUrl,
-					DEFAULT_NAMESPACE,
-				},
+				dependencies: {
+					graphQLApi,
+				}
 			},
 		)
 

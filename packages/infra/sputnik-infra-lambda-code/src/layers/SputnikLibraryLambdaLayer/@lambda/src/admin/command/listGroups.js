@@ -1,8 +1,8 @@
-const AWS = require('aws-sdk')
+import { CognitoIdentityServiceProvider } from 'aws-sdk'
 
-const cognito = new AWS.CognitoIdentityServiceProvider()
+const cognito = new CognitoIdentityServiceProvider()
 
-async function listGroups (limit, nextToken) {
+export async function listGroups (limit, nextToken) {
 	let params = {
 		UserPoolId: process.env.USER_POOL_ID,
 	}
@@ -18,8 +18,8 @@ async function listGroups (limit, nextToken) {
 	return cognito.listGroups(params).promise()
 }
 
-module.exports = {
-	listGroups: async function (event) {
+export async function handler(event) {
 		return listGroups(event.limit, event.nextToken)
-	},
 }
+
+export default handler

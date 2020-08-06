@@ -1,25 +1,10 @@
 /* eslint-disable no-template-curly-in-string */
-import * as path from 'path'
 import { Table } from '@aws-cdk/aws-dynamodb'
-import {
-	Effect,
-	PolicyDocument,
-	PolicyStatement,
-	Role,
-	ServicePrincipal,
-} from '@aws-cdk/aws-iam'
 import { CfnPolicy as IotCfnPolicy } from '@aws-cdk/aws-iot'
-import { Function as LambdaFunction, Runtime } from '@aws-cdk/aws-lambda'
-import { Construct, Duration, Stack } from '@aws-cdk/core'
-import { ServicePrincipals } from 'cdk-constants'
-import {
-	DynamoDB as DynamoDBActions,
-	Logs as LogsActions,
-	IoT as IoTActions,
-	Greengrass as GreengrassActions,
-} from 'cdk-iam-actions/lib/actions'
+import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
+import { Construct } from '@aws-cdk/core'
 import { DEFAULT_NAMESPACE } from '@deathstar/sputnik-core'
-import { ExtendableGraphQLApi } from '../../../../../../construct/api/graphql/ExtendableGraphQLApi'
+import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra-core/lib/construct/api/graphql/ExtendableGraphQLApi'
 import {
 	MappingTemplate,
 	DynamoDbDataSource,
@@ -42,8 +27,6 @@ export interface DeviceServicesProps {
 
 export class DeviceServices extends Construct {
 	readonly lambdaFunction: LambdaFunction;
-
-	readonly lambdaRole: Role;
 
 	readonly deviceTableDataSource: DynamoDbDataSource;
 
@@ -69,95 +52,13 @@ export class DeviceServices extends Construct {
 		 *** LAMBDA
 		 ***********************************************************************/
 
-		const lambdaRole = new Role(this, 'LambdaRole', {
-			assumedBy: new ServicePrincipal(ServicePrincipals.LAMBDA),
-			inlinePolicies: {
-				cloudwatchLogAccess: new PolicyDocument({
-					statements: [
-						new PolicyStatement({
-							effect: Effect.ALLOW,
-							actions: [
-								LogsActions.CREATE_LOG_GROUP,
-								LogsActions.CREATE_LOG_STREAM,
-								LogsActions.PUT_LOG_EVENTS,
-							],
-							resources: [
-								Stack.of(this).formatArn({
-									service: 'logs',
-									resource: 'log-group:*',
-								}),
-							],
-						}),
-					],
-				}),
-				devicesServiceIAMPolicy: new PolicyDocument({
-					statements: [
-						new PolicyStatement({
-							effect: Effect.ALLOW,
-							actions: [
-								DynamoDBActions.BATCH_GET_ITEM,
-								DynamoDBActions.BATCH_WRITE_ITEM,
-								DynamoDBActions.DELETE_ITEM,
-								DynamoDBActions.GET_ITEM,
-								DynamoDBActions.PUT_ITEM,
-								DynamoDBActions.QUERY,
-								DynamoDBActions.SCAN,
-								DynamoDBActions.UPDATE_ITEM,
-							],
-							resources: [
-								Stack.of(this).formatArn({
-									service: 'dynamodb',
-									resource: 'table',
-									resourceName: settingTable.tableName,
-								}),
-								Stack.of(this).formatArn({
-									service: 'dynamodb',
-									resource: 'table',
-									resourceName: deviceTable.tableName,
-								}),
-								Stack.of(this).formatArn({
-									service: 'dynamodb',
-									resource: 'table',
-									resourceName: deviceTypeTable.tableName,
-								}),
-							],
-						}),
-						new PolicyStatement({
-							effect: Effect.ALLOW,
-							actions: [
-								IoTActions.CREATE_THING,
-								IoTActions.DELETE_THING,
-								IoTActions.DESCRIBE_THING,
-								IoTActions.CREATE_CERTIFICATE_FROM_CSR,
-								IoTActions.ATTACH_THING_PRINCIPAL,
-								IoTActions.ATTACH_PRINCIPAL_POLICY,
-								IoTActions.LIST_THING_PRINCIPALS,
-								IoTActions.LIST_PRINCIPAL_POLICIES,
-								IoTActions.DETACH_PRINCIPAL_POLICY,
-								IoTActions.UPDATE_CERTIFICATE,
-								IoTActions.DELETE_CERTIFICATE,
-								'iot:*', // TODO: [SECURITY] Remove once verify the above list is adequate
-								GreengrassActions.RESET_DEPLOYMENTS,
-								GreengrassActions.DELETE_GROUP,
-								GreengrassActions.CREATE_GROUP,
-								'greengrass:*', // TODO: [SECURITY] Remove once verify the above list is adequate
-							],
-							resources: ['*'],
-						}),
-					],
-				}),
-			},
-		})
-
-		const lambdaFunction = new DevicesServiceLambda(scope, 'LambdaFunction', {
-			role: lambdaRole,
-			environment: {
-				DEFAULT_NAMESPACE,
-				TABLE_DEVICES: deviceTable.tableName,
-				TABLE_DEVICE_TYPES: deviceTypeTable.tableName,
-				TABLE_SETTINGS: settingTable.tableName,
-				IOT_DEFAULT_CONNECT_POLICY: iotConnectPolicy.policyName as string,
-			},
+		const lambdaFunction = new DevicesServiceLambda(this, 'LambdaFunction', {
+			dependencies: {
+				settingTable,
+				deviceTable,
+				deviceTypeTable,
+				iotConnectPolicy,
+			}
 		})
 
 		/***********************************************************************
@@ -391,7 +292,6 @@ export class DeviceServices extends Construct {
 		//	***********************************************************************/
 
 		Object.assign(this, {
-			lambdaRole,
 			lambdaFunction,
 			deviceTableDataSource,
 			deviceLambdaDataSource,

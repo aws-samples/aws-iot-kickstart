@@ -1,8 +1,8 @@
-const AWS = require('aws-sdk')
+import { CognitoIdentityServiceProvider } from 'aws-sdk'
 
-const cognito = new AWS.CognitoIdentityServiceProvider()
+const cognito = new CognitoIdentityServiceProvider()
 
-async function deleteUser (username) {
+export async function deleteUser (username) {
 	const params = {
 		UserPoolId: process.env.USER_POOL_ID,
 		Username: username,
@@ -13,8 +13,8 @@ async function deleteUser (username) {
 	})
 }
 
-module.exports = {
-	deleteUser: async function handler (event) {
+export async function handler(event) {
 		return deleteUser(event.username)
-	},
 }
+
+export default handler

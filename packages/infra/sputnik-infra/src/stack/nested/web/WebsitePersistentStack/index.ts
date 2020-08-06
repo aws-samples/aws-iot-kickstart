@@ -4,8 +4,8 @@ import { CanonicalUserPrincipal, Effect, PolicyStatement, Role, ManagedPolicy, S
 import { Bucket } from '@aws-cdk/aws-s3'
 import { Construct, Duration, Fn, NestedStack, NestedStackProps } from '@aws-cdk/core'
 import { BucketDeployment, Source, ISource } from '@aws-cdk/aws-s3-deployment'
-import { namespacedBucket, namespaced } from '../../../../utils/cdk-identity-utils'
-import { bundleAsset } from '../../../../utils/asset-utils'
+import { namespacedBucket, namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
+import { bundleAsset } from '@deathstar/sputnik-infra-core/lib/utils/asset-utils'
 import { ServicePrincipals } from 'cdk-constants'
 import { KMS as KMSActions } from 'cdk-iam-actions/lib/actions'
 
@@ -106,6 +106,7 @@ export class WebsitePersistentStack extends NestedStack {
 			distribution: webDistribution,
 			distributionPaths: ['/*'],
 			retainOnDelete: true,
+			prune: false,
 			// TODO: remove once https://github.com/aws/aws-cdk/issues/8541 is resolved
 			role: new Role(this, 'WebsiteBucketDeployment-Role', {
 				assumedBy: new ServicePrincipal(ServicePrincipals.LAMBDA),

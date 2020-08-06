@@ -1,16 +1,13 @@
-'use strict'
-
-console.log('Loading function')
-
-const https = require('https')
-const url = require('url')
-const UUID = require('uuid')
-const moment = require('moment')
-const DDBHelper = require('../helper/dynamodb-helper')
-const S3Helper = require('../helper/s3-helper')
-const IOTHelper = require('../helper/iot-helper')
-const GREENGRASSHelper = require('../helper/greengrass-helper')
-const UsageMetrics = require('../../metrics/metrics.common')
+import * as https from 'https'
+import * as url from 'url'
+import * as UUID from 'uuid'
+import * as moment from 'moment'
+import DDBHelper from '../helper/dynamodb-helper'
+import S3Helper from '../helper/s3-helper'
+import IOTHelper from '../helper/iot-helper'
+import GREENGRASSHelper from '../helper/greengrass-helper'
+import BlueprintParser from '../helper/blueprint-parser'
+import UsageMetrics from '../../metrics/metrics.common'
 
 /**
  * Request handler.
@@ -131,8 +128,6 @@ export function handler (event, context, callback) {
 				iotHelper.attachPrincipalPolicy(event.policyName, event.principal).then(result => callback(null, result)).catch(err => callback(err, null))
 				break
 			case 'blueprintParser':
-				const BlueprintParser = require('../helper/blueprint-parser')
-
 				const blueprintParser = new BlueprintParser()
 				// @ts-ignore
 				blueprintParser.parse(event.message).then(result => callback(null, result)).catch(err => callback(err, null))

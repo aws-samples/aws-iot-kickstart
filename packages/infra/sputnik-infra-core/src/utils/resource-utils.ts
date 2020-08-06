@@ -1,6 +1,6 @@
 import { AnyPrincipal, Role } from '@aws-cdk/aws-iam'
 import { CfnResource, Construct, RemovalPolicy, Resource, Stack } from '@aws-cdk/core'
-import { yellow } from 'chalk'
+import chalk from 'chalk'
 
 export function retainResource (construct: Construct): void {
 	// @ts-ignore
@@ -19,7 +19,7 @@ export function retainResource (construct: Construct): void {
  * @param scope
  */
 export function TODO_placeholderResource (stack: Stack): Resource {
-	console.warn(yellow(`TODO: Creating placeholder resource in stack ${stack.stackId}, need to remove later`))
+	console.warn(chalk.yellow(`TODO: Creating placeholder resource in stack ${stack.stackId}, need to remove later`))
 
 	return new Role(stack, 'PlaceholderRole', {
 		assumedBy: new AnyPrincipal(),

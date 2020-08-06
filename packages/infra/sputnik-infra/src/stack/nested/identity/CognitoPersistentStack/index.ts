@@ -1,16 +1,14 @@
 /* eslint-disable no-template-curly-in-string */
 import { CfnUserPoolClient, CfnUserPoolGroup, CfnUserPoolUser, CfnUserPoolUserToGroupAttachment, UserPool, UserPoolClient, UserPoolOperation } from '@aws-cdk/aws-cognito'
 import { Construct, Fn, NestedStack, NestedStackProps, RemovalPolicy, Duration } from '@aws-cdk/core'
-import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
 import { readFileSync } from 'fs'
 import { join } from 'path'
 import { CfnPolicy as CfnIoTPolicy } from '@aws-cdk/aws-iot'
 import { CognitoPreTokenGenerationLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
-import { UserGroups, CLAIM_PREFIX, INTERNAL_GROUPS, INTERNAL_TENANT, DEFAULT_NAMESPACE } from '@deathstar/sputnik-core'
-import { CognitoIDP as CognitoIDPActions } from 'cdk-iam-actions/lib/actions'
-import { retainResource } from '../../../../utils/resource-utils'
-import { namespaced, regionalNamespaced } from '../../../../utils/cdk-identity-utils'
-import { PolicyStatement, Effect, PolicyDocument } from '@aws-cdk/aws-iam'
+import { UserGroups } from '@deathstar/sputnik-core'
+import { retainResource } from '@deathstar/sputnik-infra-core/lib/utils/resource-utils'
+import { namespaced, regionalNamespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
+import { PolicyDocument } from '@aws-cdk/aws-iam'
 
 export interface CognitoPersistentStackProps extends NestedStackProps {
 	readonly administratorName: string
@@ -81,27 +79,7 @@ export class CognitoPersistentStack extends NestedStack {
 			},
 		})
 		retainResource(userPool)
-		userPool.addTrigger(UserPoolOperation.PRE_TOKEN_GENERATION, new CognitoPreTokenGenerationLambda(this, 'PreTokenGenerationTriggerLambda', {
-			initialPolicy: [
-				new PolicyStatement({
-					effect: Effect.ALLOW,
-					actions: [
-						CognitoIDPActions.ADMIN_GET_USER,
-						CognitoIDPActions.ADMIN_LIST_GROUPS_FOR_USER,
-					],
-					resources: [
-						// TODO: [SECURITY] scope this permission
-						'*',
-					],
-				}),
-			],
-			environment: {
-				CLAIM_PREFIX,
-				INTERNAL_TENANT,
-				INTERNAL_NAMESPACE: DEFAULT_NAMESPACE,
-				INTERNAL_GROUPS: INTERNAL_GROUPS.join(','),
-			},
-		}))
+		userPool.addTrigger(UserPoolOperation.PRE_TOKEN_GENERATION, new CognitoPreTokenGenerationLambda(this, 'PreTokenGenerationTriggerLambda'))
 
 		const adminCognitoGroup = new CfnUserPoolGroup(this, 'AdminCognitoGroup', {
 			userPoolId: userPool.userPoolId,

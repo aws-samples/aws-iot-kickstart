@@ -1,4 +1,4 @@
-const { getUser } = require('../../user-methods')
+import { getUser } from '../../user-methods'
 
 const CLAIM_PREFIX = process.env.CLAIM_PREFIX
 const INTERNAL_TENANT = process.env.INTERNAL_TENANT

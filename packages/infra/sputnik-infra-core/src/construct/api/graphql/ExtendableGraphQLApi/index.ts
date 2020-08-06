@@ -31,9 +31,9 @@ export class ExtendableGraphQLApi extends GraphQLApi {
 
 	readonly schemaConfig?: RootSchemaConfig
 
-	private _lambdaPolicy: ManagedPolicy
+	private _lambdaPolicy?: ManagedPolicy
 
-	private _dynamoDbPolicy: ManagedPolicy
+	private _dynamoDbPolicy?: ManagedPolicy
 
 	get apiRoleName (): string {
 		return this.apiRole.roleName

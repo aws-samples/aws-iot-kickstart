@@ -1,4 +1,4 @@
-const commands = require('../command')
+import commands from '../command'
 
 export function handler (event, context, callback) {
 	console.log('Event:', JSON.stringify(event, null, 2))

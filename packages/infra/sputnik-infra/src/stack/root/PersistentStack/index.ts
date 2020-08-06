@@ -4,8 +4,8 @@ import { DataProcessingPersistentStack } from '../../nested/data/DataProcessingP
 import { DeviceManagementPersistentStack } from '../../nested/device/management/DeviceManagementPersistentStack'
 import { CognitoPersistentStack } from '../../nested/identity/CognitoPersistentStack'
 import { WebsitePersistentStack } from '../../nested/web/WebsitePersistentStack'
-import { setNamespace } from '../../../utils/cdk-identity-utils'
-import { getAppContext } from '../../../context'
+import { setNamespace } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
+import { getAppContext } from '@deathstar/sputnik-infra-core/lib/context'
 import { ISource } from '@aws-cdk/aws-s3-deployment'
 import { UserPool } from '@aws-cdk/aws-cognito'
 

@@ -14,14 +14,14 @@
 
 'use strict'
 
-const https = require('https')
-const AWS = require('aws-sdk')
-const moment = require('moment')
+import * as AWS from 'aws-sdk'
+import * as https from 'https'
+import * as moment from 'moment'
 
 const documentClient = new AWS.DynamoDB.DocumentClient()
 
 // Metrics class for sending usage metrics to sb endpoints
-class Metrics {
+export class Metrics {
 	constructor () {
 		this.endpoint = 'metrics.awssolutionsbuilder.com'
 	}
@@ -97,4 +97,4 @@ class Metrics {
 	}
 }
 
-module.exports = Metrics
+export default Metrics

@@ -4,7 +4,7 @@ import * as sns from '@aws-cdk/aws-sns'
 import * as snsSub from '@aws-cdk/aws-sns-subscriptions'
 import * as cdk from '@aws-cdk/core'
 // import { CreateBucketIfNotExists } from '../../../../extensions/s3/CreateBucketIfNotExists'
-import { namespaced, namespacedBucket } from '../../../../utils/cdk-identity-utils'
+import { namespaced, namespacedBucket } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 
 export interface DataProcessingPersistentStackProps extends cdk.NestedStackProps {
 	readonly administratorName: string

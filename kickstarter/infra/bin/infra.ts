@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { initEnvContext, getAppContext } from '@deathstar/sputnik-infra/dist/context'
+import { initEnvContext, getAppContext } from '@deathstar/sputnik-infra-core/lib/context'
 import * as cdk from '@aws-cdk/core'
 import 'source-map-support/register'
 import { SputnikKickstarter } from '../lib/SputnikKickstarter'

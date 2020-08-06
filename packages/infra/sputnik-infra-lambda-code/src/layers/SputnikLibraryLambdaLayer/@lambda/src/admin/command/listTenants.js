@@ -1,11 +1,11 @@
-const AWS = require('aws-sdk')
+import { CognitoIdentityServiceProvider } from 'aws-sdk'
 
-const cognito = new AWS.CognitoIdentityServiceProvider()
+const cognito = new CognitoIdentityServiceProvider()
 
 const INTERNAL_TENANT = process.env.INTERNAL_TENANT
 const INTERNAL_GROUPS = process.env.INTERNAL_GROUPS.split(',')
 
-async function listTenants () {
+export async function listTenants () {
 	let params = {
 		UserPoolId: process.env.USER_POOL_ID,
 		Limit: 60,
@@ -24,9 +24,8 @@ async function listTenants () {
 	return [INTERNAL_TENANT].concat(groupNames.filter((groupName) => !INTERNAL_GROUPS.includes(groupName)))
 }
 
-module.exports = {
-	listTenants: async function (event) {
-		// @ts-ignore
-		return listTenants(event.limit, event.nextToken)
-	},
+export async function handler(event) {
+		return listTenants()
 }
+
+export default handler

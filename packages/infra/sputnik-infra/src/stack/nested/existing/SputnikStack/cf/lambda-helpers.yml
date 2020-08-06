@@ -2,6 +2,10 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: 'sputnik - Lambda'
 
 Parameters:
+    npmDependenciesLayerArn:
+        Type: String
+    sputnikLibLayerArn:
+        Type: String
     customResourceS3HelperCodeS3Bucket:
         Type: String
     customResourceS3HelperCodeS3Key:
@@ -146,6 +150,9 @@ Resources:
             Role: !GetAtt customResourcesIAMRole.Arn
             Timeout: 300
             MemorySize: 256
+            Layers:
+                - !Ref npmDependenciesLayerArn
+                - !Ref sputnikLibLayerArn
 
     # Custom resource Lambda Function - Utils Helper
     HelperUtilsLambdaFunction:
@@ -160,6 +167,9 @@ Resources:
             Role: !GetAtt customResourcesIAMRole.Arn
             Timeout: 300
             MemorySize: 256
+            Layers:
+                - !Ref npmDependenciesLayerArn
+                - !Ref sputnikLibLayerArn
             Environment:
                 Variables:
                     TABLE_DEVICES: !Ref devicesTable

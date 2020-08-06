@@ -1,6 +1,4 @@
-'use strict'
-
-const _ = require('underscore')
+import * as _ from 'underscore'
 
 class ObjectToParse {
 	constructor (object) {
@@ -20,7 +18,7 @@ class ObjectToParse {
  *
  * @class BlueprintParser
  */
-class BlueprintParser {
+export class BlueprintParser {
 	/**
      * @class BlueprintParser
      * @constructor
@@ -54,4 +52,4 @@ class BlueprintParser {
 	}
 }
 
-module.exports = BlueprintParser
+export default BlueprintParser

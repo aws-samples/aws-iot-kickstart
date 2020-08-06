@@ -16,7 +16,7 @@
     "deploy": "cdk deploy --require-approval never AppStack",
     "synth": "cdk synth",
     "dev:build": "yarn build",
-    "dev:deploy:persistent": "cdk deploy --require-approval never PipelineStack",
+    "dev:deploy:persistent": "cdk deploy --require-approval never PersistentStack",
     "dev:DESTROY:persistent": "cdk destroy PipelineStack",
     "dev:deploy:app": "cdk deploy --require-approval never AppStack",
     "dev:deploy:app:force": "cdk deploy --require-approval never AppStack --force",

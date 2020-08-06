@@ -1,8 +1,7 @@
 import * as path from 'path'
 import { sync as findup } from 'find-up'
 import { Duration, Construct } from '@aws-cdk/core'
-import { Runtime, SingletonFunction, SingletonFunctionProps, IFunction, L } from '@aws-cdk/aws-lambda'
-import { NpmDependenciesLambdaLayer } from './layers/NpmDependenciesLambdaLayer'
+import { Runtime, Function, FunctionProps, IFunction } from '@aws-cdk/aws-lambda'
 import { SputnikLibraryLambdaLayer } from './layers/SputnikLibraryLambdaLayer'
 
 export function lambdaPath (name: string): string {
@@ -19,23 +18,28 @@ export interface LambdaEnvironment {
 	[key: string]: string
 }
 
-export interface LambdaProps<TEnvironment extends LambdaEnvironment> extends Omit<SingletonFunctionProps,
-	'code' | 'environment' | 'runtime' | 'functionName' | 'description' | 'uuid' | 'handler'
+export interface DependencyProps<TDependencies> {
+	readonly dependencies: TDependencies
+}
+
+export interface ExposedLambdaProps<TDependencies> extends Omit<FunctionProps,
+	'code' | 'environment' | 'runtime' | 'functionName' | 'description' | 'handler' | 'role' | 'initialPolicy'
+> {
+	readonly dependencies: TDependencies
+}
+
+export interface CompiledLambdaProps<TEnvironment extends LambdaEnvironment> extends Omit<FunctionProps,
+	'environment' | 'runtime' | 'handler'
 > {
 	readonly environment: TEnvironment
 	readonly handler?: string
-}
-
-export interface CompiledLambdaProps<TEnvironment extends LambdaEnvironment> extends Omit<SingletonFunctionProps,
-	'environment'
-> {
-	readonly environment: TEnvironment
+	readonly runtime?: Runtime
 }
 
 export class CompiledLambdaFunction<TEnvironment extends LambdaEnvironment>
-	extends SingletonFunction
+	extends Function
 	implements IFunction {
-	constructor (scope: Construct, id: string, props: LambdaProps<TEnvironment>) {
+	constructor (scope: Construct, id: string, props: CompiledLambdaProps<TEnvironment>) {
 		// Set defaults
 		props = Object.assign({
 			timeout: Duration.seconds(10),
@@ -43,10 +47,10 @@ export class CompiledLambdaFunction<TEnvironment extends LambdaEnvironment>
 			handler: 'index.handler',
 			runtime: Runtime.NODEJS_12_X,
 			layers: [
-				NpmDependenciesLambdaLayer.getLayer(scope),
 				SputnikLibraryLambdaLayer.getLayer(scope),
+				...props.layers || [],
 			],
 		}, props)
-		super(scope, id, props as unknown as SingletonFunctionProps)
+		super(scope, id, props as unknown as FunctionProps)
 	}
 }

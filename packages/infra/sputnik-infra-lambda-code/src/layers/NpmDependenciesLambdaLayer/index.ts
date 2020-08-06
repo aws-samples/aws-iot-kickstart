@@ -1,30 +1,22 @@
 import { Construct, Stack } from '@aws-cdk/core'
 import { Code, AssetCode } from '@aws-cdk/aws-lambda'
-import { lambdaPath, CompiledLambdaLayer, CompiledLambdaLayerProps } from '../../CompiledLambdaLayer'
-
-function getRootStack (scope: Construct): Stack {
-	let stack: Stack = Stack.of(scope)
-
-	while (stack.parentStack != null) {
-		stack = stack.parentStack
-	}
-
-	return stack
-}
+import { getRootStack } from '@deathstar/sputnik-infra-core/lib/utils/stack-utils'
+import { lambdaPath, CompiledLambdaLayer } from '../../CompiledLambdaLayer'
+import { namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 
 // TODO: read from package.json
-const PACKAGE_NAME = 'layer-npm-dependencies'
+const PACKAGE_NAME = 'npm-dependencies'
 
 export class NpmDependenciesLambdaLayer extends CompiledLambdaLayer {
 	static get codeAsset (): AssetCode {
 		return Code.fromAsset(lambdaPath(PACKAGE_NAME))
 	}
 
-	static private _instance: NpmDependenciesLambdaLayer
+	private static _instance: NpmDependenciesLambdaLayer
 
 	static getLayer (scope: Construct): NpmDependenciesLambdaLayer {
 		if (NpmDependenciesLambdaLayer._instance == null) {
-			NpmDependenciesLambdaLayer._instance = new NpmDependenciesLambdaLayer(getRootStack(scope), PACKAGE_NAME)
+			NpmDependenciesLambdaLayer._instance = new NpmDependenciesLambdaLayer(getRootStack(scope), `LayerVersion-${PACKAGE_NAME}`)
 		}
 
 		return NpmDependenciesLambdaLayer._instance
@@ -33,6 +25,7 @@ export class NpmDependenciesLambdaLayer extends CompiledLambdaLayer {
 	private constructor (scope: Construct, id: string) {
 		super(scope, id, {
 			code: NpmDependenciesLambdaLayer.codeAsset,
+			layerVersionName: namespaced(scope, PACKAGE_NAME),
 			description: 'Npm dependencies for sputnik lambdas',
   		license: 'Apache-2.0',
 		})

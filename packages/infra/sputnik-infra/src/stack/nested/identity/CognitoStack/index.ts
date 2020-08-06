@@ -3,8 +3,8 @@ import { CfnIdentityPool, CfnIdentityPoolRoleAttachment, UserPool, UserPoolClien
 import { Effect, PolicyDocument, PolicyStatement } from '@aws-cdk/aws-iam'
 import { Bucket } from '@aws-cdk/aws-s3'
 import { NestedStack, NestedStackProps, Stack, Construct } from '@aws-cdk/core'
-import { CognitoFederatedRole, CognitoFederatedRoleMappingKey } from '../../../../construct/identity/cognito/CognitoFederatedRole'
-import { namespaced } from '../../../../utils/cdk-identity-utils'
+import { CognitoFederatedRole, CognitoFederatedRoleMappingKey } from '@deathstar/sputnik-infra-core/lib/construct/identity/cognito/CognitoFederatedRole'
+import { namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 
 export interface CognitoStackProps extends NestedStackProps {
 	readonly dataBucket: Bucket

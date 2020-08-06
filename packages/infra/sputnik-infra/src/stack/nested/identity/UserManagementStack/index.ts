@@ -1,5 +1,5 @@
 import { Construct, NestedStack, NestedStackProps } from '@aws-cdk/core'
-import { ExtendableGraphQLApi } from '../../../../construct/api/graphql/ExtendableGraphQLApi'
+import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra-core/lib/construct/api/graphql/ExtendableGraphQLApi'
 import { AdminServices } from './AdminServices'
 import { UserPool } from '@aws-cdk/aws-cognito'
 import { Role } from '@aws-cdk/aws-iam'

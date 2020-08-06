@@ -1,9 +1,9 @@
-const AWS = require('aws-sdk')
-const { mapUser } = require('../utils')
+import { CognitoIdentityServiceProvider } from 'aws-sdk'
+import { mapUser } from '../utils'
 
-const cognito = new AWS.CognitoIdentityServiceProvider()
+const cognito = new CognitoIdentityServiceProvider()
 
-async function getUser (username) {
+export async function getUser (username) {
 	const params = {
 		UserPoolId: process.env.USER_POOL_ID,
 		Username: username,
@@ -20,8 +20,8 @@ async function getUser (username) {
 	return user
 }
 
-module.exports = {
-	getUser: async function (event, context) {
+export async function handler(event) {
 		return getUser(event.username)
-	},
 }
+
+export default handler

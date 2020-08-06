@@ -2,7 +2,7 @@
 import { AttributeType, ProjectionType, Table, StreamViewType } from '@aws-cdk/aws-dynamodb'
 import { Construct, NestedStack, NestedStackProps, RemovalPolicy, Stack } from '@aws-cdk/core'
 import { CfnPolicy as IotCfnPolicy } from '@aws-cdk/aws-iot'
-import { namespaced } from '../../../../../utils/cdk-identity-utils'
+import { namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 
 export type DeviceManagementPersistentStackProps = NestedStackProps
 

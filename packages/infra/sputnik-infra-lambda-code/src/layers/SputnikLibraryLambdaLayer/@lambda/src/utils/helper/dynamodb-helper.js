@@ -1,15 +1,13 @@
-'use strict'
-
-let AWS = require('aws-sdk')
-const fs = require('fs')
-const moment = require('moment')
+import * as AWS from 'aws-sdk'
+import * as fs from 'fs'
+import * as moment from 'moment'
 
 /**
  * Helper function to interact with AWS S3 for cfn custom resource.
  *
  * @class dynamodbHelper
  */
-class dynamodbHelper {
+export class dynamodbHelper {
 	/**
      * @class dynamodbHelper
      * @constructor
@@ -152,4 +150,4 @@ class dynamodbHelper {
 	}
 }
 
-module.exports = dynamodbHelper
+export default dynamodbHelper

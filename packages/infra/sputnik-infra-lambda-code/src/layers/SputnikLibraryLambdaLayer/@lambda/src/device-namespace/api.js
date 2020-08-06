@@ -1,10 +1,8 @@
+import 'cross-fetch/polyfill'
+import * as AWS from 'aws-sdk'
+import * as appsync from 'aws-appsync'
 import gql from 'graphql-tag'
 import config from './config'
-
-const AWS = require('aws-sdk')
-const appsync = require('aws-appsync')
-
-require('cross-fetch/polyfill')
 
 const {
 	region,

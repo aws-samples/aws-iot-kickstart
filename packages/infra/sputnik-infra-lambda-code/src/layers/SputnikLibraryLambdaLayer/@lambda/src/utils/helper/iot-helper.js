@@ -1,14 +1,14 @@
 'use strict'
 
-let AWS = require('aws-sdk')
-const fs = require('fs')
-const moment = require('moment')
+import * as AWS from 'aws-sdk'
+import * as fs from 'fs'
+import * as moment from 'moment'
 
 /**
  *
  * @class iotHelper
  */
-class iotHelper {
+export class iotHelper {
 	/**
      * @class iotHelper
      * @constructor
@@ -64,4 +64,4 @@ class iotHelper {
 	}
 }
 
-module.exports = iotHelper
+export default iotHelper

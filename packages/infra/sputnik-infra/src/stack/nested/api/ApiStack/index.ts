@@ -2,9 +2,9 @@ import { IUserPool } from '@aws-cdk/aws-cognito'
 import { Construct, NestedStack, NestedStackProps } from '@aws-cdk/core'
 import * as path from 'path'
 import { GRAPHQL_SCHEMA_PATH } from '@deathstar/sputnik-core-api/lib/schema-file'
-import { ExtendableGraphQLApi } from '../../../../construct/api/graphql/ExtendableGraphQLApi'
-import { ExtendableRestApi } from '../../../../construct/api/rest/ExtendableRestApi'
-import { namespaced } from '../../../../utils/cdk-identity-utils'
+import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra-core/lib/construct/api/graphql/ExtendableGraphQLApi'
+import { ExtendableRestApi } from '@deathstar/sputnik-infra-core/lib/construct/api/rest/ExtendableRestApi'
+import { namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 
 export interface ApiStackProps extends NestedStackProps {
 	readonly userPool: IUserPool
@@ -24,11 +24,6 @@ export class ApiStack extends NestedStack {
 			name: namespaced(this, 'GraphQL-Api'),
 			schemaDefinitionFile: GRAPHQL_SCHEMA_PATH,
 			userPool,
-			schemaConfig: {
-				Query: { directives: '@aws_iam @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])' },
-				Mutation: { directives: '@aws_iam @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])' },
-				Subscription: { directives: '@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])' },
-			},
 		})
 
 		this.restApi = new ExtendableRestApi(this, 'RestApi', {

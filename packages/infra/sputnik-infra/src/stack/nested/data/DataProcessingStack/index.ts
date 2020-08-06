@@ -5,7 +5,7 @@ import * as iot from '@aws-cdk/aws-iot'
 import * as s3 from '@aws-cdk/aws-s3'
 import * as sns from '@aws-cdk/aws-sns'
 import * as cdk from '@aws-cdk/core'
-import { namespaced } from '../../../../utils/cdk-identity-utils'
+import { namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 
 export interface DataProcessingStackProps extends cdk.NestedStackProps {
 	readonly snsAlertsTopic: sns.Topic

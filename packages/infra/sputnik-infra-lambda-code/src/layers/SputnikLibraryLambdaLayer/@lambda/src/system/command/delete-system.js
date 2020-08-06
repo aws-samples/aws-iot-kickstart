@@ -1,10 +1,10 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
 
 const documentClient = new AWS.DynamoDB.DocumentClient()
 
 const lib = 'deleteSystem'
 
-module.exports = function (event, context) {
+export function deleteSystem (event, context) {
 	return documentClient.delete({
 		TableName: process.env.TABLE_SYSTEMS,
 		Key: {
@@ -12,3 +12,5 @@ module.exports = function (event, context) {
 		},
 	}).promise()
 }
+
+export default deleteSystem

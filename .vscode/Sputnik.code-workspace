@@ -17,6 +17,10 @@
 			"path": "../packages/core/sputnik-core-api"
 		},
 		{
+			"name": "Infra Core",
+			"path": "../packages/infra/sputnik-infra-core"
+		},
+		{
 			"name": "Infra",
 			"path": "../packages/infra/sputnik-infra"
 		},

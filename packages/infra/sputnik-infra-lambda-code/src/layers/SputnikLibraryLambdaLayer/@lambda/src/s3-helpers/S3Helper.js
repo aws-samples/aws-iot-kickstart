@@ -1,14 +1,14 @@
 'use strict'
 
-let AWS = require('aws-sdk')
-const fs = require('fs')
+import * as AWS from 'aws-sdk'
+import * as fs from 'fs'
 
 /**
  * Helper function to interact with AWS S3 for cfn custom resource.
  *
  * @class s3Helper
  */
-class s3Helper {
+export class S3Helper {
 	/**
      * @class s3Helper
      * @constructor
@@ -173,4 +173,4 @@ class s3Helper {
 	}
 }
 
-module.exports = s3Helper
+export default S3Helper

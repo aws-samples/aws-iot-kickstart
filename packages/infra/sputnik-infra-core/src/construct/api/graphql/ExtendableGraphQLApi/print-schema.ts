@@ -1,7 +1,7 @@
 import { ITypedef } from 'graphql-tools'
 // @ts-ignore
 import { convertSchemas, AppSyncDirectives } from 'appsync-schema-converter'
-import { RootSchemaConfig } from './root-schema-config'
+import { RootSchemaConfig, RootTypeConfig } from './root-schema-config'
 
 // Directive pulled from https://github.com/awslabs/aws-mobile-appsync-sdk-js/issues/547#issuecomment-610671519
 const APPSYNC_DIRECTIVES = [
@@ -19,19 +19,19 @@ AppSyncDirectives.splice(0, AppSyncDirectives.length, ...APPSYNC_DIRECTIVES)
 
 const ROOT_TMP_FIELD = '__tmp_root_field__'
 
+function createRootType (type: string, config?: RootTypeConfig | boolean): string {
+	if (config == null || config === false) {
+		return ''
+	}
+
+	return `type Query ${(config as RootTypeConfig).directives || ''} { ${ROOT_TMP_FIELD}: String }`
+}
+
 function createRootSchema (config?: RootSchemaConfig): string {
 	return `
-	type Query ${config?.Query?.directives || ''} {
-	${ROOT_TMP_FIELD}: String
-	}
-
-	type Mutation ${config?.Mutation?.directives || ''} {
-	${ROOT_TMP_FIELD}: String
-	}
-
-	type Subscription ${config?.Subscription?.directives || ''} {
-	${ROOT_TMP_FIELD}: String
-	}
+	${createRootType('Query', config?.Query)}
+	${createRootType('Mutation', config?.Mutation)}
+	${createRootType('Subscription', config?.Subscription)}
 
 	schema {
 	query: Query

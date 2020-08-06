@@ -1,11 +1,11 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
+import * as _ from 'underscore'
 
 const documentClient = new AWS.DynamoDB.DocumentClient()
-const _ = require('underscore')
 
 const lib = 'getSystemStats'
 
-function getSystemStatsRecursive (lastEvalKey) {
+export function getSystemStatsRecursive (lastEvalKey) {
 	console.log(lib, lastEvalKey)
 
 	let params = {
@@ -40,6 +40,8 @@ function getSystemStatsRecursive (lastEvalKey) {
 	})
 }
 
-module.exports = function (event, context, callback) {
+export function getSystemStats (event, context, callback) {
 	return getSystemStatsRecursive()
 }
+
+export default getSystemStats

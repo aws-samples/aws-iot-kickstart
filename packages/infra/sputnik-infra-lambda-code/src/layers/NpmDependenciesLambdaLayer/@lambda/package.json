@@ -4,7 +4,11 @@
     "description": "Common npm dependencies in lambda layer",
     "version": "0.0.1",
     "scripts": {
-        "build": "mkdir -p ../../../dist/@lambda && zip -FSrq ../../../dist/$npm_package_name.zip *"
+        "clean": "rm -rf dist",
+        "prebuild": "yarn clean",
+        "build": "yarn make:dist && yarn make:zip",
+        "make:dist": "mkdir -p dist/nodejs && rsync -am package.json node_modules dist/nodejs",
+        "make:zip": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
     },
     "dependencies": {
         "aws-appsync": "^3.0.3",

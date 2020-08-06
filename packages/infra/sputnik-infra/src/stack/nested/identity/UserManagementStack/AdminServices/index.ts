@@ -1,24 +1,13 @@
 /* eslint-disable no-template-curly-in-string */
-import * as path from 'path'
 import {
-	Effect,
-	PolicyDocument,
-	PolicyStatement,
 	Role,
-	ServicePrincipal,
 } from '@aws-cdk/aws-iam'
 import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
-import { Construct, Stack } from '@aws-cdk/core'
-import { ServicePrincipals } from 'cdk-constants'
-import {
-	Logs as LogsActions,
-	IAM as IAMActions,
-} from 'cdk-iam-actions/lib/actions'
+import { Construct } from '@aws-cdk/core'
 import { UserPool } from '@aws-cdk/aws-cognito'
 import { MappingTemplate } from '@aws-cdk/aws-appsync'
-import { INTERNAL_GROUPS, INTERNAL_TENANT } from '@deathstar/sputnik-core'
 import { AdminServiceLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
-import { ExtendableGraphQLApi } from '../../../../../construct/api/graphql/ExtendableGraphQLApi'
+import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra-core/lib/construct/api/graphql/ExtendableGraphQLApi'
 
 export interface AdminServicesProps {
 	readonly graphQLApi: ExtendableGraphQLApi
@@ -29,8 +18,6 @@ export interface AdminServicesProps {
 export class AdminServices extends Construct {
 	readonly lambdaFunction: LambdaFunction;
 
-	readonly lambdaRole: Role;
-
 	constructor (scope: Construct, id: string, props: AdminServicesProps) {
 		super(scope, id)
 
@@ -40,73 +27,11 @@ export class AdminServices extends Construct {
 		 *** LAMBDA
 		 ***********************************************************************/
 
-		const lambdaRole = new Role(this, 'LambdaRole', {
-			assumedBy: new ServicePrincipal(ServicePrincipals.LAMBDA),
-			inlinePolicies: {
-				cloudwatchLogAccess: new PolicyDocument({
-					statements: [
-						new PolicyStatement({
-							effect: Effect.ALLOW,
-							actions: [
-								LogsActions.CREATE_LOG_GROUP,
-								LogsActions.CREATE_LOG_STREAM,
-								LogsActions.PUT_LOG_EVENTS,
-							],
-							resources: [
-								Stack.of(this).formatArn({
-									service: 'logs',
-									resource: 'log-group:*',
-								}),
-							],
-						}),
-					],
-				}),
-				adminServiceIAMPolicy: new PolicyDocument({
-					statements: [
-						new PolicyStatement({
-							effect: Effect.ALLOW,
-							actions: [
-								// TODO: [SECURITY] Too permissive for now.
-								'cognito-idp:*',
-								// 'cognito-idp:ListUsers',
-								// 'cognito-idp:AdminEnableUser',
-								// 'cognito-idp:AdminDisableUser',
-								// 'cognito-idp:AdminDeleteUser',
-								// 'cognito-idp:AdminAddUserToGroup',
-							],
-							resources: ['*'],
-						}),
-						new PolicyStatement({
-							effect: Effect.ALLOW,
-							actions: [
-								// TODO: Move this to "Admin" only role... not created yet
-								IAMActions.PASS_ROLE,
-							],
-							// TODO: [SECURITY] Too permissive for now.
-							resources: [tenantRole.roleArn],
-						}),
-						new PolicyStatement({
-							effect: Effect.ALLOW,
-							actions: [
-								// TODO: [SECURITY] Too permissive for now.
-								'iot:*',
-								'greengrass:*',
-							],
-							resources: ['*'],
-						}),
-					],
-				}),
-			},
-		})
-
-		const lambdaFunction = new AdminServiceLambda(scope, 'LambdaFunction', {
-			role: lambdaRole,
-			environment: {
-				USER_POOL_ID: userPool.userPoolId,
-				TENANT_ROLE_ARN: tenantRole.roleArn,
-				INTERNAL_TENANT,
-				INTERNAL_GROUPS: INTERNAL_GROUPS.join(','),
-			},
+		const lambdaFunction = new AdminServiceLambda(this, 'LambdaFunction', {
+			dependencies: {
+				userPool,
+				tenantRole,
+			}
 		})
 
 		/***********************************************************************
@@ -290,7 +215,6 @@ export class AdminServices extends Construct {
 		})
 
 		Object.assign(this, {
-			lambdaRole,
 			lambdaFunction,
 		})
 	}

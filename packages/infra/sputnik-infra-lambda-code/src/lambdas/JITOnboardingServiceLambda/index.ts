@@ -1,6 +1,9 @@
 import { Construct } from '@aws-cdk/core'
 import { Code, AssetCode } from '@aws-cdk/aws-lambda'
-import { CompiledLambdaFunction, CompiledLambdaProps, LambdaProps, LambdaEnvironment, lambdaPath } from '../../CompiledLambdaFunction'
+import { CompiledLambdaFunction, LambdaEnvironment, lambdaPath } from '../../CompiledLambdaFunction'
+
+// TODO: refactor sputnik-infra/src/stack/nested/existing/SputnikStack/cf/lambda-services.yml to
+// be full cdk and use this, currently just gets the asset path
 
 interface Environment extends LambdaEnvironment {
 	TABLE_DEVICES: string
@@ -15,21 +18,8 @@ interface Environment extends LambdaEnvironment {
 	IOT_ENDPOINT: string
 }
 
-type TCompiledProps = CompiledLambdaProps<Environment>
-type TLambdaProps = LambdaProps<Environment>
-
 export class JITOnboardingServiceLambda extends CompiledLambdaFunction<Environment> {
 	static get codeAsset (): AssetCode {
 		return Code.fromAsset(lambdaPath('jit-onboarding-service'))
-	}
-
-	constructor (scope: Construct, id: string, props: TLambdaProps) {
-		super(scope, id, Object.assign({}, props, {
-			uuid: 'c4a606e0-cfec-11ea-87d0-0242ac130003',
-			// TODO: name this namespace, but that lives in infra which reference this package so would be circular dep
-			functionName: 'Sputnik_JITOnboardingServices',
-			description: 'Sputnik JITOnboarding microservice',
-			code: JITOnboardingServiceLambda.codeAsset,
-		}) as unknown as TCompiledProps)
 	}
 }

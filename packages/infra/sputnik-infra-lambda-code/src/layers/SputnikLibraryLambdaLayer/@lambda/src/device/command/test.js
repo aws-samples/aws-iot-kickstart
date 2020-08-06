@@ -1,10 +1,8 @@
-const AWS = require('aws-sdk')
+import * as AWS from 'aws-sdk'
 
 const documentClient = new AWS.DynamoDB.DocumentClient()
-const dynamoDB = new AWS.DynamoDB()
-const _ = require('underscore')
 
-module.exports = function (event, context) {
+export function test (event, context) {
 	return documentClient.query({
 		TableName: process.env.TABLE_DEVICES,
 		// @ts-ignore
@@ -17,3 +15,5 @@ module.exports = function (event, context) {
 		console.log(data)
 	})
 }
+
+export default test
