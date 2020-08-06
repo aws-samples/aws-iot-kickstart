@@ -82,8 +82,8 @@
                                     <span class="round round-light-grey">
                                         <i class="mdi mdi-chip text-normal"></i>
                                         <div
-                                            [class]="device.connectionState.state === 'connected' ? 'notify device success' : 'notify device error'">
-                                            <span *ngIf="device.connectionState.state === 'connected'"
+                                            [class]="device.connectionState?.state === 'connected' ? 'notify device success' : 'notify device error'">
+                                            <span *ngIf="device.connectionState?.state === 'connected'"
                                                 class="heartbit"></span>
                                             <span class="point"></span>
                                         </div>

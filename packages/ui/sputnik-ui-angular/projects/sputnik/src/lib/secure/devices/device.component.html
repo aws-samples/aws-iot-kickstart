@@ -158,7 +158,7 @@
                         <div *ngIf="!((name.invalid && (name.dirty || name.touched)) && name.errors)"
                             class="form-control-feedback">
                             <small>Easy to remember name for your device.
-                                <br />(Not the thingName: {{deviceForEdit.thingName}})</small>
+                                <br />(Not the thingName: {{device.thingName}})</small>
                         </div>
                         <div *ngIf="(name.invalid && (name.dirty || name.touched)) && name.errors"
                             class="form-control-feedback">
@@ -184,7 +184,7 @@
                             [(ngModel)]="deviceForEdit.deviceTypeId" required ngModel (change)="deviceTypeChanged()">
                             <option value="UNKNOWN" ng-selected="deviceForEdit.deviceTypeId === 'UNKNOWN'">UNKNOWN
                             </option>
-                            <option *ngFor="let item of deviceTypeService.deviceTypes; let i = index"
+                            <option *ngFor="let item of deviceTypes; let i = index"
                                 value="{{item.id}}" ng-selected="deviceForEdit.deviceTypeId === item.id">{{item.name}}
                             </option>
                         </select>

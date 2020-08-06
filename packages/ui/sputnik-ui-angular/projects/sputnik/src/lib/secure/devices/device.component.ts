@@ -1,22 +1,20 @@
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { DeviceBlueprint } from '../../models/device-blueprint.model'
+import { Device, DeviceType, DeviceBlueprint } from '@deathstar/sputnik-core-api'
 // Models
-import { Device } from '../../models/device.model'
 import { ProfileInfo } from '../../models/profile-info.model'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { DeploymentService } from '../../services/deployment.service'
-import { DeviceBlueprintService } from '../../services/device-blueprint.service'
-import { DeviceTypeService } from '../../services/device-type.service'
-import { DeviceService } from '../../services/device.service'
 import { LoggerService } from '../../services/logger.service'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import swal from 'sweetalert2'
-import { contains, filter } from 'underscore'
+import { contains, filter, clone } from 'underscore'
+import { GetDeviceQuery, GetDeviceQueryVariables, ApiService, UpdateDeviceMutationVariables, ListDeviceBlueprintsQuery, ListDeviceBlueprintsQueryVariables, ListDeviceTypesQueryVariables, ListDeviceTypesQuery } from '@deathstar/sputnik-ui-angular-api'
+import { QueryRef } from 'apollo-angular'
+import { DeviceService } from '../../services/device.service'
 
-declare let jquery: any
 declare let $: any
 
 @Component({
@@ -32,11 +30,16 @@ export class DeviceComponent implements OnInit, OnDestroy {
 
 	public isAdminUser: boolean;
 
-	public device: Device = new Device();
+	public device: GetDeviceQuery['getDevice']
+	public deviceForEdit: UpdateDeviceMutationVariables
+	public getDeviceQuery: QueryRef<GetDeviceQuery, GetDeviceQueryVariables>
 
-	public deviceForEdit: Device = new Device();
+	public deviceBlueprints: DeviceBlueprint[]
+	public deviceBlueprintsForEdit: DeviceBlueprint[]
+	public listDeviceBlueprintsQuery: QueryRef<ListDeviceBlueprintsQuery, ListDeviceBlueprintsQueryVariables>
 
-	public deviceBlueprintsForEdit: DeviceBlueprint[] = [];
+	public deviceTypes: DeviceType[]
+	public listDeviceTypesQuery: QueryRef<ListDeviceTypesQuery, ListDeviceTypesQueryVariables>
 
 	public thingsboardDashboardLink: string
 
@@ -52,8 +55,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
 		private breadCrumbService: BreadCrumbService,
 		private deploymentService: DeploymentService,
 		private deviceService: DeviceService,
-		public deviceBlueprintService: DeviceBlueprintService,
-		public deviceTypeService: DeviceTypeService,
+		private apiService: ApiService,
 	) {}
 
 	ngOnInit () {
@@ -77,97 +79,99 @@ export class DeviceComponent implements OnInit, OnDestroy {
 		this.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
 			this.profile = new ProfileInfo(profile)
 			this.isAdminUser = this.profile.isAdmin()
-			this.loadDevice()
-			// this.pollerInterval = setInterval(function() {
-			//	 this.loadDevice();
-			// }, environment.refreshInterval);
+		})
+
+		// devices
+		this.getDeviceQuery = this.apiService.getDeviceWatch({
+			thingId: this.thingId,
+		})
+		this.getDeviceQuery.valueChanges.subscribe(({ data }) => {
+			this.device = data.getDevice
+		})
+
+		// device type
+		this.listDeviceTypesQuery = this.apiService.listDeviceTypesWatch()
+		this.listDeviceTypesQuery.valueChanges.subscribe(({ data }) => {
+			this.deviceTypes = data.listDeviceTypes.deviceTypes
+		})
+
+		// blueprints
+		this.listDeviceBlueprintsQuery = this.apiService.listDeviceBlueprintsWatch()
+		this.listDeviceBlueprintsQuery.valueChanges.subscribe(({ data }) => {
+			this.deviceBlueprints = data.listDeviceBlueprints.deviceBlueprints
 		})
 	}
 
 	ngOnDestroy () {
-		// this.logger.info('destroying device page, attempting to remove poller.');
-		// clearInterval(this.pollerInterval);
+		// this.logger.info('destroying device page, attempting to remove poller.')
 	}
 
-	private loadDevice () {
-		this.deviceService
-		.getDevice(this.thingId)
-		.then((device: Device) => {
-			this.device = device
+	public async refreshData () {
+		try {
+			this.blockUI.start('Loading device...')
+			await Promise.all([
+				this.getDeviceQuery.refetch(),
+				this.listDeviceBlueprintsQuery.refetch(),
+				this.listDeviceBlueprintsQuery.refetch(),
+			])
+		} finally {
 			this.blockUI.stop()
-			this.initThingsboardDashboardLink()
-		})
-		.catch(err => {
-			this.blockUI.stop()
-			swal.fire('Oops...', 'Something went wrong! Unable to retrieve the device.', 'error')
-			this.logger.error('error occurred calling getDevice api, show message')
-			this.logger.error(err)
-			this.router.navigate(['/securehome/devices'])
-		})
-	}
-
-	public refreshData () {
-		this.blockUI.start('Loading device...')
-		this.loadDevice()
-	}
-
-	async getDeviceBlueprint (): Promise<DeviceBlueprint> {
-		return this.deviceBlueprintService.get(this.device.deviceBlueprintId)
-	}
-
-	private async initThingsboardDashboardLink () {
-		const entityId = this.device.metadata && this.device.metadata.thingsboardEntityId
-
-		if (entityId) {
-			const blueprint = await this.getDeviceBlueprint()
-			const thingsboardDashboard = blueprint.spec.thingsboardDashboard
-
-			if (!thingsboardDashboard) {
-				console.warn(`Device ${this.device.thingName} has "metadata.thingsboardEntityId" defined but blueprint missing "spec.thingsboardDashboard"`)
-
-				return
-			}
-
-			// Thingsboard state is base64 encoded JSON
-			const state = window.btoa(JSON.stringify([{
-				id: 'default',
-				params: {
-					entityId: {
-						id: entityId,
-						entityType: 'DEVICE',
-					},
-					entityName: this.device.thingName,
-					entityLabel: this.device.name || this.device.thingName,
-				},
-			}]))
-
-			this.thingsboardDashboardLink = `${thingsboardDashboard}?state=${state}`
 		}
 	}
 
-	submitEditDevice (value: any) {
-		this.blockUI.start('Editing device...')
-		// console.log(JSON.stringify(this.deviceForEdit, null, 4));
-		this.deviceService
-		.updateDevice(this.deviceForEdit)
-		.then((resp: any) => {
+	// async getDeviceBlueprint (): Promise<DeviceBlueprint> {
+	// 	return (await this.apiService.getDeviceBlueprint({ id: this.device.deviceBlueprintId }).toPromise()).data.getDeviceBlueprint
+	// }
+
+	// private async initThingsboardDashboardLink () {
+	// 	const entityId = this.device.metadata && this.device.metadata.thingsboardEntityId
+
+	// 	if (entityId) {
+	// 		const blueprint = await this.getDeviceBlueprint()
+	// 		const thingsboardDashboard = blueprint.spec.thingsboardDashboard
+
+	// 		if (!thingsboardDashboard) {
+	// 			console.warn(`Device ${this.device.thingName} has "metadata.thingsboardEntityId" defined but blueprint missing "spec.thingsboardDashboard"`)
+
+	// 			return
+	// 		}
+
+	// 		// Thingsboard state is base64 encoded JSON
+	// 		const state = window.btoa(JSON.stringify([{
+	// 			id: 'default',
+	// 			params: {
+	// 				entityId: {
+	// 					id: entityId,
+	// 					entityType: 'DEVICE',
+	// 				},
+	// 				entityName: this.device.thingName,
+	// 				entityLabel: this.device.name || this.device.thingName,
+	// 			},
+	// 		}]))
+
+	// 		this.thingsboardDashboardLink = `${thingsboardDashboard}?state=${state}`
+	// 	}
+	// }
+
+	async submitEditDevice (value: any) {
+		try {
+			this.blockUI.start('Editing device...')
+			const result = await this.apiService.updateDevice(this.deviceForEdit).toPromise()
 			$('#editModal').modal('hide')
-			console.log('Updated device:', resp)
-			this.device = new Device(resp)
-			// this.getTheExtraResources();
-			this.blockUI.stop()
-		})
-		.catch(err => {
-			this.blockUI.stop()
+			console.log('Updated device:', result)
+			this.device = result.data.updateDevice
+		} catch (error) {
 			swal.fire('Oops...', 'Something went wrong! Unable to update the device.', 'error')
 			this.logger.error('error occurred calling updateDevice api, show message')
-			this.logger.error(err)
-			this.loadDevice()
-		})
+			this.logger.error(error)
+			this.refreshData()
+		} finally {
+			this.blockUI.stop()
+		}
 	}
 
-	deleteDevice (device: Device) {
-		swal.fire({
+	async deleteDevice (device: Device) {
+		const { value: confirmed } = await swal.fire({
 			title: 'Are you sure you want to delete this device?',
 			text: 'You won\'t be able to revert this!',
 			type: 'question',
@@ -175,31 +179,29 @@ export class DeviceComponent implements OnInit, OnDestroy {
 			confirmButtonColor: '#3085d6',
 			cancelButtonColor: '#d33',
 			confirmButtonText: 'Yes, delete it!',
-		}).then(result => {
-			$('#editModal').modal('hide')
-
-			if (result.value) {
-				this.blockUI.start('Deleting device...')
-				this.deviceService
-				.deleteDevice(device.thingId)
-				.then((resp: any) => {
-					// console.log(resp);
-					this.router.navigate(['/securehome/devices'])
-				})
-				.catch(err => {
-					this.blockUI.stop()
-					swal.fire('Oops...', 'Something went wrong! Unable to delete the widget.', 'error')
-					this.logger.error('error occurred calling deleteDevice api, show message')
-					this.logger.error(err)
-					this.loadDevice()
-				})
-			}
 		})
+
+		if (!confirmed) return
+
+		try {
+			$('#editModal').modal('hide')
+			this.blockUI.start('Deleting device...')
+			const result = await this.apiService.deleteDevice({ thingId: device.thingId })
+			console.log(result)
+			this.router.navigate(['/securehome/devices'])
+		} catch (error) {
+			swal.fire('Oops...', 'Something went wrong! Unable to delete the widget.', 'error')
+			this.logger.error('error occurred calling deleteDevice api, show message')
+			this.logger.error(error)
+			this.refreshData()
+		} finally {
+			this.blockUI.stop()
+		}
 	}
 
-	public showEditForm () {
-		this.deviceForEdit = new Device(this.device)
-		this.deviceBlueprintsForEdit = this.filterDeviceBlueprintsForDeviceTypeId(this.deviceForEdit.deviceTypeId)
+	public async showEditForm () {
+		this.deviceForEdit = clone(this.device) as UpdateDeviceMutationVariables
+		this.deviceBlueprintsForEdit = await this.filterDeviceBlueprintsForDeviceTypeId(this.deviceForEdit.deviceTypeId)
 
 		$('#editModal').modal('show')
 	}
@@ -244,39 +246,33 @@ export class DeviceComponent implements OnInit, OnDestroy {
 		})
 	}
 
-	filterDeviceBlueprintsForDeviceTypeId (deviceTypeId) {
+	async filterDeviceBlueprintsForDeviceTypeId (deviceTypeId): Promise<DeviceBlueprint[]> {
 		if (deviceTypeId === 'UNKNOWN') {
-			return this.deviceBlueprintService.deviceBlueprints
+			return this.deviceBlueprints
 		} else {
-			return filter(this.deviceBlueprintService.deviceBlueprints, (deviceBlueprint: DeviceBlueprint) => {
-				return (
-					contains(deviceBlueprint.compatibility, deviceTypeId) ||
-							contains(deviceBlueprint.compatibility, 'all')
-				)
+			return this.deviceBlueprints.filter(blueprint => {
+				return blueprint.compatibility.includes('all') || blueprint.compatibility.includes(deviceTypeId)
 			})
 		}
 	}
 
-	public deviceTypeChanged () {
+	public async deviceTypeChanged () {
 		console.log('Changed device Type!', this.deviceForEdit.deviceTypeId)
-		this.deviceBlueprintsForEdit = this.filterDeviceBlueprintsForDeviceTypeId(this.deviceForEdit.deviceTypeId)
+		this.deviceBlueprintsForEdit = await this.filterDeviceBlueprintsForDeviceTypeId(this.deviceForEdit.deviceTypeId)
 	}
 
-	public createCertificate () {
-		this.blockUI.start('Generating certificate for device...')
-
-		this.deviceService
-		.createCertificate(this.device)
-		.then((cert: any) => {
+	public async createCertificate () {
+		try {
+			this.blockUI.start('Generating certificate for device...')
+			const cert = await this.deviceService.createCertificate(this.device as any)
 			this.logger.info(cert)
-			this.blockUI.stop()
-			this.deviceService.createZip([cert])
-		})
-		.catch(err => {
-			this.blockUI.stop()
+			this.deviceService.createZip([cert as any])
+		} catch (error) {
 			swal.fire('Oops...', 'Something went wrong! Unable to create the certificate.', 'error')
 			this.logger.error('error occurred calling createCertificate api, show message')
-			this.logger.error(err)
-		})
+			this.logger.error(error)
+		} finally {
+			this.blockUI.stop()
+		}
 	}
 }

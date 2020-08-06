@@ -3,10 +3,14 @@ import { Router } from '@angular/router'
 import { FormGroup, FormBuilder, Validators, NgForm, Validator } from '@angular/forms'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
+import { Observable } from 'rxjs'
+import { map, single } from 'rxjs/operators'
 import swal from 'sweetalert2'
+import { Device } from '@deathstar/sputnik-core-api'
+import { ListDevicesQuery, ListDevicesGQL, AddedDeviceGQL, ListDevicesQueryVariables } from '@deathstar/sputnik-ui-angular-api'
 // Models
 import { ProfileInfo } from '../../models/profile-info.model'
-import { Device } from '../../models/device.model'
+// import { Device } from '../../models/device.model'
 import { DeviceType } from '../../models/device-type.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
@@ -17,8 +21,8 @@ import { LoggerService } from '../../services/logger.service'
 import { StatService } from '../../services/stat.service'
 // Helpers
 import moment from 'moment'
+import { QueryRef } from 'apollo-angular'
 
-declare let jquery: any
 declare let $: any
 
 @Component({
@@ -32,9 +36,11 @@ export class DevicesComponent implements OnInit {
 
 	private profile: ProfileInfo = null;
 
-	public devices: Device[] = [];
+	public devices: Device[]
 
-	public newDevice: Device;
+	public newDevice: Partial<Device>;
+
+	private _listDevicesQueryRef: QueryRef<ListDevicesQuery, ListDevicesQueryVariables>
 
 	// public deviceTypes: DeviceType[] = [];
 	public pages: any = {
@@ -55,73 +61,90 @@ export class DevicesComponent implements OnInit {
 	public deviceBlueprintService: DeviceBlueprintService,
 	public deviceTypeService: DeviceTypeService,
 	private statService: StatService,
+	private listDevicesGQL: ListDevicesGQL,
+	private addedDeviceGQL: AddedDeviceGQL,
 	private ngZone: NgZone,
 	) {}
 
 	ngOnInit () {
-		const _self = this
-		_self.newDevice = new Device()
-		_self.blockUI.start('Loading devices...')
+		this.newDevice = {} // TODO: is this needed in init?
+		this.blockUI.start('Loading devices...')
 
-		_self.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-			_self.profile = new ProfileInfo(profile)
+		this.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
+			this.profile = new ProfileInfo(profile)
 
-			_self.breadCrumbService.setup(_self.title, [
-				new Crumb({ title: _self.title, active: true, link: 'devices' }),
+			this.breadCrumbService.setup(this.title, [
+				new Crumb({ title: this.title, active: true, link: 'devices' }),
 			])
 
-			_self.loadDevices()
+			this._listDevicesQueryRef = this.listDevicesGQL.watch()
 
-			_self.statService.statObservable$.subscribe(message => {
-				_self.deviceStats = message.deviceStats
-				_self.ngZone.run(() => {
-					_self.updatePaging()
+			this._listDevicesQueryRef.valueChanges.subscribe(({ data }) => {
+				this.devices = data.listDevices.devices.slice() as Device[]
+				this.blockUI.stop()
+			})
+
+			this.statService.statObservable$.subscribe(message => {
+				this.deviceStats = message.deviceStats
+				this.ngZone.run(() => {
+					this.updatePaging()
 				})
 			})
 
-			_self.deviceService.devicesObservable$.subscribe(device => {
-				_self.ngZone.run(() => {
-					_self.loadDevices()
-				})
+			// TODO: not sure how to implement subscriptions with apollo-angular
+			// https://www.apollographql.com/docs/angular/features/subscriptions/
+			this.addedDeviceGQL.subscribe().subscribe(({ data }) => {
+				if (data.addedDevice) {
+					this.devices = [...this.devices, data.addedDevice] as Device[]
+				}
 			})
+
+			// this.deviceService.devicesObservable$.subscribe(device => {
+			// 	this.ngZone.run(() => {
+			// 		this.loadDevices()
+			// 	})
+			// })
 		})
 
-	// _self.deviceTypeService.deviceTypesObservable$.subscribe(message => {
-	//	 _self.deviceTypes = message;
-	//	 _self.ngZone.run(() => {});
+	// this.deviceTypeService.deviceTypesObservable$.subscribe(message => {
+	//	 this.deviceTypes = message;
+	//	 this.ngZone.run(() => {});
 	// });
 	}
 
 	updatePaging () {
-		const _self = this
-		// console.log(_self.pages.pageSize, _self.deviceStats.total);
-		_self.pages.total = Math.ceil(_self.deviceStats.total / _self.pages.pageSize)
+		// console.log(this.pages.pageSize, this.deviceStats.total);
+		this.pages.total = Math.ceil(this.deviceStats.total / this.pages.pageSize)
 	}
 
-	loadDevices () {
-		const _self = this
+	// loadDevices () {
+	// 	const _self = this
 
-		_self.statService.refresh()
+	// 	this.statService.refresh()
 
-		return _self.deviceService
-		.listDevices(_self.pages.pageSize, null)
-		.then(results => {
-		// console.log(results);
-			_self.devices = results.devices
-			_self.updatePaging()
-			_self.blockUI.stop()
-		})
-		.catch(err => {
-			swal.fire('Oops...', 'Something went wrong! Unable to retrieve the devices.', 'error')
-			_self.logger.error('error occurred calling listDevices api, show message')
-			_self.logger.error(err)
-			_self.router.navigate(['/securehome/devices'])
-		})
-	}
+	// 	return this.deviceService
+	// 	.listDevices(this.pages.pageSize, null)
+	// 	.then(results => {
+	// 	// console.log(results);
+	// 		this.devices = results.devices
+	// 		this.updatePaging()
+	// 		this.blockUI.stop()
+	// 	})
+	// 	.catch(err => {
+	// 		swal.fire('Oops...', 'Something went wrong! Unable to retrieve the devices.', 'error')
+	// 		this.logger.error('error occurred calling listDevices api, show message')
+	// 		this.logger.error(err)
+	// 		this.router.navigate(['/securehome/devices'])
+	// 	})
+	// }
 
-	refreshData () {
-		this.blockUI.start('Loading devices...')
-		this.loadDevices()
+	async refreshData () {
+		try {
+			this.blockUI.start('Loading devices...')
+			await this._listDevicesQueryRef.refetch()
+		} finally {
+			this.blockUI.stop()
+		}
 	}
 
 	openDevice (thingId: string) {
@@ -137,19 +160,19 @@ export class DevicesComponent implements OnInit {
 	}
 
 	nextPage () {
-		this.pages.current++
-		this.blockUI.start('Loading device types...')
-		this.loadDevices()
+		// this.pages.current++
+		// this.blockUI.start('Loading device types...')
+		// this.loadDevices()
 	}
 
 	previousPage () {
-		this.pages.current--
-		this.blockUI.start('Loading device types...')
-		this.loadDevices()
+		// this.pages.current--
+		// this.blockUI.start('Loading device types...')
+		// this.loadDevices()
 	}
 
 	showCreateForm () {
-		this.newDevice = new Device()
+		this.newDevice = {}
 		$('#createModal').modal('show')
 	}
 
@@ -159,22 +182,20 @@ export class DevicesComponent implements OnInit {
 	}
 
 	submitCreateDevice (value: any) {
-		const _self = this
+		this.blockUI.start('Creating device...')
 
-		_self.blockUI.start('Creating device...')
-
-		_self.deviceService
-		.addDevice(_self.newDevice.name)
+		this.deviceService
+		.addDevice(this.newDevice.name)
 		.then((device: Device) => {
-			_self.loadDevices()
+			// this.loadDevices()
 			$('#createModal').modal('hide')
 		})
 		.catch(err => {
-			_self.blockUI.stop()
+			this.blockUI.stop()
 			swal.fire('Oops...', 'Something went wrong! Unable to update the device.', 'error')
-			_self.logger.error('error occurred calling updateDevice api, show message')
-			_self.logger.error(err)
-			_self.loadDevices()
+			this.logger.error('error occurred calling updateDevice api, show message')
+			this.logger.error(err)
+			// this.loadDevices()
 		})
 	}
 }
