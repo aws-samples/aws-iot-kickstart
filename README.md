@@ -1,6 +1,6 @@
 # sputnik - The IoT Pilot Kickstart Solution
 
-Note: The AWS IoT Kickstart project or *Sputnik* is currently being reworked to leverage CDK for deployments. Please bear with us while we make the necessary changes. In the meantime, feel free to look at the current implementation, it still works.
+**Note:** The AWS IoT Kickstart project or *Sputnik* is currently being reworked to leverage CDK for deployments. Please bear with us while we make the necessary changes. In the meantime, feel free to look at the current implementation, it still works.
 
 The **IoT Pilot Kickstart solution** has been designed to simplify getting started on AWS IoT, by providing you with a boilerplate, sample application to onboard and manage IoT devices with minimalistic realtime data visualization capabilities.
 
