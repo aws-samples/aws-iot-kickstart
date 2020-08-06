@@ -73,33 +73,34 @@ export class SecureHomeLayoutComponent implements OnInit {
 		}
 
 		private checkLoggedIn (isLoggedIn: boolean, loadProfile: boolean, profile: ProfileInfo) {
-			const self = this
-
 			if (!isLoggedIn) {
-				self.logger.info(
+				this.logger.info(
 					'SecureHomeCommonComponent.checkLoggedIn: Does not seem to be logged in. Navigating to Login',
 				)
-				self.router.navigate(['/home/login'])
+
+				this.userService.removeToken()
+				this.router.navigate(['/home/login'])
 			} else {
-				self.logger.info('SecureHomeCommonComponent.checkLoggedIn: Logged In.')
+				this.logger.info('SecureHomeCommonComponent.checkLoggedIn: Logged In.')
+				this.userService.storeToken()
 
 				if (loadProfile) {
-					self.localStorage.setItem('profile', profile).subscribe(() => {})
-					self.profile = profile
-					self.isAdminUser = self.profile.isAdmin()
+					this.localStorage.setItem('profile', profile).subscribe(() => {})
+					this.profile = profile
+					this.isAdminUser = this.profile.isAdmin()
 				}
 
-				self.iotService.connect()
-				self.iotService.connectionObservable$.subscribe((connected: boolean) => {
-					self.logger.info(`Change of connection state: new state: ${connected}`)
+				this.iotService.connect()
+				this.iotService.connectionObservable$.subscribe((connected: boolean) => {
+					this.logger.info(`Change of connection state: new state: ${connected}`)
 				})
 
-				self.statService.statObservable$.subscribe((msg: Stats) => {
-					self.deviceStats = msg.deviceStats
-					self.systemStats = msg.systemStats
-					self.ngZone.run(() => {})
+				this.statService.statObservable$.subscribe((msg: Stats) => {
+					this.deviceStats = msg.deviceStats
+					this.systemStats = msg.systemStats
+					this.ngZone.run(() => {})
 				})
-				self.statService.refresh()
+				this.statService.refresh()
 			}
 		}
 

@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core'
+import { CognitoUserSession } from 'amazon-cognito-identity-js'
+import { Injectable, OnDestroy } from '@angular/core'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, Route, UrlTree } from '@angular/router'
 import { Observable } from 'rxjs'
@@ -26,7 +27,7 @@ export interface LoggedInCallback {
 }
 
 @Injectable()
-export class UserLoginService implements CanActivate {
+export class UserLoginService implements CanActivate, OnDestroy {
 	constructor (
 				public amplifyService: AmplifyService,
 				private router: Router,
@@ -41,6 +42,9 @@ export class UserLoginService implements CanActivate {
 				this.router.navigate(['/home/login'])
 			}
 
+			// this.startTokenRefreshTimer()
+			this.refreshToken()
+
 			return result
 		}).catch(err => {
 			this.logger.error(
@@ -49,6 +53,46 @@ export class UserLoginService implements CanActivate {
 
 			return false
 		})
+	}
+
+	ngOnDestroy () {
+		if (this._refreshTokenTimer) {
+			clearTimeout(this._refreshTokenTimer)
+		}
+	}
+
+	private _refreshTokenTimer: NodeJS.Timer
+
+	private async startTokenRefreshTimer (session?: CognitoUserSession): Promise<void> {
+		if (this._refreshTokenTimer) {
+			clearTimeout(this._refreshTokenTimer)
+		}
+
+		session = session || await Auth.currentSession()
+
+		const time = session.getIdToken().getExpiration() - 60 * 5
+		this._refreshTokenTimer = setTimeout(() => this.refreshToken(), time)
+		this.logger.info('started refresh token timer: ', time)
+	}
+
+	public async refreshToken (): Promise<void> {
+    const session = await Auth.currentSession()
+		const user = await Auth.currentAuthenticatedUser()
+
+		user.refreshSession(session.getRefreshToken(), async () => {
+    	await this.storeToken()
+    })
+	}
+
+	public async storeToken () {
+		const session = await Auth.currentSession()
+
+		this.localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, session.getIdToken().getJwtToken())
+		this.startTokenRefreshTimer(session)
+	}
+
+	public async removeToken () {
+		this.localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY)
 	}
 
 	async authenticate (username: string, password: string, callback: CognitoCallback) {
@@ -65,10 +109,8 @@ export class UserLoginService implements CanActivate {
 					message: 'User needs to set password.',
 				}, null)
 			} else {
-				const session = await Auth.currentSession()
 
-				// store token in local storage
-				this.localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, session.getIdToken().getJwtToken())
+				this.storeToken()
 
 				try {
 					const profileInfo: ProfileInfo = await this.getUserInfo()

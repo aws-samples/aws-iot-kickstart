@@ -46,6 +46,7 @@ export class ApiProviderModule {
         if (this.token == null) {
           const session = await Auth.currentSession()
           this.token = session.getIdToken().getJwtToken()
+
           window.localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, this.token)
         }
 
@@ -57,12 +58,19 @@ export class ApiProviderModule {
       // TODO: implement better error handling and logging
       onError(({ graphQLErrors, networkError }) => {
         if (graphQLErrors)
-          graphQLErrors.forEach(({ message, locations, path }) =>
+          graphQLErrors.forEach(({ message, locations, path, ...errorProps }) => {
             console.error(
-              `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+              `[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`
             )
-          )
-        if (networkError) console.error(`[Network error]: ${networkError}`)
+
+            if ((errorProps as any).errorType === 'UnauthorizedException') {
+              // likely "Token has expired."
+              console.error(`[UnauthorizedException]: ${message}`, 'Forcing page refresh')
+              window.localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY)
+              window.location.href = '/home/login'
+            }
+          })
+        if (networkError) console.error(`[Network Error]: ${networkError}`)
       }),
     ]
 
