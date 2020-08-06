@@ -53,19 +53,19 @@ export class UserRegistrationService {
 
 	newPassword (newPasswordUser: NewPasswordUser, callback: CognitoCallback): void {
 		this.logger.info('UserRegistrationService.newPassword:', newPasswordUser)
-		const username = newPasswordUser.email.replace('@', '_').replace('.', '_')
 
-		const _self = this
-
-		_self.amplifyService
+		this.amplifyService
 		.auth()
 		.signIn(newPasswordUser.email, newPasswordUser.existingPassword)
 		.then(user => {
-			_self.logger.info('UserRegistrationService.newPassword:', user)
+			this.logger.info('UserRegistrationService.newPassword:', user)
 
-			return _self.amplifyService
+			return this.amplifyService
 			.auth()
-			.completeNewPassword(user, newPasswordUser.password, user.challengeParam.requiredAttributes)
+			.completeNewPassword(user, newPasswordUser.password, {
+				// TODO: pass required attributes in from ui and define interface of required in cdk/core
+				nickname: newPasswordUser.email.split('@')[0],
+			})
 		})
 		.then(user => callback.cognitoCallback(null, user))
 		.catch(err => callback.cognitoCallback(err, null))
