@@ -17,11 +17,14 @@
   ],
   "scripts": {
     "clean": "tsc --build --clean && rm -rf lib",
-    "prebuild": "yarn clean && yarn copy-files",
-    "build": "tsc --project tsconfig.json",
-    "copy-files": "rsync -avm --exclude='*.ts' src/ lib",
-    "prewatch": "yarn clean && yarn copy-files",
-    "watch": "yarn build --watch",
+    "prebuild": "yarn clean",
+    "build": "run-p build:*",
+    "build:cdk": "tsc --project tsconfig.json",
+    "build:files": "rsync -avm --exclude='*.ts' src/ lib",
+    "prewatch": "yarn clean",
+    "watch": "run-p watch:*",
+    "watch:cdk": "yarn build:cdk --watch",
+    "watch:files": "nodemon --watch src -e html,vtl,yml --exec yarn build:files",
     "test": "jest"
   },
   "devDependencies": {
