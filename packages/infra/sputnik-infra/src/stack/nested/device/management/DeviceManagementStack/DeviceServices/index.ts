@@ -1,6 +1,6 @@
 /* eslint-disable no-template-curly-in-string */
 import * as path from 'path'
-import { Table } from '@aws-cdk/aws-dynamodb'
+import { ITable } from '@aws-cdk/aws-dynamodb'
 import { CfnPolicy as IotCfnPolicy } from '@aws-cdk/aws-iot'
 import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
 import { Construct } from '@aws-cdk/core'
@@ -19,14 +19,14 @@ function getMappingTemplate(filename: string): MappingTemplate {
 
 export interface DeviceServicesProps {
 	readonly graphQLApi: ExtendableGraphQLApi
-	readonly deploymentTable: Table
-	readonly deviceBlueprintTable: Table
-	readonly deviceTypeTable: Table
-	readonly deviceTable: Table
-	readonly settingTable: Table
-	readonly systemBlueprintTable: Table
-	readonly systemTable: Table
-	readonly dataStoreTable: Table
+	readonly deploymentTable: ITable
+	readonly deviceBlueprintTable: ITable
+	readonly deviceTypeTable: ITable
+	readonly deviceTable: ITable
+	readonly settingTable: ITable
+	readonly systemBlueprintTable: ITable
+	readonly systemTable: ITable
+	readonly dataStoreTable: ITable
 	readonly iotConnectPolicy: IotCfnPolicy
 }
 
@@ -57,7 +57,7 @@ export class DeviceServices extends Construct {
 		 *** LAMBDA
 		 ***********************************************************************/
 
-		const lambdaFunction = new DevicesServiceLambda(this, 'LambdaFunction', {
+		const lambdaFunction = new DevicesServiceLambda(graphQLApi.node.scope as Construct, 'DevicesServiceLambda', {
 			dependencies: {
 				settingTable,
 				deviceTable,

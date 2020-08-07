@@ -2,17 +2,11 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: 'sputnik - Lambda'
 
 Parameters:
-    npmDependenciesLayerArn:
-        Type: String
     sputnikLibLayerArn:
         Type: String
     tenantRoleArn:
         Type: String
         Description: Role given to new tenant groups
-    deploymentsServiceLambdaFunctionCodeS3Bucket:
-        Type: String
-    deploymentsServiceLambdaFunctionCodeS3Key:
-        Type: String
     settingsServiceLambdaFunctionCodeS3Bucket:
         Type: String
     settingsServiceLambdaFunctionCodeS3Key:
@@ -61,98 +55,6 @@ Parameters:
         Description: AWS IoT Core endpoint
 
 Resources:
-
-    # Service Lambda Function - Deployments - IAM Role
-    deploymentsServiceLambdaFunctionIAMRole:
-        Type: 'AWS::IAM::Role'
-        Properties:
-            AssumeRolePolicyDocument:
-                Version: '2012-10-17'
-                Statement:
-                    - Effect: 'Allow'
-                      Principal:
-                          Service:
-                              - 'lambda.amazonaws.com'
-                      Action:
-                          - 'sts:AssumeRole'
-            Path: '/'
-            Policies:
-                -
-                    PolicyName: 'cloudwatchLogAccess'
-                    PolicyDocument:
-                        Version: '2012-10-17'
-                        Statement:
-                            -
-                                Effect: 'Allow'
-                                Action:
-                                    - 'logs:CreateLogGroup'
-                                    - 'logs:CreateLogStream'
-                                    - 'logs:PutLogEvents'
-                                Resource: !Join ['', ['arn:aws:logs:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':log-group:*']]
-                -
-                    PolicyName: 'deploymentsServiceIAMPolicy'
-                    PolicyDocument:
-                        Version: '2012-10-17'
-                        Statement:
-                            -
-                                Effect: 'Allow'
-                                Action:
-                                    - 'dynamodb:BatchGetItem'
-                                    - 'dynamodb:BatchWriteItem'
-                                    - 'dynamodb:DeleteItem'
-                                    - 'dynamodb:GetItem'
-                                    - 'dynamodb:PutItem'
-                                    - 'dynamodb:Query'
-                                    - 'dynamodb:Scan'
-                                    - 'dynamodb:UpdateItem'
-                                Resource:
-                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref settingsTable]]
-                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref devicesTable]]
-                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deviceTypesTable]]
-                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deviceBlueprintsTable]]
-                                    - !Join ['', ['arn:aws:dynamodb:', !Ref 'AWS::Region', ':', !Ref 'AWS::AccountId', ':table/', !Ref deploymentsTable]]
-                            -
-                                Effect: 'Allow'
-                                Action:
-                                    - 'iam:PassRole'
-                                Resource:
-                                    - !Ref greengrassGroupsIAMRoleArn
-                            -
-                                Effect: 'Allow'
-                                Action:
-                                    # TODO: [SECURITY] Too permissive for now.
-                                    - 'iot:*'
-                                    - 'greengrass:*'
-                                Resource:
-                                    - '*'
-    # Service Lambda Function - Deployments - Function
-    deploymentsServiceLambdaFunction:
-        Type: 'AWS::Lambda::Function'
-        Properties:
-            Description: 'sputnik Deployments microservice'
-            Code:
-                S3Bucket: !Ref deploymentsServiceLambdaFunctionCodeS3Bucket
-                S3Key: !Ref deploymentsServiceLambdaFunctionCodeS3Key
-            Handler: index.handler
-            Runtime: nodejs12.x
-            Role: !GetAtt deploymentsServiceLambdaFunctionIAMRole.Arn
-            Timeout: 60
-            MemorySize: 256
-            Layers:
-                - !Ref npmDependenciesLayerArn
-                - !Ref sputnikLibLayerArn
-            Environment:
-                Variables:
-                    TABLE_DEVICES: !Ref devicesTable
-                    TABLE_DEVICE_TYPES: !Ref deviceTypesTable
-                    TABLE_DEVICE_BLUEPRINTS: !Ref deviceBlueprintsTable
-                    TABLE_DEPLOYMENTS: !Ref deploymentsTable
-                    TABLE_SETTINGS: !Ref settingsTable
-                    AWS_ACCOUNT: !Ref 'AWS::AccountId'
-                    IAM_ROLE_ARN_FOR_GREENGRASS_GROUPS: !Ref greengrassGroupsIAMRoleArn
-                    IOT_POLICY_GREENGRASS_CORE: !Ref iotPolicyForGreengrassCores
-                    DATA_BUCKET: !Ref dataBucket
-                    IOT_ENDPOINT: !Ref iotEndpoint
 
     # Service Lambda Function - Settings - IAM Role
     settingsServiceLambdaFunctionIAMRole:
@@ -219,7 +121,6 @@ Resources:
             Timeout: 60
             MemorySize: 256
             Layers:
-                - !Ref npmDependenciesLayerArn
                 - !Ref sputnikLibLayerArn
             Environment:
                 Variables:
@@ -297,7 +198,6 @@ Resources:
             Timeout: 60
             MemorySize: 256
             Layers:
-                - !Ref npmDependenciesLayerArn
                 - !Ref sputnikLibLayerArn
             Environment:
                 Variables:
@@ -406,7 +306,6 @@ Resources:
             Timeout: 60
             MemorySize: 256
             Layers:
-                - !Ref npmDependenciesLayerArn
                 - !Ref sputnikLibLayerArn
             Environment:
                 Variables:
@@ -422,9 +321,6 @@ Resources:
                     IOT_ENDPOINT: !Ref iotEndpoint
 
 Outputs:
-    deploymentsServiceLambdaFunctionArn:
-        Description: 'Deployments Service ARN'
-        Value: !GetAtt deploymentsServiceLambdaFunction.Arn
     settingsServiceLambdaFunctionArn:
         Description: "Settings Service ARN"
         Value: !GetAtt settingsServiceLambdaFunction.Arn

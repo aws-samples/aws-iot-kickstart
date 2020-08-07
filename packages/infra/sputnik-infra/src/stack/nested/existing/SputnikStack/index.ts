@@ -1,9 +1,7 @@
 import * as path from 'path'
-import { IUserPool } from '@aws-cdk/aws-cognito'
-import * as iam from '@aws-cdk/aws-iam'
 import * as iot from '@aws-cdk/aws-iot'
 import { v1 as uuid } from 'uuid'
-import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
+import { IFunction } from '@aws-cdk/aws-lambda'
 import {
 	Construct,
 	CustomResource,
@@ -12,22 +10,17 @@ import {
 	NestedStackProps,
 } from '@aws-cdk/core'
 import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra-core/lib/construct/api/graphql/ExtendableGraphQLApi'
-import { uniqueIdHash, namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
+import { uniqueIdHash } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 import { IPersistent } from '../../../../stack/root/PersistentStack'
 import {
-	DeploymentsServiceLambda,
 	SettingsServiceLambda,
 	SystemsServiceLambda,
 	JITOnboardingServiceLambda,
-	S3HelperLambda,
-	HelperUtilsLambda,
-	NpmDependenciesLambdaLayer,
 	SputnikLibraryLambdaLayer,
 } from '@deathstar/sputnik-infra-lambda-code/dist'
-import { DeviceManagementStack } from '../../device/management/DeviceManagementStack'
 import { CognitoStack } from '../../identity/CognitoStack'
-import { UserManagementStack } from '../../identity/UserManagementStack'
 import { IncludeStack } from './IncludeStack'
+import { IRole } from '@aws-cdk/aws-iam'
 
 function getTemplateFile (templateName: string): string {
 	return path.join(__dirname, 'cf', `${templateName}.yml`)
@@ -39,37 +32,25 @@ export interface SputnikStackProps extends NestedStackProps {
 	readonly persistent: IPersistent
 
 	readonly graphQLApi: ExtendableGraphQLApi
-	readonly userPool: IUserPool
 	readonly cognitoStack: CognitoStack
-	readonly userManagementStack: UserManagementStack
-	readonly deviceManagementStack: DeviceManagementStack
-
-	// previous props
-	readonly administratorName: string
-	readonly administratorEmail: string
-	readonly appShortName: string
-	readonly appFullName: string
 	readonly sendAnonymousUsageData?: boolean
+
+	readonly greengrassGroupsRole: IRole
+	readonly iotPolicyForGreengrassCores: iot.CfnPolicy
+
+	readonly helperUtilsLambda: IFunction
+	readonly s3HelperLambda: IFunction
+
+	readonly iotEndpointAddress: string
 }
 
 export class SputnikStack extends NestedStack {
-	readonly greengrassServiceIAMRole: iam.Role;
-
-	readonly greengrassGroupsIAMRole: iam.Role;
-
-	readonly IoTPolicyForGreengrassCores: iot.CfnPolicy;
-
-	readonly lambdaHelpersStack: IncludeStack;
 
 	readonly lambdaServiceStack: IncludeStack;
 
 	readonly appSyncStack: IncludeStack;
 
 	readonly cloudTrailStack?: IncludeStack;
-
-	readonly iotEndpoint: CustomResource;
-
-	readonly greengrassAssociateServiceRoleToAccount: CustomResource;
 
 	readonly websiteConfig: CustomResource;
 
@@ -84,98 +65,12 @@ export class SputnikStack extends NestedStack {
 			graphQLApi,
 			persistent,
 			cognitoStack,
+			iotPolicyForGreengrassCores,
+			iotEndpointAddress,
+			helperUtilsLambda,
+			s3HelperLambda,
+			greengrassGroupsRole,
 		} = props
-
-		/**************************************************************************
-		 * ROLES & POOLICIES
-		 ***************************************************************************/
-		this.greengrassServiceIAMRole = new iam.Role(
-			this,
-			'greengrassServiceIAMRole',
-			{
-				assumedBy: new iam.ServicePrincipal('greengrass.amazonaws.com'),
-				managedPolicies: [
-					iam.ManagedPolicy.fromAwsManagedPolicyName(
-						'service-role/AWSGreengrassResourceAccessRolePolicy',
-					),
-				],
-			},
-		)
-
-		this.greengrassGroupsIAMRole = new iam.Role(
-			this,
-			'greengrassGroupsIAMRole',
-			{
-				roleName: namespaced(this, `${id}-GreengrassGroupsIAMRole`),
-				assumedBy: new iam.ServicePrincipal('greengrass.amazonaws.com'),
-			},
-		)
-
-		this.IoTPolicyForGreengrassCores = new iot.CfnPolicy(
-			this,
-			'IoTPolicyForGreengrassCores',
-			{
-				policyDocument: {
-					Version: '2012-10-17',
-					Statement: [
-						{
-							Effect: 'Allow',
-							Action: ['iot:*', 'greengrass:*'],
-							Resource: ['*'],
-						},
-					],
-				},
-			},
-		)
-
-		/**************************************************************************
-		 * RESOURCES
-		 ***************************************************************************/
-		this.lambdaHelpersStack = new IncludeStack(
-			this,
-			'CFStackForLambdaHelpers',
-			{
-				templateFile: getTemplateFile('lambda-helpers'),
-				parameters: {
-					npmDependenciesLayerArn: NpmDependenciesLambdaLayer.getLayer(this).layerVersionArn,
-          sputnikLibLayerArn: SputnikLibraryLambdaLayer.getLayer(this).layerVersionArn,
-					customResourceS3Helper: S3HelperLambda.codeAsset,
-					HelperUtilsLambdaFunction: HelperUtilsLambda.codeAsset,
-					destBucketArn: persistent.websiteStack.websiteBucketArn,
-					dataBucketArn: persistent.dataBucketStack.dataBucketArn,
-					settingsTable:
-						persistent.deviceManagementStack.settingTable.tableName,
-					devicesTable: persistent.deviceManagementStack.deviceTable.tableName,
-					deviceTypesTable:
-						persistent.deviceManagementStack.deviceTypeTable.tableName,
-					deviceBlueprintsTable:
-						persistent.deviceManagementStack.deviceBlueprintTable.tableName,
-					systemsTable: persistent.deviceManagementStack.systemTable.tableName,
-					systemBlueprintsTable:
-						persistent.deviceManagementStack.systemBlueprintTable.tableName,
-					greengrassServiceRoleArn: this.greengrassServiceIAMRole.roleArn,
-				},
-			},
-		)
-		const utilsFunction = LambdaFunction.fromFunctionArn(
-			this,
-			'UtilsFunction',
-			this.lambdaHelpersStack.getOutput('HelperUtilsLambdaFunctionArn'),
-		)
-		const s3HelperFunction = LambdaFunction.fromFunctionArn(
-			this,
-			'S3HelperFunction',
-			this.lambdaHelpersStack.getOutput('customResourceS3HelperArn'),
-		)
-
-		this.iotEndpoint = new CustomResource(this, 'iotEndpoint', {
-			resourceType: 'Custom::Lambda',
-			serviceToken: utilsFunction.functionArn,
-			properties: {
-				customAction: 'iotDescribeEndpoint',
-				endpointType: 'iot:Data-ATS',
-			},
-		})
 
 		this.lambdaServiceStack = new IncludeStack(
 			this,
@@ -183,10 +78,8 @@ export class SputnikStack extends NestedStack {
 			{
 				templateFile: getTemplateFile('lambda-services'),
 				parameters: {
-					npmDependenciesLayerArn: NpmDependenciesLambdaLayer.getLayer(this).layerVersionArn,
-          sputnikLibLayerArn: SputnikLibraryLambdaLayer.getLayer(this).layerVersionArn,
+          sputnikLibLayerArn: SputnikLibraryLambdaLayer.getLayerVersion(this).layerVersionArn,
 					tenantRoleArn: cognitoStack.tenantRole.roleArn,
-					deploymentsServiceLambdaFunction: DeploymentsServiceLambda.codeAsset,
 					settingsServiceLambdaFunction: SettingsServiceLambda.codeAsset,
 					systemsServiceLambdaFunction: SystemsServiceLambda.codeAsset,
 					justInTimeOnBoardingServiceLambdaFunction:
@@ -204,9 +97,9 @@ export class SputnikStack extends NestedStack {
 					systemsTable: persistent.deviceManagementStack.systemTable.tableName,
 					systemBlueprintsTable:
 						persistent.deviceManagementStack.systemBlueprintTable.tableName,
-					greengrassGroupsIAMRoleArn: this.greengrassGroupsIAMRole.roleArn,
-					iotPolicyForGreengrassCores: this.IoTPolicyForGreengrassCores.ref,
-					iotEndpoint: this.iotEndpoint.getAttString('endpointAddress'),
+					greengrassGroupsIAMRoleArn: greengrassGroupsRole.roleArn,
+					iotPolicyForGreengrassCores: iotPolicyForGreengrassCores.ref,
+					iotEndpoint: iotEndpointAddress,
 				},
 			},
 		)
@@ -233,13 +126,10 @@ export class SputnikStack extends NestedStack {
 				settingsServiceLambdaFunctionArn: this.lambdaServiceStack.getOutput(
 					'settingsServiceLambdaFunctionArn',
 				),
-				deploymentsServiceLambdaFunctionArn: this.lambdaServiceStack.getOutput(
-					'deploymentsServiceLambdaFunctionArn',
-				),
 				systemsServiceLambdaFunctionArn: this.lambdaServiceStack.getOutput(
 					'systemsServiceLambdaFunctionArn',
 				),
-				HelperUtilsLambdaFunctionArn: utilsFunction.functionArn,
+				HelperUtilsLambdaFunctionArn: helperUtilsLambda.functionArn,
 			},
 		})
 
@@ -253,21 +143,10 @@ export class SputnikStack extends NestedStack {
 		/**************************************************************************
 		 * CUSTOM RESOURCES
 		 ***************************************************************************/
-		this.greengrassAssociateServiceRoleToAccount = new CustomResource(
-			this,
-			'greengrassAssociateServiceRoleToAccount',
-			{
-				resourceType: 'Custom::Lambda',
-				serviceToken: utilsFunction.functionArn,
-				properties: {
-					customAction: 'greengrassAssociateServiceRoleToAccount',
-				},
-			},
-		)
 
 		this.websiteConfig = new CustomResource(this, 'websiteConfig', {
 			resourceType: 'Custom::LoadLambda',
-			serviceToken: s3HelperFunction.functionArn,
+			serviceToken: s3HelperLambda.functionArn,
 			properties: {
 				destS3Bucket: persistent.websiteStack.websiteBucket.bucketName,
 				destS3Key: 'assets/appVariables.js',
@@ -281,7 +160,7 @@ export class SputnikStack extends NestedStack {
 						persistent.cognitoStack.websiteCognitoIoTPolicy.policyName,
 					S3_DATA_BUCKET: persistent.dataBucketStack.dataBucket.bucketName,
 					APP_SYNC_GRAPHQL_ENDPOINT: graphQLApi.graphQlUrl,
-					IOT_ENDPOINT: this.iotEndpoint.getAttString('endpointAddress'),
+					IOT_ENDPOINT: iotEndpointAddress,
 				},
 				customAction: 'putFile',
 			},
@@ -289,7 +168,7 @@ export class SputnikStack extends NestedStack {
 
 		this.initSettings = new CustomResource(this, 'initSettings', {
 			resourceType: 'Custom::LoadLambda',
-			serviceToken: utilsFunction.functionArn,
+			serviceToken: helperUtilsLambda.functionArn,
 			properties: {
 				ddbTable: persistent.deviceManagementStack.settingTable.tableName,
 				ddbItem: {

@@ -38,9 +38,6 @@ Parameters:
     settingsServiceLambdaFunctionArn:
         Type: String
         Description: Settings Micro Service ARN
-    deploymentsServiceLambdaFunctionArn:
-        Type: String
-        Description: Deployments Micro Service ARN
     systemsServiceLambdaFunctionArn:
         Type: String
         Description: Systems Micro Service ARN
@@ -62,7 +59,6 @@ Resources:
                         Action:
                             - 'lambda:InvokeFunction'
                         Resource:
-                            - !Ref deploymentsServiceLambdaFunctionArn
                             - !Ref settingsServiceLambdaFunctionArn
                             - !Ref systemsServiceLambdaFunctionArn
                             - !Ref HelperUtilsLambdaFunctionArn
@@ -115,17 +111,6 @@ Resources:
             DynamoDBConfig:
                 AwsRegion: !Ref 'AWS::Region'
                 TableName: !Ref deviceBlueprintsTable
-    appSyncDataSourceDeploymentsDynamoDB:
-        Type: 'AWS::AppSync::DataSource'
-        Properties:
-            ApiId: !Ref 'apiId'
-            Name: !Sub 'sputnik_appSyncDataSourceDeploymentsDynamoDB_${uniqueId}'
-            Description: The Deployments DynamoDB table App Sync Data Source
-            Type: AMAZON_DYNAMODB
-            ServiceRoleArn: !Ref 'apiRoleArn'
-            DynamoDBConfig:
-                AwsRegion: !Ref 'AWS::Region'
-                TableName: !Ref deploymentsTable
     appSyncDataSourceSystemsDynamoDB:
         Type: 'AWS::AppSync::DataSource'
         Properties:
@@ -158,16 +143,6 @@ Resources:
             ServiceRoleArn: !Ref 'apiRoleArn'
             LambdaConfig:
                 LambdaFunctionArn: !Ref settingsServiceLambdaFunctionArn
-    appSyncDataSourceDeploymentsLambda:
-        Type: AWS::AppSync::DataSource
-        Properties:
-            ApiId: !Ref 'apiId'
-            Name: !Sub 'sputnik_appSyncDataSourceDeploymentsLambda_${uniqueId}'
-            Description: The Deployments Lambda App Sync Data Source
-            Type: AWS_LAMBDA
-            ServiceRoleArn: !Ref 'apiRoleArn'
-            LambdaConfig:
-                LambdaFunctionArn: !Ref deploymentsServiceLambdaFunctionArn
     appSyncDataSourceSystemsLambda:
         Type: AWS::AppSync::DataSource
         Properties:
@@ -628,60 +603,6 @@ Resources:
                     }
                 }
             ResponseMappingTemplate: '$util.toJson($ctx.result)'
-
-    # ####################################################################################################
-    # ####################################################################################################
-    #
-    # RESOLVERS - Deployments
-    #
-    # ####################################################################################################
-    # ####################################################################################################
-
-    # RESOLVERS - QUERIES - Deployments - List
-    appSyncResolverQueryListDeployments:
-        Type: 'AWS::AppSync::Resolver'
-        Properties:
-            ApiId: !Ref 'apiId'
-            TypeName: Query
-            FieldName: listDeployments
-            DataSourceName: !GetAtt appSyncDataSourceDeploymentsDynamoDB.Name
-            RequestMappingTemplate: |
-                {
-                    "version" : "2017-02-28",
-                    "operation" : "Scan",
-                    #if( $ctx.args.limit )
-                        "limit": $ctx.args.limit,
-                    #end
-                    #if( ${ctx.args.nextToken} )
-                        "nextToken": "${ctx.args.nextToken}"
-                    #end
-                }
-            ResponseMappingTemplate: |
-                {
-                    "deployments": $util.toJson($ctx.result.items),
-                    #if( ${ctx.result.nextToken} )
-                        "nextToken": "${ctx.result.nextToken}",
-                    #end
-                }
-
-    # RESOLVERS - MUTATIONS - Deployments - Add
-    appSyncResolverMutationAddDeployment:
-        Type: 'AWS::AppSync::Resolver'
-        Properties:
-            ApiId: !Ref 'apiId'
-            TypeName: Mutation
-            FieldName: addDeployment
-            DataSourceName: !GetAtt appSyncDataSourceDeploymentsLambda.Name
-            RequestMappingTemplate: |
-                {
-                    "version" : "2017-02-28",
-                    "operation" : "Invoke",
-                    "payload": {
-                        "cmd": "addDeployment",
-                        "thingId": "$context.arguments.thingId"
-                    }
-                }
-            ResponseMappingTemplate: '$util.toJson($context.result)'
 
     # ####################################################################################################
     # ####################################################################################################
