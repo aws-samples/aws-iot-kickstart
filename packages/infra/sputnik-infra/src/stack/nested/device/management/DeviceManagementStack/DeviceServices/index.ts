@@ -1,4 +1,5 @@
 /* eslint-disable no-template-curly-in-string */
+import * as path from 'path'
 import { Table } from '@aws-cdk/aws-dynamodb'
 import { CfnPolicy as IotCfnPolicy } from '@aws-cdk/aws-iot'
 import { Function as LambdaFunction } from '@aws-cdk/aws-lambda'
@@ -11,6 +12,10 @@ import {
 	LambdaDataSource,
 } from '@aws-cdk/aws-appsync'
 import { DevicesServiceLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
+
+function getMappingTemplate(filename: string): MappingTemplate {
+	return MappingTemplate.fromFile(path.join(__dirname, 'mapping-templates', filename))
+}
 
 export interface DeviceServicesProps {
 	readonly graphQLApi: ExtendableGraphQLApi
@@ -98,6 +103,13 @@ export class DeviceServices extends Construct {
 		 ***********************************************************************/
 		deviceTableDataSource.createResolver({
 			typeName: 'Query',
+			fieldName: 'devices',
+			requestMappingTemplate: getMappingTemplate('Query.devices.request.vtl'),
+			responseMappingTemplate: getMappingTemplate('Query.devices.response.vtl'),
+		})
+		// @deprecated(reason: "Use `devices()` query")
+		deviceTableDataSource.createResolver({
+			typeName: 'Query',
 			fieldName: 'listDevices',
 			requestMappingTemplate: MappingTemplate.fromString(`{
 					"version" : "2017-02-28",
@@ -116,6 +128,7 @@ export class DeviceServices extends Construct {
 					#end
 			}`),
 		})
+		// @deprecated(reason: "Use `devices()` query")
 		deviceTableDataSource.createResolver({
 			typeName: 'Query',
 			fieldName: 'listDevicesOfDeviceType',
@@ -143,6 +156,7 @@ export class DeviceServices extends Construct {
 					#end
 			}`),
 		})
+		// @deprecated(reason: "Use `devices()` query")
 		deviceTableDataSource.createResolver({
 			typeName: 'Query',
 			fieldName: 'listDevicesWithDeviceBlueprint',
@@ -208,7 +222,8 @@ export class DeviceServices extends Construct {
 							"cmd": "addDevice",
 							"name": "$ctx.args.name",
 							"deviceTypeId": "$ctx.args.deviceTypeId",
-							"deviceBlueprintId": "$ctx.args.deviceBlueprintId"
+							"deviceBlueprintId": "$ctx.args.deviceBlueprintId",
+							"spec": "{}"
 					}
 			}`),
 			responseMappingTemplate: MappingTemplate.lambdaResult(),

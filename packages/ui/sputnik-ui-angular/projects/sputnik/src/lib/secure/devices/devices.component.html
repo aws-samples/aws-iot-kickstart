@@ -57,6 +57,17 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
+            <div class="card-header">
+                <select class="custom-select col-12" #type="ngModel" [(ngModel)]="filterInput.deviceBlueprintId" ngModel
+                    (change)="queryDevices()"
+                >
+                    <option value="ALL" ng-selected="filterInput.deviceBlueprintId == null"></option>
+                    <option value="UNKNOWN" ng-selected="filterInput.deviceBlueprintId === 'UNKNOWN'">UNKNOWN</option>
+                    <option *ngFor="let item of deviceBlueprints | async; let i = index" value="{{item.id}}"
+                        ng-selected="filterInput.deviceBlueprintId === item.id">{{item.name}}</option>
+                </select>
+            </div>
+
             <div class="card-body">
                 <button type="button" class="float-right btn btn-sm btn-success m-l-15" (click)="refreshData()"><i
                         class="fa fa-refresh"></i> Refresh</button>

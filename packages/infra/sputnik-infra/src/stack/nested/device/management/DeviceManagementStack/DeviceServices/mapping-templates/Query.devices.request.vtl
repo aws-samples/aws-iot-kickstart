@@ -1,0 +1,47 @@
+## build filter
+#set( $expression = "" )
+#set( $expressionNames = {} )
+#set( $expressionNames = {} )
+#set( $expressionValues = {} )
+
+#if($ctx.args.input.deviceBlueprint.ids)
+    #set( $value = "" )
+    #foreach( $id in $ctx.args.input.deviceBlueprint.ids )
+        #set( $value = "${value}${id}" )
+    #if( $foreach.hasNext ) #set( $value = "${value}," ) #end
+#end
+    $!{expressionValues.put(":deviceBlueprintId", $util.dynamodb.toDynamoDB($value))}
+    #if( !${expression.isEmpty()} ) #set( $expression = "${expression}," ) #end
+    #set( $expression = "$expression deviceBlueprintId IN (:deviceBlueprintId)" )
+#end
+
+#if($ctx.args.input.deviceType.ids)
+    #set( $value = "" )
+    #foreach( $id in $ctx.args.input.deviceType.ids )
+        #set( $value = "${value}${id}" )
+    #if( $foreach.hasNext ) #set( $value = "${value}," ) #end
+#end
+    $!{expressionValues.put(":deviceTypeId", $util.dynamodb.toDynamoDB($value))}
+    #if( !${expression.isEmpty()} ) #set( $expression = "${expression}," ) #end
+    #set( $expression = "$expression deviceTypeId IN (:deviceTypeId)" )
+#end
+
+{
+    "version" : "2017-02-28",
+    "operation" : "Scan"
+
+    #if($ctx.args.pagination.limit)
+        ,"limit": $ctx.args.pagination.limit
+    #end
+
+    #if($ctx.args.pagination.nextToken)
+        ,"nextToken": "\${ctx.args.pagination.nextToken}"
+    #end
+
+    #if( !${expression.isEmpty()} )
+        ,"filter" : {
+                "expression" : "${expression}",
+                "expressionValues" : $utils.toJson($expressionValues)
+        }
+    #end
+}

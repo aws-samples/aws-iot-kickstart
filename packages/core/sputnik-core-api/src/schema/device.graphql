@@ -1,106 +1,120 @@
 type ConnectionState @aws_iam @aws_cognito_user_pools {
-	state: String!
-	at: AWSDateTime!
+  state: String!
+  at: AWSDateTime!
 }
 
 type DeviceStat
-	@aws_iam
-	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
-	total: Int!
-	connected: Int!
-	disconnected: Int!
+  @aws_iam
+  @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+  total: Int!
+  connected: Int!
+  disconnected: Int!
 }
 
 type Device @aws_iam @aws_cognito_user_pools {
-	thingId: String!
-	thingName: String!
-	thingArn: String!
-	name: String!
-	# Namespace used to prefix iot device events and partition events for multi-tenancy
-	namespace: String
-	deviceTypeId: String!
-	deviceBlueprintId: String!
-	connectionState: ConnectionState
-	greengrassGroupId: String!
-	spec: AWSJSON
-	metadata: AWSJSON
-	lastDeploymentId: String
-	certificateArn: String
-		@aws_iam
-		@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
-	createdAt: AWSDateTime
-	updatedAt: AWSDateTime
+  thingId: String!
+  thingName: String!
+  thingArn: String!
+  name: String!
+  # Namespace used to prefix iot device events and partition events for multi-tenancy
+  namespace: String
+  deviceTypeId: String!
+  deviceBlueprintId: String!
+  connectionState: ConnectionState
+  greengrassGroupId: String!
+  spec: AWSJSON
+  metadata: AWSJSON
+  lastDeploymentId: String
+  certificateArn: String
+    @aws_iam
+    @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
 }
 
 type DeviceConnection implements PaginationResponse
-	@aws_iam
-	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
-    limit: Int
-    nextToken: String
-    devices: [Device!]!
+  @aws_iam
+  @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+  limit: Int
+  nextToken: String
+  devices: [Device!]!
 }
 
 type Certificate
-	@aws_iam
-	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
-	certificateArn: String!
-	certificateId: String!
-	certificatePem: String!
+  @aws_iam
+  @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+  certificateArn: String!
+  certificateId: String!
+  certificatePem: String!
+}
+
+input DeviceFilterInput {
+  device: ByIdsInput
+  deviceBlueprint: ByIdsInput
+  deviceType: ByIdsInput
+  namespace: [String!]
+  attribute: [KeyValueInput!]
 }
 
 extend type Query {
-	listDevices(limit: Int, nextToken: String): DeviceConnection
+  devices(
+    input: DeviceFilterInput
+    pagination: PaginationInput
+  ): DeviceConnection!
 
-	listDevicesOfDeviceType(
-		deviceTypeId: String!
-		limit: Int
-		nextToken: String
-	): DeviceConnection
+  listDevices(limit: Int, nextToken: String): DeviceConnection
+    @deprecated(reason: "User `devices()` query instead")
 
-	listDevicesWithDeviceBlueprint(
-		deviceBlueprintId: String!
-		limit: Int
-		nextToken: String
-	): DeviceConnection
+  listDevicesOfDeviceType(
+    deviceTypeId: String!
+    limit: Int
+    nextToken: String
+  ): DeviceConnection @deprecated(reason: "User `devices()` query instead")
 
-	getDevice(thingId: String!): Device @aws_iam @aws_cognito_user_pools
+  listDevicesWithDeviceBlueprint(
+    deviceBlueprintId: String!
+    limit: Int
+    nextToken: String
+  ): DeviceConnection @deprecated(reason: "User `devices()` query instead")
 
-	getDeviceStats: DeviceStat
+  getDevice(thingId: String!): Device @aws_iam @aws_cognito_user_pools
+
+  getDeviceStats: DeviceStat
 }
 
 extend type Mutation {
-	addDevice(
-		name: String!
-		deviceTypeId: String!
-		deviceBlueprintId: String!
-	): Device!
+  addDevice(
+    name: String!
+    deviceTypeId: String!
+    deviceBlueprintId: String!
+  ): Device!
 
-	deleteDevice(thingId: String!): Device
+  deleteDevice(thingId: String!): Device
 
-	updateDevice(
-		thingId: String!
-		name: String!
-		deviceTypeId: String!
-		deviceBlueprintId: String!
-		spec: AWSJSON!
-		namespace: String
-		metadata: AWSJSON
-	): Device!
+  updateDevice(
+    thingId: String!
+    name: String!
+    deviceTypeId: String!
+    deviceBlueprintId: String!
+    spec: AWSJSON!
+    namespace: String
+    metadata: AWSJSON
+  ): Device!
 
-	createCertificate(csr: String!, thingId: String!): Certificate!
+  createCertificate(csr: String!, thingId: String!): Certificate!
 
-	updateDeviceNamespace(
-		thingId: String!
-		# Allow null to remove value
-		namespace: String
-	): Device!
+  updateDeviceNamespace(
+    thingId: String!
+    # Allow null to remove value
+    namespace: String
+  ): Device!
 }
 
 extend type Subscription {
-	addedDevice: Device @aws_subscribe(mutations: ["addDevice"])
+  addedDevice: Device @aws_subscribe(mutations: ["addDevice"])
 
-	updatedDevice: Device
-		@aws_subscribe(mutations: ["updateDevice", "updateDeviceNamespace"])
+  updatedDevice: Device
+    @aws_subscribe(mutations: ["updateDevice", "updateDeviceNamespace"])
 
-	deletedDevice: Device @aws_subscribe(mutations: ["deleteDevice"])
+  deletedDevice: Device @aws_subscribe(mutations: ["deleteDevice"])
 }

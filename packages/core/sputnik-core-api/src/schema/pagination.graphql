@@ -1,8 +1,8 @@
 interface PaginationResponse {
-    nextToken: String
+  nextToken: String
 }
 
-input Pagination {
-    limit: Int
-    nextToken: String
+input PaginationInput {
+  limit: Int
+  nextToken: String
 }

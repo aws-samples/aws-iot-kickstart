@@ -12,7 +12,8 @@
   "typings": "dist/deathstar-sputnik-ui-angular-api.d.ts",
   "metadata": "dist/deathstar-sputnik-ui-angular-api.metadata.json",
   "scripts": {
-    "prebuild": "yarn generate",
+    "clean": "rm -rf dist src/lib/generated.ts",
+    "prebuild": "yarn clean && yarn generate",
     "build": "cd ../../ && yarn build:api",
     "watch": "yarn build --watch",
     "generate": "graphql-codegen --config codegen.yml"

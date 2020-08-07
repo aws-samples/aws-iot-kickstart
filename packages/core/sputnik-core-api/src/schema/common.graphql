@@ -6,46 +6,51 @@
 ## Interfaces
 ###############################################################################
 interface Model {
-	id: ID!
-	createdAt: AWSTimestamp!
-	updatedAt: AWSTimestamp!
+  id: ID!
+  createdAt: AWSTimestamp!
+  updatedAt: AWSTimestamp!
 }
 
 interface MutationResponse {
-	code: String!
-	success: Boolean!
-	message: String!
+  code: String!
+  success: Boolean!
+  message: String!
 }
 
 ###############################################################################
 ## Types
 ###############################################################################
 type DateRange {
-	start: AWSDate
-	end: AWSDate
+  start: AWSDate
+  end: AWSDate
 }
 type DateTimeRange {
-	start: AWSDateTime
-	end: AWSDateTime
+  start: AWSDateTime
+  end: AWSDateTime
 }
 
 ###############################################################################
 ## Inputs
 ###############################################################################
 input DateRangeInput {
-	start: AWSDate
-	end: AWSDate
+  start: AWSDate
+  end: AWSDate
 }
 input DateTimeRangeInput {
-	start: AWSDateTime
-	end: AWSDateTime
+  start: AWSDateTime
+  end: AWSDateTime
 }
 
 input ByIdInput {
-	id: ID!
+  id: ID!
 }
 input ByIdsInput {
-	ids: [ID!]!
+  ids: [ID!]!
+}
+
+input KeyValueInput {
+  key: String!
+  value: String
 }
 
 ###############################################################################

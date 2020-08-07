@@ -10,12 +10,25 @@ import { DeploymentService } from '../../services/deployment.service'
 import { LoggerService } from '../../services/logger.service'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import swal from 'sweetalert2'
-import { contains, filter, clone } from 'underscore'
+import { contains, filter, clone, isEmpty } from 'underscore'
 import { GetDeviceQuery, GetDeviceQueryVariables, ApiService, UpdateDeviceMutationVariables, ListDeviceBlueprintsQuery, ListDeviceBlueprintsQueryVariables, ListDeviceTypesQueryVariables, ListDeviceTypesQuery } from '@deathstar/sputnik-ui-angular-api'
 import { QueryRef } from 'apollo-angular'
 import { DeviceService } from '../../services/device.service'
+import { DEFAULT_NAMESPACE } from '@deathstar/sputnik-core'
 
 declare let $: any
+
+function cleanDeviceVariables(variables: UpdateDeviceMutationVariables): UpdateDeviceMutationVariables {
+	variables = clone(variables)
+	if (isEmpty(variables.namespace)) {
+		variables.namespace = DEFAULT_NAMESPACE
+	}
+	if (isEmpty(variables.spec)) {
+		variables.spec = "{}"
+	}
+
+	return variables
+}
 
 @Component({
 	selector: 'app-root-device',
@@ -87,6 +100,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
 		})
 		this.getDeviceQuery.valueChanges.subscribe(({ data }) => {
 			this.device = data.getDevice
+			this.blockUI.stop()
 		})
 
 		// device type
@@ -156,7 +170,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
 	async submitEditDevice (value: any) {
 		try {
 			this.blockUI.start('Editing device...')
-			const result = await this.apiService.updateDevice(this.deviceForEdit).toPromise()
+			const result = await this.apiService.updateDevice(cleanDeviceVariables(this.deviceForEdit)).toPromise()
 			$('#editModal').modal('hide')
 			console.log('Updated device:', result)
 			this.device = result.data.updateDevice

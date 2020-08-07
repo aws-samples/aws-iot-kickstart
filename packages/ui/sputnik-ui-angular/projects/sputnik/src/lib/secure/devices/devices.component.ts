@@ -6,12 +6,12 @@ import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { Observable } from 'rxjs'
 import { map, single } from 'rxjs/operators'
 import swal from 'sweetalert2'
-import { Device } from '@deathstar/sputnik-core-api'
-import { ListDevicesQuery, ListDevicesGQL, AddedDeviceGQL, ListDevicesQueryVariables } from '@deathstar/sputnik-ui-angular-api'
+import { Device, DeviceFilterInput, DeviceBlueprint, DeviceType } from '@deathstar/sputnik-core-api'
+import { ApiService, DevicesQuery, DevicesQueryVariables } from '@deathstar/sputnik-ui-angular-api'
 // Models
 import { ProfileInfo } from '../../models/profile-info.model'
 // import { Device } from '../../models/device.model'
-import { DeviceType } from '../../models/device-type.model'
+// import { DeviceType } from '../../models/device-type.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { DeviceService } from '../../services/device.service'
@@ -24,6 +24,23 @@ import moment from 'moment'
 import { QueryRef } from 'apollo-angular'
 
 declare let $: any
+
+interface SimpleDeviceFilterInput {
+	deviceBlueprintId?: string
+	deviceTypeId?: string
+}
+
+function convertSimpleInput (simpleInput: SimpleDeviceFilterInput): DeviceFilterInput {
+	const filterInput: DeviceFilterInput = {}
+	if (simpleInput.deviceBlueprintId && simpleInput.deviceBlueprintId !== 'ALL') {
+		filterInput.deviceBlueprint = { ids: [simpleInput.deviceBlueprintId] }
+	}
+	if (simpleInput.deviceTypeId && simpleInput.deviceTypeId !== 'ALL') {
+		filterInput.deviceType = { ids: [simpleInput.deviceTypeId] }
+	}
+
+	return filterInput
+}
 
 @Component({
 	selector: 'app-root-devices',
@@ -40,13 +57,18 @@ export class DevicesComponent implements OnInit {
 
 	public newDevice: Partial<Device>;
 
-	private _listDevicesQueryRef: QueryRef<ListDevicesQuery, ListDevicesQueryVariables>
+	public filterInput: SimpleDeviceFilterInput = {}
+
+	public deviceBlueprints: Observable<DeviceBlueprint[]>
+
+	public deviceTypes: Observable<DeviceType[]>
 
 	// public deviceTypes: DeviceType[] = [];
-	public pages: any = {
+	public pages = {
+		nextToken: null,
 		current: 1,
 		total: 0,
-		pageSize: 20,
+		pageSize: 50,
 	};
 
 	@BlockUI()
@@ -61,14 +83,12 @@ export class DevicesComponent implements OnInit {
 	public deviceBlueprintService: DeviceBlueprintService,
 	public deviceTypeService: DeviceTypeService,
 	private statService: StatService,
-	private listDevicesGQL: ListDevicesGQL,
-	private addedDeviceGQL: AddedDeviceGQL,
+	private apiService: ApiService,
 	private ngZone: NgZone,
 	) {}
 
 	ngOnInit () {
 		this.newDevice = {} // TODO: is this needed in init?
-		this.blockUI.start('Loading devices...')
 
 		this.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
 			this.profile = new ProfileInfo(profile)
@@ -77,12 +97,15 @@ export class DevicesComponent implements OnInit {
 				new Crumb({ title: this.title, active: true, link: 'devices' }),
 			])
 
-			this._listDevicesQueryRef = this.listDevicesGQL.watch()
+			this.queryDevices()
 
-			this._listDevicesQueryRef.valueChanges.subscribe(({ data }) => {
-				this.devices = data.listDevices.devices.slice() as Device[]
-				this.blockUI.stop()
-			})
+			this.deviceTypes = this.apiService.listDeviceTypesWatch().valueChanges.pipe(
+				map(result => result.data.listDeviceTypes.deviceTypes)
+			)
+
+			this.deviceBlueprints = this.apiService.listDeviceBlueprintsWatch().valueChanges.pipe(
+				map(result => result.data.listDeviceBlueprints.deviceBlueprints)
+			)
 
 			this.statService.statObservable$.subscribe(message => {
 				this.deviceStats = message.deviceStats
@@ -93,7 +116,7 @@ export class DevicesComponent implements OnInit {
 
 			// TODO: not sure how to implement subscriptions with apollo-angular
 			// https://www.apollographql.com/docs/angular/features/subscriptions/
-			this.addedDeviceGQL.subscribe().subscribe(({ data }) => {
+			this.apiService.addedDevice().subscribe(({ data }) => {
 				if (data.addedDevice) {
 					this.devices = [...this.devices, data.addedDevice] as Device[]
 				}
@@ -110,6 +133,26 @@ export class DevicesComponent implements OnInit {
 	//	 this.deviceTypes = message;
 	//	 this.ngZone.run(() => {});
 	// });
+	}
+
+	// TODO: make this debounced
+	queryDevices () {
+		this.blockUI.start('Loading devices...')
+
+		this.apiService.devicesWatch({
+			input: convertSimpleInput(this.filterInput),
+			pagination: {
+				limit: this.pages.pageSize,
+				nextToken: this.pages.nextToken,
+			}
+		}).valueChanges.subscribe(({ data }) => {
+			this.devices = data.devices.devices.slice() as Device[]
+
+			this.pages.nextToken = data.devices.nextToken
+
+			this.blockUI.stop()
+		})
+		// TODO: reset pagination and other stuff
 	}
 
 	updatePaging () {
@@ -139,12 +182,7 @@ export class DevicesComponent implements OnInit {
 	// }
 
 	async refreshData () {
-		try {
-			this.blockUI.start('Loading devices...')
-			await this._listDevicesQueryRef.refetch()
-		} finally {
-			this.blockUI.stop()
-		}
+		this.queryDevices()
 	}
 
 	openDevice (thingId: string) {
