@@ -14,8 +14,8 @@ export function validateStackParameterLimit (stack: Stack): void {
 export function getRootStack (scope: Construct): Stack {
 	let stack: Stack = Stack.of(scope)
 
-	while (stack.parentStack != null) {
-		stack = stack.parentStack
+	while (stack.nestedParentStack != null) {
+		stack = stack.nestedParentStack
 	}
 
 	return stack
