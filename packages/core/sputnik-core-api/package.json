@@ -29,29 +29,30 @@
     "generate": "yarn generate:schema && yarn generate:code && yarn generate:src",
     "generate:src": "cp src/schema-file.ts generated/schema-file.ts",
     "generate:schema": "ts-node ./bin/generate-schema.js",
-		"generate:code": "graphql-codegen --config codegen.yml",
-    "prewatch": "yarn clean",
-    "watch:schema": "nodemon -e ts,graphql -w src/schema -x npm run generate:schema",
+    "generate:code": "graphql-codegen --config codegen.yml",
+    "prewatch": "yarn clean && yarn generate:schema",
+    "watch:schema": "nodemon -e ts,graphql -w src/schema -x yarn generate:schema",
     "watch:code": "yarn generate:code --watch",
     "watch": "run-p -c watch:*"
   },
   "dependencies": {
     "graphql": "^15.3.0",
     "apollo-angular": "^1.10.0",
+    "apollo-cache": "^1.3.5",
     "apollo-client": "^2.6.10",
     "graphql-request": "^2.0.0"
   },
   "devDependencies": {
-		"@graphql-codegen/cli": "^1.17.6",
-		"@graphql-codegen/typescript": "^1.17.6",
-		"@graphql-codegen/typescript-operations": "^1.17.6",
+    "@graphql-codegen/cli": "^1.17.6",
+    "@graphql-codegen/typescript": "^1.17.6",
+    "@graphql-codegen/typescript-operations": "^1.17.6",
     "@graphql-codegen/typescript-apollo-angular": "^1.17.0",
-		"@graphql-codegen/typescript-react-apollo": "^1.17.6",
+    "@graphql-codegen/typescript-react-apollo": "^1.17.6",
     "@graphql-codegen/typescript-graphql-request": "^1.17.6",
     "@graphql-codegen/import-types-preset": "^1.17.6",
     "appsync-schema-converter": "^0.1.3",
     "graphql-tools": "^6.0.12",
-		"graphql.macro": "^1.4.2",
+    "graphql.macro": "^1.4.2",
     "nodemon": "^2.0.4",
     "ts-node": "^8.10.2"
   }

@@ -34,6 +34,13 @@
 		"editor.defaultFormatter": "vscode.html-language-features",
 		"editor.formatOnSave": true
 	},
+	"[velocity]": {
+		"editor.formatOnSave": true,
+		"editor.formatOnPaste": true,
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2,
+		"editor.autoIndent": "brackets"
+	},
 	"[yaml]": {
 		"editor.insertSpaces": true,
 		"editor.tabSize": 2,
@@ -54,5 +61,5 @@
 		"typescriptreact",
 		"html",
 		"json"
-	]
+	],
 }
