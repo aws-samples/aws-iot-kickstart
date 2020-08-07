@@ -1,4 +1,4 @@
-import { addDeployment, CMD_ADD_DEPLOYMENT } from '../command/add-deployment'
+import { addDeployment, addBatchDeployment, CMD_ADD_DEPLOYMENT, CMD_ADD_BATCH_DEPLOYMENT } from '../command/add-deployment'
 
 export * from './environment'
 
@@ -9,7 +9,9 @@ export async function handler (event) {
 
 	switch (cmd) {
 		case CMD_ADD_DEPLOYMENT:
-			return addDeployment(event)
+			return addDeployment(event.thingId)
+		case CMD_ADD_BATCH_DEPLOYMENT:
+			return addBatchDeployment(event.thingIds)
 		default:
 			throw new Error(`Unknown cmd: ${cmd}`)
 	}

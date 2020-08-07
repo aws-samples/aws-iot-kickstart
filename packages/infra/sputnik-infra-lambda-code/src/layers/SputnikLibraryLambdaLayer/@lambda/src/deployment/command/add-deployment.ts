@@ -2,11 +2,12 @@ import { DynamoDB } from 'aws-sdk'
 import { isEmpty } from 'lodash'
 import { v4 as uuid } from 'uuid'
 import { DEFAULT_NAMESPACE as CORE_DEFAULT_NAMESPACE, mergeSpecs, substituteSpec, extractDeviceMappingSubstitutions } from '@deathstar/sputnik-core'
-import { SpecDefinition, Device, DeviceBlueprint, DeviceType } from '@deathstar/sputnik-core-api'
+import { SpecDefinition, Device, DeviceBlueprint, DeviceType, AddBatchDeploymentResponse, BatchDeploymentResult } from '@deathstar/sputnik-core-api'
 import { EnvironmentVariables } from '../handler/environment'
 import { syncGreengrassGroupVersion, applyGroupPermissions, createDeployment } from '../greengrass/group'
 import { saveDeployment, updateDeviceDeployment, DeploymentItem } from '../deployment'
 import { updateIoTDeviceShadow, getIoTPrincipals } from '../iot'
+import { result } from 'underscore'
 
 const {
 	AWS_ACCOUNT,
@@ -25,32 +26,57 @@ const {
 const documentClient = new DynamoDB.DocumentClient()
 
 export const CMD_ADD_DEPLOYMENT = 'addDeployment'
+export const CMD_ADD_BATCH_DEPLOYMENT = 'addBatchDeployment'
 
 async function getDevice (thingId: string): Promise<Device> {
-	return documentClient.get({
-		TableName: TABLE_DEVICES,
-		Key: {
-			thingId: thingId,
-		},
-	}).promise() as unknown as Promise<Device>
+	try {
+		console.debug('[getDevice]', thingId)
+		const { Item } = await documentClient.get({
+			TableName: TABLE_DEVICES,
+			Key: {
+				thingId: thingId,
+			},
+		}).promise()
+
+		return Item as Device
+	} catch (error) {
+		console.error('[getDevice]', error)
+		throw error
+	}
 }
 
 async function getDeviceType (deviceTypeId: string): Promise<DeviceType> {
-	return documentClient.get({
-		TableName: TABLE_DEVICE_TYPES,
-		Key: {
-			id: deviceTypeId,
-		},
-	}).promise() as unknown as Promise<DeviceType>
+	try {
+		console.debug('[getDeviceType]', deviceTypeId)
+		const { Item } = await documentClient.get({
+			TableName: TABLE_DEVICE_TYPES,
+			Key: {
+				id: deviceTypeId,
+			},
+		}).promise()
+
+		return Item as DeviceType
+	} catch (error) {
+		console.error('[getDeviceType]', error)
+		throw error
+	}
 }
 
 async function getDeviceBlueprint (deviceBlueprintId: string): Promise<DeviceBlueprint> {
-	return documentClient.get({
-		TableName: TABLE_DEVICE_BLUEPRINTS,
-		Key: {
-			id: deviceBlueprintId,
-		},
-	}).promise() as unknown as Promise<DeviceBlueprint>
+	try {
+		console.debug('[getDeviceBlueprint]', deviceBlueprintId)
+		const { Item } = await documentClient.get({
+			TableName: TABLE_DEVICE_BLUEPRINTS,
+			Key: {
+				id: deviceBlueprintId,
+			},
+		}).promise()
+
+		return Item as DeviceBlueprint
+	} catch (error) {
+		console.error('[getDeviceBlueprint]', error)
+		throw error
+	}
 }
 
 function interpolateSubstitutions (device: Device, certificateArn: string) {
@@ -69,22 +95,25 @@ function interpolateSubstitutions (device: Device, certificateArn: string) {
 	}
 }
 
-export async function addDeployment (event) {
+export async function addDeployment (thingId: string): Promise<DeploymentItem> {
 	try {
-		const device = await getDevice(event.thingId)
+		console.debug('[addDeployment]', thingId)
+		const device = await getDevice(thingId)
+		console.debug('[addDeployment] Device:', device)
+
 		const [deviceType, deviceBlueprint] = await Promise.all([
 			getDeviceType(device.deviceTypeId),
 			getDeviceBlueprint(device.deviceBlueprintId),
 		])
 
-		console.log('Device:', device)
-		console.log('Device Type:', deviceType)
-		console.log('Device Blueprint:', deviceBlueprint)
+		console.debug('[addDeployment] Device Type:', deviceType)
+		console.debug('[addDeployment] Device Blueprint:', deviceBlueprint)
 
 		if (deviceType == null || deviceBlueprint == null) {
 			throw new Error('Device Type or Device Blueprint do not exist in DB')
 		}
 
+		console.debug('[addDeployment] getIoTPrincipals:', device.thingName)
 		const principals = await getIoTPrincipals(device.thingName)
 		const certificateArn = principals[0]
 
@@ -93,22 +122,24 @@ export async function addDeployment (event) {
 		const specs: SpecDefinition[] = []
 
 		if (deviceType.spec) {
-			console.log(`DeviceType Spec: ${JSON.stringify(deviceType.spec, null, 4)}`)
+			console.debug(`[addDeployment] DeviceType Spec: ${JSON.stringify(deviceType.spec, null, 4)}`)
 			specs.push(deviceType.spec)
 		}
 
 		if (deviceBlueprint.spec) {
-			console.log(`DeviceBlueprint Spec: ${JSON.stringify(deviceBlueprint.spec, null, 4)}`)
+			console.debug(`[addDeployment] DeviceBlueprint Spec: ${JSON.stringify(deviceBlueprint.spec, null, 4)}`)
 			specs.push(deviceBlueprint.spec)
 		}
 
 		if (device.spec) {
-			console.log(`Device Spec: ${JSON.stringify(device.spec, null, 4)}`)
+			console.debug(`[addDeployment] Device Spec: ${JSON.stringify(device.spec, null, 4)}`)
 			specs.push(device.spec)
 		}
 
 		// merge specs
+		console.debug('[addDeployment] Merging specs:', ...specs)
 		let spec = mergeSpecs(...specs)
+		console.debug('[addDeployment] Merged spec:', spec)
 
 		// get base substitutions
 		const substitutions = interpolateSubstitutions(device, certificateArn)
@@ -120,13 +151,13 @@ export async function addDeployment (event) {
 		let deploymentItem: DeploymentItem
 
 		if (deviceType.type === 'GREENGRASS' && deviceBlueprint.type === 'GREENGRASS') {
-			console.log('Device is Greengrass')
+			console.debug('[addDeployment] Device is Greengrass:', device.greengrassGroupId)
 
 			const groupVersion = await syncGreengrassGroupVersion(device.greengrassGroupId, spec)
 
 			// TODO: make this configurable, for now disabling as has side-effects
-			// console.log('Attach IAM role to group just in case')
-			// console.log('Attach IOT Greengrass policy to group just in case')
+			// console.debug('Attach IAM role to group just in case')
+			// console.debug('Attach IOT Greengrass policy to group just in case')
 
 			// await applyGroupPermissions(device.greengrassGroupId, {
 			// 	roleArn: IAM_ROLE_ARN_FOR_GREENGRASS_GROUPS,
@@ -136,7 +167,7 @@ export async function addDeployment (event) {
 
 			const deployment = await createDeployment(device.greengrassGroupId, groupVersion.Version)
 
-			console.log(`Deployed: ${deployment.DeploymentId}`)
+			console.debug(`[addDeployment] Deployed: ${deployment.DeploymentId}`)
 
 			deploymentItem = {
 				thingId: device.thingId,
@@ -152,7 +183,7 @@ export async function addDeployment (event) {
 			}
 
 		} else {
-			console.log('Device is NOT a greengrass device, or at least not detected as one. OR the deviceBlueprint/deviceType combination is not for a Greengrass device')
+			console.debug('[addDeployment] Device is NOT a greengrass device, or at least not detected as one. OR the deviceBlueprint/deviceType combination is not for a Greengrass device')
 
 			deploymentItem = {
 				thingId: device.thingId,
@@ -171,10 +202,50 @@ export async function addDeployment (event) {
 			await updateIoTDeviceShadow(device.thingName, spec.Shadow)
 		}
 
-		console.log('Success', deploymentItem)
+		console.debug('[addDeployment] Success', deploymentItem)
+
+		return deploymentItem
 	} catch (error) {
-		console.error('Failed to "addDeployment"', error)
+		console.error('[addDeployment] Failed to "addDeployment"', error)
 
 		throw error
+	}
+}
+
+export async function addBatchDeployment (thingIds: string[]): Promise<AddBatchDeploymentResponse> {
+	console.debug('[addBatchDeployment]', thingIds)
+
+	const failed: string[] = []
+
+	try {
+		const promises = thingIds.map((thingId) => {
+			return Promise.resolve(addDeployment(thingId)).then(
+				result => ({ thingId, result, success: true }),
+				error => {
+					failed.push(thingId)
+					return { thingId, reason: error.message, success: false }
+				},
+			)
+		})
+
+		const results = await Promise.all(promises)
+		const success = failed.length === 0
+		console.debug('[addBatchDeployment] result:', result, success)
+
+		return {
+			code: success ? 'SUCCESS' : 'FAILED',
+			success,
+			message: success ? `Deployed ${thingIds.length} devices` : `Failed to deploy ${failed.length} of ${thingIds.length} devices`,
+			deployments: results,
+		}
+	} catch (error) {
+		console.error('[addBatchDeployment] Caught Error:', error)
+
+		return {
+			code: error.code || 'ERROR',
+			success: false,
+			message: error.message,
+			deployments: [],
+		}
 	}
 }

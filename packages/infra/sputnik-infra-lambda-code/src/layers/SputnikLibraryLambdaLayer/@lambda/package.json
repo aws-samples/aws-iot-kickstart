@@ -8,11 +8,13 @@
         "prebuild": "yarn clean",
         "build": "tsc --project ./tsconfig.json",
         "postbuild": "yarn make:dist && yarn make:zip",
-        "make:dist": "mkdir -p dist/nodejs/node_modules/$npm_package_name && rsync -am node_modules dist/nodejs && rsync -am lib package.json dist/nodejs/node_modules/$npm_package_name",
+        "make:dist": "mkdir -p dist/nodejs/node_modules/$npm_package_name && rsync -amL node_modules dist/nodejs && rsync -amL lib package.json dist/nodejs/node_modules/$npm_package_name",
         "make:zip": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *",
         "watch": "yarn build --watch"
     },
     "dependencies": {
+        "@deathstar/sputnik-core": "^0.0.0-alpha.1",
+        "@deathstar/sputnik-core-api": "^0.0.0",
         "aws-appsync": "^3.0.3",
         "cross-fetch": "^3.0.4",
         "graphql": "^15.3.0",
@@ -24,9 +26,11 @@
         "underscore": "^1.10.2",
         "uuid": "^8.0.0"
     },
-    "//workspaces": "NOTE: All dependencies and transient dependencies need to be `nohoist`",
+    "//workspaces": "NOTE: All dependencies and transient dependencies need to be `nohoist` or be direct dependencies",
     "workspaces": {
         "nohoist": [
+            "@deathstar/sputnik-core",
+            "@deathstar/sputnik-core-api",
             "aws-appsync", "aws-appsync/**",
             "cross-fetch", "cross-fetch/**",
             "graphql", "graphql/**",

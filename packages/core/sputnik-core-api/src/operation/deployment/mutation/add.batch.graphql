@@ -1,0 +1,22 @@
+mutation AddBatchDeployment($input: ByIdsInput!) {
+  addBatchDeployment(input: $input) {
+    code
+    success
+    message
+
+    deployments {
+      thingId
+      success
+      reason
+      result {
+        thingId
+        deploymentId
+        type
+        spec
+        greengrassGroup
+        createdAt
+        updatedAt
+      }
+    }
+  }
+}

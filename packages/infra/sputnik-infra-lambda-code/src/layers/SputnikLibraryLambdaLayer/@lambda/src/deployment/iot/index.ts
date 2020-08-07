@@ -3,6 +3,7 @@ import { Iot, IotData } from 'aws-sdk'
 const iot = new Iot()
 
 export async function updateIoTDeviceShadow (thingName: string, state: any) {
+	console.debug('[updateIoTDeviceShadow]', thingName, state)
 	const endpoint = await iot.describeEndpoint().promise()
 
 	const iotdata = new IotData({
@@ -31,6 +32,8 @@ export async function updateIoTDeviceShadow (thingName: string, state: any) {
 
 
 export async function getIoTPrincipals (thingName: string): Promise<string[]> {
+	console.debug('[getIoTPrincipals]', thingName)
+
 	const { principals } = await iot.listThingPrincipals({
 		thingName: thingName,
 	}).promise()

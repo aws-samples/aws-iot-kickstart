@@ -1,30 +1,45 @@
-
 type Deployment
-	@aws_iam
-	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
-	thingId: String!
-	deploymentId: String!
-	type: String!
-	spec: AWSJSON
-	greengrassGroup: AWSJSON
-	createdAt: AWSDateTime
-	updatedAt: AWSDateTime
+  @aws_iam
+  @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+  thingId: String!
+  deploymentId: String!
+  type: String!
+  spec: AWSJSON
+  greengrassGroup: AWSJSON
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
 }
 
 type DeploymentConnection implements PaginationResponse
-	@aws_iam
-	@aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
-    limit: Int
-    nextToken: String
-    deployments: [Deployment!]!
+  @aws_iam
+  @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"]) {
+  limit: Int
+  nextToken: String
+  deployments: [Deployment!]!
 }
 
 extend type Query {
-	## Deployments
-	listDeployments(limit: Int, nextToken: String): DeploymentConnection
+  ## Deployments
+  listDeployments(limit: Int, nextToken: String): DeploymentConnection
+}
+
+type BatchDeploymentResult {
+  thingId: ID!
+  success: Boolean!
+  result: Deployment
+  reason: String
+}
+
+type AddBatchDeploymentResponse implements MutationResponse {
+  code: String!
+  success: Boolean!
+  message: String!
+  deployments: [BatchDeploymentResult!]!
 }
 
 extend type Mutation {
-	## Deployments
-	addDeployment(thingId: String!): Deployment!
+  ## Deployments
+  addDeployment(thingId: String!): Deployment!
+
+  addBatchDeployment(input: ByIdsInput!): AddBatchDeploymentResponse!
 }

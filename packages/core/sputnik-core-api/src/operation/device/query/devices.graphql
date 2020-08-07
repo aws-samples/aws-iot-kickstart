@@ -1,0 +1,21 @@
+query Devices($input: DeviceFilterInput, $pagination: PaginationInput) {
+  devices(input: $input, pagination: $pagination) {
+    devices {
+      thingId
+      thingName
+      name
+      namespace
+      deviceTypeId
+      deviceBlueprintId
+      connectionState {
+        state
+        at
+      }
+      metadata
+      lastDeploymentId
+      createdAt
+      updatedAt
+    }
+    nextToken
+  }
+}

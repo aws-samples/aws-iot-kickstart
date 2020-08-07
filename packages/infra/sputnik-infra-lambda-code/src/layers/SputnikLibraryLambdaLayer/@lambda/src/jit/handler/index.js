@@ -203,9 +203,7 @@ export function handler (event, context, callback) {
 			if (_sputnikAutodeploy) {
 				console.log('AutoDeploy: adding deployment')
 
-				return addDeployment({
-					thingId: device.thingId,
-				}).then(() => {
+				return addDeployment(device.thingId).then(() => {
 					console.log('AutoDeploy: adding deployment')
 
 					return device
