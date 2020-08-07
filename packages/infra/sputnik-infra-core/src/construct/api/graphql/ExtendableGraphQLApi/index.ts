@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { FieldLogLevel, GraphQLApi, GraphQLApiProps, UserPoolDefaultAction, CfnGraphQLApi, AuthorizationType } from '@aws-cdk/aws-appsync'
 import { IUserPool } from '@aws-cdk/aws-cognito'
-import { Table } from '@aws-cdk/aws-dynamodb'
+import { ITable } from '@aws-cdk/aws-dynamodb'
 import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam'
 import { IFunction } from '@aws-cdk/aws-lambda'
 import { Construct } from '@aws-cdk/core'
@@ -139,7 +139,7 @@ export class ExtendableGraphQLApi extends GraphQLApi {
 		}
 	}
 
-	grantDynamoDbRead (...tables: Table[]): void {
+	grantDynamoDbRead (...tables: ITable[]): void {
 		const statement = new PolicyStatement({
 			effect: Effect.ALLOW,
 			actions: [
@@ -155,7 +155,7 @@ export class ExtendableGraphQLApi extends GraphQLApi {
 		this._addDynamoDbPolicyStatement(statement)
 	}
 
-	grantDynamoDbReadWrite (...tables: Table[]): void {
+	grantDynamoDbReadWrite (...tables: ITable[]): void {
 		const statement = new PolicyStatement({
 			effect: Effect.ALLOW,
 			actions: [

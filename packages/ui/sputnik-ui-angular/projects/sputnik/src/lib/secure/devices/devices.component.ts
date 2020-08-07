@@ -1,17 +1,15 @@
 import { Component, OnInit, NgZone } from '@angular/core'
 import { Router } from '@angular/router'
-import { FormGroup, FormBuilder, Validators, NgForm, Validator } from '@angular/forms'
+import { NgForm } from '@angular/forms'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import { Observable } from 'rxjs'
-import { map, single } from 'rxjs/operators'
+import { map } from 'rxjs/operators'
 import swal from 'sweetalert2'
-import { Device, DeviceFilterInput, DeviceBlueprint, DeviceType } from '@deathstar/sputnik-core-api'
-import { ApiService, DevicesQuery, DevicesQueryVariables } from '@deathstar/sputnik-ui-angular-api'
+import { Device, DeviceFilterInput, DeviceBlueprint, DeviceType, BatchDeploymentResult } from '@deathstar/sputnik-core-api'
+import { ApiService } from '@deathstar/sputnik-ui-angular-api'
 // Models
 import { ProfileInfo } from '../../models/profile-info.model'
-// import { Device } from '../../models/device.model'
-// import { DeviceType } from '../../models/device-type.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { DeviceService } from '../../services/device.service'
@@ -62,6 +60,10 @@ export class DevicesComponent implements OnInit {
 	public deviceBlueprints: Observable<DeviceBlueprint[]>
 
 	public deviceTypes: Observable<DeviceType[]>
+
+	public selectAll: boolean = false
+
+	public selectedDevices: { [key: string]: boolean } = {}
 
 	// public deviceTypes: DeviceType[] = [];
 	public pages = {
@@ -122,17 +124,7 @@ export class DevicesComponent implements OnInit {
 				}
 			})
 
-			// this.deviceService.devicesObservable$.subscribe(device => {
-			// 	this.ngZone.run(() => {
-			// 		this.loadDevices()
-			// 	})
-			// })
 		})
-
-	// this.deviceTypeService.deviceTypesObservable$.subscribe(message => {
-	//	 this.deviceTypes = message;
-	//	 this.ngZone.run(() => {});
-	// });
 	}
 
 	// TODO: make this debounced
@@ -160,26 +152,15 @@ export class DevicesComponent implements OnInit {
 		this.pages.total = Math.ceil(this.deviceStats.total / this.pages.pageSize)
 	}
 
-	// loadDevices () {
-	// 	const _self = this
+	toggleSelectAll () {
+		this.selectAll = !this.selectAll
+		this.selectedDevices = {}
+	}
 
-	// 	this.statService.refresh()
+	toggleDevice(thingId) {
+		this.selectedDevices[thingId] = !!!this.selectedDevices[thingId]
+	}
 
-	// 	return this.deviceService
-	// 	.listDevices(this.pages.pageSize, null)
-	// 	.then(results => {
-	// 	// console.log(results);
-	// 		this.devices = results.devices
-	// 		this.updatePaging()
-	// 		this.blockUI.stop()
-	// 	})
-	// 	.catch(err => {
-	// 		swal.fire('Oops...', 'Something went wrong! Unable to retrieve the devices.', 'error')
-	// 		this.logger.error('error occurred calling listDevices api, show message')
-	// 		this.logger.error(err)
-	// 		this.router.navigate(['/securehome/devices'])
-	// 	})
-	// }
 
 	async refreshData () {
 		this.queryDevices()
@@ -235,5 +216,67 @@ export class DevicesComponent implements OnInit {
 			this.logger.error(err)
 			// this.loadDevices()
 		})
+	}
+
+	async deploy () {
+		const thingIds = Object.entries(this.selectedDevices).reduce((devices, [thingId, selected]) => {
+			if (selected) {
+				return devices.concat(thingId)
+			} else {
+				return devices
+			}
+		}, [] as string[])
+
+		const { value: confirmed } = await swal.fire({
+			title: `Are you sure you want to deploy ${thingIds.length} devices?`,
+			text: 'This will overwrite whatever the device is doing!',
+			type: 'question',
+			showCancelButton: true,
+			cancelButtonColor: '#3085d6',
+			confirmButtonColor: '#d33',
+			confirmButtonText: 'Yes, deploy!',
+		})
+
+		if (confirmed !== true) {
+			return
+		}
+
+		this.blockUI.start(`Deploying ${thingIds.length} devices`)
+
+		try {
+			const result = await this.apiService.addBatchDeployment({
+				input: {
+					ids: thingIds,
+				}
+			}).toPromise()
+			this.logger.info('Batch deployment completed', result)
+
+			const { success, deployments, message } = result.data.addBatchDeployment
+
+			if (success) {
+				swal.fire('Woo hoo!', message, 'success')
+			} else {
+				const failedDevices: BatchDeploymentResult[] = deployments.filter(deployment => !deployment.success)
+				this.logger.warn('Partial deployment failed devices:', failedDevices)
+
+				if (failedDevices.length === thingIds.length) {
+					swal.fire('Oops...', message, 'error')
+				} else {
+					swal.fire('Almost', message, 'warning')
+					// deselect successful devices
+					this.selectAll = false
+					deployments.forEach(deployment => {
+						if (deployment.success) {
+							this.selectedDevices[deployment.thingId] = false
+						}
+					})
+				}
+			}
+		} catch (error) {
+			this.logger.error('Batch deployment failed', error)
+			swal.fire('Oops...', 'Failed to deploy devices', 'error')
+		} finally {
+			this.blockUI.stop()
+		}
 	}
 }

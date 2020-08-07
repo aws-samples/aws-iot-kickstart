@@ -58,14 +58,29 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
-                <select class="custom-select col-12" #type="ngModel" [(ngModel)]="filterInput.deviceBlueprintId" ngModel
-                    (change)="queryDevices()"
-                >
-                    <option value="ALL" ng-selected="filterInput.deviceBlueprintId == null"></option>
-                    <option value="UNKNOWN" ng-selected="filterInput.deviceBlueprintId === 'UNKNOWN'">UNKNOWN</option>
-                    <option *ngFor="let item of deviceBlueprints | async; let i = index" value="{{item.id}}"
-                        ng-selected="filterInput.deviceBlueprintId === item.id">{{item.name}}</option>
-                </select>
+
+                <label for="filter_deviceType" class="form-control-label float-left col-2">Type:
+                    <select id="filter_deviceType" class="custom-select" #type="ngModel" [(ngModel)]="filterInput.deviceTypeId" ngModel
+                        (change)="queryDevices()"
+                    >
+                        <option value="ALL" ng-selected="filterInput.deviceTypeId== null"></option>
+                        <option value="UNKNOWN" ng-selected="filterInput.deviceTypeId=== 'UNKNOWN'">UNKNOWN</option>
+                        <option *ngFor="let item of deviceTypes | async; let i = index" value="{{item.id}}"
+                            ng-selected="filterInput.deviceTypeId=== item.id">{{item.name}}</option>
+                    </select>
+                </label>
+
+                <label for="filter_deviceBlueprint" class="form-control-label float-left col-2 pl-2">Blueprint:
+                    <select id="filter_deviceBlueprint" class="custom-select" #type="ngModel" [(ngModel)]="filterInput.deviceBlueprintId" ngModel
+                        (change)="queryDevices()"
+                    >
+                        <option value="ALL" ng-selected="filterInput.deviceBlueprintId == null"></option>
+                        <option value="UNKNOWN" ng-selected="filterInput.deviceBlueprintId === 'UNKNOWN'">UNKNOWN</option>
+                        <option *ngFor="let item of deviceBlueprints | async; let i = index" value="{{item.id}}"
+                            ng-selected="filterInput.deviceBlueprintId === item.id">{{item.name}}</option>
+                    </select>
+                </label>
+
             </div>
 
             <div class="card-body">
@@ -74,13 +89,17 @@
                 <button type="button" class="float-right btn btn-sm btn-success m-l-15" (click)="showCreateForm()"><i
                         class="mdi mdi-plus"></i>
                     Create NEW Device</button>
+                <button type="button" class="float-right btn btn-sm btn-success m-l-15" (click)="deploy()"><i
+                        class="mdi mdi-plus"></i>
+                    Deploy</button>
                 <h4 class="card-title">Devices ({{deviceStats.total}})</h4>
                 <div class="table-responsive m-t-20">
                     <table id="types-pagination" class="table stylish-table" style="text-transform:uppercase;"
                         data-paging-limit="10">
                         <thead>
                             <tr>
-                                <th></th>
+                                <th><input type="checkbox" id="selectAll" [checked]="selectAll" (change)="toggleSelectAll()" /><label for="selectAll">&nbsp;</label></th>
+                                <th>Status</th>
                                 <th>Name</th>
                                 <th>Type</th>
                                 <th>Namespace (Tenant)</th>
@@ -88,7 +107,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let device of devices" (click)="openDevice(device.thingId)">
+                            <tr *ngFor="let device of devices; let i = index">
+                                <td><input type="checkbox" class="form-check-input" id="checkbox_{{i}}" [checked]="selectAll || selectedDevices[device.thingId]" (change)="toggleDevice(device.thingId)"/><label for="checkbox_{{i}}"></label></td>
                                 <td>
                                     <span class="round round-light-grey">
                                         <i class="mdi mdi-chip text-normal"></i>
@@ -100,7 +120,7 @@
                                         </div>
                                     </span>
                                 </td>
-                                <td>
+                                <td (click)="openDevice(device.thingId)">
                                     <h6>{{device.name}}</h6>
                                     <small class="text-muted">{{device.thingName}}</small>
                                     <!-- <span [class]="device.stage === 'running' ? 'round round-success-alt' : (device.stage === 'provisioning' ? 'round round-warning' : 'round round-danger')"> -->

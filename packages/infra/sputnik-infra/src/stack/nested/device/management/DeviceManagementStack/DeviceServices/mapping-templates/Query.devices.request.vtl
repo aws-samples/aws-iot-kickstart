@@ -11,7 +11,7 @@
     #if( $foreach.hasNext ) #set( $value = "${value}," ) #end
 #end
     $!{expressionValues.put(":deviceBlueprintId", $util.dynamodb.toDynamoDB($value))}
-    #if( !${expression.isEmpty()} ) #set( $expression = "${expression}," ) #end
+    #if( !${expression.isEmpty()} ) #set( $expression = "${expression} AND" ) #end
     #set( $expression = "$expression deviceBlueprintId IN (:deviceBlueprintId)" )
 #end
 
@@ -22,7 +22,7 @@
     #if( $foreach.hasNext ) #set( $value = "${value}," ) #end
 #end
     $!{expressionValues.put(":deviceTypeId", $util.dynamodb.toDynamoDB($value))}
-    #if( !${expression.isEmpty()} ) #set( $expression = "${expression}," ) #end
+    #if( !${expression.isEmpty()} ) #set( $expression = "${expression} AND" ) #end
     #set( $expression = "$expression deviceTypeId IN (:deviceTypeId)" )
 #end
 
