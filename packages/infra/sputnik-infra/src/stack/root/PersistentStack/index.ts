@@ -6,6 +6,7 @@ import { CognitoPersistentStack } from '../../nested/identity/CognitoPersistentS
 import { WebsitePersistentStack } from '../../nested/web/WebsitePersistentStack'
 import { setNamespace } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 import { getAppContext } from '@deathstar/sputnik-infra-core/lib/context'
+import { SputnikLibraryLambdaLayer } from '@deathstar/sputnik-infra-lambda-code'
 import { ISource } from '@aws-cdk/aws-s3-deployment'
 import { UserPool } from '@aws-cdk/aws-cognito'
 
@@ -38,6 +39,9 @@ function createResources (scope: Construct, props: PersistentResourcesProps): IP
 		AdministratorEmail: administratorEmail,
 		AdministratorName: administratorName,
 	} = getAppContext(scope)
+
+	// Create shared lambda layers in persistent root to prevent nested output issues
+	SputnikLibraryLambdaLayer.createLayerVersion(scope)
 
 	const deviceManagementStack = new DeviceManagementPersistentStack(scope, 'DeviceManagement', {})
 

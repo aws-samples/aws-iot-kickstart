@@ -47,7 +47,7 @@ export class CompiledLambdaFunction<TEnvironment extends LambdaEnvironment>
 			handler: 'index.handler',
 			runtime: Runtime.NODEJS_12_X,
 			layers: [
-				SputnikLibraryLambdaLayer.getLayer(scope),
+				SputnikLibraryLambdaLayer.getLayerVersion(scope),
 				...props.layers || [],
 			],
 		}, props)

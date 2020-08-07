@@ -1,12 +1,14 @@
 import { Construct } from '@aws-cdk/core'
 import { Code, AssetCode } from '@aws-cdk/aws-lambda'
-import { IRole } from '@aws-cdk/aws-iam'
+import {
+	Effect,
+	PolicyStatement,
+	IRole,
+} from '@aws-cdk/aws-iam'
+import * as actions from 'cdk-iam-actions/lib/actions'
 import { ITable } from '@aws-cdk/aws-dynamodb'
 import { namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 import { CompiledLambdaFunction, CompiledLambdaProps, ExposedLambdaProps, LambdaEnvironment, lambdaPath } from '../../CompiledLambdaFunction'
-
-// TODO: refactor sputnik-infra/src/stack/nested/existing/SputnikStack/cf/lambda-helpers.yml to use this completely
-// currently just gets code asset path
 
 interface Environment extends LambdaEnvironment {
 	TABLE_DEVICES: string
@@ -36,8 +38,7 @@ export class HelperUtilsLambda extends CompiledLambdaFunction<Environment> {
 		return Code.fromAsset(lambdaPath('helper-utils'))
 	}
 
-	// TODO: private until refactored
-	private constructor (scope: Construct, id: string, props: TLambdaProps) {
+	constructor (scope: Construct, id: string, props: TLambdaProps) {
 		const { deviceTable, deviceTypeTable, deviceBlueprintTable, settingTable, systemBlueprintTable, systemTable, greengrassServiceRole } = props.dependencies
 
 		const compiledProps: TCompiledProps = {
@@ -53,7 +54,46 @@ export class HelperUtilsLambda extends CompiledLambdaFunction<Environment> {
 				TABLE_SETTINGS: settingTable.tableName,
 				GREENGRASS_SERVICE_ROLE_ARN: greengrassServiceRole.roleArn,
 			},
-			// TODO: add initial policy from cf yaml
+			initialPolicy: [
+				new PolicyStatement({
+					effect: Effect.ALLOW,
+					actions: [
+						actions.DynamoDB.BATCH_GET_ITEM,
+						actions.DynamoDB.BATCH_WRITE_ITEM,
+						actions.DynamoDB.DELETE_ITEM,
+						actions.DynamoDB.GET_ITEM,
+						actions.DynamoDB.PUT_ITEM,
+						actions.DynamoDB.QUERY,
+						actions.DynamoDB.SCAN,
+						actions.DynamoDB.UPDATE_ITEM,
+					],
+					resources: [
+						settingTable.tableArn,
+						deviceTable.tableArn,
+						deviceTypeTable.tableArn,
+						deviceBlueprintTable.tableArn,
+						systemTable.tableArn,
+						systemBlueprintTable.tableArn,
+					]
+				}),
+				new PolicyStatement({
+					effect: Effect.ALLOW,
+					actions: [
+						actions.IAM.PASS_ROLE,
+						actions.IoT.DESCRIBE_ENDPOINT,
+						actions.IoT.ATTACH_PRINCIPAL_POLICY,
+						actions.IoT.GET_THING_SHADOW,
+						actions.IoT.UPDATE_THING_SHADOW,
+						actions.IoT.PUBLISH,
+						actions.IoT.DELETE_THING_SHADOW,
+						actions.Greengrass.ASSOCIATE_SERVICE_ROLE_TO_ACCOUNT,
+					],
+					// TODO: [SECURITY] Too permissive, lock these down to just what deployment needs
+					resources: [
+						'*',
+					]
+				}),
+			]
 		}
 
 		super(scope, id, compiledProps)

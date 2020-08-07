@@ -1,6 +1,11 @@
 import { Construct, Stack } from '@aws-cdk/core'
 import { Code, AssetCode } from '@aws-cdk/aws-lambda'
-import { IRole } from '@aws-cdk/aws-iam'
+import {
+	Effect,
+	PolicyStatement,
+	IRole,
+} from '@aws-cdk/aws-iam'
+import * as actions from 'cdk-iam-actions/lib/actions'
 import { ITable } from '@aws-cdk/aws-dynamodb'
 import { IBucket } from '@aws-cdk/aws-s3'
 import { CfnPolicy as CfnIotPolicy } from '@aws-cdk/aws-iot'
@@ -21,34 +26,30 @@ interface Environment extends LambdaEnvironment {
 }
 
 interface Dependencies {
+	readonly dataBucket: IBucket
 	readonly deviceTable: ITable
 	readonly deviceTypeTable: ITable
 	readonly deviceBlueprintTable: ITable
 	readonly deploymentTable: ITable
 	readonly settingTable: ITable
-	readonly greengrassGroupsIAMRole: IRole
+	readonly greengrassGroupsRole: IRole
 	readonly iotPolicyForGreengrassCores: CfnIotPolicy
-	readonly dataBucket: IBucket
-	readonly iotEndpoint: string
+	readonly iotEndpointAddress: string
 }
 
 type TCompiledProps = CompiledLambdaProps<Environment>
 type TLambdaProps = ExposedLambdaProps<Dependencies>
-
-// TODO: refactor sputnik-infra/src/stack/nested/existing/SputnikStack/cf/lambda-services.yml to
-// be full cdk and use this, currently just gets the asset path
 
 export class DeploymentsServiceLambda extends CompiledLambdaFunction<Environment> {
 	static get codeAsset (): AssetCode {
 		return Code.fromAsset(lambdaPath('deployments-service'))
 	}
 
-	// TODO: private until refactored
-	private constructor (scope: Construct, id: string, props: TLambdaProps) {
+	constructor (scope: Construct, id: string, props: TLambdaProps) {
 		const {
 			deviceTable, deviceTypeTable, deviceBlueprintTable, deploymentTable, settingTable,
-			greengrassGroupsIAMRole, iotPolicyForGreengrassCores,
-			dataBucket, iotEndpoint,
+			greengrassGroupsRole, iotPolicyForGreengrassCores,
+			dataBucket, iotEndpointAddress,
 		} = props.dependencies
 
 		const compiledProps: TCompiledProps = {
@@ -62,12 +63,53 @@ export class DeploymentsServiceLambda extends CompiledLambdaFunction<Environment
 				TABLE_DEPLOYMENTS: deploymentTable.tableName,
 				TABLE_SETTINGS: settingTable.tableName,
 				AWS_ACCOUNT: Stack.of(scope).account,
-				IAM_ROLE_ARN_FOR_GREENGRASS_GROUPS: greengrassGroupsIAMRole.roleArn,
+				IAM_ROLE_ARN_FOR_GREENGRASS_GROUPS: greengrassGroupsRole.roleArn,
 				IOT_POLICY_GREENGRASS_CORE: iotPolicyForGreengrassCores.ref,
 				DATA_BUCKET: dataBucket.bucketName,
-				IOT_ENDPOINT: iotEndpoint,
+				IOT_ENDPOINT: iotEndpointAddress,
 			},
-			// TODO: add initial policy from cf yaml
+			initialPolicy: [
+				new PolicyStatement({
+					effect: Effect.ALLOW,
+					actions: [
+						actions.DynamoDB.BATCH_GET_ITEM,
+						actions.DynamoDB.BATCH_WRITE_ITEM,
+						actions.DynamoDB.DELETE_ITEM,
+						actions.DynamoDB.GET_ITEM,
+						actions.DynamoDB.PUT_ITEM,
+						actions.DynamoDB.QUERY,
+						actions.DynamoDB.SCAN,
+						actions.DynamoDB.UPDATE_ITEM,
+					],
+					resources: [
+						settingTable.tableArn,
+						deviceTable.tableArn,
+						deviceTypeTable.tableArn,
+						deviceBlueprintTable.tableArn,
+						deploymentTable.tableArn,
+					]
+				}),
+				new PolicyStatement({
+					effect: Effect.ALLOW,
+					actions: [
+						actions.IAM.PASS_ROLE,
+					],
+					resources: [
+						greengrassGroupsRole.roleArn,
+					]
+				}),
+				new PolicyStatement({
+					effect: Effect.ALLOW,
+					// TODO: [SECURITY] Too permissive, lock these down to just what deployment needs
+					actions: [
+						'iot:*',
+						'greengrass:*'
+					],
+					resources: [
+						'*',
+					]
+				}),
+			]
 		}
 
 		super(scope, id, compiledProps)
