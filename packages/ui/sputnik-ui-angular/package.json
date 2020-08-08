@@ -5,7 +5,6 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "yarn build:api && yarn build:app",
     "build:api": "ng build api",
     "build:app": "ng build sputnik",
     "test": "ng test",

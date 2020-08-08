@@ -5,7 +5,7 @@
     "directory": "dist"
   },
   "scripts": {
-    "build": "cd ../../ && yarn build sputnik"
+    "build": "cd ../../ && yarn build:app"
   },
   "main": "dist/bundles/deathstar-sputnik-ui-angular.umd.js",
   "module": "dist/fesm5/deathstar-sputnik-ui-angular.js",
