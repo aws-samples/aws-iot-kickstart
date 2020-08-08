@@ -3,6 +3,8 @@
   "compilerOptions": {
     "noEmit": false,
     "emitDeclarationOnly": false,
+    "noImplicitAny": false,
+    "experimentalDecorators": true,
     "skipLibCheck": true,
     "declaration": true,
     "sourceMap": true,

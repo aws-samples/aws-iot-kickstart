@@ -5,6 +5,8 @@
     "lib": ["es6"],
     "noEmit": false,
     "emitDeclarationOnly": false,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "allowJs": true,
     "checkJs": true,

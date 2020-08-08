@@ -49,6 +49,7 @@ export function isDefinitionVersionEqual (a: Greengrass.ConnectorDefinitionVersi
 export function isDefinitionVersionEqual (a: Greengrass.DeviceDefinitionVersion, b: Greengrass.DeviceDefinitionVersion): boolean
 export function isDefinitionVersionEqual (a: Greengrass.SubscriptionDefinitionVersion, b: Greengrass.SubscriptionDefinitionVersion): boolean
 export function isDefinitionVersionEqual (a: DefinitionVersion, b: DefinitionVersion): boolean {
+	// @ts-ignore
 	return isEqualWith(a, b, (aValue: any, bValue: any, indexOrKey: string | number | symbol) => {
 		// Compare all values execpt for ids
 		if (isString(indexOrKey) && indexOrKey.endsWith('Id')) {
@@ -59,7 +60,7 @@ export function isDefinitionVersionEqual (a: DefinitionVersion, b: DefinitionVer
 
 export function autogenFieldIds (definitionVersion: DefinitionVersion, field: string): DefinitionVersion {
 	definitionVersion = cloneDeep(definitionVersion)
-
+	//@ts-ignore
 	;(definitionVersion[field] as any[]).forEach(fieldEntry => {
 		if (fieldEntry.Id == null) {
 			fieldEntry.Id = uuid()

@@ -8,6 +8,7 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "removeComments": true,
+    "experimentalDecorators": true,
     "rootDir": ".",
     "baseUrl": ".",
     "outDir": ".out",
