@@ -1,7 +1,8 @@
-import { CognitoIdentityServiceProvider } from 'aws-sdk'
-import { where } from 'underscore'
 
-const cognito = new CognitoIdentityServiceProvider()
+const AWS = require('aws-sdk')
+const { where } = require('underscore')
+
+const cognito = new AWS.CognitoIdentityServiceProvider()
 
 function getAttribute (attributes, name, defaultValue) {
 	const attr = where(attributes, { Name: name })
@@ -13,11 +14,11 @@ function getAttribute (attributes, name, defaultValue) {
 	return defaultValue
 }
 
-export function mapUser ({ Username, Attributes, Enabled, UserCreateDate, UserLastModifiedDate }) {
+function mapUser ({ Username, Attributes, UserAttributes, Enabled, UserCreateDate, UserLastModifiedDate }) {
 	return {
 		user_id: Username,
-		name: getAttribute(Attributes, 'nickname', ''),
-		email: getAttribute(Attributes, 'email', ''),
+		name: getAttribute(Attributes || UserAttributes, 'nickname', ''),
+		email: getAttribute(Attributes || UserAttributes, 'email', ''),
 		groups: [],
 		enabled: Enabled,
 		created_at: UserCreateDate,
@@ -25,7 +26,7 @@ export function mapUser ({ Username, Attributes, Enabled, UserCreateDate, UserLa
 	}
 }
 
-export async function setUserGroups (poolinfo, username, groups) {
+async function setUserGroups (poolinfo, username, groups) {
 	return Promise.all(groups.map(group => {
 		const params = {
 			GroupName: group.name,
@@ -43,4 +44,9 @@ export async function setUserGroups (poolinfo, username, groups) {
 	})).then(results => {
 		return 'group modifications complete'
 	})
+}
+
+module.exports = {
+	mapUser,
+	setUserGroups,
 }

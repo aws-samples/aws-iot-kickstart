@@ -15,7 +15,7 @@ export async function getUser (username) {
 
 	// @ts-ignore
 	const user = mapUser(userResult)
-	user.groups = groups.map((group) => group.GroupName)
+	user.groups = groups.map((group) => ({ name: group.GroupName }))
 
 	return user
 }

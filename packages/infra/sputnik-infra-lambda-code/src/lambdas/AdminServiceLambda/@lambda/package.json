@@ -2,17 +2,28 @@
     "private": true,
     "name": "@lambda/admin-service",
     "description": "The admin microservice for the sputnik",
-    "main": "index.js",
-    "version": "0.0.1",
-
+    "main": "libs.js",
+    "version": "0.0.2",
     "scripts": {
-        "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
+        "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
+        "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
     },
-    "peerDependencies": {
-        "@lambda/npm-dependencies": "0.0.1",
-        "@lambda/sputnik-lib": "0.0.1",
-        "aws-sdk": "*",
+    "dependencies": {
         "moment": "2.24.0",
         "underscore": "1.10.2"
+    },
+    "devDependencies": {
+        "aws-sdk": "*"
+    },
+    "externals": [
+        "aws-sdk"
+    ],
+    "//workspaces": {
+        "nohoist": [
+            "**/moment",
+            "**/moment/**",
+            "**/underscore",
+            "**/underscore/**"
+        ]
     }
 }

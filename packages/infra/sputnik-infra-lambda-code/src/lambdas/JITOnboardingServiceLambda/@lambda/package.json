@@ -3,18 +3,39 @@
     "name": "@lambda/jit-onboarding-service",
     "description": "The Just In Time On Boarding microservice for sputnik",
     "main": "index.js",
-    "version": "0.0.1",
-    "type": "module",
+    "version": "0.0.4",
     "scripts": {
-        "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
+        "build": "yarn parcel build index.js --target=node --global handler -o dist/index.js --bundle-node-modules",
+        "postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *"
     },
-    "peerDependencies": {
-        "@lambda/npm-dependencies": "0.0.1",
-        "@lambda/sputnik-lib": "0.0.1",
-        "aws-sdk": "*",
+    "dependencies": {
+        "@lambda/deployments-service": "^0.0.4",
+        "@lambda/devices-service": "^0.0.1",
         "moment": "2.24.0",
         "node-forge": "0.8.5",
         "shortid": "2.2.14",
         "underscore": "1.10.2"
+    },
+    "devDependencies": {
+        "aws-sdk": "*"
+    },
+    "externals": [
+        "aws-sdk"
+    ],
+    "//workspaces": {
+        "nohoist": [
+            "**/@lambda/devices-service",
+            "**/@lambda/devices-service/**",
+            "**/@lambda/deployments-service",
+            "**/@lambda/deployments-service/**",
+            "**/moment",
+            "**/moment/**",
+            "**/underscore",
+            "**/underscore/**",
+            "**/node-forge",
+            "**/node-forge/**",
+            "**/shortid",
+            "**/shortid/**"
+        ]
     }
 }

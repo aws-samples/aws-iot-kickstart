@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.8](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.7...@deathstar/sputnik-infra@0.0.0-alpha.8) (2020-08-05)
+
+**Note:** Version bump only for package @deathstar/sputnik-infra
+
+
+
+
+
+# [0.0.0-alpha.7](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.5...@deathstar/sputnik-infra@0.0.0-alpha.7) (2020-08-05)
+
+
+### Bug Fixes
+
+* **infra/web:** do not `prune` s3-deployment for webside ([969b53c](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/969b53c048dbaec950bb030ce415ef8a30c9bd81))
+
+
+
+
+
+# [0.0.0-alpha.6](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.5...@deathstar/sputnik-infra@0.0.0-alpha.6) (2020-08-04)
+
+**Note:** Version bump only for package @deathstar/sputnik-infra
+
+
+
+
+
 # [0.0.0-alpha.5](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.4...@deathstar/sputnik-infra@0.0.0-alpha.5) (2020-07-31)
 
 
