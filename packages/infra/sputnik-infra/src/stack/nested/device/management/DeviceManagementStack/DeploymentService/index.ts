@@ -15,7 +15,7 @@ import {
 } from '@aws-cdk/aws-appsync'
 import { DeploymentsServiceLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
 
-function getMappingTemplate(filename: string): MappingTemplate {
+function getMappingTemplate (filename: string): MappingTemplate {
 	return MappingTemplate.fromFile(path.join(__dirname, 'mapping-templates', filename))
 }
 
@@ -71,7 +71,7 @@ export class DeploymentService extends Construct {
 				greengrassGroupsRole,
 				iotPolicyForGreengrassCores,
 				iotEndpointAddress,
-			}
+			},
 		})
 
 		/***********************************************************************

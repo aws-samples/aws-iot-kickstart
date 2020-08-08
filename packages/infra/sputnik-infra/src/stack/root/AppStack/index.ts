@@ -55,7 +55,7 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 
 	const { graphQLApi } = apiStack
 
-	const greengrassServiceRole = new Role(scope,'GreengrassServiceIAMRole',{
+	const greengrassServiceRole = new Role(scope, 'GreengrassServiceIAMRole', {
 		assumedBy: new ServicePrincipal(ServicePrincipals.GREENGRASS),
 		managedPolicies: [
 			ManagedPolicy.fromAwsManagedPolicyName(
@@ -64,12 +64,12 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 		],
 	})
 
-	const greengrassGroupsRole = new Role(scope,'GreengrassGroupsIAMRole',{
+	const greengrassGroupsRole = new Role(scope, 'GreengrassGroupsIAMRole', {
 		roleName: namespaced(scope, 'GreengrassGroups'),
 		assumedBy: new ServicePrincipal(ServicePrincipals.GREENGRASS),
 	})
 
-	const iotPolicyForGreengrassCores = new CfnIotPolicy(scope,'IoTPolicyForGreengrassCores',{
+	const iotPolicyForGreengrassCores = new CfnIotPolicy(scope, 'IoTPolicyForGreengrassCores', {
 		policyDocument: {
 			Version: '2012-10-17',
 			Statement: [
@@ -92,7 +92,7 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 			settingTable: persistent.deviceManagementStack.settingTable,
 			systemBlueprintTable: persistent.deviceManagementStack.systemBlueprintTable,
 			systemTable: persistent.deviceManagementStack.systemTable,
-		}
+		},
 	})
 
 	const helperUtilsLambda = new HelperUtilsLambda(scope, 'HelperUtilsLambda', {
@@ -104,7 +104,7 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 			systemBlueprintTable: persistent.deviceManagementStack.systemBlueprintTable,
 			systemTable: persistent.deviceManagementStack.systemTable,
 			greengrassServiceRole,
-		}
+		},
 	})
 
 	const iotEndpoint = new CustomResource(scope, 'IotEndpoint', {
@@ -116,7 +116,7 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 		},
 	})
 
-	const greengrassAssociateServiceRoleToAccount = new CustomResource(scope,'GreengrassAssociateServiceRoleToAccount',{
+	const greengrassAssociateServiceRoleToAccount = new CustomResource(scope, 'GreengrassAssociateServiceRoleToAccount', {
 		resourceType: 'Custom::Lambda',
 		serviceToken: helperUtilsLambda.functionArn,
 		properties: {

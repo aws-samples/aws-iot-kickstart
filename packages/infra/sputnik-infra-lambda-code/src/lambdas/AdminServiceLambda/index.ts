@@ -74,7 +74,7 @@ export class AdminServiceLambda extends CompiledLambdaFunction<Environment> {
 					],
 					resources: ['*'],
 				}),
-			]
+			],
 		}
 
 		super(scope, id, compiledProps)

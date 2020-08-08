@@ -22,8 +22,8 @@ function mergeCustomizer (value: any, srcValue: any, key: string, object: any, s
 	}
 
 	if (isArray(value)) {
-    return value.concat(srcValue)
-  }
+		return value.concat(srcValue)
+	}
 }
 
 export function mergeSpecs (...specs: SpecDefinition[]): SpecDefinition {

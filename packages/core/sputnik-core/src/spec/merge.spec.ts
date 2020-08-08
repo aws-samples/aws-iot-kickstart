@@ -3,7 +3,7 @@ import { mergeSpecs } from './merge'
 
 // TODO: move this to global
 type JestExpect = <R>(actual: R) => jest.Matchers<R> & jasmine.Matchers<R>;
-declare const expect: JestExpect;
+declare const expect: JestExpect
 
 describe('merge', () => {
 	test('should merge all specs', () => {
@@ -49,8 +49,8 @@ function createSpec (prefix: string): SpecDefinition {
 					CertificateArn: `${prefix}-CertificateArn`,
 					Id: `${prefix}-Id`,
 					ThingArn: `${prefix}-ThingArn`,
-				}
-			]
+				},
+			],
 		},
 		ConnectorDefinitionVersion: {
 			Connectors: [
@@ -58,8 +58,8 @@ function createSpec (prefix: string): SpecDefinition {
 					ConnectorArn: `${prefix}-ConnectorArn`,
 					Id: `${prefix}-Id`,
 					Parameters: `${prefix}-Parameters`,
-				}
-			]
+				},
+			],
 		},
 		DeviceDefinitionVersion: {
 			Devices: [
@@ -67,8 +67,8 @@ function createSpec (prefix: string): SpecDefinition {
 					CertificateArn: `${prefix}-CertificateArn`,
 					Id: `${prefix}-Id`,
 					ThingArn: `${prefix}-ThingArn`,
-				}
-			]
+				},
+			],
 		},
 		FunctionDefinitionVersion: {
 			DefaultConfig: {
@@ -77,7 +77,7 @@ function createSpec (prefix: string): SpecDefinition {
 						Gid: 111,
 						Uid: 111,
 					},
-				}
+				},
 			},
 			Functions: [
 				{
@@ -86,8 +86,8 @@ function createSpec (prefix: string): SpecDefinition {
 						EncodingType: `${prefix}-EncodingType`,
 					},
 					Id: `${prefix}-Id`,
-				}
-			]
+				},
+			],
 		},
 		LoggerDefinitionVersion: {
 			Loggers: [
@@ -96,8 +96,8 @@ function createSpec (prefix: string): SpecDefinition {
 					Component: `${prefix}-Component`,
 					Level: `${prefix}-Level`,
 					Type: `${prefix}-Type`,
-				}
-			]
+				},
+			],
 		},
 		ResourceDefinitionVersion: {
 			Resources: [
@@ -111,10 +111,10 @@ function createSpec (prefix: string): SpecDefinition {
 						LocalVolumeResourceData: {
 							SourcePath: `${prefix}-SourcePath`,
 							DestinationPath: `${prefix}-DestinationPath`,
-						}
-					}
-				}
-			]
+						},
+					},
+				},
+			],
 		},
 		SubscriptionDefinitionVersion: {
 			Subscriptions: [
@@ -123,8 +123,8 @@ function createSpec (prefix: string): SpecDefinition {
 					Source: `${prefix}-Source`,
 					Subject: `${prefix}-Subject`,
 					Target: `${prefix}-Target`,
-				}
-			]
-		}
+				},
+			],
+		},
 	}
 }

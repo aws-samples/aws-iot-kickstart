@@ -2,7 +2,7 @@ import { getDefinitionVersionNaming } from './utils'
 
 // TODO: move this to global
 type JestExpect = <R>(actual: R) => jest.Matchers<R> & jasmine.Matchers<R>;
-declare const expect: JestExpect;
+declare const expect: JestExpect
 
 describe('utils', () => {
 	describe('getDefinitionVersionParts', () => {

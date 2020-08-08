@@ -31,7 +31,7 @@ export class AdminServices extends Construct {
 			dependencies: {
 				userPool,
 				tenantRole,
-			}
+			},
 		})
 
 		/***********************************************************************

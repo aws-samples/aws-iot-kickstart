@@ -11,3 +11,5 @@ package.json
 **/.cache
 kickstarter/web
 generated
+**/generated.*
+lib

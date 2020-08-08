@@ -87,7 +87,7 @@ export class DeploymentsServiceLambda extends CompiledLambdaFunction<Environment
 						deviceTypeTable.tableArn,
 						deviceBlueprintTable.tableArn,
 						deploymentTable.tableArn,
-					]
+					],
 				}),
 				new PolicyStatement({
 					effect: Effect.ALLOW,
@@ -96,20 +96,20 @@ export class DeploymentsServiceLambda extends CompiledLambdaFunction<Environment
 					],
 					resources: [
 						greengrassGroupsRole.roleArn,
-					]
+					],
 				}),
 				new PolicyStatement({
 					effect: Effect.ALLOW,
 					// TODO: [SECURITY] Too permissive, lock these down to just what deployment needs
 					actions: [
 						'iot:*',
-						'greengrass:*'
+						'greengrass:*',
 					],
 					resources: [
 						'*',
-					]
+					],
 				}),
-			]
+			],
 		}
 
 		super(scope, id, compiledProps)

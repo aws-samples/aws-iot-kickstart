@@ -181,7 +181,6 @@ export async function addDeployment (thingId: string): Promise<DeploymentItem> {
 				createdAt: (new Date()).toISOString(),
 				updatedAt: (new Date()).toISOString(),
 			}
-
 		} else {
 			console.debug('[addDeployment] Device is NOT a greengrass device, or at least not detected as one. OR the deviceBlueprint/deviceType combination is not for a Greengrass device')
 
@@ -223,6 +222,7 @@ export async function addBatchDeployment (thingIds: string[]): Promise<AddBatchD
 				result => ({ thingId, result, success: true }),
 				error => {
 					failed.push(thingId)
+
 					return { thingId, reason: error.message, success: false }
 				},
 			)

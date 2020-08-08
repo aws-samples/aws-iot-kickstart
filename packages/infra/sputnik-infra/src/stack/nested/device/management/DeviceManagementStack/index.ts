@@ -50,10 +50,10 @@ export class DeviceManagementStack extends NestedStack {
 			...props,
 		})
 
-		const deviceNamespaceSync = new DeviceNamespaceSyncLambda(this, 'DeviceNamespaceSync',{
+		const deviceNamespaceSync = new DeviceNamespaceSyncLambda(this, 'DeviceNamespaceSync', {
 			dependencies: {
 				graphQLApi,
-			}
+			},
 		})
 
 		const deadLetterQueue = new Queue(this, 'DeadLetterQueue')

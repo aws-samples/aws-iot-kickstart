@@ -33,18 +33,18 @@ export class DeviceNamespaceSyncLambda extends CompiledLambdaFunction<Environmen
 			},
 			initialPolicy: [
 				new PolicyStatement({
-						actions: ['appsync:GraphQL'],
-						resources: [
-							graphQLApi.arn + '/types/Mutation/fields/addDeployment',
-						],
-						effect: Effect.ALLOW,
-					}),
-					new PolicyStatement({
-						actions: ['iot:Connect', 'iot:Publish', 'iot:DescribeEndpoint'],
-						resources: ['*'],
-						effect: Effect.ALLOW,
-					}),
-			]
+					actions: ['appsync:GraphQL'],
+					resources: [
+						graphQLApi.arn + '/types/Mutation/fields/addDeployment',
+					],
+					effect: Effect.ALLOW,
+				}),
+				new PolicyStatement({
+					actions: ['iot:Connect', 'iot:Publish', 'iot:DescribeEndpoint'],
+					resources: ['*'],
+					effect: Effect.ALLOW,
+				}),
+			],
 		}
 
 		super(scope, id, compiledProps)

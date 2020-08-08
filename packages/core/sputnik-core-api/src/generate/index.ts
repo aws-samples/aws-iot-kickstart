@@ -10,14 +10,14 @@ const SCHEMA_FILE = path.join(OUTPUT_DIR, 'schema.graphql')
 export default () => {
 	const config: RootSchemaConfig = {
 		Mutation: {
-			directives: '@aws_iam @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])'
+			directives: '@aws_iam @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])',
 		},
 		Query: {
-			directives: '@aws_iam @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])'
+			directives: '@aws_iam @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])',
 		},
 		Subscription: {
-			directives: '@aws_iam @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])'
-		}
+			directives: '@aws_iam @aws_cognito_user_pools(cognito_groups: ["Administrators", "Members"])',
+		},
 	}
 	fs.mkdirSync(OUTPUT_DIR, { recursive: true })
 

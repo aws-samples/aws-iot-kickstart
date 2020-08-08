@@ -30,9 +30,11 @@ interface SimpleDeviceFilterInput {
 
 function convertSimpleInput (simpleInput: SimpleDeviceFilterInput): DeviceFilterInput {
 	const filterInput: DeviceFilterInput = {}
+
 	if (simpleInput.deviceBlueprintId && simpleInput.deviceBlueprintId !== 'ALL') {
 		filterInput.deviceBlueprint = { ids: [simpleInput.deviceBlueprintId] }
 	}
+
 	if (simpleInput.deviceTypeId && simpleInput.deviceTypeId !== 'ALL') {
 		filterInput.deviceType = { ids: [simpleInput.deviceTypeId] }
 	}
@@ -61,9 +63,9 @@ export class DevicesComponent implements OnInit {
 
 	public deviceTypes: Observable<DeviceType[]>
 
-	public selectAll: boolean = false
+	public selectAll = false
 
-	public selectedDevices: { [key: string]: boolean } = {}
+	public selectedDevices: { [key: string]: boolean, } = {}
 
 	// public deviceTypes: DeviceType[] = [];
 	public pages = {
@@ -102,11 +104,11 @@ export class DevicesComponent implements OnInit {
 			this.queryDevices()
 
 			this.deviceTypes = this.apiService.listDeviceTypesWatch().valueChanges.pipe(
-				map(result => result.data.listDeviceTypes.deviceTypes)
+				map(result => result.data.listDeviceTypes.deviceTypes),
 			)
 
 			this.deviceBlueprints = this.apiService.listDeviceBlueprintsWatch().valueChanges.pipe(
-				map(result => result.data.listDeviceBlueprints.deviceBlueprints)
+				map(result => result.data.listDeviceBlueprints.deviceBlueprints),
 			)
 
 			this.statService.statObservable$.subscribe(message => {
@@ -123,7 +125,6 @@ export class DevicesComponent implements OnInit {
 					this.devices = [...this.devices, data.addedDevice] as Device[]
 				}
 			})
-
 		})
 	}
 
@@ -136,7 +137,7 @@ export class DevicesComponent implements OnInit {
 			pagination: {
 				limit: this.pages.pageSize,
 				nextToken: this.pages.nextToken,
-			}
+			},
 		}).valueChanges.subscribe(({ data }) => {
 			this.devices = data.devices.devices.slice() as Device[]
 
@@ -157,10 +158,9 @@ export class DevicesComponent implements OnInit {
 		this.selectedDevices = {}
 	}
 
-	toggleDevice(thingId) {
-		this.selectedDevices[thingId] = !!!this.selectedDevices[thingId]
+	toggleDevice (thingId) {
+		this.selectedDevices[thingId] = !this.selectedDevices[thingId]
 	}
-
 
 	async refreshData () {
 		this.queryDevices()
@@ -247,7 +247,7 @@ export class DevicesComponent implements OnInit {
 			const result = await this.apiService.addBatchDeployment({
 				input: {
 					ids: thingIds,
-				}
+				},
 			}).toPromise()
 			this.logger.info('Batch deployment completed', result)
 

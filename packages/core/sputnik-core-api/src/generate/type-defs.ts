@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 
-function getTypeDef(name: string): string {
+function getTypeDef (name: string): string {
 	return fs.readFileSync(path.join(__dirname, '..', 'schema', `${name}.graphql`), { encoding: 'utf-8' })
 }
 

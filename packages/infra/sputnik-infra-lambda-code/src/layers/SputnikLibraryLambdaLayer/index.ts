@@ -15,9 +15,9 @@ export class SputnikLibraryLambdaLayer extends CompiledLambdaLayer {
 		return Code.fromAsset(lambdaPath(PACKAGE_NAME))
 	}
 
-	private static parameterName(): string {
-    return `/shared-layer-version-proxy/${PACKAGE_NAME}/shared/layerVersionArn`
-  }
+	private static parameterName (): string {
+		return `/shared-layer-version-proxy/${PACKAGE_NAME}/shared/layerVersionArn`
+	}
 
 	static getLayerVersion (scope: Construct): ILayerVersion {
 		const stack = getRootStack(scope)
@@ -33,7 +33,7 @@ export class SputnikLibraryLambdaLayer extends CompiledLambdaLayer {
 		}
 
 		return layerVersion
-  }
+	}
 
 	private static _instance: SputnikLibraryLambdaLayer
 
@@ -53,13 +53,13 @@ export class SputnikLibraryLambdaLayer extends CompiledLambdaLayer {
 			code: SputnikLibraryLambdaLayer.codeAsset,
 			layerVersionName: namespaced(scope, PACKAGE_NAME),
 			description: 'Npm dependencies for sputnik lambdas',
-  		license: 'Apache-2.0',
+			license: 'Apache-2.0',
 		})
 
 		// Store the arn in a SSM enable cross-stack usage https://github.com/aws/aws-cdk/issues/1972
 		new StringParameter(this, 'VersionArn', {
-      parameterName: SputnikLibraryLambdaLayer.parameterName(),
-      stringValue: this.layerVersionArn,
-    })
+			parameterName: SputnikLibraryLambdaLayer.parameterName(),
+			stringValue: this.layerVersionArn,
+		})
 	}
 }

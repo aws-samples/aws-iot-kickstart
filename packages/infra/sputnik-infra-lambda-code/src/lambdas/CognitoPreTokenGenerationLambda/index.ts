@@ -44,7 +44,7 @@ export class CognitoPreTokenGenerationLambda extends CompiledLambdaFunction<Envi
 						'*',
 					],
 				}),
-			]
+			],
 		}
 
 		super(scope, id, compiledProps)

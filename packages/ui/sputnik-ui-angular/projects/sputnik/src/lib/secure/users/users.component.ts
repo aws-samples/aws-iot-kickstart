@@ -4,8 +4,7 @@ import { Router } from '@angular/router'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import swal from 'sweetalert2'
-import { INTERNAL_TENANT } from '@deathstar/sputnik-core'
-import { UserGroups } from '@deathstar/sputnik-core'
+import { INTERNAL_TENANT, UserGroups } from '@deathstar/sputnik-core'
 import { User } from '@deathstar/sputnik-core-api'
 import { ApiService, ListTenantsGQL, ListUsersGQL, ListUsersQuery, ListTenantsQuery } from '@deathstar/sputnik-ui-angular-api'
 // Models
@@ -53,6 +52,7 @@ export class UsersComponent implements OnInit {
 	//	 private name: string;
 
 	users: Observable<User[]>
+
 	tenants: Observable<string[]>
 
 	@BlockUI() blockUI: NgBlockUI;
@@ -90,11 +90,11 @@ export class UsersComponent implements OnInit {
 				// this.loadUsers()
 
 				this.users = this.listUsersGQL.watch().valueChanges.pipe(
-					map(result => result.data.listUsers.users)
+					map(result => result.data.listUsers.users),
 				)
 
 				this.tenants = this.listTenantGQL.watch().valueChanges.pipe(
-					map(result => result.data.listTenants)
+					map(result => result.data.listTenants),
 				)
 
 				// this.adminService.tenantsObservable.subscribe(tenants => {

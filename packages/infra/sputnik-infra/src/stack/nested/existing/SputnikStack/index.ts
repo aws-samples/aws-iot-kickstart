@@ -45,7 +45,6 @@ export interface SputnikStackProps extends NestedStackProps {
 }
 
 export class SputnikStack extends NestedStack {
-
 	readonly lambdaServiceStack: IncludeStack;
 
 	readonly appSyncStack: IncludeStack;
@@ -78,7 +77,7 @@ export class SputnikStack extends NestedStack {
 			{
 				templateFile: getTemplateFile('lambda-services'),
 				parameters: {
-          sputnikLibLayerArn: SputnikLibraryLambdaLayer.getLayerVersion(this).layerVersionArn,
+					sputnikLibLayerArn: SputnikLibraryLambdaLayer.getLayerVersion(this).layerVersionArn,
 					tenantRoleArn: cognitoStack.tenantRole.roleArn,
 					settingsServiceLambdaFunction: SettingsServiceLambda.codeAsset,
 					systemsServiceLambdaFunction: SystemsServiceLambda.codeAsset,

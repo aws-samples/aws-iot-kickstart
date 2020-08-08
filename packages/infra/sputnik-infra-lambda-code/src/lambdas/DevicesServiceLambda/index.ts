@@ -101,7 +101,7 @@ export class DevicesServiceLambda extends CompiledLambdaFunction<Environment> {
 					],
 					resources: ['*'],
 				}),
-			]
+			],
 		}
 
 		super(scope, id, compiledProps)

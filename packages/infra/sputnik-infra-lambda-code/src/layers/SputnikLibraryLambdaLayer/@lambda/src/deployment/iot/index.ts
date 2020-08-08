@@ -30,14 +30,12 @@ export async function updateIoTDeviceShadow (thingName: string, state: any) {
 	}).promise()
 }
 
-
 export async function getIoTPrincipals (thingName: string): Promise<string[]> {
 	console.debug('[getIoTPrincipals]', thingName)
 
 	const { principals } = await iot.listThingPrincipals({
 		thingName: thingName,
 	}).promise()
-
 
 	if (principals.length === 0) {
 		throw new Error('Device does not yet have a certificate. Need to create one first.')

@@ -18,6 +18,7 @@ export interface DeploymentItem {
 
 export async function saveDeployment (table: string, deployment: DeploymentItem) {
 	console.debug('[saveDeployment]', table, deployment)
+
 	return documentClient.put({
 		TableName: table,
 		Item: deployment,
@@ -26,19 +27,20 @@ export async function saveDeployment (table: string, deployment: DeploymentItem)
 
 export async function updateDeviceDeployment (table: string, thingId: string, deployment: DeploymentItem) {
 	console.debug('[updateDeviceDeployment]', table, thingId, deployment)
+
 	return documentClient.update({
-			TableName: table,
-			Key: {
-				thingId,
-			},
-			UpdateExpression: 'set #ua = :ua, #l = :l',
-			ExpressionAttributeNames: {
-				'#ua': 'updatedAt',
-				'#l': 'lastDeploymentId',
-			},
-			ExpressionAttributeValues: {
-				':ua': deployment.updatedAt,
-				':l': deployment.deploymentId,
-			},
-		}).promise()
+		TableName: table,
+		Key: {
+			thingId,
+		},
+		UpdateExpression: 'set #ua = :ua, #l = :l',
+		ExpressionAttributeNames: {
+			'#ua': 'updatedAt',
+			'#l': 'lastDeploymentId',
+		},
+		ExpressionAttributeValues: {
+			':ua': deployment.updatedAt,
+			':l': deployment.deploymentId,
+		},
+	}).promise()
 }

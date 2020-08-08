@@ -18,13 +18,15 @@ import { DEFAULT_NAMESPACE } from '@deathstar/sputnik-core'
 
 declare let $: any
 
-function cleanDeviceVariables(variables: UpdateDeviceMutationVariables): UpdateDeviceMutationVariables {
+function cleanDeviceVariables (variables: UpdateDeviceMutationVariables): UpdateDeviceMutationVariables {
 	variables = clone(variables)
+
 	if (isEmpty(variables.namespace)) {
 		variables.namespace = DEFAULT_NAMESPACE
 	}
+
 	if (isEmpty(variables.spec)) {
-		variables.spec = "{}"
+		variables.spec = '{}'
 	}
 
 	return variables
@@ -44,14 +46,19 @@ export class DeviceComponent implements OnInit, OnDestroy {
 	public isAdminUser: boolean;
 
 	public device: GetDeviceQuery['getDevice']
+
 	public deviceForEdit: UpdateDeviceMutationVariables
+
 	public getDeviceQuery: QueryRef<GetDeviceQuery, GetDeviceQueryVariables>
 
 	public deviceBlueprints: DeviceBlueprint[]
+
 	public deviceBlueprintsForEdit: DeviceBlueprint[]
+
 	public listDeviceBlueprintsQuery: QueryRef<ListDeviceBlueprintsQuery, ListDeviceBlueprintsQueryVariables>
 
 	public deviceTypes: DeviceType[]
+
 	public listDeviceTypesQuery: QueryRef<ListDeviceTypesQuery, ListDeviceTypesQueryVariables>
 
 	public thingsboardDashboardLink: string
@@ -195,7 +202,9 @@ export class DeviceComponent implements OnInit, OnDestroy {
 			confirmButtonText: 'Yes, delete it!',
 		})
 
-		if (!confirmed) return
+		if (!confirmed) {
+			return
+		}
 
 		try {
 			$('#editModal').modal('hide')

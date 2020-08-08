@@ -57,7 +57,7 @@ export async function syncGreengrassGroupVersion (greengrassGroupId: string, spe
 			const typeIdValue = (currentGroupVersion[groupVersionKey] as string).split('/')[4]
 			console.debug('[syncGreengrassGroupVersion] greengrass:', getDefinitionMethod, typeIdValue)
 			definition = await greengrass[getDefinitionMethod]({
-				[typeId]: typeIdValue
+				[typeId]: typeIdValue,
 			}).promise()
 		} else {
 			// definition does not exist in current group
@@ -91,6 +91,7 @@ export async function syncGreengrassGroupVersion (greengrassGroupId: string, spe
 				groupVersion[groupVersionKey] = createResponse.Arn
 
 				console.debug('[syncGreengrassGroupVersion] greengrass:', getDefinitionVersionMethod)
+
 				return greengrass[getDefinitionVersionMethod]({
 					[definitionVersionId]: createResponse.Version,
 				}).promise()
@@ -104,6 +105,7 @@ export async function syncGreengrassGroupVersion (greengrassGroupId: string, spe
 			groupVersion[groupVersionKey] = createResponse.Arn
 
 			console.debug('[syncGreengrassGroupVersion] greengrass:', getDefinitionVersionMethod, createResponse.Version)
+
 			return greengrass[getDefinitionVersionMethod]({
 				[definitionVersionId]: createResponse.Version,
 			}).promise()
@@ -133,7 +135,7 @@ export async function applyGroupPermissions (groupId: string, options: GroupVers
 	}).promise()
 }
 
-export async function createDeployment (groupId: string, version: string, type: string = 'NewDeployment'): Promise<Greengrass.CreateDeploymentResponse> {
+export async function createDeployment (groupId: string, version: string, type = 'NewDeployment'): Promise<Greengrass.CreateDeploymentResponse> {
 	return greengrass.createDeployment({
 		GroupId: groupId,
 		DeploymentId: uuid(),

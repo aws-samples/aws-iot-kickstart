@@ -74,7 +74,7 @@ export class HelperUtilsLambda extends CompiledLambdaFunction<Environment> {
 						deviceBlueprintTable.tableArn,
 						systemTable.tableArn,
 						systemBlueprintTable.tableArn,
-					]
+					],
 				}),
 				new PolicyStatement({
 					effect: Effect.ALLOW,
@@ -91,9 +91,9 @@ export class HelperUtilsLambda extends CompiledLambdaFunction<Environment> {
 					// TODO: [SECURITY] Too permissive, lock these down to just what deployment needs
 					resources: [
 						'*',
-					]
+					],
 				}),
-			]
+			],
 		}
 
 		super(scope, id, compiledProps)

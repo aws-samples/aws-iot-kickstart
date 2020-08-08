@@ -76,12 +76,12 @@ export class UserLoginService implements CanActivate, OnDestroy {
 	}
 
 	public async refreshToken (): Promise<void> {
-    const session = await Auth.currentSession()
+		const session = await Auth.currentSession()
 		const user = await Auth.currentAuthenticatedUser()
 
 		user.refreshSession(session.getRefreshToken(), async () => {
-    	await this.storeToken()
-    })
+			await this.storeToken()
+		})
 	}
 
 	public async storeToken () {
@@ -109,7 +109,6 @@ export class UserLoginService implements CanActivate, OnDestroy {
 					message: 'User needs to set password.',
 				}, null)
 			} else {
-
 				this.storeToken()
 
 				try {

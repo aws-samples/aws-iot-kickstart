@@ -13,7 +13,7 @@ import {
 } from '@aws-cdk/aws-appsync'
 import { DevicesServiceLambda } from '@deathstar/sputnik-infra-lambda-code/dist'
 
-function getMappingTemplate(filename: string): MappingTemplate {
+function getMappingTemplate (filename: string): MappingTemplate {
 	return MappingTemplate.fromFile(path.join(__dirname, 'mapping-templates', filename))
 }
 
@@ -63,7 +63,7 @@ export class DeviceServices extends Construct {
 				deviceTable,
 				deviceTypeTable,
 				iotConnectPolicy,
-			}
+			},
 		})
 
 		/***********************************************************************

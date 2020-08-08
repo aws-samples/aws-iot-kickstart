@@ -34,7 +34,6 @@ export class S3HelperLambda extends CompiledLambdaFunction<Environment> {
 		return Code.fromAsset(lambdaPath('s3-helper'))
 	}
 
-
 	constructor (scope: Construct, id: string, props: TLambdaProps) {
 		const {
 			deviceTable, deviceTypeTable, deviceBlueprintTable,
@@ -54,12 +53,12 @@ export class S3HelperLambda extends CompiledLambdaFunction<Environment> {
 						// TODO: [SECURITY] Too permissive, lock these down to just what deployment needs
 						's3:*',
 						actions.KMS.DECRYPT,
-						actions.KMS.DESCRIBE_KEY
+						actions.KMS.DESCRIBE_KEY,
 					],
 					resources: [
 						destBucket.arnForObjects('*'),
 						dataBucket.arnForObjects('*'),
-					]
+					],
 				}),
 				new PolicyStatement({
 					effect: Effect.ALLOW,
@@ -80,7 +79,7 @@ export class S3HelperLambda extends CompiledLambdaFunction<Environment> {
 						deviceBlueprintTable.tableArn,
 						systemTable.tableArn,
 						systemBlueprintTable.tableArn,
-					]
+					],
 				}),
 				// TODO: check lambda if these are needed, from old yml template shared permissions with helper utils
 				new PolicyStatement({
@@ -98,9 +97,9 @@ export class S3HelperLambda extends CompiledLambdaFunction<Environment> {
 					// TODO: [SECURITY] Too permissive, lock these down to just what deployment needs
 					resources: [
 						'*',
-					]
+					],
 				}),
-			]
+			],
 		}
 
 		super(scope, id, compiledProps)
