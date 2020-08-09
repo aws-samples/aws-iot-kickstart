@@ -60,7 +60,7 @@ export function isDefinitionVersionEqual (a: DefinitionVersion, b: DefinitionVer
 
 export function autogenFieldIds (definitionVersion: DefinitionVersion, field: string): DefinitionVersion {
 	definitionVersion = cloneDeep(definitionVersion)
-	//@ts-ignore
+	// @ts-ignore
 	;(definitionVersion[field] as any[]).forEach(fieldEntry => {
 		if (fieldEntry.Id == null) {
 			fieldEntry.Id = uuid()
