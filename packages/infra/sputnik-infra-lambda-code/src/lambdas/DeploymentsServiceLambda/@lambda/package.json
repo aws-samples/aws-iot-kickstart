@@ -9,15 +9,14 @@
         "//postbuild": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *",
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
-    "dependencies": {
+    "devDependencies": {
+        "aws-sdk": "*",
+        "@lambda/sputnik-lib": "^0.0.1",
         "deep-diff": "1.0.2",
         "deepmerge": "2.2.1",
         "moment": "2.25.3",
         "underscore": "1.10.2",
         "uuid": "8.0.0"
-    },
-    "devDependencies": {
-        "aws-sdk": "*"
     },
     "externals": [
         "aws-sdk"

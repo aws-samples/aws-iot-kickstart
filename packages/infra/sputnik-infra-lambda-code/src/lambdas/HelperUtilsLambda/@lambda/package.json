@@ -8,6 +8,13 @@
     "scripts": {
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
+    "devDependencies": {
+        "@lambda/sputnik-lib": "^0.0.1",
+        "aws-sdk": "*",
+        "moment": "2.24.0",
+        "underscore": "1.10.2",
+        "uuid": "8.0.0"
+    },
     "peerDependencies": {
         "@lambda/npm-dependencies": "0.0.1",
         "@lambda/sputnik-lib": "0.0.1",

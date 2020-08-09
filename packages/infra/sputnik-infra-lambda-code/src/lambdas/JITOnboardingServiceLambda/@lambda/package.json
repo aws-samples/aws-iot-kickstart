@@ -17,6 +17,7 @@
         "underscore": "1.10.2"
     },
     "devDependencies": {
+        "@lambda/sputnik-lib": "^0.0.1",
         "aws-sdk": "*"
     },
     "externals": [
