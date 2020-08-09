@@ -2,7 +2,7 @@
     "private": true,
     "name": "@lambda/sputnik-lib",
     "description": "Sputnik library for all service lambdas",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "scripts": {
         "clean": "tsc --build --clean && rm -rf dist",
         "prebuild": "yarn clean",
@@ -13,8 +13,8 @@
         "watch": "yarn build --watch"
     },
     "dependencies": {
-        "@deathstar/sputnik-core": "^0.0.0-alpha.1",
-        "@deathstar/sputnik-core-api": "^0.0.0",
+        "@deathstar/sputnik-core": "^0.0.0-alpha.2",
+        "@deathstar/sputnik-core-api": "^0.1.0",
         "aws-appsync": "^3.0.3",
         "cross-fetch": "^3.0.4",
         "graphql": "^15.3.0",
@@ -31,16 +31,26 @@
         "nohoist": [
             "@deathstar/sputnik-core",
             "@deathstar/sputnik-core-api",
-            "aws-appsync", "aws-appsync/**",
-            "cross-fetch", "cross-fetch/**",
-            "graphql", "graphql/**",
-            "graphql-tag", "graphql-tag/**",
-            "lodash", "lodash/**",
-            "moment", "moment/**",
-            "node-forge", "node-forge/**",
-            "shortid", "shortid/**",
-            "underscore", "underscore/**",
-            "uuid", "uuid/**"
+            "aws-appsync",
+            "aws-appsync/**",
+            "cross-fetch",
+            "cross-fetch/**",
+            "graphql",
+            "graphql/**",
+            "graphql-tag",
+            "graphql-tag/**",
+            "lodash",
+            "lodash/**",
+            "moment",
+            "moment/**",
+            "node-forge",
+            "node-forge/**",
+            "shortid",
+            "shortid/**",
+            "underscore",
+            "underscore/**",
+            "uuid",
+            "uuid/**"
         ]
     }
 }

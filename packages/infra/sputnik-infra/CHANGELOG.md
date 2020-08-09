@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.9](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.8...@deathstar/sputnik-infra@0.0.0-alpha.9) (2020-08-09)
+
+
+### Bug Fixes
+
+* **infra-lambda-code:** resolve cross-stack LayerVersion issues and clean up lambdas ([e951718](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/e951718ec0f7e918fe983b8c871f669a5de0f302))
+
+
+### Features
+
+* **infra:** refactor DeploymentService/S3Helper/HelperUtils from existing cf stacks ([24186cd](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/24186cd14d76d2cebd5c98c3e73d073a42d8afeb))
+* **ui-angular:** implement batch deploy ([0ac952d](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/0ac952d4e1d5e67b96e4f799f2a4be735c1c70ea))
+
+
+
+
+
 # [0.0.0-alpha.8](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.7...@deathstar/sputnik-infra@0.0.0-alpha.8) (2020-08-05)
 
 **Note:** Version bump only for package @deathstar/sputnik-infra

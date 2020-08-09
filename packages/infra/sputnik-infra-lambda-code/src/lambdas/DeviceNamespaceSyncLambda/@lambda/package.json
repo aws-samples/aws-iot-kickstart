@@ -2,15 +2,14 @@
     "private": true,
     "name": "@lambda/device-namespace-sync",
     "main": "index.js",
-    "version": "0.0.1",
-
+    "version": "0.0.2",
     "scripts": {
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
     "devDependencies": {
-        "aws-sdk": "*",
-        "@lambda/sputnik-lib": "^0.0.1",
+        "@lambda/sputnik-lib": "^0.1.0",
         "aws-appsync": "^3.0.3",
+        "aws-sdk": "*",
         "cross-fetch": "^3.0.4",
         "graphql-tag": "^2.10.3"
     },

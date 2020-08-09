@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.6](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.5...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.6) (2020-08-09)
+
+
+### Bug Fixes
+
+* **infra-lambda-code:** resolve cross-stack LayerVersion issues and clean up lambdas ([e951718](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/e951718ec0f7e918fe983b8c871f669a5de0f302))
+
+
+### Features
+
+* implement batch device deploy api/infra ([4a2ae89](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/4a2ae89f7f3f734521cf738683fcaddd2454dd78))
+
+
+
+
+
 # [0.0.0-alpha.5](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.4...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.5) (2020-08-05)
 
 

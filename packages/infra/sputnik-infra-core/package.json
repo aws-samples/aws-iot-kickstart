@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-infra-core",
   "description": "Sputnik infra core",
-  "version": "0.0.0-alpha.0",
+  "version": "0.0.0-alpha.1",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "contributors": [
@@ -38,7 +38,6 @@
     "typescript": "^3.9.5"
   },
   "dependencies": {
-    "@deathstar/sputnik-core": "^0.0.0-alpha.1",
     "@aws-cdk/app-delivery": "1.51.0",
     "@aws-cdk/assets": "1.51.0",
     "@aws-cdk/aws-apigateway": "1.51.0",
@@ -61,6 +60,7 @@
     "@aws-cdk/aws-sns-subscriptions": "1.51.0",
     "@aws-cdk/aws-ssm": "1.51.0",
     "@aws-cdk/core": "1.51.0",
+    "@deathstar/sputnik-core": "^0.0.0-alpha.2",
     "@types/graphql": "14.0.7",
     "@types/ini": "^1.3.30",
     "@types/js-yaml": "^3.12.3",
