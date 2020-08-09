@@ -21,7 +21,7 @@
     "commit": "git-cz",
     "fix": "yarn lint --fix",
     "lint": "export NODE_OPTIONS=\"--max-old-space-size=6144\" && eslint '**/*.{ts,tsx}'",
-    "prerelease": "yarn build && yarn test && yarn lint",
+    "prerelease": "yarn build && yarn test && yarn lint --quiet",
     "release": "yarn version:release",
     "version:release": "lerna version --conventional-commits --force-git-tag",
     "version:prerelease": "lerna version --conventional-commits --conventional-prerelease",
