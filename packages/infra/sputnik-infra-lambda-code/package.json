@@ -40,5 +40,15 @@
     "underscore": "1.10.2",
     "shortid": "2.2.13",
     "uuid": "8.0.0"
+  },
+  "workspaces": {
+    "nohoist": [
+      "deep-diff", "deep-diff/**",
+      "deepmerge", "deepmerge/**",
+      "moment", "moment/**",
+      "underscore", "underscore/**",
+      "shortid", "shortid/**",
+      "uuid", "uuid/**"
+    ]
   }
 }
