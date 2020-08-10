@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-infra",
   "description": "Sputnik CDK infra",
-  "version": "0.0.0-alpha.9",
+  "version": "0.0.0-alpha.10",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "contributors": [
@@ -65,7 +65,7 @@
     "@aws-cdk/core": "1.51.0",
     "@deathstar/sputnik-core": "^0.0.0-alpha.2",
     "@deathstar/sputnik-infra-core": "^0.0.0-alpha.1",
-    "@deathstar/sputnik-infra-lambda-code": "^0.0.0-alpha.6",
+    "@deathstar/sputnik-infra-lambda-code": "^0.0.0-alpha.7",
     "@mobileposse/auto-delete-bucket": "^1.28.0",
     "@types/graphql": "14.0.7",
     "@types/ini": "^1.3.30",

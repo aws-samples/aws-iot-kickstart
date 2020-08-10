@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.10](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.9...@deathstar/sputnik-infra@0.0.0-alpha.10) (2020-08-10)
+
+**Note:** Version bump only for package @deathstar/sputnik-infra
+
+
+
+
+
 # [0.0.0-alpha.9](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.8...@deathstar/sputnik-infra@0.0.0-alpha.9) (2020-08-09)
 
 
