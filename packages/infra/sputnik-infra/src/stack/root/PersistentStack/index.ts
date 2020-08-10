@@ -20,6 +20,8 @@ export interface IPersistent {
 	readonly dataProcessingStack: DataProcessingPersistentStack
 
 	readonly deviceManagementStack: DeviceManagementPersistentStack
+
+	readonly userPool: UserPool
 }
 
 interface PersistentResourcesProps {
@@ -70,6 +72,7 @@ function createResources (scope: Construct, props: PersistentResourcesProps): IP
 		cognitoStack,
 		dataProcessingStack,
 		deviceManagementStack,
+		userPool: cognitoStack.userPool,
 	}
 }
 
@@ -83,6 +86,8 @@ export class PersistentStack extends Stack implements IPersistent {
 	readonly dataProcessingStack: DataProcessingPersistentStack
 
 	readonly deviceManagementStack: DeviceManagementPersistentStack
+
+	readonly userPool: UserPool
 
 	constructor (scope: Construct, id: string, props: PersistentStackProps & StackProps) {
 		super(scope, id, props)
@@ -107,6 +112,8 @@ export class PersistentNestedStack extends NestedStack implements IPersistent {
 	readonly dataProcessingStack: DataProcessingPersistentStack
 
 	readonly deviceManagementStack: DeviceManagementPersistentStack
+
+	readonly userPool: UserPool
 
 	constructor (scope: Construct, id: string, props: PersistentStackProps & NestedStackProps) {
 		super(scope, id, props)
