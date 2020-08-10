@@ -13,6 +13,7 @@ import { S3HelperLambda, HelperUtilsLambda } from '@deathstar/sputnik-infra-lamb
 import { Role, ServicePrincipal, ManagedPolicy, Effect } from '@aws-cdk/aws-iam'
 import { ServicePrincipals } from 'cdk-constants'
 import { CfnPolicy as CfnIotPolicy } from '@aws-cdk/aws-iot'
+import { IUserPool } from '@aws-cdk/aws-cognito'
 
 export interface IApp {
 	readonly persistent: IPersistent
@@ -36,6 +37,8 @@ export interface IApp {
 	readonly iotPolicyForGreengrassCores: CfnIotPolicy
 
 	readonly iotEndpointAddress: string
+
+	readonly userPool: IUserPool
 }
 
 interface AppResourcesProps {
@@ -187,6 +190,7 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 		greengrassGroupsRole,
 		iotEndpointAddress,
 		iotPolicyForGreengrassCores,
+		userPool,
 	}
 }
 
@@ -212,6 +216,8 @@ export class AppNestedStack extends NestedStack implements IApp {
 	readonly iotPolicyForGreengrassCores: CfnIotPolicy
 
 	readonly iotEndpointAddress: string
+
+	readonly userPool: IUserPool
 
 	constructor (scope: Construct, id: string, props: AppStackProps & NestedStackProps) {
 		super(scope, id, props)
@@ -254,6 +260,8 @@ export class AppStack extends Stack implements IApp {
 	readonly iotPolicyForGreengrassCores: CfnIotPolicy
 
 	readonly iotEndpointAddress: string
+
+	readonly userPool: IUserPool
 
 	constructor (scope: Construct, id: string, props: AppStackProps & StackProps) {
 		super(scope, id, props)
