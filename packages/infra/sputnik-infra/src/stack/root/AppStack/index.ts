@@ -28,6 +28,14 @@ export interface IApp {
 	readonly dataProcessingStack: DataProcessingStack
 
 	readonly deviceManagementStack: DeviceManagementStack
+
+	readonly greengrassServiceRole: Role
+
+	readonly greengrassGroupsRole: Role
+
+	readonly iotPolicyForGreengrassCores: CfnIotPolicy
+
+	readonly iotEndpointAddress: string
 }
 
 interface AppResourcesProps {
@@ -115,6 +123,7 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 			endpointType: 'iot:Data-ATS',
 		},
 	})
+	const iotEndpointAddress = iotEndpoint.getAttString('endpointAddress')
 
 	const greengrassAssociateServiceRoleToAccount = new CustomResource(scope, 'GreengrassAssociateServiceRoleToAccount', {
 		resourceType: 'Custom::Lambda',
@@ -148,7 +157,7 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 		deploymentTable: persistent.deviceManagementStack.deploymentTable,
 		settingTable: persistent.deviceManagementStack.settingTable,
 		iotConnectPolicy: persistent.deviceManagementStack.iotConnectPolicy,
-		iotEndpointAddress: iotEndpoint.getAttString('endpointAddress'),
+		iotEndpointAddress,
 		greengrassGroupsRole,
 		iotPolicyForGreengrassCores,
 	})
@@ -157,7 +166,7 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 		persistent,
 		graphQLApi,
 		cognitoStack,
-		iotEndpointAddress: iotEndpoint.getAttString('endpointAddress'),
+		iotEndpointAddress,
 		greengrassGroupsRole,
 		helperUtilsLambda,
 		s3HelperLambda,
@@ -174,6 +183,10 @@ function createResources (scope: Construct, props: AppResourcesProps): IApp {
 		sputnikStack,
 		userManagementStack,
 		deviceManagementStack,
+		greengrassServiceRole,
+		greengrassGroupsRole,
+		iotEndpointAddress,
+		iotPolicyForGreengrassCores,
 	}
 }
 
@@ -191,6 +204,14 @@ export class AppNestedStack extends NestedStack implements IApp {
 	readonly dataProcessingStack: DataProcessingStack
 
 	readonly deviceManagementStack: DeviceManagementStack
+
+	readonly greengrassServiceRole: Role
+
+	readonly greengrassGroupsRole: Role
+
+	readonly iotPolicyForGreengrassCores: CfnIotPolicy
+
+	readonly iotEndpointAddress: string
 
 	constructor (scope: Construct, id: string, props: AppStackProps & NestedStackProps) {
 		super(scope, id, props)
@@ -225,6 +246,14 @@ export class AppStack extends Stack implements IApp {
 	readonly dataProcessingStack: DataProcessingStack
 
 	readonly deviceManagementStack: DeviceManagementStack
+
+	readonly greengrassServiceRole: Role
+
+	readonly greengrassGroupsRole: Role
+
+	readonly iotPolicyForGreengrassCores: CfnIotPolicy
+
+	readonly iotEndpointAddress: string
 
 	constructor (scope: Construct, id: string, props: AppStackProps & StackProps) {
 		super(scope, id, props)
