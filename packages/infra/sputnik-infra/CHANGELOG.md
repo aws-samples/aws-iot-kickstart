@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.11](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.10...@deathstar/sputnik-infra@0.0.0-alpha.11) (2020-08-10)
+
+
+### Bug Fixes
+
+* **infra:** expose greengrass* and iot* resources in AppStack ([01f5449](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/01f5449a9b6ce4603d157016f2a7126d63534795))
+
+
+
+
+
 # [0.0.0-alpha.10](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.9...@deathstar/sputnik-infra@0.0.0-alpha.10) (2020-08-10)
 
 **Note:** Version bump only for package @deathstar/sputnik-infra

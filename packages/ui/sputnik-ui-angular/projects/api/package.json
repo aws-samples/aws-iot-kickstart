@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-ui-angular-api",
   "description": "Sputnik UI angular api service",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/bundles/deathstar-sputnik-ui-angular-api.umd.js",
   "module": "dist/fesm5/deathstar-sputnik-ui-angular-api.js",
   "es2015": "dist/fesm2015/deathstar-sputnik-ui-angular-api.js",
@@ -46,11 +46,11 @@
     "apollo-angular": "^1.10.0",
     "apollo-angular-link-http": "^1.11.0",
     "apollo-cache-inmemory": "^1.6.6",
-    "aws-appsync-auth-link": "^2.0.2",
-    "aws-appsync-subscription-link": "^2.2.0",
     "apollo-client": "^2.6.10",
     "apollo-link": "^1.2.14",
     "apollo-link-error": "^1.1.13",
+    "aws-appsync-auth-link": "^2.0.2",
+    "aws-appsync-subscription-link": "^2.2.0",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0"
   }
