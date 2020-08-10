@@ -20,7 +20,8 @@ export class SputnikLibraryLambdaLayer extends CompiledLambdaLayer {
 	}
 
 	static getLayerVersion (scope: Construct): ILayerVersion {
-		const stack = getRootStack(scope)
+		// const stack = getRootStack(scope)
+		const stack = Stack.of(scope)
 		let layerVersion = stackMap.get(stack)
 
 		if (layerVersion == null) {
