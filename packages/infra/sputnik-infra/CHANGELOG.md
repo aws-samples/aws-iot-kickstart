@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.12](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.11...@deathstar/sputnik-infra@0.0.0-alpha.12) (2020-08-10)
+
+
+### Bug Fixes
+
+* **infra:** use IUserPool to assist in breaking circular deps ([ab889bf](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/ab889bf91a7f7e8ed5fd080452506f0235f0b916))
+
+
+### Features
+
+* **infra:** add userPool property to persistent ([8e09c08](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/8e09c08fa5a53c1cf75dc5bbb004c3d26abe9001))
+
+
+
+
+
 # [0.0.0-alpha.11](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.10...@deathstar/sputnik-infra@0.0.0-alpha.11) (2020-08-10)
 
 

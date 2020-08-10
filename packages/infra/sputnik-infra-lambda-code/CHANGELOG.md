@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.8](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.7...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.8) (2020-08-10)
+
+
+### Bug Fixes
+
+* **infra-lambda-code:** do not use root stack for lambda layer reference ([e87b009](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/e87b009e0b86372104968b8fa92c86f06b4cb024))
+
+
+
+
+
 # [0.0.0-alpha.7](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.6...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.7) (2020-08-10)
 
 
