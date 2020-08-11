@@ -8,6 +8,7 @@ interface DefinitionVersionNaming {
 	readonly root: string
 	readonly type: string
 	readonly typeId: string
+	readonly typeDefinitionId: string
 	readonly field: string
 	readonly groupVersionKey: string
 	readonly definitionVersionId: string
@@ -31,6 +32,7 @@ export function getDefinitionVersionNaming (definitionName: string): DefinitionV
 		root,
 		type,
 		typeId: `${type}Id`,
+		typeDefinitionId: `${type}DefinitionId`,
 		field: `${type}s`,
 		groupVersionKey: `${name}Arn`,
 		definitionVersionId: `${name}Id`,

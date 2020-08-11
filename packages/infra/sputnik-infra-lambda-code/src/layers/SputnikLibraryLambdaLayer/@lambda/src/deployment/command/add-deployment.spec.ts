@@ -3,6 +3,7 @@ import { ListThingPrincipalsRequest, ListThingPrincipalsResponse } from 'aws-sdk
 import * as DynamoDB from 'aws-sdk/clients/dynamodb'
 import * as Greengrass from 'aws-sdk/clients/greengrass'
 import * as FIXTURE from './__fixtures__'
+import { GetDefinitionVersionRequest, GetDefinitionRequest, CreateDefinitionRequest, CreateDefinitionVersionRequest } from '../greengrass/types'
 
 interface WithPromiseReponse<T> {
 	promise: () => T
@@ -106,6 +107,8 @@ jest.mock('aws-sdk', () => {
 				return {
 					...methods,
 					[key]: (params: Greengrass.CreateCoreDefinitionVersionRequest) => {
+						validateDefinitionXMethodParams(key, params)
+
 						return withPromise<Greengrass.CreateCoreDefinitionVersionResponse>({
 							Arn: `${key}-arn`,
 							Id: `${key}-id`,
@@ -121,6 +124,8 @@ jest.mock('aws-sdk', () => {
 				return {
 					...methods,
 					[key]: (params: Greengrass.GetCoreDefinitionRequest) => {
+						validateDefinitionXMethodParams(key, params)
+
 						return withPromise<Greengrass.GetCoreDefinitionResponse>({
 							Arn: `${key}-arn`,
 							Id: `${key}-id`,
@@ -137,6 +142,8 @@ jest.mock('aws-sdk', () => {
 				return {
 					...methods,
 					[key]: (params: Greengrass.GetCoreDefinitionVersionRequest) => {
+						validateDefinitionXMethodParams(key, params)
+
 						return withPromise<Greengrass.GetCoreDefinitionVersionResponse>({
 							Arn: `${key}-arn`,
 							Id: `${key}-id`,
@@ -148,6 +155,15 @@ jest.mock('aws-sdk', () => {
 		})),
 	}
 })
+
+function validateDefinitionXMethodParams (method: string, params: GetDefinitionRequest | GetDefinitionVersionRequest | CreateDefinitionVersionRequest): void {
+	const typeId: string = method.replace(/(create|get|Version)/g, '') + 'Id'
+
+	if (params[typeId] == null) {
+		console.warn('validateDefinitionXMethodParams:', typeId, method, params)
+		throw new Error(`Param ${typeId} is required for method ${method}`)
+	}
+}
 
 // TODO: move this to global
 type JestExpect = <R>(actual: R) => jest.Matchers<R> & jasmine.Matchers<R>;

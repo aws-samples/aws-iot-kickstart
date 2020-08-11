@@ -1,6 +1,15 @@
 import { Greengrass } from 'aws-sdk'
 
-export type GetDefintionResponse =
+export type GetDefinitionRequest =
+	Greengrass.GetCoreDefinitionRequest |
+	Greengrass.GetConnectorDefinitionRequest |
+	Greengrass.GetFunctionDefinitionRequest |
+	Greengrass.GetSubscriptionDefinitionRequest |
+	Greengrass.GetLoggerDefinitionRequest |
+	Greengrass.GetDeviceDefinitionRequest |
+	Greengrass.GetResourceDefinitionRequest
+
+export type GetDefinitionResponse =
 	Greengrass.GetCoreDefinitionResponse |
 	Greengrass.GetConnectorDefinitionResponse |
 	Greengrass.GetFunctionDefinitionResponse |
@@ -9,7 +18,16 @@ export type GetDefintionResponse =
 	Greengrass.GetDeviceDefinitionResponse |
 	Greengrass.GetResourceDefinitionResponse
 
-export type CreateDefintionResponse =
+export type CreateDefinitionRequest =
+	Greengrass.CreateCoreDefinitionRequest |
+	Greengrass.CreateConnectorDefinitionRequest |
+	Greengrass.CreateFunctionDefinitionRequest |
+	Greengrass.CreateSubscriptionDefinitionRequest |
+	Greengrass.CreateLoggerDefinitionRequest |
+	Greengrass.CreateDeviceDefinitionRequest |
+	Greengrass.CreateResourceDefinitionRequest
+
+export type CreateDefinitionResponse =
 	Greengrass.CreateCoreDefinitionResponse |
 	Greengrass.CreateConnectorDefinitionResponse |
 	Greengrass.CreateFunctionDefinitionResponse |
@@ -17,6 +35,15 @@ export type CreateDefintionResponse =
 	Greengrass.CreateLoggerDefinitionResponse |
 	Greengrass.CreateDeviceDefinitionResponse |
 	Greengrass.CreateResourceDefinitionResponse
+
+export type GetDefinitionVersionRequest =
+	Greengrass.GetCoreDefinitionVersionRequest |
+	Greengrass.GetConnectorDefinitionVersionRequest |
+	Greengrass.GetFunctionDefinitionVersionRequest |
+	Greengrass.GetSubscriptionDefinitionVersionRequest |
+	Greengrass.GetLoggerDefinitionVersionRequest |
+	Greengrass.GetDeviceDefinitionVersionRequest |
+	Greengrass.GetResourceDefinitionVersionRequest
 
 export type GetDefinitionVersionResponse =
 	Greengrass.GetCoreDefinitionVersionResponse |
@@ -26,6 +53,15 @@ export type GetDefinitionVersionResponse =
 	Greengrass.GetLoggerDefinitionVersionResponse |
 	Greengrass.GetDeviceDefinitionVersionResponse |
 	Greengrass.GetResourceDefinitionVersionResponse
+
+export type CreateDefinitionVersionRequest =
+	Greengrass.CreateCoreDefinitionVersionRequest |
+	Greengrass.CreateConnectorDefinitionVersionRequest |
+	Greengrass.CreateFunctionDefinitionVersionRequest |
+	Greengrass.CreateSubscriptionDefinitionVersionRequest |
+	Greengrass.CreateLoggerDefinitionVersionRequest |
+	Greengrass.CreateDeviceDefinitionVersionRequest |
+	Greengrass.CreateResourceDefinitionVersionRequest
 
 export type CreateDefinitionVersionResponse =
 	Greengrass.CreateCoreDefinitionVersionResponse |

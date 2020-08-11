@@ -1,23 +1,22 @@
-import { Greengrass, Iot } from 'aws-sdk'
-import { GroupVersion } from 'aws-sdk/clients/greengrass'
+import { Greengrass } from 'aws-sdk'
 import { v4 as uuid } from 'uuid'
 import { SpecDefinition } from '@deathstar/sputnik-core-api'
 import { getDefinitionVersionNaming, isDefinitionVersionEqual, autogenFieldIds } from './utils'
-import { GetDefintionResponse, GetDefinitionVersionResponse, CreateDefinitionVersionResponse } from './types'
+import { GetDefinitionResponse, GetDefinitionVersionResponse, CreateDefinitionVersionResponse, CreateDefinitionVersionRequest } from './types'
 import { attachPrincipalPolicy } from '../iot'
 
 const greengrass = new Greengrass()
 
-export async function getGreengrassGroupVersionDefinition (greengrassGroupId: string): Promise<GroupVersion | null> {
+export async function getGreengrassGroupVersionDefinition (greengrassGroupId: string): Promise<Greengrass.GetGroupVersionResponse | null> {
 	console.debug('[getGreengrassGroupVersionDefinition]', greengrassGroupId)
 	try {
 		const group = await greengrass.getGroup({ GroupId: greengrassGroupId }).promise()
 
 		if (group.LatestVersion) {
 			console.debug('[getGreengrassGroupVersionDefinition] Get group version:', greengrassGroupId)
-			const grouopVersion = await greengrass.getGroupVersion({ GroupId: greengrassGroupId, GroupVersionId: group.LatestVersion }).promise()
+			const groupVersion = await greengrass.getGroupVersion({ GroupId: greengrassGroupId, GroupVersionId: group.LatestVersion }).promise()
 
-			return grouopVersion.Definition as GroupVersion
+			return groupVersion
 		} else {
 			console.debug('[getGreengrassGroupVersionDefinition] Greengrass group does not have LatestVersion:', greengrassGroupId)
 
@@ -41,7 +40,7 @@ export async function syncGreengrassGroupVersion (greengrassGroupId: string, spe
 	const results = await Promise.all(Object.entries(spec).map(async ([key, specDefinitionVersion]): Promise<GetDefinitionVersionResponse> => {
 		const {
 			type,
-			typeId,
+			typeDefinitionId,
 			field,
 			groupVersionKey,
 			definitionVersionId,
@@ -50,14 +49,14 @@ export async function syncGreengrassGroupVersion (greengrassGroupId: string, spe
 			createDefinitionMethod,
 			createDefinitionVersionMethod,
 		} = getDefinitionVersionNaming(key)
-		let definition: GetDefintionResponse
+		let definition: GetDefinitionResponse
 
-		if (currentGroupVersion && currentGroupVersion[groupVersionKey] != null) {
+		if (currentGroupVersion?.Definition && currentGroupVersion.Definition[groupVersionKey]) {
 			// definition exists in current group
-			const typeIdValue = (currentGroupVersion[groupVersionKey] as string).split('/')[4]
+			const typeIdValue = (currentGroupVersion.Definition[groupVersionKey] as string).split('/')[4]
 			console.debug('[syncGreengrassGroupVersion] greengrass:', getDefinitionMethod, typeIdValue)
 			definition = await greengrass[getDefinitionMethod]({
-				[typeId]: typeIdValue,
+				[typeDefinitionId]: typeIdValue,
 			}).promise()
 		} else {
 			// definition does not exist in current group
@@ -70,10 +69,18 @@ export async function syncGreengrassGroupVersion (greengrassGroupId: string, spe
 		// Add uuid to missing fields
 		specDefinitionVersion = autogenFieldIds(specDefinitionVersion, field)
 
-		if (definition.LatestVersion) {
+		console.debug('[syncGreengrassGroupVersion] specDefinitionVersion:', specDefinitionVersion)
+
+		const createParams: CreateDefinitionVersionRequest = {
+			[typeDefinitionId]: definition.Id,
+			...specDefinitionVersion,
+		}
+
+		if (currentGroupVersion && definition.LatestVersion) {
 			// This means that it already exists. Check if it has changed from existing
-			console.debug('[syncGreengrassGroupVersion] greengrass:', getDefinitionVersionMethod, definition.LatestVersion)
+			console.debug('[syncGreengrassGroupVersion] greengrass: [existing]', getDefinitionVersionMethod, definition.LatestVersion)
 			const currentVersion: GetDefinitionVersionResponse = await greengrass[getDefinitionVersionMethod]({
+				[typeDefinitionId]: definition.Id,
 				[definitionVersionId]: definition.LatestVersion,
 			}).promise()
 
@@ -84,22 +91,23 @@ export async function syncGreengrassGroupVersion (greengrassGroupId: string, spe
 				// There is no change from existing
 				return currentVersion
 			} else {
-				console.debug('[syncGreengrassGroupVersion] greengrass:', createDefinitionVersionMethod, specDefinitionVersion)
-				const createResponse: CreateDefinitionVersionResponse = await greengrass[createDefinitionVersionMethod](specDefinitionVersion).promise()
+				console.debug('[syncGreengrassGroupVersion] greengrass: [existing]', createDefinitionVersionMethod, createParams)
+				const createResponse: CreateDefinitionVersionResponse = await greengrass[createDefinitionVersionMethod](createParams).promise()
 
 				// Map arn in group version
 				groupVersion[groupVersionKey] = createResponse.Arn
 
-				console.debug('[syncGreengrassGroupVersion] greengrass:', getDefinitionVersionMethod)
+				console.debug('[syncGreengrassGroupVersion] greengrass: [existing]', getDefinitionVersionMethod)
 
 				return greengrass[getDefinitionVersionMethod]({
+					[typeDefinitionId]: definition.Id,
 					[definitionVersionId]: createResponse.Version,
 				}).promise()
 			}
 		} else {
 			// Does not exist yet so lets create it
-			console.debug('[syncGreengrassGroupVersion] greengrass:', createDefinitionVersionMethod, specDefinitionVersion)
-			const createResponse: CreateDefinitionVersionResponse = await greengrass[createDefinitionVersionMethod](specDefinitionVersion).promise()
+			console.debug('[syncGreengrassGroupVersion] greengrass: [new]', createDefinitionVersionMethod, createParams)
+			const createResponse: CreateDefinitionVersionResponse = await greengrass[createDefinitionVersionMethod](createParams).promise()
 
 			// Map arn in group version
 			groupVersion[groupVersionKey] = createResponse.Arn
@@ -107,6 +115,7 @@ export async function syncGreengrassGroupVersion (greengrassGroupId: string, spe
 			console.debug('[syncGreengrassGroupVersion] greengrass:', getDefinitionVersionMethod, createResponse.Version)
 
 			return greengrass[getDefinitionVersionMethod]({
+				[typeDefinitionId]: definition.Id,
 				[definitionVersionId]: createResponse.Version,
 			}).promise()
 		}

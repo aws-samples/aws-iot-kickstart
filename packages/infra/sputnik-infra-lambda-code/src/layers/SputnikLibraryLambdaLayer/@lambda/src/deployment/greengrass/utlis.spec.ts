@@ -14,6 +14,7 @@ describe('utils', () => {
 			expect(parts.root).toBe('CoreDefinition')
 			expect(parts.type).toBe('Core')
 			expect(parts.typeId).toBe('CoreId')
+			expect(parts.typeDefinitionId).toBe('CoreDefinitionId')
 			expect(parts.field).toBe('Cores')
 			expect(parts.groupVersionKey).toBe('CoreDefinitionVersionArn')
 			expect(parts.definitionVersionId).toBe('CoreDefinitionVersionId')
