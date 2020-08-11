@@ -7,6 +7,7 @@ import { ApolloLink } from 'apollo-link'
 import { onError } from 'apollo-link-error'
 import { createAuthLink, AuthOptions } from 'aws-appsync-auth-link'
 import { createSubscriptionHandshakeLink } from 'aws-appsync-subscription-link'
+import { Router } from '@angular/router'
 
 export const LOCAL_STORAGE_TOKEN_KEY = 'sputnik.api.token'
 
@@ -37,7 +38,7 @@ export class ApiProviderModule {
 
   protected token: string | null
 
-  constructor (config: ApiProviderConfig, apollo: Apollo) {
+  constructor (config: ApiProviderConfig, apollo: Apollo, router: Router) {
   	this.token = window.localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY) || null
 
   	config.auth = Object.assign({
@@ -67,7 +68,7 @@ export class ApiProviderModule {
   						// likely "Token has expired."
   						console.error(`[UnauthorizedException]: ${message}`, 'Forcing page refresh')
   						window.localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY)
-  						window.location.href = '/home/login'
+							router.navigate(['/home/login'], { replaceUrl: true, })
   					}
   				})
   			}
