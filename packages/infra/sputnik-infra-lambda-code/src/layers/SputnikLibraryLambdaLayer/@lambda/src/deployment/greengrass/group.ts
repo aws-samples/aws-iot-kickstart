@@ -7,6 +7,16 @@ import { attachPrincipalPolicy } from '../iot'
 
 const greengrass = new Greengrass()
 
+const GREENGRASS_SPEC_KEYS = [
+	'CoreDefinitionVersion',
+	'ConnectorDefinitionVersion',
+	'FunctionDefinitionVersion',
+	'SubscriptionDefinitionVersion',
+	'LoggerDefinitionVersion',
+	'DeviceDefinitionVersion',
+	'ResourceDefinitionVersion',
+]
+
 export async function getGreengrassGroupVersionDefinition (greengrassGroupId: string): Promise<Greengrass.GetGroupVersionResponse | null> {
 	console.debug('[getGreengrassGroupVersionDefinition]', greengrassGroupId)
 	try {
@@ -37,7 +47,10 @@ export async function syncGreengrassGroupVersion (greengrassGroupId: string, spe
 		GroupId: greengrassGroupId,
 	}
 
-	const results = await Promise.all(Object.entries(spec).map(async ([key, specDefinitionVersion]): Promise<GetDefinitionVersionResponse> => {
+	// Ignore all non-greengrass keys such as View
+	const greengrassSpecDefinitions = Object.entries(spec).filter(([key, value]) => GREENGRASS_SPEC_KEYS.includes(key))
+
+	const results = await Promise.all(greengrassSpecDefinitions.map(async ([key, specDefinitionVersion]): Promise<GetDefinitionVersionResponse> => {
 		const {
 			type,
 			typeDefinitionId,
