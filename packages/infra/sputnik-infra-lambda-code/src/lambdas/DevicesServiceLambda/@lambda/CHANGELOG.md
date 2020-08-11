@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.4](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/devices-service@0.0.3...@lambda/devices-service@0.0.4) (2020-08-11)
+
+**Note:** Version bump only for package @lambda/devices-service
+
+
+
+
+
 ## [0.0.3](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/devices-service@0.0.2...@lambda/devices-service@0.0.3) (2020-08-11)
 
 **Note:** Version bump only for package @lambda/devices-service

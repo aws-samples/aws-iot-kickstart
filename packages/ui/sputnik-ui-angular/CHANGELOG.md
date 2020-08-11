@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.3](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/sputnik-ui-angular@0.1.2...sputnik-ui-angular@0.1.3) (2020-08-11)
+
+
+### Bug Fixes
+
+* **ui-angular:** fix select all device deployment ([4f771d0](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/4f771d01b81f4bafb368c78d84554e189b20aef2))
+
+
+
+
+
 ## [0.1.2](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/sputnik-ui-angular@0.1.1...sputnik-ui-angular@0.1.2) (2020-08-11)
 
 

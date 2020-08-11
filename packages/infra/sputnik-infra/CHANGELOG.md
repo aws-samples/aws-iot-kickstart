@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.14](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.13...@deathstar/sputnik-infra@0.0.0-alpha.14) (2020-08-11)
+
+
+### Bug Fixes
+
+* **infra:** fix deployment service addBatchDeployment request mapping ([fc03777](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/fc03777f72e1f184e11efad6a8a055e2bdc2b021))
+
+
+
+
+
 # [0.0.0-alpha.13](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.12...@deathstar/sputnik-infra@0.0.0-alpha.13) (2020-08-11)
 
 **Note:** Version bump only for package @deathstar/sputnik-infra

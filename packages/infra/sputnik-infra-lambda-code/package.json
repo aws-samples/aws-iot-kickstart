@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-infra-lambda-code",
   "description": "Lambda functions used in infra",
-  "version": "0.0.0-alpha.9",
+  "version": "0.0.0-alpha.10",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "contributors": [

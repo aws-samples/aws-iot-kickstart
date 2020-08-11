@@ -3,20 +3,20 @@
     "name": "@lambda/jit-onboarding-service",
     "description": "The Just In Time On Boarding microservice for sputnik",
     "main": "index.js",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "scripts": {
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
     "dependencies": {
-        "@lambda/deployments-service": "^0.0.6",
-        "@lambda/devices-service": "^0.0.3",
+        "@lambda/deployments-service": "^0.0.7",
+        "@lambda/devices-service": "^0.0.4",
         "moment": "2.24.0",
         "node-forge": "0.8.5",
         "shortid": "2.2.14",
         "underscore": "1.10.2"
     },
     "devDependencies": {
-        "@lambda/sputnik-lib": "^0.1.1",
+        "@lambda/sputnik-lib": "^0.1.2",
         "aws-sdk": "*"
     },
     "externals": [

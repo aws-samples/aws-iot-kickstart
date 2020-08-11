@@ -3,7 +3,7 @@
     "name": "@lambda/admin-service",
     "description": "The admin microservice for the sputnik",
     "main": "libs.js",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "scripts": {
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
@@ -12,7 +12,7 @@
         "underscore": "1.10.2"
     },
     "devDependencies": {
-        "@lambda/sputnik-lib": "^0.1.1",
+        "@lambda/sputnik-lib": "^0.1.2",
         "aws-sdk": "*"
     },
     "externals": [

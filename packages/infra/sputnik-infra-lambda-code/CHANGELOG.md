@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.10](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.9...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.10) (2020-08-11)
+
+
+### Bug Fixes
+
+* **lambda/sputnik-lib:** resolve missing XXDefinitionId params ([059914f](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/059914f31b3ecbbca9bbfc68f4fa6cd93f2c49f9))
+
+
+
+
+
 # [0.0.0-alpha.9](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.8...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.9) (2020-08-11)
 
 
