@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.5](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/kickstarter-infra@0.0.4...kickstarter-infra@0.0.5) (2020-08-11)
+
+**Note:** Version bump only for package kickstarter-infra
+
+
+
+
+
 ## [0.0.4](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/kickstarter-infra@0.0.3...kickstarter-infra@0.0.4) (2020-08-09)
 
 **Note:** Version bump only for package kickstarter-infra

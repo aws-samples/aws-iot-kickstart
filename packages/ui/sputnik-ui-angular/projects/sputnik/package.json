@@ -1,6 +1,6 @@
 {
   "name": "@deathstar/sputnik-ui-angular",
-  "version": "0.0.0-alpha.10",
+  "version": "0.0.0-alpha.11",
   "publishConfig": {
     "directory": "dist"
   },
@@ -17,8 +17,8 @@
   "typings": "dist/deathstar-sputnik-ui-angular.d.ts",
   "metadata": "dist/deathstar-sputnik-ui-angular.metadata.json",
   "dependencies": {
-    "@deathstar/sputnik-core": "^0.0.0-alpha.2",
-    "@deathstar/sputnik-ui-angular-api": "^0.0.2",
+    "@deathstar/sputnik-core": "^0.0.0-alpha.3",
+    "@deathstar/sputnik-ui-angular-api": "^0.0.3",
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",
     "aws-amplify": "1.1.36",

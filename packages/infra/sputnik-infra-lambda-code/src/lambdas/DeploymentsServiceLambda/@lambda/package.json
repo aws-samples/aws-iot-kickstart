@@ -3,12 +3,12 @@
     "name": "@lambda/deployments-service",
     "description": "The deployments microservice for the sputnik",
     "main": "libs.js",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "scripts": {
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
     "devDependencies": {
-        "@lambda/sputnik-lib": "^0.1.0",
+        "@lambda/sputnik-lib": "^0.1.1",
         "aws-sdk": "*",
         "deep-diff": "1.0.2",
         "deepmerge": "2.2.1",

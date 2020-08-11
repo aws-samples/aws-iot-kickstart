@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.2](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/sputnik-ui-angular@0.1.1...sputnik-ui-angular@0.1.2) (2020-08-11)
+
+
+### Bug Fixes
+
+* **web:** use router for home/login nav ([f34f6a9](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/f34f6a9f052f608468b3f3db8a8fe922416ac47d))
+
+
+
+
+
 ## [0.1.1](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/sputnik-ui-angular@0.1.0...sputnik-ui-angular@0.1.1) (2020-08-10)
 
 
