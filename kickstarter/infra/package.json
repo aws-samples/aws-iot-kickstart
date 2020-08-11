@@ -9,7 +9,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "yarn clean && tsc -w",
-    "test": "jest",
+    "//test": "jest",
     "cdk": "cdk",
     "clean": "tsc --build --clean && rm -rf out cdk.out",
     "clean:deep": "yarn clean && find lib -type d -name node_modules -exec rm -rf {} \\;",

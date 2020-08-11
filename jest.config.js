@@ -18,12 +18,6 @@ module.exports = {
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js'],
 	modulePathIgnorePatterns: ['dist'],
-	moduleNameMapper: {
-		'(@deathstar/(.+))$': [
-			'<rootDir>/packages/$1/src',
-			'<rootDir>/packages/private/$2/src',
-		],
-	},
 	notify: true,
 	notifyMode: 'always',
 	roots: ['<rootDir>packages'],

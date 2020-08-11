@@ -7,7 +7,7 @@
     "start": "ng serve",
     "build:api": "ng build api",
     "build:app": "ng build sputnik",
-    "test": "ng test",
+    "//test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

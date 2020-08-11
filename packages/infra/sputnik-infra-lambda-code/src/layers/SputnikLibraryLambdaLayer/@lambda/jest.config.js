@@ -1,3 +1,3 @@
 module.exports = {
-	...require('../../../../../../../@lambda/configs/workspace/jest.config'),
+	...require('../../../../../../../configs/workspace/jest.config'),
 }
