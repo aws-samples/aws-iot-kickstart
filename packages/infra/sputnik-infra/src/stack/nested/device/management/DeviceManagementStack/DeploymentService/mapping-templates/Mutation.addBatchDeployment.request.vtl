@@ -4,6 +4,6 @@
     "operation" : "Invoke",
     "payload": {
         "cmd": "addBatchDeployment",
-        "thingIds": "$context.arguments.input.ids"
+        "thingIds": $util.toJson($context.arguments.input.ids)
     }
 }
