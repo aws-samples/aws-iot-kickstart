@@ -150,6 +150,8 @@ export class SputnikStack extends NestedStack {
 				destS3Bucket: persistent.websiteStack.websiteBucket.bucketName,
 				destS3Key: 'assets/appVariables.js',
 				varName: 'appVariables',
+				// TODO: refactor this to handle updates better, for some reason this is not always updated
+				__force_update__: uuid(),
 				file: {
 					USER_POOL_ID: cognitoStack.userPoolId,
 					USER_POOL_CLIENT_ID: cognitoStack.websiteClientId,
