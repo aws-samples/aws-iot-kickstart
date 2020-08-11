@@ -10,7 +10,7 @@
     "dependencies": {
         "@lambda/deployments-service": "^0.0.7",
         "@lambda/devices-service": "^0.0.4",
-        "moment": "2.24.0",
+        "moment": "^2.27.0",
         "node-forge": "0.8.5",
         "shortid": "2.2.14",
         "underscore": "1.10.2"

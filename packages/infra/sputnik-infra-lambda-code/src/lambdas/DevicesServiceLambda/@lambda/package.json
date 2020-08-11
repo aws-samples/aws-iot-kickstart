@@ -10,7 +10,7 @@
     "devDependencies": {
         "@lambda/sputnik-lib": "^0.1.2",
         "aws-sdk": "*",
-        "moment": "2.24.0",
+        "moment": "^2.27.0",
         "node-forge": "0.8.5",
         "shortid": "2.2.14",
         "underscore": "1.10.2"
@@ -19,7 +19,7 @@
         "@lambda/npm-dependencies": "0.0.1",
         "@lambda/sputnik-lib": "0.0.1",
         "aws-sdk": "*",
-        "moment": "2.24.0",
+        "moment": "^2.27.0",
         "node-forge": "0.8.5",
         "shortid": "2.2.14",
         "underscore": "1.10.2"

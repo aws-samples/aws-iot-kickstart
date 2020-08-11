@@ -11,13 +11,13 @@
         "aws-appsync": "^3.0.3",
         "aws-sdk": "*",
         "cross-fetch": "^3.0.4",
-        "graphql-tag": "^2.10.3"
+        "graphql-tag": "^2.11.0"
     },
     "peerDependencies": {
         "@lambda/npm-dependencies": "0.0.1",
         "@lambda/sputnik-lib": "0.0.1",
         "aws-appsync": "^3.0.3",
         "cross-fetch": "^3.0.4",
-        "graphql-tag": "^2.10.3"
+        "graphql-tag": "^2.11.0"
     }
 }

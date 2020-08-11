@@ -10,14 +10,14 @@
     "devDependencies": {
         "@lambda/sputnik-lib": "^0.1.2",
         "aws-sdk": "*",
-        "moment": "2.24.0",
+        "moment": "^2.27.0",
         "underscore": "1.10.2"
     },
     "peerDependencies": {
         "@lambda/npm-dependencies": "0.0.1",
         "@lambda/sputnik-lib": "0.0.1",
         "aws-sdk": "*",
-        "moment": "2.24.0",
+        "moment": "^2.27.0",
         "underscore": "1.10.2"
     }
 }

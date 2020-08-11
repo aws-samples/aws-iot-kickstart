@@ -8,7 +8,7 @@
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
     "dependencies": {
-        "moment": "2.24.0",
+        "moment": "^2.27.0",
         "underscore": "1.10.2"
     },
     "devDependencies": {
