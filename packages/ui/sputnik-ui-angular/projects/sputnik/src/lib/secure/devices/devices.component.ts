@@ -219,13 +219,15 @@ export class DevicesComponent implements OnInit {
 	}
 
 	async deploy () {
-		const thingIds = Object.entries(this.selectedDevices).reduce((devices, [thingId, selected]) => {
-			if (selected) {
-				return devices.concat(thingId)
-			} else {
-				return devices
-			}
-		}, [] as string[])
+		const thingIds = this.selectAll
+			? this.devices.map(device => device.thingId)
+			: Object.entries(this.selectedDevices).reduce((devices, [thingId, selected]) => {
+				if (selected) {
+					return devices.concat(thingId)
+				} else {
+					return devices
+				}
+			}, [] as string[])
 
 		const { value: confirmed } = await swal.fire({
 			title: `Are you sure you want to deploy ${thingIds.length} devices?`,
