@@ -83,4 +83,12 @@ module.exports = {
 		'import/no-named-as-default': 'off',
 		'no-new': 'off',
 	},
+	overrides: [
+		{
+			files: ['**/*.spec.*'],
+			rules: {
+				'@typescript-eslint/no-var-requires': 'off',
+			},
+		},
+	],
 }
