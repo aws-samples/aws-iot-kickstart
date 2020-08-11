@@ -4,9 +4,9 @@ import { v4 as uuid } from 'uuid'
 import { SpecDefinition } from '@deathstar/sputnik-core-api'
 import { getDefinitionVersionNaming, isDefinitionVersionEqual, autogenFieldIds } from './utils'
 import { GetDefintionResponse, GetDefinitionVersionResponse, CreateDefinitionVersionResponse } from './types'
+import { attachPrincipalPolicy } from '../iot'
 
 const greengrass = new Greengrass()
-const iot = new Iot()
 
 export async function getGreengrassGroupVersionDefinition (greengrassGroupId: string): Promise<GroupVersion | null> {
 	console.debug('[getGreengrassGroupVersionDefinition]', greengrassGroupId)
@@ -17,7 +17,7 @@ export async function getGreengrassGroupVersionDefinition (greengrassGroupId: st
 			console.debug('[getGreengrassGroupVersionDefinition] Get group version:', greengrassGroupId)
 			const grouopVersion = await greengrass.getGroupVersion({ GroupId: greengrassGroupId, GroupVersionId: group.LatestVersion }).promise()
 
-			return grouopVersion.Definition
+			return grouopVersion.Definition as GroupVersion
 		} else {
 			console.debug('[getGreengrassGroupVersionDefinition] Greengrass group does not have LatestVersion:', greengrassGroupId)
 
@@ -77,7 +77,7 @@ export async function syncGreengrassGroupVersion (greengrassGroupId: string, spe
 				[definitionVersionId]: definition.LatestVersion,
 			}).promise()
 
-			if (isDefinitionVersionEqual(currentVersion.Definition as unknown, specDefinitionVersion)) {
+			if (isDefinitionVersionEqual(currentVersion.Definition as any, specDefinitionVersion)) {
 				// Map arn in group version
 				groupVersion[groupVersionKey] = currentVersion.Arn
 
@@ -129,10 +129,7 @@ export async function applyGroupPermissions (groupId: string, options: GroupVers
 		GroupId: groupId,
 	}).promise()
 
-	await iot.attachPrincipalPolicy({
-		policyName: options.iotPolicyName,
-		principal: options.iotPrincipal,
-	}).promise()
+	await attachPrincipalPolicy(options.iotPolicyName, options.iotPrincipal)
 }
 
 export async function createDeployment (groupId: string, version: string, type = 'NewDeployment'): Promise<Greengrass.CreateDeploymentResponse> {

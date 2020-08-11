@@ -4,7 +4,7 @@ import { SpecDefinition } from '@deathstar/sputnik-core-api'
 function mergeUniqueBy (value: any[], srcValue: any[], key: string): any[] {
 	// srcValue has precedence
 	// reverse to preserve original specs definitions
-	return unionBy(srcValue.reverse(), value.reverse(), key).reverse()
+	return unionBy((srcValue || []).reverse(), (value || []).reverse(), key).reverse()
 }
 
 function mergeCustomizer (value: any, srcValue: any, key: string, object: any, source: any): any {

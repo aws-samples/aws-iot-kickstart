@@ -10,7 +10,8 @@
         "postbuild": "yarn make:dist && yarn make:zip",
         "make:dist": "mkdir -p dist/nodejs/node_modules/$npm_package_name && rsync -amL node_modules dist/nodejs && rsync -amL lib package.json dist/nodejs/node_modules/$npm_package_name",
         "make:zip": "mkdir -p ../../../../dist/@lambda && cd dist && zip -FSrq ../../../../../dist/$npm_package_name.zip *",
-        "watch": "yarn build --watch"
+        "watch": "yarn build --watch",
+        "test": "jest --config ./jest.config.js"
     },
     "dependencies": {
         "@deathstar/sputnik-core": "^0.0.0-alpha.2",

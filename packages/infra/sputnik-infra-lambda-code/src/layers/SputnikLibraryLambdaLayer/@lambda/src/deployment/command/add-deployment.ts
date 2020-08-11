@@ -150,6 +150,8 @@ export async function addDeployment (thingId: string): Promise<DeploymentItem> {
 
 		let deploymentItem: DeploymentItem
 
+		console.log('ENV:', IOT_ENDPOINT)
+
 		if (deviceType.type === 'GREENGRASS' && deviceBlueprint.type === 'GREENGRASS') {
 			console.debug('[addDeployment] Device is Greengrass:', device.greengrassGroupId)
 
@@ -165,18 +167,18 @@ export async function addDeployment (thingId: string): Promise<DeploymentItem> {
 			// 	iotPrincipal: certificateArn,
 			// })
 
-			const deployment = await createDeployment(device.greengrassGroupId, groupVersion.Version)
+			const deployment = await createDeployment(device.greengrassGroupId, groupVersion.Version as string)
 
 			console.debug(`[addDeployment] Deployed: ${deployment.DeploymentId}`)
 
 			deploymentItem = {
 				thingId: device.thingId,
-				deploymentId: deployment.DeploymentId,
+				deploymentId: deployment.DeploymentId as string,
 				spec: spec,
 				type: 'GREENGRASS',
 				greengrassGroup: {
 					Id: device.greengrassGroupId,
-					VersionId: groupVersion.Version,
+					VersionId: groupVersion.Version as string,
 				},
 				createdAt: (new Date()).toISOString(),
 				updatedAt: (new Date()).toISOString(),
