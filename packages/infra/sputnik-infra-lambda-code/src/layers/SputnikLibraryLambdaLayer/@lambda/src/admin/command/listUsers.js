@@ -26,7 +26,7 @@ export async function listUsers (limit, paginationToken) {
 	const { Users } = await cognito.listUsers(params).promise()
 
 	return {
-		Users: Users.map(mapUser),
+		users: Users.map(mapUser),
 	}
 }
 
