@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core'
-import { RouterModule, Routes } from '@angular/router'
+import { RouterModule, Routes, PreloadAllModules } from '@angular/router'
 
 import { DeploymentsComponent } from './secure/deployments/deployments.component'
 import { DeviceComponent } from './secure/devices/device.component'
@@ -33,16 +33,15 @@ const routes: Routes = [
 			{ path: 'device-types', redirectTo: '/device-types', pathMatch: 'full' },
 			{ path: 'systems', redirectTo: '/systems', pathMatch: 'full' },
 			{ path: 'system-blueprints', redirectTo: '/system-blueprints', pathMatch: 'full' },
-
 			{
-				path: '*',
+				path: '**',
 				redirectTo: '/',
 				pathMatch: 'full',
 			},
 		],
 	},
 	{
-		path: '*',
+		path: '**',
 		redirectTo: '/',
 		pathMatch: 'full',
 	},
@@ -51,7 +50,7 @@ const routes: Routes = [
 @NgModule({
 	// Use hash routing for CloudFront SPA support
 	// https://codecraft.tv/courses/angular/routing/routing-strategies/#_hashlocationstrategy
-	imports: [RouterModule.forRoot(routes, { useHash: true })],
+	imports: [RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules })],
 	exports: [RouterModule],
 })
 export class SputnikRoutingModule {}
