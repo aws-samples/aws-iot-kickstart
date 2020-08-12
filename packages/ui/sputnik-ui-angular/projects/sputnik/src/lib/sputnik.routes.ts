@@ -11,6 +11,10 @@ import { SecureHomeLayoutComponent } from './secure/secure-home-layout.component
 import { SettingsComponent } from './secure/settings/settings.component'
 import { UserComponent } from './secure/users/user.component'
 import { UsersComponent } from './secure/users/users.component'
+import { DeviceTypesComponent } from './secure/device-types/device-types.component'
+import { SystemsComponent } from './secure/systems/systems.component'
+import { SystemBlueprintsComponent } from './secure/system-blueprints/system-blueprints.component'
+import { DeviceBlueprintsComponent } from './secure/device-blueprints/device-blueprints.component'
 
 const routes: Routes = [
 	{
@@ -28,22 +32,11 @@ const routes: Routes = [
 			{ path: 'users', component: UsersComponent },
 			{ path: 'users/:username', component: UserComponent },
 
-			// Sub moduled paths :)
-			{ path: 'device-blueprints', redirectTo: '/device-blueprints', pathMatch: 'full' },
-			{ path: 'device-types', redirectTo: '/device-types', pathMatch: 'full' },
-			{ path: 'systems', redirectTo: '/systems', pathMatch: 'full' },
-			{ path: 'system-blueprints', redirectTo: '/system-blueprints', pathMatch: 'full' },
-			{
-				path: '**',
-				redirectTo: '/',
-				pathMatch: 'full',
-			},
+			{ path: 'device-blueprints', component: DeviceBlueprintsComponent },
+			{ path: 'device-types', component: DeviceTypesComponent },
+			{ path: 'systems', component: SystemsComponent },
+			{ path: 'system-blueprints', component: SystemBlueprintsComponent },
 		],
-	},
-	{
-		path: '**',
-		redirectTo: '/',
-		pathMatch: 'full',
 	},
 ]
 
