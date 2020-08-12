@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.15](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.14...@deathstar/sputnik-ui-angular@0.0.0-alpha.15) (2020-08-12)
+
+
+### Bug Fixes
+
+* **ui-angular:** fix breadcrumbs paths to use router ([f2a44a5](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/f2a44a52a78523c046dcce06fe20dfa62f6bbc87))
+* **ui-angular:** fix pathing redirect issues and make routing more stable ([8f1d7e6](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/8f1d7e6c3f738c540cc9d763b2faf08ffac5e30b))
+
+
+
+
+
 # [0.0.0-alpha.14](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.13...@deathstar/sputnik-ui-angular@0.0.0-alpha.14) (2020-08-12)
 
 
