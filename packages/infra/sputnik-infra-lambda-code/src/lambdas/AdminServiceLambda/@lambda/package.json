@@ -3,7 +3,7 @@
     "name": "@lambda/admin-service",
     "description": "The admin microservice for the sputnik",
     "main": "libs.js",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "scripts": {
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },

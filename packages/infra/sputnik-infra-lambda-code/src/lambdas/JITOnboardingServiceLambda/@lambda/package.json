@@ -3,7 +3,7 @@
     "name": "@lambda/jit-onboarding-service",
     "description": "The Just In Time On Boarding microservice for sputnik",
     "main": "index.js",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "scripts": {
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },

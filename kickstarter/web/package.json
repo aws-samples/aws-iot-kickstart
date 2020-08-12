@@ -2,7 +2,7 @@
   "private": true,
   "name": "kickstarter-web",
   "description": "Sputnik frontend using Angular framework",
-  "version": "0.0.0-alpha.13",
+  "version": "0.0.0-alpha.14",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "contributors": [
@@ -25,9 +25,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@aws-amplify/ui-angular": "^0.2.14",
-    "@deathstar/sputnik-ui-angular": "^0.0.0-alpha.13",
-    "@sweetalert2/ngx-sweetalert2": "5.1.0",
     "@angular/animations": "~8.2.14",
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14",
@@ -35,6 +32,9 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@aws-amplify/ui-angular": "^0.2.14",
+    "@deathstar/sputnik-ui-angular": "^0.0.0-alpha.14",
+    "@sweetalert2/ngx-sweetalert2": "5.1.0",
     "apollo-angular": "^1.10.0",
     "apollo-angular-link-http": "^1.11.0",
     "apollo-cache-inmemory": "^1.6.6",

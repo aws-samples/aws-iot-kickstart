@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.14](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.13...@deathstar/sputnik-ui-angular@0.0.0-alpha.14) (2020-08-12)
+
+
+### Bug Fixes
+
+* **ui-angular:** fix device create and delete functionality ([41e915d](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/41e915d3c15b38cbd285f5ec1c2ae9351705946f))
+* **ui-angular:** fix menu icons ([47ca2db](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/47ca2db62110cff6b958e23ab3da735b5b48317a))
+* **ui-angular:** fix wildcard routing and add preloading ([590aaff](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/590aaff97c19de01fad5120593b19a17a29139c6))
+
+
+
+
+
 # [0.0.0-alpha.13](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.12...@deathstar/sputnik-ui-angular@0.0.0-alpha.13) (2020-08-12)
 
 
