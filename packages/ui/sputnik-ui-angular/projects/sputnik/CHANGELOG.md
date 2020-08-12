@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.13](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.12...@deathstar/sputnik-ui-angular@0.0.0-alpha.13) (2020-08-12)
+
+
+### Features
+
+* **angular-ui:** use base / instead of /securehome ([663da89](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/663da89d4a2041cc23345ab71813eb83931bbddf))
+* **ui-angular:** improve device selection ui handling ([78e28cd](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/78e28cdb9997a9e19226c24084983c9c79026659))
+* **ui-angular:** refactor auth/UserService implementation and remove public routes ([c117d45](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/c117d459e76107ac0c6dcab535bd1794bfc2ea33))
+
+
+
+
+
 # [0.0.0-alpha.12](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.11...@deathstar/sputnik-ui-angular@0.0.0-alpha.12) (2020-08-11)
 
 

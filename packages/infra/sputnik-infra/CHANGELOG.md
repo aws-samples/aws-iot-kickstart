@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.15](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.14...@deathstar/sputnik-infra@0.0.0-alpha.15) (2020-08-12)
+
+
+### Bug Fixes
+
+* **infra:** force `websiteConfig` resource to update on every deploy ([657486b](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/657486b7a623b4686ecd6fe47c3d20e706b66b3a))
+
+
+
+
+
 # [0.0.0-alpha.14](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra@0.0.0-alpha.13...@deathstar/sputnik-infra@0.0.0-alpha.14) (2020-08-11)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.1.0](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular-api@0.0.3...@deathstar/sputnik-ui-angular-api@0.1.0) (2020-08-12)
+
+
+### Features
+
+* **ui-angular:** refactor auth/UserService implementation and remove public routes ([c117d45](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/c117d459e76107ac0c6dcab535bd1794bfc2ea33))
+
+
+
+
+
 ## [0.0.3](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular-api@0.0.2...@deathstar/sputnik-ui-angular-api@0.0.3) (2020-08-11)
 
 

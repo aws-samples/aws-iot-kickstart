@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.11](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.10...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.11) (2020-08-12)
+
+
+### Bug Fixes
+
+* **@lambda/sputnik-lib:** change `User => user` for `listUsers` result ([034d86d](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/034d86dc2a0b227482575a5790f7e81dbf1cb761))
+* **infra-lambda:** ignore non greengrass keys in deployment ([7549077](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/7549077a2d499349d7076dfe479e2c9f29437049))
+
+
+
+
+
 # [0.0.0-alpha.10](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.9...@deathstar/sputnik-infra-lambda-code@0.0.0-alpha.10) (2020-08-11)
 
 

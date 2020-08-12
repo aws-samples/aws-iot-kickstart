@@ -3,12 +3,12 @@
     "name": "@lambda/helper-utils",
     "description": "Utils for the app",
     "main": "index.js",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "scripts": {
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
     "devDependencies": {
-        "@lambda/sputnik-lib": "^0.1.2",
+        "@lambda/sputnik-lib": "^0.1.3",
         "aws-sdk": "*",
         "moment": "^2.27.0",
         "underscore": "1.10.2",

@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-ui-angular-api",
   "description": "Sputnik UI angular api service",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "main": "dist/bundles/deathstar-sputnik-ui-angular-api.umd.js",
   "module": "dist/fesm5/deathstar-sputnik-ui-angular-api.js",
   "es2015": "dist/fesm2015/deathstar-sputnik-ui-angular-api.js",
