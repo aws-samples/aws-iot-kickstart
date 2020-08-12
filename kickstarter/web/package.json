@@ -15,21 +15,11 @@
     "lib": "dist",
     "test": "test"
   },
-  "//workspaces": {
-    "nohoist": [
-      "@deathstar/sputnik-ui-angular",
-      "ng-packagr",
-      "@angular/*",
-      "@angular-devkit/*",
-      "**/aws-amplify-angular",
-      "**/ng-block-ui"
-    ]
-  },
   "scripts": {
     "ng": "export NODE_OPTIONS=\"--max-old-space-size=6144\" && ng",
     "dev": "yarn ng serve",
     "prebuild": "yarn clean",
-    "build": "yarn ng build --prod",
+    "build": "NG_BUILD_DIFFERENTIAL_FULL=true ng build --prod",
     "clean": "rm -rf dist",
     "clean:deep": "yarn clean && rm -rf node_modules",
     "test": "jest"
@@ -38,6 +28,23 @@
     "@aws-amplify/ui-angular": "^0.2.14",
     "@deathstar/sputnik-ui-angular": "^0.0.0-alpha.13",
     "@sweetalert2/ngx-sweetalert2": "5.1.0",
+    "@angular/animations": "~8.2.14",
+    "@angular/common": "^8.2.14",
+    "@angular/core": "^8.2.14",
+    "@angular/forms": "~8.2.14",
+    "@angular/platform-browser": "~8.2.14",
+    "@angular/platform-browser-dynamic": "~8.2.14",
+    "@angular/router": "~8.2.14",
+    "apollo-angular": "^1.10.0",
+    "apollo-angular-link-http": "^1.11.0",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link": "^1.2.14",
+    "apollo-link-error": "^1.1.13",
+    "aws-appsync-auth-link": "^2.0.2",
+    "aws-appsync-subscription-link": "^2.2.0",
+    "graphql": "^15.3.0",
+    "graphql-tag": "^2.11.0",
     "ng-block-ui": "2.1.7",
     "ng2-charts": "2.2.0",
     "ngx-color-picker": "7.5.0",
@@ -47,17 +54,10 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.29",
     "@angular-devkit/build-ng-packagr": "~0.803.29",
-    "@angular/animations": "~8.2.14",
     "@angular/cli": "~8.3.29",
-    "@angular/common": "~8.2.14",
     "@angular/compiler": "~8.2.14",
     "@angular/compiler-cli": "~8.2.14",
-    "@angular/core": "~8.2.14",
-    "@angular/forms": "~8.2.14",
     "@angular/language-service": "~8.2.14",
-    "@angular/platform-browser": "~8.2.14",
-    "@angular/platform-browser-dynamic": "~8.2.14",
-    "@angular/router": "~8.2.14",
     "tslib": "^1.10.0"
   }
 }

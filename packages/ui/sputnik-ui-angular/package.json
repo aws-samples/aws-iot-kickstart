@@ -5,21 +5,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build:api": "ng build api",
-    "build:app": "ng build sputnik",
+    "build:api": "NG_BUILD_DIFFERENTIAL_FULL=true ng build api",
+    "build:app": "NG_BUILD_DIFFERENTIAL_FULL=true ng build sputnik",
     "//test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
-  },
-  "//workspaces": {
-    "nohoist": [
-      "ng-packagr",
-      "@angular/*",
-      "@angular-devkit/*",
-      "aws-amplify-angular",
-      "ng-block-ui",
-      "apollo-*"
-    ]
   },
   "dependencies": {
     "@angular-eslint/eslint-plugin": "0.0.1-alpha.32",
