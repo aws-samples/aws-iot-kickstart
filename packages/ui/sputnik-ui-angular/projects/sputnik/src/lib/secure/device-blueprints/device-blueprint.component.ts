@@ -85,7 +85,7 @@ export class DeviceBlueprintComponent extends PageComponent {
 	}
 
 	cancel () {
-		this.router.navigate(['/securehome/device-blueprints'])
+		this.router.navigate(['/device-blueprints'])
 	}
 
 	submit (f) {
@@ -102,7 +102,7 @@ export class DeviceBlueprintComponent extends PageComponent {
 					showConfirmButton: false,
 				}).then(() => {
 					this.logger.info('Created deviceBlueprint:', deviceBlueprint)
-					this.router.navigate(['securehome/device-blueprints/' + deviceBlueprint.id])
+					this.router.navigate(['/device-blueprints/' + deviceBlueprint.id])
 				})
 			})
 			.catch(err => {
@@ -120,7 +120,7 @@ export class DeviceBlueprintComponent extends PageComponent {
 					showConfirmButton: false,
 				}).then(() => {
 					this.logger.info('Updated deviceBlueprint:', deviceBlueprint)
-					this.router.navigate(['securehome/device-blueprints/' + deviceBlueprint.id])
+					this.router.navigate(['/device-blueprints/' + deviceBlueprint.id])
 				})
 			})
 			.catch(err => {
@@ -146,7 +146,7 @@ export class DeviceBlueprintComponent extends PageComponent {
 				.delete(this.deviceBlueprint.id)
 				.then((resp: any) => {
 					this.blockUI.stop()
-					this.router.navigate(['securehome/device-blueprints'])
+					this.router.navigate(['/device-blueprints'])
 				})
 				.catch(err => {
 					this.blockUI.stop()

@@ -198,7 +198,7 @@ export class UserComponent extends PageComponent {
 		.deleteUser(this.username)
 		.then(() => {
 			this.blockUI.stop()
-			this.router.navigate(['/securehome/users'])
+			this.router.navigate(['/users'])
 		})
 		.catch(err => {
 			this.blockUI.stop()
@@ -234,6 +234,6 @@ export class UserComponent extends PageComponent {
 	}
 
 	cancel () {
-		this.router.navigate(['/securehome/users'])
+		this.router.navigate(['/users'])
 	}
 }

@@ -11,19 +11,10 @@ import { SecureHomeLayoutComponent } from './secure/secure-home-layout.component
 import { SettingsComponent } from './secure/settings/settings.component'
 import { UserComponent } from './secure/users/user.component'
 import { UsersComponent } from './secure/users/users.component'
-import { DeviceBlueprintComponent } from './secure/device-blueprints/device-blueprint.component'
-import { DeviceTypeComponent } from './secure/device-types/device-type.component'
-import { SystemsComponent } from './secure/systems/systems.component'
-import { SystemBlueprintComponent } from './secure/system-blueprints/system-blueprint.component'
 
-const secureHomeRoutes: Routes = [
+const routes: Routes = [
 	{
 		path: '',
-		redirectTo: '/securehome',
-		pathMatch: 'full',
-	},
-	{
-		path: 'securehome',
 		component: SecureHomeLayoutComponent,
 		children: [
 			{ path: '', component: SecureHomeComponent },
@@ -38,20 +29,23 @@ const secureHomeRoutes: Routes = [
 			{ path: 'users/:username', component: UserComponent },
 
 			// Sub moduled paths :)
-			{ path: 'device-blueprints', redirectTo: '/securehome/device-blueprints', pathMatch: 'full' },
-			{ path: 'device-types', redirectTo: '/securehome/device-types', pathMatch: 'full' },
-			{ path: 'systems', redirectTo: '/securehome/systems', pathMatch: 'full' },
-			{ path: 'system-blueprints', redirectTo: '/securehome/system-blueprints', pathMatch: 'full' },
-			// { path: 'device-blueprints', component: DeviceBlueprintComponent },
-			// { path: 'device-types', component: DeviceTypeComponent },
-			// { path: 'systems', component: SystemsComponent },
-			// { path: 'system-blueprints', component: SystemBlueprintComponent },
+			{ path: 'device-blueprints', redirectTo: '/device-blueprints', pathMatch: 'full' },
+			{ path: 'device-types', redirectTo: '/device-types', pathMatch: 'full' },
+			{ path: 'systems', redirectTo: '/systems', pathMatch: 'full' },
+			{ path: 'system-blueprints', redirectTo: '/system-blueprints', pathMatch: 'full' },
+
+			{
+				path: '*',
+				redirectTo: '/',
+				pathMatch: 'full',
+			},
 		],
 	},
-]
-
-const routes: Routes = [
-	...secureHomeRoutes,
+	{
+		path: '*',
+		redirectTo: '/',
+		pathMatch: 'full',
+	},
 ]
 
 @NgModule({

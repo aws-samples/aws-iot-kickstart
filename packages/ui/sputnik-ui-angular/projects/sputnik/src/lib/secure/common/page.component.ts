@@ -22,6 +22,5 @@ export class PageComponent implements OnInit {
 	ngOnInit () {
 		this.profile = this.userService.profileInfo
 		this.isAdminUser = this.userService.isAdmin
-		debugger
 	}
 }

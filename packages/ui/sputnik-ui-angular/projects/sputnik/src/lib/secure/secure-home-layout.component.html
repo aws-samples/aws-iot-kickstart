@@ -18,7 +18,7 @@
             <!-- Logo -->
             <!-- ============================================================== -->
             <div class="navbar-header">
-                <a class="navbar-brand" [routerLink]="['/securehome']">
+                <a class="navbar-brand" [routerLink]="['/']">
                     <!-- Light Logo icon -->
                     <img src="../assets/img/aws_smile.png" alt="homepage" width="30px" class="light-logo" />
                     <!--End Logo icon -->
@@ -59,14 +59,14 @@
                                     <ol class="breadcrumb"
                                         style="display: flex; flex-wrap: wrap; list-style: none; background-color: transparent;">
                                         <li class="breadcrumb-item">
-                                            <a style="color: white" href="/securehome">Home</a>
+                                            <a style="color: white" href="/">Home</a>
                                         </li>
                                         <li *ngFor="let c of crumbs"
                                             [class]="c.active ? 'breadcrumb-item active' : 'breadcrumb-item'">
-                                            <a *ngIf="!c.active" style="color: white;" href="/securehome/{{ c.link }}">{{
+                                            <a *ngIf="!c.active" style="color: white;" href="/{{ c.link }}">{{
                                             c.title
                                             }}</a>
-                                            <!-- <a *ngIf="c.link" href="/securehome/{{c.link}}" style="color: white;">{{c.title}}</a> -->
+                                            <!-- <a *ngIf="c.link" href="/{{c.link}}" style="color: white;">{{c.title}}</a> -->
                                             <span *ngIf="c.active" style="color: white;">{{ c.title }}</span>
                                         </li>
                                     </ol>
@@ -77,10 +77,10 @@
                             <h3 style="color: white; margin-top: 10px; margin-left: 10px; margin-bottom: 0px;">{{title}}</h3>
                             <ol class="breadcrumb" style="display: flex; flex-wrap: wrap; list-style: none; padding: 0px 0px 0px 10px;  margin-top: -10px; background-color: transparent;">
                                 <li class="breadcrumb-item">
-                                    <a style="color: white" href="/securehome">Home</a>
+                                    <a style="color: white" href="/">Home</a>
                                 </li>
                                 <li *ngFor="let c of crumbs" [class]="c.active ? 'breadcrumb-item active' : 'breadcrumb-item'">
-                                    <a *ngIf="c.link" href="/securehome/{{c.link}}" style="color: white;">{{c.title}}</a>
+                                    <a *ngIf="c.link" href="/{{c.link}}" style="color: white;">{{c.title}}</a>
                                     <span *ngIf="!c.link" [style.color]="!c.active ? 'white': ''">{{c.title}}</span>
                                 </li>
                             </ol>
@@ -139,17 +139,17 @@
                                         <div class="u-text" routerLink="profile">
                                             <h4>{{ profile.name }}</h4>
                                             <p class="text-muted">{{ profile.email }}</p>
-                                            <!-- <a href="securehome/profile" class="btn btn-rounded btn-danger btn-sm">View
+                                            <!-- <a href="/profile" class="btn btn-rounded btn-danger btn-sm">View
                                                 Profile</a> -->
                                         </div>
                                     </div>
                                 </li>
                                 <li role="separator" class="divider"></li>
                                 <li>
-                                    <a routerLink="/securehome/profile"> <i class="ti-user"></i> My Profile</a>
+                                    <a routerLink="/profile"> <i class="ti-user"></i> My Profile</a>
                                 </li>
                                 <li>
-                                    <a routerLink="/securehome/devices"> <i class="ti-wallet"></i> Devices</a>
+                                    <a routerLink="/devices"> <i class="ti-wallet"></i> Devices</a>
                                 </li>
                                 <li role="separator" class="divider"></li>
                                 <li>
@@ -176,13 +176,13 @@
             <nav class="sidebar-nav">
                 <!-- <nav class="sidebar-nav"> -->
                 <ul id="sidebarnav">
-                    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/securehome">
+                    <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/">
                         <a class="waves-effect waves-dark" data-caption="Home">
                             <i class="mdi mdi-home"></i>
                             <span class="hide-menu">Home </span>
                         </a>
                     </li>
-                    <!-- <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/securehome/maps">
+                    <!-- <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" routerLink="/maps">
                         <a class="waves-effect waves-dark" data-caption="Maps">
                             <i class="mdi mdi-google-maps"></i>
                             <span class="hide-menu">Maps </span>
@@ -190,21 +190,21 @@
                     </li> -->
                     <li class="nav-small-cap">MENU</li>
                     <li *ngIf="enableSystems" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-                        routerLink="/securehome/systems">
+                        routerLink="/systems">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-car"></i>
                             <span class="hide-menu">Systems </span>
                         </a>
                     </li>
                     <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-                        routerLink="/securehome/devices">
+                        routerLink="/devices">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-view-module"></i>
                             <span class="hide-menu">Devices </span>
                         </a>
                     </li>
                     <!-- <li *ngIf="isAdminUser" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-                        routerLink="/securehome/deployments">
+                        routerLink="/deployments">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-move-resize-variant"></i>
                             <span class="hide-menu">Deployments </span>
@@ -212,21 +212,21 @@
                     </li> -->
                     <li class="nav-small-cap">MODULES</li>
                     <li *ngIf="isAdminUser && enableSystems" routerLinkActive="active"
-                        [routerLinkActiveOptions]="{ exact: true }" routerLink="/securehome/system-blueprints">
+                        [routerLinkActiveOptions]="{ exact: true }" routerLink="/system-blueprints">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-sitemap"></i>
                             <span class="hide-menu">System Blueprints </span>
                         </a>
                     </li>
                     <li *ngIf="isAdminUser" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-                        routerLink="/securehome/device-blueprints">
+                        routerLink="/device-blueprints">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-lock-pattern"></i>
                             <span class="hide-menu">Device Blueprints </span>
                         </a>
                     </li>
                     <li *ngIf="isAdminUser" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-                        routerLink="/securehome/device-types">
+                        routerLink="/device-types">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-chip"></i>
                             <span class="hide-menu">Device Types </span>
@@ -234,28 +234,28 @@
                     </li>
                     <li class="nav-small-cap" *ngIf="isAdminUser">ADMINISTRATION</li>
                     <li routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-                        routerLink="/securehome/profile">
+                        routerLink="/profile">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-account-card-details"></i>
                             <span class="hide-menu">My Profile </span>
                         </a>
                     </li>
                     <li *ngIf="isAdminUser" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-                        routerLink="/securehome/users">
+                        routerLink="/users">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-account-multiple"></i>
                             <span class="hide-menu">Users </span>
                         </a>
                     </li>
                     <!-- <li *ngIf="isAdminUser" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-                        routerLink="/securehome/user-groups">
+                        routerLink="/user-groups">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-account-network"></i>
                             <span class="hide-menu">Groups </span>
                         </a>
                     </li> -->
                     <li *ngIf="isAdminUser" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
-                        routerLink="/securehome/settings">
+                        routerLink="/settings">
                         <a class="waves-effect waves-dark">
                             <i class="mdi mdi-settings"></i>
                             <span class="hide-menu">Settings </span>
@@ -273,11 +273,11 @@
     <!-- ============================================================== -->
     <!-- Page wrapper  -->
     <!-- ============================================================== -->
-    <div class="page-wrapper" [style.padding-top]="router.url == '/securehome/maps' ? '0px' : '30px'">
+    <div class="page-wrapper" [style.padding-top]="router.url == '/maps' ? '0px' : '30px'">
         <!-- ============================================================== -->
         <!-- Container fluid  -->
         <!-- ============================================================== -->
-        <div class="container-fluid" [style.padding]="router.url == '/securehome/maps' ? '0px' : ''">
+        <div class="container-fluid" [style.padding]="router.url == '/maps' ? '0px' : ''">
             <!-- ============================================================== -->
             <!-- Start Page Content -->
             <!-- ============================================================== -->

@@ -84,6 +84,6 @@ export class DeviceBlueprintsComponent extends PageComponent {
 	}
 
 	handleCreate () {
-		this.router.navigate(['securehome/device-blueprints/new'])
+		this.router.navigate(['/device-blueprints/new'])
 	}
 }

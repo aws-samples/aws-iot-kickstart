@@ -83,7 +83,7 @@ export class SystemBlueprintComponent extends PageComponent {
 	}
 
 	cancel () {
-		this.router.navigate(['/securehome/system-blueprints'])
+		this.router.navigate(['/system-blueprints'])
 	}
 
 	submit (f) {
@@ -100,7 +100,7 @@ export class SystemBlueprintComponent extends PageComponent {
 					showConfirmButton: false,
 				}).then(() => {
 					this.logger.info('Created systemBlueprint:', systemBlueprint)
-					this.router.navigate(['securehome/system-blueprints/' + systemBlueprint.id])
+					this.router.navigate(['/system-blueprints/' + systemBlueprint.id])
 				})
 			})
 			.catch(err => {
@@ -118,7 +118,7 @@ export class SystemBlueprintComponent extends PageComponent {
 					showConfirmButton: false,
 				}).then(() => {
 					this.logger.info('Updated systemBlueprint:', systemBlueprint)
-					this.router.navigate(['securehome/system-blueprints/' + systemBlueprint.id])
+					this.router.navigate(['/system-blueprints/' + systemBlueprint.id])
 				})
 			})
 			.catch(err => {
@@ -144,7 +144,7 @@ export class SystemBlueprintComponent extends PageComponent {
 				.delete(this.systemBlueprint.id)
 				.then((resp: any) => {
 					this.blockUI.stop()
-					this.router.navigate(['securehome/system-blueprints'])
+					this.router.navigate(['/system-blueprints'])
 				})
 				.catch(err => {
 					this.blockUI.stop()

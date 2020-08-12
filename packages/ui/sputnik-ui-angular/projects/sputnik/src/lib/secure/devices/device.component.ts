@@ -205,7 +205,7 @@ export class DeviceComponent extends PageComponent implements OnDestroy {
 			this.blockUI.start('Deleting device...')
 			const result = await this.apiService.deleteDevice({ thingId: device.thingId })
 			console.log(result)
-			this.router.navigate(['/securehome/devices'])
+			this.router.navigate(['/devices'])
 		} catch (error) {
 			swal.fire('Oops...', 'Something went wrong! Unable to delete the widget.', 'error')
 			this.logger.error('error occurred calling deleteDevice api, show message')

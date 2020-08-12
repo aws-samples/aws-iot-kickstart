@@ -83,7 +83,7 @@ export class DeviceTypeComponent extends PageComponent {
 		}
 
 		cancel () {
-			this.router.navigate(['/securehome/device-types'])
+			this.router.navigate(['/device-types'])
 		}
 
 		submit (f) {
@@ -100,7 +100,7 @@ export class DeviceTypeComponent extends PageComponent {
 						showConfirmButton: false,
 					}).then(() => {
 						this.logger.info('Created deviceType:', deviceType)
-						this.router.navigate(['securehome/device-types/' + deviceType.id])
+						this.router.navigate(['/device-types/' + deviceType.id])
 					})
 				})
 				.catch(err => {
@@ -118,7 +118,7 @@ export class DeviceTypeComponent extends PageComponent {
 						showConfirmButton: false,
 					}).then(() => {
 						this.logger.info('Updated deviceType:', deviceType)
-						this.router.navigate(['securehome/device-types/' + deviceType.id])
+						this.router.navigate(['/device-types/' + deviceType.id])
 					})
 				})
 				.catch(err => {
@@ -144,7 +144,7 @@ export class DeviceTypeComponent extends PageComponent {
 					.delete(this.deviceType.id)
 					.then((resp: any) => {
 						this.blockUI.stop()
-						this.router.navigate(['securehome/device-types'])
+						this.router.navigate(['/device-types'])
 					})
 					.catch(err => {
 						this.blockUI.stop()

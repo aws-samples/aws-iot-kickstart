@@ -13,7 +13,7 @@ import { PrettyJsonModule } from '../../modules/pretty-json/pretty-json.module'
 
 const deviceTypesRoutes: Routes = [
 	{
-		path: 'securehome/device-types',
+		path: 'device-types',
 		component: SecureHomeLayoutComponent,
 		children: [{ path: ':id', component: DeviceTypeComponent }, { path: '', component: DeviceTypesComponent }],
 	},

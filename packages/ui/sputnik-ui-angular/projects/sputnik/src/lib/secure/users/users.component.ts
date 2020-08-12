@@ -70,7 +70,6 @@ export class UsersComponent extends PageComponent {
 
 	ngOnInit () {
 		super.ngOnInit()
-
 		// this.blockUI.start('Loading users...')
 
 		this.breadCrumbService.setup(this.pageTitle, [

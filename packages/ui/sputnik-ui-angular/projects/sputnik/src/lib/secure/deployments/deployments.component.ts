@@ -72,7 +72,7 @@ export class DeploymentsComponent extends PageComponent {
 			swal.fire('Oops...', 'Something went wrong! Unable to retrieve the deployments.', 'error')
 			this.logger.error('error occurred calling getDeployments api, show message')
 			this.logger.error('the requested type doesnt exist')
-			this.router.navigate(['/securehome/deployments'])
+			this.router.navigate(['/deployments'])
 		})
 	}
 
@@ -82,7 +82,7 @@ export class DeploymentsComponent extends PageComponent {
 	}
 
 	openDevice (thingId: string) {
-		this.router.navigate([['/securehome/deployments', thingId].join('/')])
+		this.router.navigate([['/deployments', thingId].join('/')])
 	}
 
 	formatDate (dt: string) {

@@ -85,6 +85,6 @@ export class SystemBlueprintsComponent extends PageComponent {
 	}
 
 	handleCreate () {
-		this.router.navigate(['securehome/system-blueprints/new'])
+		this.router.navigate(['/system-blueprints/new'])
 	}
 }

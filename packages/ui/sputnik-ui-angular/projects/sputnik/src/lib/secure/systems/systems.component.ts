@@ -103,7 +103,7 @@ export class SystemsComponent extends PageComponent {
 			swal.fire('Oops...', 'Something went wrong! Unable to retrieve the systems.', 'error')
 			this.logger.error('error occurred calling listSystems api')
 			this.logger.error(err)
-			this.router.navigate(['/securehome/systems'])
+			this.router.navigate(['/systems'])
 		})
 	}
 

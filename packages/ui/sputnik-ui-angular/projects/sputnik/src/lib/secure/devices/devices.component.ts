@@ -186,7 +186,7 @@ export class DevicesComponent extends PageComponent {
 	}
 
 	openDevice (thingId: string) {
-		this.router.navigate([['/securehome/devices', thingId].join('/')])
+		this.router.navigate([['/devices', thingId].join('/')])
 	}
 
 	formatDate (dt: string) {

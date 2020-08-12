@@ -16,7 +16,7 @@ import { PrettyJsonModule } from '../../modules/pretty-json/pretty-json.module'
 
 const systemsRoutes: Routes = [
 	{
-		path: 'securehome/systems',
+		path: 'systems',
 		component: SecureHomeLayoutComponent,
 		children: [{ path: ':id', component: SystemComponent }, { path: '', component: SystemsComponent }],
 	},

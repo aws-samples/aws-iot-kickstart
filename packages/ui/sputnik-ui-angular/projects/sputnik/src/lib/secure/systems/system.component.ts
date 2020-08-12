@@ -108,7 +108,7 @@ export class SystemComponent extends PageComponent {
 			swal.fire('Oops...', 'Something went wrong! Unable to retrieve the system.', 'error')
 			this.logger.error('error occurred calling getSystem api, show message')
 			this.logger.error(err)
-			this.router.navigate(['/securehome/systems'])
+			this.router.navigate(['/systems'])
 		})
 	}
 
@@ -158,7 +158,7 @@ export class SystemComponent extends PageComponent {
 				this.logger.error(result.error)
 			} else {
 				this.handleCancelEdit()
-				this.router.navigate(['securehome/systems'])
+				this.router.navigate(['/systems'])
 			}
 		})
 
@@ -228,7 +228,7 @@ export class SystemComponent extends PageComponent {
 	}
 
 	public gotoDevice (device: Device) {
-		this.router.navigate([['/securehome/devices', device.thingId].join('/')])
+		this.router.navigate([['/devices', device.thingId].join('/')])
 	}
 
 	public createCertificate () {

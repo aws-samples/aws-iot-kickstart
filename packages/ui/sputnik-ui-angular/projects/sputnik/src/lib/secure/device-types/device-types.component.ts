@@ -91,6 +91,6 @@ export class DeviceTypesComponent extends PageComponent {
 	}
 
 	handleCreate () {
-		this.router.navigate(['securehome/device-types/new'])
+		this.router.navigate(['/device-types/new'])
 	}
 }
