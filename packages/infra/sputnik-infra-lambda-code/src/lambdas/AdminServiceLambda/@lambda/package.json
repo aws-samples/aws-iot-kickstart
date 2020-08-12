@@ -14,16 +14,5 @@
     "devDependencies": {
         "@lambda/sputnik-lib": "^0.1.3",
         "aws-sdk": "*"
-    },
-    "externals": [
-        "aws-sdk"
-    ],
-    "//workspaces": {
-        "nohoist": [
-            "**/moment",
-            "**/moment/**",
-            "**/underscore",
-            "**/underscore/**"
-        ]
     }
 }
