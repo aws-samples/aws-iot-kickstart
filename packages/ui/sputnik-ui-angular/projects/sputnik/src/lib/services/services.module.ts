@@ -1,7 +1,8 @@
 import { NgModule, Injectable } from '@angular/core'
 import { CommonModule } from '@angular/common'
 // AWS Specific
-import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular'
+import { AmplifyService } from 'aws-amplify-angular'
+import { AmplifyUIAngularModule } from '@aws-amplify/ui-angular'
 // API
 // import { ApiService } from '@deathstar/sputnik-ui-angular-api'
 // Modules
@@ -19,8 +20,7 @@ import { SettingService } from './setting.service'
 import { SystemService } from './system.service'
 import { SystemBlueprintService } from './system-blueprint.service'
 import { StatService } from './stat.service'
-import { UserLoginService } from './user-login.service'
-import { UserRegistrationService } from './user-registration.service'
+// import { UserService } from './user.service'
 import { RealTimeDataService } from './realtime-data/service'
 // import { AdminService } from './admin.service';
 // import { StatsService } from './stats.service';
@@ -28,8 +28,9 @@ import { RealTimeDataService } from './realtime-data/service'
 // import { DeviceSubViewComponentService } from './device-sub-view-component.service';
 
 @NgModule({
-	imports: [AmplifyAngularModule, CommonModule, S3Module],
+	imports: [AmplifyUIAngularModule, CommonModule, S3Module],
 	providers: [
+		// UserService,
 		// // AppSync API service
 		// ApiService,
 
@@ -48,8 +49,6 @@ import { RealTimeDataService } from './realtime-data/service'
 		SystemService,
 		SystemBlueprintService,
 		StatService,
-		UserLoginService,
-		UserRegistrationService,
 		RealTimeDataService,
 	],
 })

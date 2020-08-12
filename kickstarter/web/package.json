@@ -37,6 +37,7 @@
   "dependencies": {
     "@deathstar/sputnik-ui-angular": "^0.0.0-alpha.12",
     "@sweetalert2/ngx-sweetalert2": "5.1.0",
+    "@aws-amplify/ui-angular": "^0.2.14",
     "ng-block-ui": "2.1.7",
     "ng2-charts": "2.2.0",
     "ngx-color-picker": "7.5.0",

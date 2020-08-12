@@ -1,25 +1,20 @@
-import { Component, OnInit, NgZone } from '@angular/core'
-import { NgForm } from '@angular/forms'
+import { Component, NgZone } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { BlockUI, NgBlockUI } from 'ng-block-ui'
-import { LocalStorage } from '@ngx-pwa/local-storage'
 import swal from 'sweetalert2'
 // Models
 import { SystemBlueprint } from '../../models/system-blueprint.model'
-import { ProfileInfo } from '../../models/profile-info.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { SystemBlueprintService } from '../../services/system-blueprint.service'
 import { LoggerService } from '../../services/logger.service'
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 @Component({
 	selector: 'app-root-system-blueprint',
 	templateUrl: './system-blueprint.component.html',
 })
-export class SystemBlueprintComponent implements OnInit {
-	private profile: ProfileInfo;
-
-	public isAdminUser: boolean;
+export class SystemBlueprintComponent extends PageComponent {
 
 	public pageTitle = 'Device Type';
 
@@ -27,70 +22,63 @@ export class SystemBlueprintComponent implements OnInit {
 
 	public systemBlueprint: SystemBlueprint;
 
-	@BlockUI()
-	blockUI: NgBlockUI;
-
 	constructor (
-	public router: Router,
-	public route: ActivatedRoute,
-	private breadCrumbService: BreadCrumbService,
-	private systemBlueprintService: SystemBlueprintService,
-	private localStorage: LocalStorage,
-	private logger: LoggerService,
-	private ngZone: NgZone,
+		userService: UserService,
+		public router: Router,
+		public route: ActivatedRoute,
+		private breadCrumbService: BreadCrumbService,
+		private systemBlueprintService: SystemBlueprintService,
+		private logger: LoggerService,
+		private ngZone: NgZone,
 	) {
+		super(userService)
+
 		this.systemBlueprintId = ''
 		this.systemBlueprint = undefined
 	}
 
 	ngOnInit () {
-		const self = this
+		super.ngOnInit()
 
-		self.blockUI.start(`Loading ${self.pageTitle}...`)
+		this.blockUI.start(`Loading ${this.pageTitle}...`)
 
-		self.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-			self.profile = new ProfileInfo(profile)
-			self.isAdminUser = self.profile.isAdmin()
+		this.route.params.subscribe(params => {
+			this.systemBlueprintId = params.id
 
-			self.route.params.subscribe(params => {
-				self.systemBlueprintId = params.id
+			this.breadCrumbService.setup(this.pageTitle, [
+				new Crumb({
+					title: this.pageTitle + 's',
+					link: 'system-blueprints',
+				}),
+				new Crumb({
+					title: this.systemBlueprintId,
+					active: true,
+				}),
+			])
 
-				self.breadCrumbService.setup(self.pageTitle, [
-					new Crumb({
-						title: self.pageTitle + 's',
-						link: 'system-blueprints',
-					}),
-					new Crumb({
-						title: self.systemBlueprintId,
-						active: true,
-					}),
-				])
+			this.loadSystemBlueprint(this.systemBlueprintId)
 
-				self.loadSystemBlueprint(self.systemBlueprintId)
-
-				self.blockUI.stop()
-			})
+			this.blockUI.stop()
 		})
 	}
 
 	private loadSystemBlueprint (systemBlueprintId) {
-		const self = this
-		self.systemBlueprintService.systemBlueprintsObservable$.subscribe(message => {
-			self.ngZone.run(() => {
-				if (self.systemBlueprintId !== 'new') {
-					self.systemBlueprint = self.systemBlueprintService.systemBlueprints.find(systemBlueprint => {
-						return systemBlueprint.id === self.systemBlueprintId
+		this.systemBlueprintService.systemBlueprintsObservable$.subscribe(message => {
+			this.ngZone.run(() => {
+				if (this.systemBlueprintId !== 'new') {
+					this.systemBlueprint = this.systemBlueprintService.systemBlueprints.find(systemBlueprint => {
+						return systemBlueprint.id === this.systemBlueprintId
 					})
 				}
 			})
 		})
 
-		if (self.systemBlueprintId !== 'new') {
-			self.systemBlueprint = self.systemBlueprintService.systemBlueprints.find(systemBlueprint => {
-				return systemBlueprint.id === self.systemBlueprintId
+		if (this.systemBlueprintId !== 'new') {
+			this.systemBlueprint = this.systemBlueprintService.systemBlueprints.find(systemBlueprint => {
+				return systemBlueprint.id === this.systemBlueprintId
 			})
 		} else {
-			self.systemBlueprint = new SystemBlueprint()
+			this.systemBlueprint = new SystemBlueprint()
 		}
 	}
 

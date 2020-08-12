@@ -1,25 +1,20 @@
-import { Component, OnInit, NgZone, ComponentFactoryResolver } from '@angular/core'
-import { Router, NavigationExtras } from '@angular/router'
-import { BlockUI, NgBlockUI } from 'ng-block-ui'
-import { LocalStorage } from '@ngx-pwa/local-storage'
-import swal from 'sweetalert2'
+import { Component, NgZone, ComponentFactoryResolver } from '@angular/core'
+import { Router } from '@angular/router'
 // Models
 import { SystemBlueprint } from '../../models/system-blueprint.model'
-import { ProfileInfo } from '../../models/profile-info.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { SystemBlueprintService } from '../../services/system-blueprint.service'
 import { LoggerService } from '../../services/logger.service'
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 @Component({
 	selector: 'app-root-system-blueprints',
 	templateUrl: './system-blueprints.component.html',
 	// templateUrl: '../common/generic-table.component.html'
 })
-export class SystemBlueprintsComponent implements OnInit {
-	private profile: ProfileInfo;
-
-	public isAdminUser: boolean;
+export class SystemBlueprintsComponent extends PageComponent {
 
 	public tableData: SystemBlueprint[];
 
@@ -39,43 +34,38 @@ export class SystemBlueprintsComponent implements OnInit {
 
 	public pageTitle = 'System Blueprints';
 
-	@BlockUI()
-	blockUI: NgBlockUI;
 
 	constructor (
-	public router: Router,
-	private breadCrumbService: BreadCrumbService,
-	private systemBlueprintService: SystemBlueprintService,
-	private localStorage: LocalStorage,
-	private logger: LoggerService,
-	private ngZone: NgZone,
-	private resolver: ComponentFactoryResolver,
+		userService: UserService,
+		public router: Router,
+		private breadCrumbService: BreadCrumbService,
+		private systemBlueprintService: SystemBlueprintService,
+		private logger: LoggerService,
+		private ngZone: NgZone,
+		private resolver: ComponentFactoryResolver,
 	) {
+		super(userService)
+
 		this.totalSystemBlueprints = 0
 		this.tableData = systemBlueprintService.systemBlueprints
 	}
 
 	ngOnInit () {
-		const self = this
+		super.ngOnInit()
 
-		self.blockUI.start(`Loading ${self.pageTitle}...`)
+		this.blockUI.start(`Loading ${this.pageTitle}...`)
 
-		self.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-			self.profile = new ProfileInfo(profile)
-			self.isAdminUser = self.profile.isAdmin()
+		this.breadCrumbService.setup(this.pageTitle, [
+			new Crumb({ title: this.pageTitle, active: true, link: 'system-blueprints' }),
+		])
 
-			self.breadCrumbService.setup(self.pageTitle, [
-				new Crumb({ title: self.pageTitle, active: true, link: 'system-blueprints' }),
-			])
-
-			self.systemBlueprintService.systemBlueprintsObservable$.subscribe(systemBlueprints => {
-				self.ngZone.run(() => {
-					self.load()
-				})
+		this.systemBlueprintService.systemBlueprintsObservable$.subscribe(systemBlueprints => {
+			this.ngZone.run(() => {
+				this.load()
 			})
-
-			self.load()
 		})
+
+		this.load()
 	}
 
 	private load () {

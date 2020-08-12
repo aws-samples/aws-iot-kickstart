@@ -1,25 +1,19 @@
-import { Component, OnInit } from '@angular/core'
+import { Component } from '@angular/core'
 import { Router } from '@angular/router'
-import { LocalStorage } from '@ngx-pwa/local-storage'
-import { BlockUI, NgBlockUI } from 'ng-block-ui'
-// Models
-import { ProfileInfo } from '../../models/profile-info.model'
 import { Setting } from '../../models/setting.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { LoggerService } from '../../services/logger.service'
 import { SettingService } from '../../services/setting.service'
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 @Component({
 	selector: 'app-root-settings',
 	templateUrl: './settings.component.html',
 })
-export class SettingsComponent implements OnInit {
+export class SettingsComponent extends PageComponent {
 		public title = 'System Settings';
-
-		public profile: ProfileInfo = null;
-
-		public isAdminUser = false;
 
 		public appConfig: Setting = new Setting();
 
@@ -35,18 +29,19 @@ export class SettingsComponent implements OnInit {
 
 		public justInTimeOnBoardingState = false;
 
-		@BlockUI()
-		blockUI: NgBlockUI;
-
 		constructor (
-				public router: Router,
-				private breadCrumbService: BreadCrumbService,
-				protected localStorage: LocalStorage,
-				private logger: LoggerService,
-				private settingService: SettingService,
-		) {}
+			userService: UserService,
+			public router: Router,
+			private breadCrumbService: BreadCrumbService,
+			private logger: LoggerService,
+			private settingService: SettingService,
+		) {
+			super(userService)
+		}
 
 		ngOnInit () {
+			super.ngOnInit()
+
 			this.blockUI.start('Loading settings...')
 
 			this.breadCrumbService.setup(this.title, [
@@ -57,37 +52,29 @@ export class SettingsComponent implements OnInit {
 				}),
 			])
 
-			const _self = this
-
-			_self.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-				_self.profile = new ProfileInfo(profile)
-				_self.isAdminUser = _self.profile.isAdmin()
-				_self.loadAllSettings()
-			})
+			this.loadAllSettings()
 		}
 
 		loadAllSettings () {
-			const _self = this
-			_self.logger.info('Loading ALL settings:')
+			this.logger.info('Loading ALL settings:')
 
-			if (_self.profile.isAdmin()) {
-				_self
-				.loadGeneralSettings()
+			if (this.isAdminUser) {
+				this.loadGeneralSettings()
 				.then(data => {
-					_self.logger.info('Loaded general settings:', _self.appConfig)
+					this.logger.info('Loaded general settings:', this.appConfig)
 
-					return _self.loadJustInTimeOnBoardingSettings()
+					return this.loadJustInTimeOnBoardingSettings()
 				})
 				.then(data => {
-					_self.logger.info(
+					this.logger.info(
 						'Loaded Just In Time On Boarding Settings:',
-						_self.justInTimeOnBoardingState,
+						this.justInTimeOnBoardingState,
 					)
-					_self.blockUI.stop()
+					this.blockUI.stop()
 				})
 				.catch(err => {
-					_self.blockUI.stop()
-					_self.logger.error('error occurred calling loading the settings, show message', err)
+					this.blockUI.stop()
+					this.logger.error('error occurred calling loading the settings, show message', err)
 
 					return err
 				})
@@ -95,57 +82,52 @@ export class SettingsComponent implements OnInit {
 		}
 
 		loadGeneralSettings (): Promise<any> {
-			const _self = this
-
-			return _self.settingService
+			return this.settingService
 			.getSetting('app-config')
 			.then((data: Setting) => {
-				_self.appConfig = data
+				this.appConfig = data
 
-				if (_self.appConfig !== null) {
-					_self.appConfigError = false
+				if (this.appConfig !== null) {
+					this.appConfigError = false
 				} else {
-					_self.appConfigErrorMessage =
+					this.appConfigErrorMessage =
 												'General Application settings are not configured yet. Please use Factory reset.'
 				}
 
 				return data
 			})
 			.catch(err => {
-				_self.appConfigError = true
-				_self.appConfigErrorMessage = 'Unable to load the general application settings.'
+				this.appConfigError = true
+				this.appConfigErrorMessage = 'Unable to load the general application settings.'
 				throw err
 			})
 		}
 
 		loadJustInTimeOnBoardingSettings (): Promise<any> {
-			const _self = this
-
-			return _self.settingService
+			return this.settingService
 			.getJustInTimeOnBoardingState()
 			.then(data => {
-				_self.justInTimeOnBoardingState = data
-				_self.justInTimeOnBoardingConfigError = false
+				this.justInTimeOnBoardingState = data
+				this.justInTimeOnBoardingConfigError = false
 
 				return data
 			})
 			.catch(err => {
-				_self.justInTimeOnBoardingConfigError = true
-				_self.justInTimeOnBoardingConfigErrorMessage =
+				this.justInTimeOnBoardingConfigError = true
+				this.justInTimeOnBoardingConfigErrorMessage =
 										'Unable to load the Just In Time On Boarding application settings.'
 				throw err
 			})
 		}
 
 		public toggleJustInTimeOnBoarding () {
-			const _self = this
-			_self.settingService
-			.setJustInTimeOnBoardingState(!_self.justInTimeOnBoardingState)
+			this.settingService
+			.setJustInTimeOnBoardingState(!this.justInTimeOnBoardingState)
 			.then(result => {
-				_self.justInTimeOnBoardingState = result
+				this.justInTimeOnBoardingState = result
 			})
 			.catch(err => {
-				_self.logger.error('Toggle of Just In Time On Boarding Service failed:', err)
+				this.logger.error('Toggle of Just In Time On Boarding Service failed:', err)
 			})
 		}
 

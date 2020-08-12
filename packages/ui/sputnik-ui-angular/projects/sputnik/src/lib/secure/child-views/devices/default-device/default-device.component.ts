@@ -36,7 +36,7 @@ export class DefaultDeviceComponent extends IoTPubSuberComponent implements OnIn
 			try {
 				const deviceBlueprint: DeviceBlueprint = await this.appSyncService.getDeviceBlueprint(device.deviceBlueprintId)
 
-				if (deviceBlueprint?.spec?.View) {
+				if (deviceBlueprint?.spec?.View != null) {
 					this.parent = this // What does this do? From old code, but seems odd
 
 					try {

@@ -1,25 +1,20 @@
-import { Component, OnInit, NgZone } from '@angular/core'
-import { NgForm } from '@angular/forms'
+import { Component, NgZone } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
-import { BlockUI, NgBlockUI } from 'ng-block-ui'
-import { LocalStorage } from '@ngx-pwa/local-storage'
 import swal from 'sweetalert2'
 // Models
 import { DeviceType } from '../../models/device-type.model'
-import { ProfileInfo } from '../../models/profile-info.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { DeviceTypeService } from '../../services/device-type.service'
 import { LoggerService } from '../../services/logger.service'
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 @Component({
 	selector: 'app-root-device-type',
 	templateUrl: './device-type.component.html',
 })
-export class DeviceTypeComponent implements OnInit {
-		private profile: ProfileInfo;
-
-		public isAdminUser: boolean;
+export class DeviceTypeComponent extends PageComponent {
 
 		public pageTitle = 'Device Type';
 
@@ -27,70 +22,63 @@ export class DeviceTypeComponent implements OnInit {
 
 		public deviceType: DeviceType;
 
-		@BlockUI()
-		blockUI: NgBlockUI;
-
 		constructor (
-				public router: Router,
-				public route: ActivatedRoute,
-				private breadCrumbService: BreadCrumbService,
-				private deviceTypeService: DeviceTypeService,
-				private localStorage: LocalStorage,
-				private logger: LoggerService,
-				private ngZone: NgZone,
+			userService: UserService,
+			public router: Router,
+			public route: ActivatedRoute,
+			private breadCrumbService: BreadCrumbService,
+			private deviceTypeService: DeviceTypeService,
+			private logger: LoggerService,
+			private ngZone: NgZone,
 		) {
+			super(userService)
+
 			this.deviceTypeId = ''
 			this.deviceType = undefined
 		}
 
 		ngOnInit () {
-			const self = this
+			super.ngOnInit()
 
-			self.blockUI.start(`Loading ${self.pageTitle}...`)
+			this.blockUI.start(`Loading ${this.pageTitle}...`)
 
-			self.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-				self.profile = new ProfileInfo(profile)
-				self.isAdminUser = self.profile.isAdmin()
+			this.route.params.subscribe(params => {
+				this.deviceTypeId = params.id
 
-				self.route.params.subscribe(params => {
-					self.deviceTypeId = params.id
+				this.breadCrumbService.setup(this.pageTitle, [
+					new Crumb({
+						title: this.pageTitle + 's',
+						link: 'device-types',
+					}),
+					new Crumb({
+						title: this.deviceTypeId,
+						active: true,
+					}),
+				])
 
-					self.breadCrumbService.setup(self.pageTitle, [
-						new Crumb({
-							title: self.pageTitle + 's',
-							link: 'device-types',
-						}),
-						new Crumb({
-							title: self.deviceTypeId,
-							active: true,
-						}),
-					])
+				this.loadDeviceType(this.deviceTypeId)
 
-					self.loadDeviceType(self.deviceTypeId)
-
-					self.blockUI.stop()
-				})
+				this.blockUI.stop()
 			})
 		}
 
 		private loadDeviceType (deviceTypeId) {
-			const self = this
-			self.deviceTypeService.deviceTypesObservable$.subscribe(message => {
-				self.ngZone.run(() => {
-					if (self.deviceTypeId !== 'new') {
-						self.deviceType = self.deviceTypeService.deviceTypes.find(deviceType => {
-							return deviceType.id === self.deviceTypeId
+			this.deviceTypeService.deviceTypesObservable$.subscribe(message => {
+				this.ngZone.run(() => {
+					if (this.deviceTypeId !== 'new') {
+						this.deviceType = this.deviceTypeService.deviceTypes.find(deviceType => {
+							return deviceType.id === this.deviceTypeId
 						})
 					}
 				})
 			})
 
-			if (self.deviceTypeId !== 'new') {
-				self.deviceType = self.deviceTypeService.deviceTypes.find(deviceType => {
-					return deviceType.id === self.deviceTypeId
+			if (this.deviceTypeId !== 'new') {
+				this.deviceType = this.deviceTypeService.deviceTypes.find(deviceType => {
+					return deviceType.id === this.deviceTypeId
 				})
 			} else {
-				self.deviceType = new DeviceType()
+				this.deviceType = new DeviceType()
 			}
 		}
 

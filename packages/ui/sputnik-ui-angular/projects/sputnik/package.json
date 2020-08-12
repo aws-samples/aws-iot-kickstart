@@ -17,12 +17,13 @@
   "typings": "dist/deathstar-sputnik-ui-angular.d.ts",
   "metadata": "dist/deathstar-sputnik-ui-angular.metadata.json",
   "dependencies": {
+    "@aws-amplify/ui-angular": "^0.2.14",
     "@deathstar/sputnik-core": "^0.0.0-alpha.3",
     "@deathstar/sputnik-ui-angular-api": "^0.0.3",
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",
-    "aws-amplify": "1.1.36",
     "aws-amplify-angular": "3.0.11",
+    "aws-amplify": "^3.0.23",
     "bootstrap": "^4.3.1",
     "chart.js": "2.8.0",
     "chartjs-plugin-annotation": "0.5.7",
@@ -61,6 +62,7 @@
     "zone.js": "~0.9.1"
   },
   "peerDependencies": {
+    "@aws-amplify/ui-angular": "^0.2.14",
     "@angular/animations": "^8.2.14",
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14",

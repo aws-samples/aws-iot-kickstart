@@ -7,7 +7,7 @@ import { ProfileInfo } from '../models/profile-info.model'
 import { DeviceStats, SystemStats } from '../models/stats.model'
 // Services
 import { BreadCrumbService, Crumb } from '../services/bread-crumb.service'
-import { UserLoginService, LoggedInCallback } from '../services/user-login.service'
+import { UserService } from '../services/user.service'
 import { LoggerService } from '../services/logger.service'
 import { StatService, Stats } from '../services/stat.service'
 import { IoTService } from '../services/iot.service'
@@ -16,26 +16,22 @@ import { IoTService } from '../services/iot.service'
 import { DeviceTypeService } from '../services/device-type.service'
 import { DeviceBlueprintService } from '../services/device-blueprint.service'
 import { SystemBlueprintService } from '../services/system-blueprint.service'
+import { PageComponent } from './common/page.component'
 
 // Helpers
-declare let jquery: any
 declare let $: any
 
 @Component({
 	selector: 'app-root',
 	templateUrl: './secure-home-layout.component.html',
 })
-export class SecureHomeLayoutComponent implements OnInit {
+export class SecureHomeLayoutComponent extends PageComponent {
 	// }, LoggedInCallback {
 	// private loadedProfile = false;
 
 		public crumbs: Crumb[] = [];
 
 		public deviceStats: DeviceStats = new DeviceStats();
-
-		public isAdminUser = false;
-
-		public profile: ProfileInfo = null;
 
 		public systemStats: SystemStats = new SystemStats();
 
@@ -48,12 +44,12 @@ export class SecureHomeLayoutComponent implements OnInit {
 		blockUI: NgBlockUI;
 
 		constructor (
+				userService: UserService,
 				public router: Router,
 				public route: ActivatedRoute,
 				private logger: LoggerService,
 				private breadCrumbService: BreadCrumbService,
 				protected localStorage: LocalStorage,
-				public userService: UserLoginService,
 				private statService: StatService,
 				private ngZone: NgZone,
 				private iotService: IoTService,
@@ -62,86 +58,34 @@ export class SecureHomeLayoutComponent implements OnInit {
 				private deviceBlueprintService: DeviceBlueprintService,
 				private systemBlueprintService: SystemBlueprintService,
 		) {
-			const self = this
-			self.isAdminUser = false
-			// self.loadedProfile = false;
-			self.localStorage.setItem('deviceStats', { total: 0, connected: 0, disconnected: 0 }).subscribe(() => {})
-		}
+			super(userService)
 
-		private logError (err) {
-			this.logger.error(err)
-		}
-
-		private checkLoggedIn (isLoggedIn: boolean, loadProfile: boolean, profile: ProfileInfo) {
-			if (!isLoggedIn) {
-				this.logger.info(
-					'SecureHomeCommonComponent.checkLoggedIn: Does not seem to be logged in. Navigating to Login',
-				)
-
-				this.userService.removeToken()
-				this.router.navigate(['/home/login'])
-			} else {
-				this.logger.info('SecureHomeCommonComponent.checkLoggedIn: Logged In.')
-				this.userService.storeToken()
-
-				if (loadProfile) {
-					this.localStorage.setItem('profile', profile).subscribe(() => {})
-					this.profile = profile
-					this.isAdminUser = this.profile.isAdmin()
-				}
-
-				this.iotService.connect()
-				this.iotService.connectionObservable$.subscribe((connected: boolean) => {
-					this.logger.info(`Change of connection state: new state: ${connected}`)
-				})
-
-				this.statService.statObservable$.subscribe((msg: Stats) => {
-					this.deviceStats = msg.deviceStats
-					this.systemStats = msg.systemStats
-					this.ngZone.run(() => {})
-				})
-				this.statService.refresh()
-			}
+			this.localStorage.setItem('deviceStats', { total: 0, connected: 0, disconnected: 0 }).subscribe(() => {})
 		}
 
 		ngOnInit () {
-			const self = this
+			super.ngOnInit()
 
-			self.breadCrumbService.pageTitleObservable$.subscribe(title => (self.title = title))
-			self.breadCrumbService.crumbObservable$.subscribe(crumbs => {
-				self.crumbs.splice(0, self.crumbs.length)
-				self.crumbs.push(...crumbs)
-				self.ngZone.run(() => {})
+			this.breadCrumbService.pageTitleObservable$.subscribe(title => (this.title = title))
+			this.breadCrumbService.crumbObservable$.subscribe(crumbs => {
+				this.crumbs.splice(0, this.crumbs.length)
+				this.crumbs.push(...crumbs)
+				// this.ngZone.run(() => {})
 			})
 
-			self.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-				if (profile) {
-					self.logger.info('SecureHomeComponent.ngOnInit: profile loaded, no need to request it.')
-					self.profile = new ProfileInfo(profile)
-					self.isAdminUser = self.profile.isAdmin()
-					self.userService
-					.isAuthenticated()
-					.then(result => {
-						self.checkLoggedIn(result, false, self.profile)
-					})
-					.catch(self.logError)
-				} else {
-					self.logger.info('SecureHomeComponent.ngOnInit: no profile found, requesting profile')
-					// self.loadedProfile = true;
-					self.userService
-					.getUserInfo()
-					.then((newProfile: ProfileInfo) => {
-						self.checkLoggedIn(true, true, newProfile)
-					// self.isLoggedIn(null, true, newProfile);
-					})
-					.catch(err => {
-						self.logger.error('[Error] Error occurred retrieving user info to validate admin role.')
-						self.logger.error(err)
-					})
-				}
-			})
+			// 		this.iotService.connect()
+			// 		this.iotService.connectionObservable$.subscribe((connected: boolean) => {
+			// 			this.logger.info(`Change of connection state: new state: ${connected}`)
+			// 		})
 
-			self.prepUI()
+			// 		this.statService.statObservable$.subscribe((msg: Stats) => {
+			// 			this.deviceStats = msg.deviceStats
+			// 			this.systemStats = msg.systemStats
+			// 			this.ngZone.run(() => {})
+			// 		})
+			// 		this.statService.refresh()
+
+			this.prepUI()
 		}
 
 		prepUI () {
@@ -243,31 +187,4 @@ export class SecureHomeLayoutComponent implements OnInit {
 			// });
 			this.blockUI.stop()
 		}
-
-	// isLoggedIn(message: string, isLoggedIn: boolean, profile: ProfileInfo) {
-	//		const self = this;
-
-	//		if (!isLoggedIn) {
-	//				self.logger.info('SecureHomeCommonComponent.isLoggedIn:', message, isLoggedIn);
-	//				self.router.navigate(['/home/login']);
-	//		} else {
-	//				self.logger.info('SecureHomeCommonComponent.isLoggedIn:', message, isLoggedIn, self.loadedProfile);
-	//				if (self.loadedProfile) {
-	//						self.localStorage.setItem('profile', profile).subscribe(() => {});
-	//						self.profile = profile;
-	//						self.isAdminUser = self.profile.isAdmin();
-	//				}
-	//				self.iotService.connect();
-	//				self.iotService.connectionObservable$.subscribe((connected: boolean) => {
-	//						console.log('Change of connection state: setting subscriptions', connected);
-	//				});
-
-	//				self.statService.statObservable$.subscribe((msg: Stats) => {
-	//						self.deviceStats = msg.deviceStats;
-	//						self.systemStats = msg.systemStats;
-	//						self.ngZone.run(() => {});
-	//				});
-	//				self.statService.refresh();
-	//		}
-	// }
 }

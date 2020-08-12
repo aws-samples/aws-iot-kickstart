@@ -1,11 +1,7 @@
-import { Component, OnInit, NgZone } from '@angular/core'
+import { Component, NgZone } from '@angular/core'
 import { Router } from '@angular/router'
-import { FormGroup, FormBuilder, Validators, NgForm, Validator } from '@angular/forms'
-import { LocalStorage } from '@ngx-pwa/local-storage'
-import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import swal from 'sweetalert2'
 // Models
-import { ProfileInfo } from '../../models/profile-info.model'
 import { Deployment } from '../../models/deployment.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
@@ -13,17 +9,14 @@ import { LoggerService } from '../../services/logger.service'
 import { DeploymentService } from '../../services/deployment.service'
 // Helpers
 import moment from 'moment'
-
-declare let jquery: any
-declare let $: any
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 @Component({
 	selector: 'app-root-deployments',
 	templateUrl: './deployments.component.html',
 })
-export class DeploymentsComponent implements OnInit {
-	private profile: ProfileInfo = null;
-
+export class DeploymentsComponent extends PageComponent {
 	public title = 'Deployments';
 
 	public pages: any = {
@@ -38,51 +31,48 @@ export class DeploymentsComponent implements OnInit {
 
 	public deployments: Deployment[] = [];
 
-	@BlockUI()
-	blockUI: NgBlockUI;
-
 	constructor (
-	public router: Router,
-	private breadCrumbService: BreadCrumbService,
-	protected localStorage: LocalStorage,
-	private logger: LoggerService,
-	private _ngZone: NgZone,
-	private deploymentService: DeploymentService,
-	) {}
+		userService: UserService,
+		public router: Router,
+		private breadCrumbService: BreadCrumbService,
+		private logger: LoggerService,
+		private _ngZone: NgZone,
+		private deploymentService: DeploymentService,
+	) {
+		super(userService)
+	}
 
 	ngOnInit () {
-		const _self = this
-		_self.blockUI.start('Loading deployments...')
+		super.ngOnInit()
 
-		_self.breadCrumbService.setup(_self.title, [
-			new Crumb({ title: _self.title, active: true, link: 'deployments' }),
+		this.blockUI.start('Loading deployments...')
+
+		this.breadCrumbService.setup(this.title, [
+			new Crumb({ title: this.title, active: true, link: 'deployments' }),
 		])
 
-		_self.loadDeployments()
+		this.loadDeployments()
 	}
 
 	updatePaging () {
-		const _self = this
-		_self.metrics.total = _self.deployments.length
-	// _self.pages.total = Math.ceil(_self.deviceStats.total / _self.pages.pageSize);
+		this.metrics.total = this.deployments.length
+		// this.pages.total = Math.ceil(this.deviceStats.total / this.pages.pageSize);
 	}
 
 	loadDeployments () {
-		const _self = this
-
-		return _self.deploymentService
-		.listDeployments(_self.pages.pageSize, null)
+		return this.deploymentService
+		.listDeployments(this.pages.pageSize, null)
 		.then(results => {
 			console.log(results)
-			_self.deployments = results.deployments
-			_self.updatePaging()
-			_self.blockUI.stop()
+			this.deployments = results.deployments
+			this.updatePaging()
+			this.blockUI.stop()
 		})
 		.catch(err => {
 			swal.fire('Oops...', 'Something went wrong! Unable to retrieve the deployments.', 'error')
-			_self.logger.error('error occurred calling getDeployments api, show message')
-			_self.logger.error('the requested type doesnt exist')
-			_self.router.navigate(['/securehome/deployments'])
+			this.logger.error('error occurred calling getDeployments api, show message')
+			this.logger.error('the requested type doesnt exist')
+			this.router.navigate(['/securehome/deployments'])
 		})
 	}
 

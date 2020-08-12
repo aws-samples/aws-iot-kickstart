@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, OnDestroy } from '@angular/core'
 import { Router } from '@angular/router'
 import { LoggerService } from './services/logger.service'
-import { BlockUI, NgBlockUI } from 'ng-block-ui'
 
 @Component({
-	selector: 'app-root',
+	selector: 'sputnik',
 	templateUrl: './sputnik.component.html',
 	styleUrls: ['./sputnik.component.css'],
 })
-export class SputnikComponent implements OnInit {
-		@BlockUI() blockUI: NgBlockUI;
+export class SputnikComponent implements OnInit, OnDestroy {
 
-		constructor (public router: Router, private logger: LoggerService) {
-			this.blockUI.start('Loading...')
-		}
+	constructor (public router: Router, private logger: LoggerService) {
+	}
 
-		ngOnInit () {
-			this.logger.info('SputnikComponent: Checking if the user is already authenticated')
-		}
+	ngOnInit () {
+		this.logger.info('SputnikComponent: initialized')
+	}
+
+	ngOnDestroy() {
+		this.logger.info('SputnikComponent: destroyed')
+	}
 }

@@ -40,8 +40,8 @@
     "apollo-client": "^2.6.10",
     "apollo-link": "^1.2.14",
     "apollo-link-error": "^1.1.13",
-    "aws-amplify": "1.1.36",
     "aws-amplify-angular": "3.0.11",
+    "aws-amplify": "^3.0.23",
     "bootstrap": "^4.3.1",
     "chart.js": "2.8.0",
     "chartjs-plugin-annotation": "0.5.7",
@@ -108,6 +108,6 @@
     "ts-node": "~7.0.0",
     "tsickle": "^0.37.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.5.3"
+    "typescript": "^3.9.5"
   }
 }

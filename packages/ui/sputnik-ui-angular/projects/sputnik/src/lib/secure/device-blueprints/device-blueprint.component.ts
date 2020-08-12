@@ -1,98 +1,86 @@
-import { Component, OnInit, NgZone } from '@angular/core'
+import { Component, NgZone } from '@angular/core'
 import { NgForm } from '@angular/forms'
 import { ActivatedRoute, Router } from '@angular/router'
-import { BlockUI, NgBlockUI } from 'ng-block-ui'
-import { LocalStorage } from '@ngx-pwa/local-storage'
 import swal from 'sweetalert2'
 // Models
 import { DeviceBlueprint } from '../../models/device-blueprint.model'
-import { ProfileInfo } from '../../models/profile-info.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { DeviceBlueprintService } from '../../services/device-blueprint.service'
 import { DeviceTypeService } from '../../services/device-type.service'
 import { LoggerService } from '../../services/logger.service'
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 @Component({
 	selector: 'app-root-device-blueprint',
 	templateUrl: './device-blueprint.component.html',
 })
-export class DeviceBlueprintComponent implements OnInit {
-	private profile: ProfileInfo;
-
-	public isAdminUser: boolean;
-
+export class DeviceBlueprintComponent extends PageComponent {
 	public pageTitle = 'Device Blueprint';
 
 	public deviceBlueprintId: string;
 
 	public deviceBlueprint: DeviceBlueprint;
 
-	@BlockUI()
-	blockUI: NgBlockUI;
-
 	constructor (
-	public router: Router,
-	public route: ActivatedRoute,
-	private breadCrumbService: BreadCrumbService,
-	private deviceBlueprintService: DeviceBlueprintService,
-	public deviceTypeService: DeviceTypeService,
-	private localStorage: LocalStorage,
-	private logger: LoggerService,
-	private ngZone: NgZone,
+		userService: UserService,
+		public router: Router,
+		public route: ActivatedRoute,
+		private breadCrumbService: BreadCrumbService,
+		private deviceBlueprintService: DeviceBlueprintService,
+		public deviceTypeService: DeviceTypeService,
+		private logger: LoggerService,
+		private ngZone: NgZone,
 	) {
+		super(userService)
+
 		this.deviceBlueprintId = ''
 		this.deviceBlueprint = undefined
 	}
 
 	ngOnInit () {
-		const self = this
+		super.ngOnInit()
 
-		self.blockUI.start(`Loading ${self.pageTitle}...`)
+		this.blockUI.start(`Loading ${this.pageTitle}...`)
 
-		self.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-			self.profile = new ProfileInfo(profile)
-			self.isAdminUser = self.profile.isAdmin()
+		this.route.params.subscribe(params => {
+			this.deviceBlueprintId = params.id
 
-			self.route.params.subscribe(params => {
-				self.deviceBlueprintId = params.id
+			this.breadCrumbService.setup(this.pageTitle, [
+				new Crumb({
+					title: this.pageTitle + 's',
+					link: 'device-blueprints',
+				}),
+				new Crumb({
+					title: this.deviceBlueprintId,
+					active: true,
+				}),
+			])
 
-				self.breadCrumbService.setup(self.pageTitle, [
-					new Crumb({
-						title: self.pageTitle + 's',
-						link: 'device-blueprints',
-					}),
-					new Crumb({
-						title: self.deviceBlueprintId,
-						active: true,
-					}),
-				])
+			this.loadDeviceBlueprint(this.deviceBlueprintId)
 
-				self.loadDeviceBlueprint(self.deviceBlueprintId)
-
-				self.blockUI.stop()
-			})
+			this.blockUI.stop()
 		})
 	}
 
 	private loadDeviceBlueprint (deviceBlueprintId) {
-		const self = this
-		self.deviceBlueprintService.deviceBlueprintsObservable$.subscribe(message => {
-			self.ngZone.run(() => {
-				if (self.deviceBlueprintId !== 'new') {
-					self.deviceBlueprint = self.deviceBlueprintService.deviceBlueprints.find(deviceBlueprint => {
-						return deviceBlueprint.id === self.deviceBlueprintId
+		this.deviceBlueprintService.deviceBlueprintsObservable$.subscribe(message => {
+			this.ngZone.run(() => {
+				if (this.deviceBlueprintId !== 'new') {
+					this.deviceBlueprint = this.deviceBlueprintService.deviceBlueprints.find(deviceBlueprint => {
+						return deviceBlueprint.id === this.deviceBlueprintId
 					})
 				}
 			})
 		})
 
-		if (self.deviceBlueprintId !== 'new') {
-			self.deviceBlueprint = self.deviceBlueprintService.deviceBlueprints.find(deviceBlueprint => {
-				return deviceBlueprint.id === self.deviceBlueprintId
+		if (this.deviceBlueprintId !== 'new') {
+			this.deviceBlueprint = this.deviceBlueprintService.deviceBlueprints.find(deviceBlueprint => {
+				return deviceBlueprint.id === this.deviceBlueprintId
 			})
 		} else {
-			self.deviceBlueprint = new DeviceBlueprint()
+			this.deviceBlueprint = new DeviceBlueprint()
 		}
 	}
 
@@ -190,7 +178,7 @@ export class DeviceBlueprintComponent implements OnInit {
 		} else {
 			this.deviceBlueprint.compatibility.splice(index, 1)
 		}
-		// self.logger.info(self.deviceBlueprint.compatibility);
+		// this.logger.info(this.deviceBlueprint.compatibility);
 		event.stopPropagation()
 		event.preventDefault()
 	}

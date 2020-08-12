@@ -63,8 +63,8 @@
                     <select id="filter_deviceType" class="custom-select" #type="ngModel" [(ngModel)]="filterInput.deviceTypeId" ngModel
                         (change)="queryDevices()"
                     >
-                        <option value="ALL" ng-selected="filterInput.deviceTypeId== null"></option>
-                        <option value="UNKNOWN" ng-selected="filterInput.deviceTypeId=== 'UNKNOWN'">UNKNOWN</option>
+                        <option value="ALL" ng-selected="filterInput.deviceTypeId == null"></option>
+                        <option value="UNKNOWN" ng-selected="filterInput.deviceTypeId === 'UNKNOWN'">UNKNOWN</option>
                         <option *ngFor="let item of deviceTypes | async; let i = index" value="{{item.id}}"
                             ng-selected="filterInput.deviceTypeId=== item.id">{{item.name}}</option>
                     </select>
@@ -81,6 +81,8 @@
                     </select>
                 </label>
 
+                <button type="button" class="float-left btn btn-sm btn-success ml-2" (click)="resetFilter()"><i
+                        class="fa fa-refresh"></i> Reset</button>
             </div>
 
             <div class="card-body">
@@ -92,7 +94,7 @@
                 <button type="button" class="float-right btn btn-sm btn-success m-l-15" (click)="deploy()"><i
                         class="mdi mdi-plus"></i>
                     Deploy</button>
-                <h4 class="card-title">Devices ({{deviceStats.total}})</h4>
+                <h4 class="card-title">Devices ({{deviceCountDisplay}})</h4>
                 <div class="table-responsive m-t-20">
                     <table id="types-pagination" class="table stylish-table" style="text-transform:uppercase;"
                         data-paging-limit="10">

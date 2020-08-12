@@ -1,24 +1,23 @@
-import { Component, Input, OnInit, ViewChild, NgZone } from '@angular/core'
-import { FormGroup, FormBuilder, Validators, NgForm } from '@angular/forms'
+import { Component, NgZone } from '@angular/core'
+import {  NgForm } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LocalStorage } from '@ngx-pwa/local-storage'
-import { BlockUI, NgBlockUI } from 'ng-block-ui'
 import swal from 'sweetalert2'
 import { INTERNAL_TENANT, UserGroups } from '@deathstar/sputnik-core'
 import { User } from '@deathstar/sputnik-core-api'
-import { ApiService, ListTenantsGQL, ListUsersGQL, ListUsersQuery, ListTenantsQuery } from '@deathstar/sputnik-ui-angular-api'
+import { ApiService } from '@deathstar/sputnik-ui-angular-api'
 // Models
 import { ProfileInfo } from '../../models/profile-info.model'
 import { Invitation } from '../../models/invitation-model'
-// import { User } from '../../models/user.model'
 // Services
 import { AdminService } from '../../services/admin.service'
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { LoggerService } from '../../services/logger.service'
 import { StatService, Stats } from '../../services/stat.service'
-import { UserLoginService } from '../../services/user-login.service'
+import { UserService } from '../../services/user.service'
 import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
+import { PageComponent } from '../common/page.component'
 
 declare let $: any
 
@@ -26,16 +25,12 @@ declare let $: any
 	selector: 'app-root-users',
 	templateUrl: './users.component.html',
 })
-export class UsersComponent implements OnInit {
+export class UsersComponent extends PageComponent {
 	// implements LoggedInCallback {
 
 	//	 public deviceStats: any = {};
 
 	public invite: Invitation;
-
-	public profile: ProfileInfo;
-
-	public isAdminUser = false;
 
 	public pageTitle = 'Users';
 
@@ -55,12 +50,10 @@ export class UsersComponent implements OnInit {
 
 	tenants: Observable<string[]>
 
-	@BlockUI() blockUI: NgBlockUI;
-
 	constructor (
+		userService: UserService,
 		public router: Router,
 		private breadCrumbService: BreadCrumbService,
-		// public userService: UserLoginService,
 		private adminService: AdminService,
 		protected localStorage: LocalStorage,
 		private logger: LoggerService,
@@ -68,44 +61,41 @@ export class UsersComponent implements OnInit {
 		private ngZone: NgZone,
 
 		private apiService: ApiService,
-		private listTenantGQL: ListTenantsGQL,
-		private listUsersGQL: ListUsersGQL,
 	) {
+		super(userService)
+
 		this.invite = new Invitation()
 		this.invite.name = ''
 	}
 
 	ngOnInit () {
-		this.blockUI.start('Loading users...')
+		super.ngOnInit()
 
-		this.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-			this.profile = new ProfileInfo(profile)
-			this.isAdminUser = this.profile.isAdmin()
+		// this.blockUI.start('Loading users...')
 
-			this.breadCrumbService.setup(this.pageTitle, [
-				new Crumb({ title: this.pageTitle, active: true, link: 'users' }),
-			])
+		this.breadCrumbService.setup(this.pageTitle, [
+			new Crumb({ title: this.pageTitle, active: true, link: 'users' }),
+		])
 
-			if (this.isAdminUser) {
-				// this.loadUsers()
+		if (this.isAdminUser) {
+			// this.loadUsers()
 
-				this.users = this.listUsersGQL.watch().valueChanges.pipe(
-					map(result => result.data.listUsers.users),
-				)
+			this.users = this.apiService.listUsersWatch().valueChanges.pipe(
+				map(result => result.data.listUsers.users),
+			)
 
-				this.tenants = this.listTenantGQL.watch().valueChanges.pipe(
-					map(result => result.data.listTenants),
-				)
+			this.tenants = this.apiService.listTenantsWatch().valueChanges.pipe(
+				map(result => result.data.listTenants),
+			)
 
-				// this.adminService.tenantsObservable.subscribe(tenants => {
-				// 	this.tenants = tenants
-				// })
+			// this.adminService.tenantsObservable.subscribe(tenants => {
+			// 	this.tenants = tenants
+			// })
 
-				// this.apiService.
+			// this.apiService.
 
-				// this.adminService.listTenants()
-			}
-		})
+			// this.adminService.listTenants()
+		}
 
 		// this.statService.statObservable$.subscribe((message: Stats) => {
 		//	 this.dataStats = message.systemStats;
@@ -117,14 +107,6 @@ export class UsersComponent implements OnInit {
 		//	 this.statsService.statObservable$.subscribe(message => {
 		//	 this.deviceStats = message;
 		//	 this._ngZone.run(() => { });
-		//	 });
-
-		//	 this.localStorage.getItem<ProfileInfo>('profile').subscribe((profile) => {
-		//	 this.profile = new ProfileInfo(profile);
-		//	 this.isAdminUser = this.profile.isAdmin();
-		//	 if (this.profile.isAdmin()) {
-		//	 this.loadUsers();
-		//	 }
 		//	 });
 	}
 
@@ -147,7 +129,7 @@ export class UsersComponent implements OnInit {
 	refreshData () {
 		this.blockUI.start('Loading users...')
 		// this.loadUsers()
-		this.listUsersGQL.fetch()
+		// this.listUsersGQL.fetch()
 	}
 
 	cancelModal (form: NgForm) {
@@ -168,6 +150,7 @@ export class UsersComponent implements OnInit {
 			const _invite: Invitation = {
 				name: form.value.name,
 				email: form.value.email,
+				// nickname: form.value.email,
 				groups: [
 					{
 						name: group,

@@ -15,6 +15,8 @@ import { GetDeviceQuery, GetDeviceQueryVariables, ApiService, UpdateDeviceMutati
 import { QueryRef } from 'apollo-angular'
 import { DeviceService } from '../../services/device.service'
 import { DEFAULT_NAMESPACE } from '@deathstar/sputnik-core'
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 declare let $: any
 
@@ -36,14 +38,10 @@ function cleanDeviceVariables (variables: UpdateDeviceMutationVariables): Update
 	selector: 'app-root-device',
 	templateUrl: './device.component.html',
 })
-export class DeviceComponent implements OnInit, OnDestroy {
+export class DeviceComponent extends PageComponent implements OnDestroy {
 	public title = 'Device';
 
 	public thingId: string;
-
-	private profile: ProfileInfo = null;
-
-	public isAdminUser: boolean;
 
 	public device: GetDeviceQuery['getDevice']
 
@@ -63,22 +61,23 @@ export class DeviceComponent implements OnInit, OnDestroy {
 
 	public thingsboardDashboardLink: string
 
-	@BlockUI()
-	blockUI: NgBlockUI;
-
 	constructor (
+		userService: UserService,
 		public router: Router,
 		public route: ActivatedRoute,
-		protected localStorage: LocalStorage,
 		private _ngZone: NgZone,
 		private logger: LoggerService,
 		private breadCrumbService: BreadCrumbService,
 		private deploymentService: DeploymentService,
 		private deviceService: DeviceService,
 		private apiService: ApiService,
-	) {}
+	) {
+		super(userService)
+	}
 
 	ngOnInit () {
+		super.ngOnInit()
+
 		this.route.params.subscribe(params => {
 			this.thingId = params.thingId
 		})
@@ -95,11 +94,6 @@ export class DeviceComponent implements OnInit, OnDestroy {
 		])
 
 		this.blockUI.start('Loading device...')
-
-		this.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-			this.profile = new ProfileInfo(profile)
-			this.isAdminUser = this.profile.isAdmin()
-		})
 
 		// devices
 		this.getDeviceQuery = this.apiService.getDeviceWatch({

@@ -1,13 +1,13 @@
-import { COMPILER_OPTIONS, CompilerFactory, Compiler, NgModule, NO_ERRORS_SCHEMA, NgZone } from '@angular/core'
+import { COMPILER_OPTIONS, CompilerFactory, Compiler, NgModule, NO_ERRORS_SCHEMA, NgZone, APP_INITIALIZER } from '@angular/core'
 import { JitCompilerFactory } from '@angular/platform-browser-dynamic'
 import { HttpClientModule } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { BrowserModule } from '@angular/platform-browser'
-import { RouterModule } from '@angular/router'
+// import { RouterModule } from '@angular/router'
 import { BlockUIModule } from 'ng-block-ui'
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2'
 import { ChartsModule } from 'ng2-charts'
-import { SputnikRoutingModule } from './sputnik.routes'
+// import { SputnikRoutingModule } from './sputnik.routes'
 // AWS Specific
 // import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular'
 // API
@@ -20,20 +20,6 @@ import {
 } from './app-variables'
 // Components
 import { SputnikComponent } from './sputnik.component'
-// Components - Common
-// import { PrettyJsonComponent } from './common/components/pretty-json/pretty-json.component';
-// Components - Public
-import { HomeComponent } from './public/home/home.component'
-import { LoginComponent } from './public/auth/login/login.component'
-import {
-	LogoutComponent,
-	RegistrationConfirmationComponent,
-} from './public/auth/confirm/confirm-registration.component'
-import { ResendCodeComponent } from './public/auth/resend/resend-code.component'
-import { ForgotPasswordStep1Component, ForgotPassword2Component } from './public/auth/forgot/forgot-password.component'
-import { RegisterComponent } from './public/auth/register/registration.component'
-import { NewPasswordComponent } from './public/auth/newpassword/new-password.component'
-// Components - Secure - Common
 import { IoTPubSuberComponent } from './secure/common/iot-pubsuber.component'
 import { PrettifierComponent } from './secure/common/prettifier.component'
 import { SecureHomeLayoutComponent } from './secure/secure-home-layout.component'
@@ -63,27 +49,26 @@ import { SystemsModule } from './secure/systems/systems.module'
 import { SystemBlueprintsModule } from './secure/system-blueprints/system-blueprints.module'
 // System Modules
 import { ChildViewsModule } from './secure/child-views/child-views.module'
-import { TestsModule } from './public/tests/tests.module'
+import { UserService } from './services/user.service'
+import { PageComponent } from './secure/common/page.component'
 
 // Addons compilation
 export function createCompiler (fn: CompilerFactory): Compiler {
 	return fn.createCompiler()
 }
 
+export function userFactory(config: UserService) {
+	// Prevent "Metadata collected contains an error that will be reported at runtime: Lambda not supported."
+	// https://medium.com/@thilanka.nuwan89/angular-lambda-not-supported-error-work-around-8f204f4cad9a
+	const fn = () => config.init()
+
+	return fn
+}
+
 @NgModule({
 	declarations: [
+		PageComponent,
 		SputnikComponent,
-
-		// Components - Public
-		LoginComponent,
-		LogoutComponent,
-		RegistrationConfirmationComponent,
-		ResendCodeComponent,
-		ForgotPasswordStep1Component,
-		ForgotPassword2Component,
-		RegisterComponent,
-		NewPasswordComponent,
-		HomeComponent,
 
 		// Components - Secure - Common
 		IoTPubSuberComponent,
@@ -106,10 +91,10 @@ export function createCompiler (fn: CompilerFactory): Compiler {
 		// HttpModule,
 		HttpClientModule,
 		ReactiveFormsModule,
-		RouterModule,
+		// RouterModule,
 		ChartsModule,
 
-		SputnikRoutingModule,
+		// SputnikRoutingModule,
 
 		// Common
 		ChildViewsModule,
@@ -149,11 +134,13 @@ export function createCompiler (fn: CompilerFactory): Compiler {
 			region: REGION,
 		}),
 
-		TestsModule,
-
 		MapsModule,
 
 		// .forRoot()
+	],
+	exports: [
+		SputnikComponent,
+		PageComponent,
 	],
 	providers: [
 		{ provide: LoggerService, useClass: ConsoleLoggerService },
@@ -172,8 +159,15 @@ export function createCompiler (fn: CompilerFactory): Compiler {
 			useFactory: createCompiler,
 			deps: [CompilerFactory],
 		},
+		UserService,
+		{
+      provide: APP_INITIALIZER,
+      useFactory: userFactory,
+      deps: [UserService],
+      multi: true
+    }
 	],
-	// bootstrap: [SputnikComponent],
+	bootstrap: [SputnikComponent],
 	schemas: [NO_ERRORS_SCHEMA],
 })
 export class SputnikModule {}

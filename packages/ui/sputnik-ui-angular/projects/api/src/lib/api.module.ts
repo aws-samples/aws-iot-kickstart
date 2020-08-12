@@ -1,4 +1,3 @@
-import * as apollo from 'apollo-angular'
 import { Apollo, ApolloModule } from 'apollo-angular'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { NgModule, ModuleWithProviders } from '@angular/core'
@@ -7,9 +6,8 @@ import { ApolloLink } from 'apollo-link'
 import { onError } from 'apollo-link-error'
 import { createAuthLink, AuthOptions } from 'aws-appsync-auth-link'
 import { createSubscriptionHandshakeLink } from 'aws-appsync-subscription-link'
-import { Router } from '@angular/router'
 
-export const LOCAL_STORAGE_TOKEN_KEY = 'sputnik.api.token'
+const EXPIRATION_BUFFER = 300000 // 5mins
 
 export class ApiProviderConfig {
 	constructor (public url: string, public region: string, public auth?: AuthOptions) {}
@@ -37,18 +35,16 @@ export class ApiProviderModule {
 	}
 
   protected token: string | null
+  protected tokenExpiration: number | null
 
-  constructor (config: ApiProviderConfig, apollo: Apollo, router: Router) {
-  	this.token = window.localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY) || null
-
+  constructor (config: ApiProviderConfig, apollo: Apollo) {
   	config.auth = Object.assign({
   		type: 'AMAZON_COGNITO_USER_POOLS',
   		jwtToken: async () => {
-  			if (this.token == null) {
+  			if (this.token == null || this.tokenExpiration < Date.now() + EXPIRATION_BUFFER) {
   				const session = await Auth.currentSession()
   				this.token = session.getIdToken().getJwtToken()
-
-  				window.localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, this.token)
+					this.tokenExpiration = session.getIdToken().getExpiration()
   			}
 
   			return this.token
@@ -66,9 +62,8 @@ export class ApiProviderModule {
 
   					if ((errorProps as any).errorType === 'UnauthorizedException') {
   						// likely "Token has expired."
-  						console.error(`[UnauthorizedException]: ${message}`, 'Forcing page refresh')
-  						window.localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY)
-							router.navigate(['/home/login'], { replaceUrl: true, })
+  						console.error(`[UnauthorizedException]: ${message}`)
+							// TODO: check if this still occures after refactoring to new amplify ui
   					}
   				})
   			}

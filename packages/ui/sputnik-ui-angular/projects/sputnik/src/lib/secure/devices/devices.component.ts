@@ -7,7 +7,7 @@ import { Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import swal from 'sweetalert2'
 import { Device, DeviceFilterInput, DeviceBlueprint, DeviceType, BatchDeploymentResult } from '@deathstar/sputnik-core-api'
-import { ApiService } from '@deathstar/sputnik-ui-angular-api'
+import { ApiService, DevicesQuery } from '@deathstar/sputnik-ui-angular-api'
 // Models
 import { ProfileInfo } from '../../models/profile-info.model'
 // Services
@@ -20,6 +20,8 @@ import { StatService } from '../../services/stat.service'
 // Helpers
 import moment from 'moment'
 import { QueryRef } from 'apollo-angular'
+import { UserService } from '../../services/user.service'
+import { PageComponent } from '../common/page.component'
 
 declare let $: any
 
@@ -46,14 +48,14 @@ function convertSimpleInput (simpleInput: SimpleDeviceFilterInput): DeviceFilter
 	selector: 'app-root-devices',
 	templateUrl: './devices.component.html',
 })
-export class DevicesComponent implements OnInit {
+export class DevicesComponent extends PageComponent {
 	public title = 'Devices';
 
 	public deviceStats: any = {};
 
-	private profile: ProfileInfo = null;
-
 	public devices: Device[]
+
+	private devicesQueryRef: QueryRef<DevicesQuery>
 
 	public newDevice: Partial<Device>;
 
@@ -67,6 +69,8 @@ export class DevicesComponent implements OnInit {
 
 	public selectedDevices: { [key: string]: boolean, } = {}
 
+	public deviceCountDisplay: string | number = ''
+
 	// public deviceTypes: DeviceType[] = [];
 	public pages = {
 		nextToken: null,
@@ -75,77 +79,92 @@ export class DevicesComponent implements OnInit {
 		pageSize: 50,
 	};
 
-	@BlockUI()
-	blockUI: NgBlockUI;
-
 	constructor (
-	public router: Router,
-	protected localStorage: LocalStorage,
-	private logger: LoggerService,
-	private breadCrumbService: BreadCrumbService,
-	private deviceService: DeviceService,
-	public deviceBlueprintService: DeviceBlueprintService,
-	public deviceTypeService: DeviceTypeService,
-	private statService: StatService,
-	private apiService: ApiService,
-	private ngZone: NgZone,
-	) {}
-
-	ngOnInit () {
-		this.newDevice = {} // TODO: is this needed in init?
-
-		this.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-			this.profile = new ProfileInfo(profile)
-
-			this.breadCrumbService.setup(this.title, [
-				new Crumb({ title: this.title, active: true, link: 'devices' }),
-			])
-
-			this.queryDevices()
-
-			this.deviceTypes = this.apiService.listDeviceTypesWatch().valueChanges.pipe(
-				map(result => result.data.listDeviceTypes.deviceTypes),
-			)
-
-			this.deviceBlueprints = this.apiService.listDeviceBlueprintsWatch().valueChanges.pipe(
-				map(result => result.data.listDeviceBlueprints.deviceBlueprints),
-			)
-
-			this.statService.statObservable$.subscribe(message => {
-				this.deviceStats = message.deviceStats
-				this.ngZone.run(() => {
-					this.updatePaging()
-				})
-			})
-
-			// TODO: not sure how to implement subscriptions with apollo-angular
-			// https://www.apollographql.com/docs/angular/features/subscriptions/
-			this.apiService.addedDevice().subscribe(({ data }) => {
-				if (data.addedDevice) {
-					this.devices = [...this.devices, data.addedDevice] as Device[]
-				}
-			})
-		})
+		userService: UserService,
+		public router: Router,
+		private logger: LoggerService,
+		private breadCrumbService: BreadCrumbService,
+		private deviceService: DeviceService,
+		public deviceBlueprintService: DeviceBlueprintService,
+		public deviceTypeService: DeviceTypeService,
+		private statService: StatService,
+		private apiService: ApiService,
+		private ngZone: NgZone,
+	) {
+		super(userService)
 	}
 
-	// TODO: make this debounced
-	queryDevices () {
+	ngOnInit () {
+		super.ngOnInit()
+
 		this.blockUI.start('Loading devices...')
 
-		this.apiService.devicesWatch({
-			input: convertSimpleInput(this.filterInput),
-			pagination: {
-				limit: this.pages.pageSize,
-				nextToken: this.pages.nextToken,
-			},
-		}).valueChanges.subscribe(({ data }) => {
+		this.newDevice = {} // TODO: is this needed in init?
+
+		this.breadCrumbService.setup(this.title, [
+			new Crumb({ title: this.title, active: true, link: 'devices' }),
+		])
+
+		this.devicesQueryRef = this.apiService.devicesWatch({}, {
+			fetchPolicy: 'cache-first',
+		})
+
+		this.devicesQueryRef.valueChanges.subscribe(({ data }) => {
 			this.devices = data.devices.devices.slice() as Device[]
+
+			this.deviceCountDisplay = this.devices.length < this.deviceStats.total ? `${this.devices.length} of ${this.deviceStats.total}` : this.devices.length
 
 			this.pages.nextToken = data.devices.nextToken
 
 			this.blockUI.stop()
 		})
+
+		this.deviceTypes = this.apiService.listDeviceTypesWatch().valueChanges.pipe(
+			map(result => result.data.listDeviceTypes.deviceTypes),
+		)
+
+		this.deviceBlueprints = this.apiService.listDeviceBlueprintsWatch().valueChanges.pipe(
+			map(result => result.data.listDeviceBlueprints.deviceBlueprints),
+		)
+
+		this.statService.statObservable$.subscribe(message => {
+			this.deviceStats = message.deviceStats
+			this.ngZone.run(() => {
+				this.updatePaging()
+			})
+		})
+
+		// TODO: not sure how to implement subscriptions with apollo-angular
+		// https://www.apollographql.com/docs/angular/features/subscriptions/
+		this.apiService.addedDevice().subscribe(({ data }) => {
+			if (data.addedDevice) {
+				this.devices = [...this.devices, data.addedDevice] as Device[]
+			}
+		})
+	}
+
+	// TODO: make this debounced
+	async queryDevices () {
+		// this.blockUI.start('Loading devices...')
+
+		await this.devicesQueryRef.refetch({
+			input: convertSimpleInput(this.filterInput),
+			pagination: {
+				limit: this.pages.pageSize,
+				nextToken: this.pages.nextToken,
+			},
+		})
+
+		this.blockUI.stop()
+
 		// TODO: reset pagination and other stuff
+	}
+
+	resetFilter () {
+		this.filterInput.deviceBlueprintId = null
+		this.filterInput.deviceTypeId = null
+
+		this.refreshData()
 	}
 
 	updatePaging () {

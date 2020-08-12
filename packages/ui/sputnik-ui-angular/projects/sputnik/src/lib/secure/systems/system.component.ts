@@ -1,24 +1,17 @@
 import {
 	Component,
-	OnInit,
 	NgZone,
 	ViewChild,
 	ViewContainerRef,
 	ComponentFactoryResolver,
-	ComponentRef,
-	ComponentFactory,
-	Output,
 } from '@angular/core'
 import { Router, ActivatedRoute } from '@angular/router'
 import { Subject } from 'rxjs'
-import { BlockUI, NgBlockUI } from 'ng-block-ui'
-import { LocalStorage } from '@ngx-pwa/local-storage'
 import swal from 'sweetalert2'
 // SubComponents
 import { SystemEditModalComponent } from './system.edit.modal.component'
 // Models
 import { Device } from '../../models/device.model'
-import { ProfileInfo } from '../../models/profile-info.model'
 import { System } from '../../models/system.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
@@ -26,6 +19,8 @@ import { DeploymentService } from '../../services/deployment.service'
 import { DeviceService } from '../../services/device.service'
 import { SystemService } from '../../services/system.service'
 import { LoggerService } from '../../services/logger.service'
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 declare let $: any
 
@@ -33,11 +28,7 @@ declare let $: any
 	selector: 'app-root-system',
 	templateUrl: './system.component.html',
 })
-export class SystemComponent implements OnInit {
-	private profile: ProfileInfo;
-
-	public isAdminUser: boolean;
-
+export class SystemComponent extends PageComponent {
 	public pageTitle = 'System';
 
 	public id: string;
@@ -47,24 +38,23 @@ export class SystemComponent implements OnInit {
 	devices: Device[]
 	};
 
-	@BlockUI()
-	blockUI: NgBlockUI;
-
 	@ViewChild('editModalTemplate', { read: ViewContainerRef, static: true })
 	editModalTemplate: ViewContainerRef;
 
 	constructor (
-	private breadCrumbService: BreadCrumbService,
-	private deploymentService: DeploymentService,
-	private deviceService: DeviceService,
-	private localStorage: LocalStorage,
-	private logger: LoggerService,
-	private resolver: ComponentFactoryResolver,
-	public route: ActivatedRoute,
-	public router: Router,
-	private systemService: SystemService,
-	private ngZone: NgZone,
+		userService: UserService,
+		private breadCrumbService: BreadCrumbService,
+		private deploymentService: DeploymentService,
+		private deviceService: DeviceService,
+		private logger: LoggerService,
+		private resolver: ComponentFactoryResolver,
+		public route: ActivatedRoute,
+		public router: Router,
+		private systemService: SystemService,
+		private ngZone: NgZone,
 	) {
+		super(userService)
+
 		this.data = {
 			system: new System(),
 			devices: [],
@@ -72,60 +62,53 @@ export class SystemComponent implements OnInit {
 	}
 
 	ngOnInit () {
-		const self = this
+		super.ngOnInit()
 
-		self.blockUI.start('Loading system...')
+		this.blockUI.start('Loading system...')
 
-		self.route.params.subscribe(params => {
-			self.data.system = new System({ id: params.id })
+		this.route.params.subscribe(params => {
+			this.data.system = new System({ id: params.id })
 
-			self.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-				self.profile = new ProfileInfo(profile)
-				self.isAdminUser = self.profile.isAdmin()
+			this.breadCrumbService.setup(this.pageTitle, [
+				new Crumb({
+					title: this.pageTitle + 's',
+					link: 'systems',
+				}),
+				new Crumb({
+					title: this.data.system.id,
+					active: true,
+				}),
+			])
 
-				self.breadCrumbService.setup(self.pageTitle, [
-					new Crumb({
-						title: self.pageTitle + 's',
-						link: 'systems',
-					}),
-					new Crumb({
-						title: self.data.system.id,
-						active: true,
-					}),
-				])
-
-				self.loadSystem()
-			})
+			this.loadSystem()
 		})
 	}
 
 	private loadSystem () {
-		const self = this
-
-		self.systemService
-		.get(self.data.system.id)
+		this.systemService
+		.get(this.data.system.id)
 		.then((system: System) => {
-			self.data.system = system
-			self.logger.info('Loaded system:', this.data.system.id)
-			self.blockUI.stop()
-			self.data.devices = []
+			this.data.system = system
+			this.logger.info('Loaded system:', this.data.system.id)
+			this.blockUI.stop()
+			this.data.devices = []
 
 			return Promise.all(
 				this.data.system.deviceIds.map(thingId => {
-					return self.deviceService.getDevice(thingId)
+					return this.deviceService.getDevice(thingId)
 				}),
 			)
 		})
 		.then(devices => {
-			self.logger.info('Loaded', devices.length, 'devices.')
-			self.data.devices = devices
+			this.logger.info('Loaded', devices.length, 'devices.')
+			this.data.devices = devices
 		})
 		.catch(err => {
-			self.blockUI.stop()
+			this.blockUI.stop()
 			swal.fire('Oops...', 'Something went wrong! Unable to retrieve the system.', 'error')
-			self.logger.error('error occurred calling getSystem api, show message')
-			self.logger.error(err)
-			self.router.navigate(['/securehome/systems'])
+			this.logger.error('error occurred calling getSystem api, show message')
+			this.logger.error(err)
+			this.router.navigate(['/securehome/systems'])
 		})
 	}
 

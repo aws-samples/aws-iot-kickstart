@@ -10,17 +10,15 @@ import { ProfileInfo } from '../../models/profile-info.model'
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { DeviceTypeService } from '../../services/device-type.service'
 import { LoggerService } from '../../services/logger.service'
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 @Component({
 	selector: 'app-root-device-types',
 	templateUrl: './device-types.component.html',
 	// templateUrl: '../common/generic-table.component.html'
 })
-export class DeviceTypesComponent implements OnInit {
-	private profile: ProfileInfo;
-
-	public isAdminUser: boolean;
-
+export class DeviceTypesComponent extends PageComponent {
 	public tableData: DeviceType[];
 
 	public tableHeaders = [
@@ -44,39 +42,36 @@ export class DeviceTypesComponent implements OnInit {
 	blockUI: NgBlockUI;
 
 	constructor (
-	public router: Router,
-	private breadCrumbService: BreadCrumbService,
-	private deviceTypeService: DeviceTypeService,
-	private localStorage: LocalStorage,
-	private logger: LoggerService,
-	private ngZone: NgZone,
-	private resolver: ComponentFactoryResolver,
+		userService: UserService,
+		public router: Router,
+		private breadCrumbService: BreadCrumbService,
+		private deviceTypeService: DeviceTypeService,
+		private logger: LoggerService,
+		private ngZone: NgZone,
+		private resolver: ComponentFactoryResolver,
 	) {
+		super(userService)
+
 		this.totalDeviceTypes = 0
 		this.tableData = deviceTypeService.deviceTypes
 	}
 
 	ngOnInit () {
-		const self = this
+		super.ngOnInit()
 
-		self.blockUI.start(`Loading ${self.pageTitle}...`)
+		this.blockUI.start(`Loading ${this.pageTitle}...`)
 
-		self.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-			self.profile = new ProfileInfo(profile)
-			self.isAdminUser = self.profile.isAdmin()
+		this.breadCrumbService.setup(this.pageTitle, [
+			new Crumb({ title: this.pageTitle, active: true, link: 'device-types' }),
+		])
 
-			self.breadCrumbService.setup(self.pageTitle, [
-				new Crumb({ title: self.pageTitle, active: true, link: 'device-types' }),
-			])
-
-			self.deviceTypeService.deviceTypesObservable$.subscribe(deviceTypes => {
-				self.ngZone.run(() => {
-					self.load()
-				})
+		this.deviceTypeService.deviceTypesObservable$.subscribe(deviceTypes => {
+			this.ngZone.run(() => {
+				this.load()
 			})
-
-			self.load()
 		})
+
+		this.load()
 	}
 
 	private load () {

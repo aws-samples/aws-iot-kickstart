@@ -1,19 +1,18 @@
-import { Component, OnInit, NgZone, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core'
-import { Router, NavigationExtras } from '@angular/router'
-import { BlockUI, NgBlockUI } from 'ng-block-ui'
+import { Component, NgZone, ViewChild, ViewContainerRef, ComponentFactoryResolver } from '@angular/core'
+import { Router } from '@angular/router'
 import { Subject } from 'rxjs'
-import { LocalStorage } from '@ngx-pwa/local-storage'
 import swal from 'sweetalert2'
 // SubComponents
 import { SystemsModalComponent } from './systems.modal.component'
 // Models
-import { ProfileInfo } from '../../models/profile-info.model'
 import { System } from '../../models/system.model'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
 import { SystemService } from '../../services/system.service'
 import { StatService, Stats } from '../../services/stat.service'
 import { LoggerService } from '../../services/logger.service'
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 declare let $: any
 
@@ -21,11 +20,7 @@ declare let $: any
 	selector: 'app-root-systems',
 	templateUrl: './systems.component.html',
 })
-export class SystemsComponent implements OnInit {
-	private profile: ProfileInfo;
-
-	public isAdminUser: boolean;
-
+export class SystemsComponent extends PageComponent {
 	public tableData: System[];
 
 	public tableHeaders = [
@@ -44,49 +39,43 @@ export class SystemsComponent implements OnInit {
 
 	public pageTitle = 'Systems';
 
-	@BlockUI()
-	blockUI: NgBlockUI;
-
 	@ViewChild('createModalTemplate', { read: ViewContainerRef, static: true })
 	createModalTemplate: ViewContainerRef;
 
 	constructor (
-	public router: Router,
-	private breadCrumbService: BreadCrumbService,
-	private systemService: SystemService,
-	private statService: StatService,
-	private localStorage: LocalStorage,
-	private logger: LoggerService,
-	private ngZone: NgZone,
-	private resolver: ComponentFactoryResolver,
+		userService: UserService,
+		public router: Router,
+		private breadCrumbService: BreadCrumbService,
+		private systemService: SystemService,
+		private statService: StatService,
+		private logger: LoggerService,
+		private ngZone: NgZone,
+		private resolver: ComponentFactoryResolver,
 	) {
+		super(userService)
+
 		this.totalSystems = 0
 		this.tableData = []
 	}
 
 	ngOnInit () {
-		const self = this
+		super.ngOnInit()
 
-		self.blockUI.start(`Loading ${self.pageTitle}...`)
+		this.blockUI.start(`Loading ${this.pageTitle}...`)
 
-		self.localStorage.getItem<ProfileInfo>('profile').subscribe((profile: ProfileInfo) => {
-			self.profile = new ProfileInfo(profile)
-			self.isAdminUser = self.profile.isAdmin()
+		this.breadCrumbService.setup(this.pageTitle, [
+			new Crumb({ title: this.pageTitle, active: true, link: 'systems' }),
+		])
 
-			self.breadCrumbService.setup(self.pageTitle, [
-				new Crumb({ title: self.pageTitle, active: true, link: 'systems' }),
-			])
-
-			self.statService.statObservable$.subscribe((message: Stats) => {
-				this.ngZone.run(() => {
-					this.totalSystems = message.systemStats.total
-				})
+		this.statService.statObservable$.subscribe((message: Stats) => {
+			this.ngZone.run(() => {
+				this.totalSystems = message.systemStats.total
 			})
-
-			self.statService.refresh()
-
-			self.load()
 		})
+
+		this.statService.refresh()
+
+		this.load()
 	}
 
 	private getSystems (ofPage: number, nextToken: string) {
@@ -104,20 +93,17 @@ export class SystemsComponent implements OnInit {
 	}
 
 	private load () {
-		const self = this
-
-		return self
-		.getSystems(self.pages.current - 1, null)
+		return this.getSystems(this.pages.current - 1, null)
 		.then(results => {
-			self.tableData = results.systems
-			self.updatePaging()
-			self.blockUI.stop()
+			this.tableData = results.systems
+			this.updatePaging()
+			this.blockUI.stop()
 		})
 		.catch(err => {
 			swal.fire('Oops...', 'Something went wrong! Unable to retrieve the systems.', 'error')
-			self.logger.error('error occurred calling listSystems api')
-			self.logger.error(err)
-			self.router.navigate(['/securehome/systems'])
+			this.logger.error('error occurred calling listSystems api')
+			this.logger.error(err)
+			this.router.navigate(['/securehome/systems'])
 		})
 	}
 
@@ -132,29 +118,28 @@ export class SystemsComponent implements OnInit {
 	}
 
 	public handleCreate () {
-		const self = this
-		self.createModalTemplate.clear()
+		this.createModalTemplate.clear()
 
 		const componentRef = this.createModalTemplate.createComponent(this.resolver.resolveComponentFactory(SystemsModalComponent))
 		const componentRefInstance = <any>componentRef.instance
 
 		const cancelSubject: Subject<void> = new Subject<void>()
 		cancelSubject.subscribe(() => {
-			self.handleCancelCreate()
+			this.handleCancelCreate()
 		})
 
 		const submitSubject: Subject<any> = new Subject<any>()
 		submitSubject.subscribe(result => {
-			self.handleCancelCreate()
+			this.handleCancelCreate()
 
 			if (result.error) {
 				swal.fire('Oops...', 'Something went wrong!', 'error')
-				self.logger.error('error occurred calling api, show message')
-				self.logger.error(result.error)
+				this.logger.error('error occurred calling api, show message')
+				this.logger.error(result.error)
 			} else {
 				swal.fire({ timer: 1000, title: 'Success', type: 'success', showConfirmButton: false }).then()
 			}
-			self.refreshData()
+			this.refreshData()
 		})
 
 		componentRefInstance.cancelSubject = cancelSubject

@@ -3,9 +3,9 @@ import * as sputnik from '@deathstar/sputnik-ui-angular'
 
 @NgModule({
 	imports: [
-		sputnik.SputnikModule,
+		sputnik.SputnikAppModule,
 	],
-	bootstrap: [sputnik.SputnikComponent],
+	bootstrap: [sputnik.SputnikAppComponent],
 	schemas: [NO_ERRORS_SCHEMA],
 })
 export class AppModule {}
