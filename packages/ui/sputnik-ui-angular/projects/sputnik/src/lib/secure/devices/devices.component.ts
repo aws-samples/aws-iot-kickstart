@@ -228,22 +228,26 @@ export class DevicesComponent extends PageComponent {
 		$('#createModal').modal('hide')
 	}
 
-	submitCreateDevice (value: any) {
+	async submitCreateDevice (value: any) {
 		this.blockUI.start('Creating device...')
 
-		this.deviceService
-		.addDevice(this.newDevice.name)
-		.then((device: Device) => {
-			// this.loadDevices()
+		try {
+			const result = await this.apiService.addDevice({
+				name: this.newDevice.name,
+				// TODO: enable setting device type and blueprint in create form
+				deviceBlueprintId: 'UNKNOWN',
+				deviceTypeId: 'UNKNOWN',
+			}).toPromise()
+			this.logger.info('Created device:', result)
 			$('#createModal').modal('hide')
-		})
-		.catch(err => {
+		} catch (error) {
 			this.blockUI.stop()
 			swal.fire('Oops...', 'Something went wrong! Unable to update the device.', 'error')
-			this.logger.error('error occurred calling updateDevice api, show message')
-			this.logger.error(err)
-			// this.loadDevices()
-		})
+			this.logger.error('Failed to create device', error)
+		} finally {
+			this.blockUI.stop()
+			this.refreshData()
+		}
 	}
 
 	async deploy () {

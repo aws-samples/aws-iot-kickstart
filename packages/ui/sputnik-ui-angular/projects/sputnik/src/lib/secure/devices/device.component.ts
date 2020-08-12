@@ -201,17 +201,23 @@ export class DeviceComponent extends PageComponent implements OnDestroy {
 		}
 
 		try {
-			$('#editModal').modal('hide')
 			this.blockUI.start('Deleting device...')
-			const result = await this.apiService.deleteDevice({ thingId: device.thingId })
-			console.log(result)
-			this.router.navigate(['/devices'])
+			const result = await this.apiService.deleteDevice({ thingId: device.thingId }).toPromise()
+
+			if (result.errors) {
+				swal.fire('Oops...', 'Something went wrong! Unable to delete the widget.', 'error')
+				this.logger.error('Failed to delete device:', result.errors)
+			} else {
+				this.logger.info('Delete device result:', result)
+				this.router.navigate(['/devices'])
+			}
 		} catch (error) {
 			swal.fire('Oops...', 'Something went wrong! Unable to delete the widget.', 'error')
 			this.logger.error('error occurred calling deleteDevice api, show message')
 			this.logger.error(error)
-			this.refreshData()
 		} finally {
+			$('#editModal').modal('hide')
+			this.refreshData()
 			this.blockUI.stop()
 		}
 	}

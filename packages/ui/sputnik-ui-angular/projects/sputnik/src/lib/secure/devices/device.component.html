@@ -47,7 +47,7 @@
                                         <p class="form-control-static">
                                             <span>{{device.connectionState?.state}} </span>
                                             <!-- [class]="device.stage === 'deployed' ? 'label label-light-success-alt m-r-10' : (device.stage === 'provisioned' ? 'label label-light-warning m-r-10' : 'label label-light-danger m-r-10')" -->
-                                            <span class="small"> ({{device.connectionState.at | moment:"MMM Do YYYY
+                                            <span class="small"> ({{device.connectionState?.at | moment:"MMM Do YYYY
                                                 HH:mm"}})</span>
                                         </p>
                                     </div>
