@@ -63,9 +63,7 @@
                                         </li>
                                         <li *ngFor="let c of crumbs"
                                             [class]="c.active ? 'breadcrumb-item active' : 'breadcrumb-item'">
-                                            <a *ngIf="!c.active" style="color: white;" href="/{{ c.link }}">{{
-                                            c.title
-                                            }}</a>
+                                            <a *ngIf="!c.active" style="color: white;" [routerLink]="c.link">{{c.title}}</a>
                                             <!-- <a *ngIf="c.link" href="/{{c.link}}" style="color: white;">{{c.title}}</a> -->
                                             <span *ngIf="c.active" style="color: white;">{{ c.title }}</span>
                                         </li>

@@ -48,7 +48,7 @@ export class DeviceTypeComponent extends PageComponent {
 				this.breadCrumbService.setup(this.pageTitle, [
 					new Crumb({
 						title: this.pageTitle + 's',
-						link: 'device-types',
+						link: '/device-types',
 					}),
 					new Crumb({
 						title: this.deviceTypeId,

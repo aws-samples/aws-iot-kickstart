@@ -55,7 +55,7 @@ export class DeviceBlueprintsComponent extends PageComponent {
 		this.blockUI.start(`Loading ${this.pageTitle}...`)
 
 		this.breadCrumbService.setup(this.pageTitle, [
-			new Crumb({ title: this.pageTitle, active: true, link: 'device-blueprints' }),
+			new Crumb({ title: this.pageTitle, active: true, link: '/device-blueprints' }),
 		])
 
 		this.deviceBlueprintService.deviceBlueprintsObservable$.subscribe(deviceBlueprints => {

@@ -48,7 +48,7 @@ export class SystemBlueprintComponent extends PageComponent {
 			this.breadCrumbService.setup(this.pageTitle, [
 				new Crumb({
 					title: this.pageTitle + 's',
-					link: 'system-blueprints',
+					link: '/system-blueprints',
 				}),
 				new Crumb({
 					title: this.systemBlueprintId,

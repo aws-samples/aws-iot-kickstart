@@ -85,7 +85,7 @@ export class DeviceComponent extends PageComponent implements OnDestroy {
 		this.breadCrumbService.setup(this.title, [
 			new Crumb({
 				title: 'Devices',
-				link: 'devices',
+				link: '/devices',
 			}),
 			new Crumb({
 				title: this.thingId,

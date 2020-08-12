@@ -50,7 +50,7 @@ export class DeviceBlueprintComponent extends PageComponent {
 			this.breadCrumbService.setup(this.pageTitle, [
 				new Crumb({
 					title: this.pageTitle + 's',
-					link: 'device-blueprints',
+					link: '/device-blueprints',
 				}),
 				new Crumb({
 					title: this.deviceBlueprintId,

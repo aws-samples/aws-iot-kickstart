@@ -48,7 +48,7 @@ export class DeploymentsComponent extends PageComponent {
 		this.blockUI.start('Loading deployments...')
 
 		this.breadCrumbService.setup(this.title, [
-			new Crumb({ title: this.title, active: true, link: 'deployments' }),
+			new Crumb({ title: this.title, active: true, link: '/deployments' }),
 		])
 
 		this.loadDeployments()

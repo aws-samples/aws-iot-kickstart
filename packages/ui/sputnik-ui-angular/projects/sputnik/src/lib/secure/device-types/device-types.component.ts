@@ -62,7 +62,7 @@ export class DeviceTypesComponent extends PageComponent {
 		this.blockUI.start(`Loading ${this.pageTitle}...`)
 
 		this.breadCrumbService.setup(this.pageTitle, [
-			new Crumb({ title: this.pageTitle, active: true, link: 'device-types' }),
+			new Crumb({ title: this.pageTitle, active: true, link: '/device-types' }),
 		])
 
 		this.deviceTypeService.deviceTypesObservable$.subscribe(deviceTypes => {

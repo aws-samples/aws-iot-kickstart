@@ -102,7 +102,7 @@ export class DevicesComponent extends PageComponent {
 		this.newDevice = {} // TODO: is this needed in init?
 
 		this.breadCrumbService.setup(this.title, [
-			new Crumb({ title: this.title, active: true, link: 'devices' }),
+			new Crumb({ title: this.title, active: true, link: '/devices' }),
 		])
 
 		this.devicesQueryRef = this.apiService.devicesWatch({}, {

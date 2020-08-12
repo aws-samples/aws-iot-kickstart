@@ -47,7 +47,7 @@ export class SettingsComponent extends PageComponent {
 			this.breadCrumbService.setup(this.title, [
 				new Crumb({
 					title: 'Settings',
-					link: 'settings',
+					link: '/settings',
 					active: true,
 				}),
 			])

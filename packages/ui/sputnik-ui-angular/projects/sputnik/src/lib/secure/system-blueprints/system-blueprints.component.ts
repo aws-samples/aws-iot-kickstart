@@ -56,7 +56,7 @@ export class SystemBlueprintsComponent extends PageComponent {
 		this.blockUI.start(`Loading ${this.pageTitle}...`)
 
 		this.breadCrumbService.setup(this.pageTitle, [
-			new Crumb({ title: this.pageTitle, active: true, link: 'system-blueprints' }),
+			new Crumb({ title: this.pageTitle, active: true, link: '/system-blueprints' }),
 		])
 
 		this.systemBlueprintService.systemBlueprintsObservable$.subscribe(systemBlueprints => {

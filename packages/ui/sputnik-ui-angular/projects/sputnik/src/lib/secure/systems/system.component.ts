@@ -72,7 +72,7 @@ export class SystemComponent extends PageComponent {
 			this.breadCrumbService.setup(this.pageTitle, [
 				new Crumb({
 					title: this.pageTitle + 's',
-					link: 'systems',
+					link: '/systems',
 				}),
 				new Crumb({
 					title: this.data.system.id,

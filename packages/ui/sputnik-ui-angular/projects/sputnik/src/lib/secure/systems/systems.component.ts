@@ -64,7 +64,7 @@ export class SystemsComponent extends PageComponent {
 		this.blockUI.start(`Loading ${this.pageTitle}...`)
 
 		this.breadCrumbService.setup(this.pageTitle, [
-			new Crumb({ title: this.pageTitle, active: true, link: 'systems' }),
+			new Crumb({ title: this.pageTitle, active: true, link: '/systems' }),
 		])
 
 		this.statService.statObservable$.subscribe((message: Stats) => {

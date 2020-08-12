@@ -73,7 +73,7 @@ export class UsersComponent extends PageComponent {
 		// this.blockUI.start('Loading users...')
 
 		this.breadCrumbService.setup(this.pageTitle, [
-			new Crumb({ title: this.pageTitle, active: true, link: 'users' }),
+			new Crumb({ title: this.pageTitle, active: true, link: '/users' }),
 		])
 
 		if (this.isAdminUser) {
