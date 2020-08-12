@@ -178,7 +178,16 @@ export class DevicesComponent extends PageComponent {
 	}
 
 	toggleDevice (thingId) {
-		this.selectedDevices[thingId] = !this.selectedDevices[thingId]
+		if (this.selectAll) {
+			// mark all devices except this one as selected and disable select all
+			this.selectedDevices = this.devices.reduce((devices, device) => ({
+				...devices,
+				[device.thingId]: device.thingId !== thingId,
+			}), {})
+			this.selectAll = false
+		} else {
+			this.selectedDevices[thingId] = !this.selectedDevices[thingId]
+		}
 	}
 
 	async refreshData () {
