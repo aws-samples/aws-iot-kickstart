@@ -19,7 +19,7 @@
     "ng": "export NODE_OPTIONS=\"--max-old-space-size=6144\" && ng",
     "dev": "yarn ng serve",
     "prebuild": "yarn clean",
-    "build": "NG_BUILD_DIFFERENTIAL_FULL=true ng build --prod",
+    "build": "ng build --prod",
     "clean": "rm -rf dist",
     "clean:deep": "yarn clean && rm -rf node_modules",
     "test": "jest"
