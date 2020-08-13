@@ -15,6 +15,7 @@
     "build:lambdas": "lerna run --stream 'build' --scope @lambda/*",
     "build:angular": "lerna run --stream 'build' --scope sputnik-ui-angular",
     "watch": "lerna run --parallel 'watch' --no-private",
+    "watch:infra": "lerna run --parallel 'watch' --scope @deathstar/sputnik-infra*",
     "watch:since": "lerna run --parallel 'watch' --no-private --since",
     "clean": "lerna run --parallel 'clean' && (jest --clearCache &> /dev/null) || exit 0;",
     "clean:deep": "(yarn clean &> /dev/null) && (find . -type d -name node_modules -exec rm -rf {} \\; &> /dev/null) || exit 0;",

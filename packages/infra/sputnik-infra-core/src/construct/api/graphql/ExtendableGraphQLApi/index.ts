@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { FieldLogLevel, GraphQLApi, GraphQLApiProps, UserPoolDefaultAction, CfnGraphQLApi, AuthorizationType } from '@aws-cdk/aws-appsync'
+import { FieldLogLevel, GraphQLApi, GraphQLApiProps, UserPoolDefaultAction, CfnGraphQLApi, AuthorizationType, SchemaDefinition } from '@aws-cdk/aws-appsync'
 import { IUserPool } from '@aws-cdk/aws-cognito'
 import { ITable } from '@aws-cdk/aws-dynamodb'
 import { Effect, ManagedPolicy, PolicyStatement, Role, ServicePrincipal } from '@aws-cdk/aws-iam'
@@ -15,7 +15,7 @@ import { namespaced } from '../../../../utils/cdk-identity-utils'
 
 const SCHEMA_OUT_DIR = path.join(process.cwd(), process.env.CDK_OUTDIR as string)
 
-export interface ExtendableGraphQLApiProps extends GraphQLApiProps {
+export interface ExtendableGraphQLApiProps extends Omit<GraphQLApiProps, 'schemaDefinition'> {
 	readonly userPool?: IUserPool
 	readonly schemaConfig?: RootSchemaConfig
 }
@@ -46,6 +46,7 @@ export class ExtendableGraphQLApi extends GraphQLApi {
 	private static defaultProps ({ userPool, logConfig, authorizationConfig, ...props }: ExtendableGraphQLApiProps): GraphQLApiProps {
 		return {
 			...props,
+			schemaDefinition: SchemaDefinition.FILE,
 			logConfig: logConfig || {
 				fieldLogLevel: FieldLogLevel.ALL,
 			},

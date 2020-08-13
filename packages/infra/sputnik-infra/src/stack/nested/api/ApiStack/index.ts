@@ -1,6 +1,5 @@
 import { IUserPool } from '@aws-cdk/aws-cognito'
 import { Construct, NestedStack, NestedStackProps } from '@aws-cdk/core'
-import * as path from 'path'
 import { GRAPHQL_SCHEMA_PATH } from '@deathstar/sputnik-core-api/lib/schema-file'
 import { ExtendableGraphQLApi } from '@deathstar/sputnik-infra-core/lib/construct/api/graphql/ExtendableGraphQLApi'
 import { ExtendableRestApi } from '@deathstar/sputnik-infra-core/lib/construct/api/rest/ExtendableRestApi'

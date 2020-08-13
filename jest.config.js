@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
 	clearMocks: true,
 	coverageDirectory: 'coverage',
@@ -10,7 +12,6 @@ module.exports = {
 			statements: 80,
 		},
 	},
-	testEnvironment: 'node',
 	globals: {
 		'ts-jest': {
 			extends: './tsconfig.json',
@@ -18,6 +19,12 @@ module.exports = {
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js'],
 	modulePathIgnorePatterns: ['dist'],
+	moduleNameMapper: {
+		'@deathstar/(sputnik-([^-]+).+)$': [
+			path.join(__dirname, 'packages/$2/$1/src'),
+			'$1',
+		],
+	},
 	notify: true,
 	notifyMode: 'always',
 	roots: ['<rootDir>packages'],
@@ -25,5 +32,5 @@ module.exports = {
 	transform: {
 		'^.+\\.(ts|tsx)$': 'ts-jest',
 	},
-	setupFilesAfterEnv: ['<rootDir>/configs/jest/setupTests.ts'],
+	setupFilesAfterEnv: [path.join(__dirname, 'configs/jest/setupTests.ts')],
 }
