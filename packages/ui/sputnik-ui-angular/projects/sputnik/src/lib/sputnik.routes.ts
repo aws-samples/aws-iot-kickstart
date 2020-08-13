@@ -15,6 +15,11 @@ import { DeviceTypesComponent } from './secure/device-types/device-types.compone
 import { SystemsComponent } from './secure/systems/systems.component'
 import { SystemBlueprintsComponent } from './secure/system-blueprints/system-blueprints.component'
 import { DeviceBlueprintsComponent } from './secure/device-blueprints/device-blueprints.component'
+import { Error404Component } from './secure/error/error-404.component'
+import { DeviceBlueprintComponent } from './secure/device-blueprints/device-blueprint.component'
+import { DeviceTypeComponent } from './secure/device-types/device-type.component'
+import { SystemComponent } from './secure/systems/system.component'
+import { SystemBlueprintComponent } from './secure/system-blueprints/system-blueprint.component'
 
 const routes: Routes = [
 	{
@@ -23,9 +28,10 @@ const routes: Routes = [
 		children: [
 			{ path: '', component: SecureHomeComponent },
 			{ path: 'deployments', component: DeploymentsComponent },
+
 			{ path: 'devices', component: DevicesComponent },
 			{ path: 'devices/:thingId', component: DeviceComponent },
-			// { path: 'logout', component: LogoutComponent },
+
 			{ path: 'maps', component: MapsComponent },
 			{ path: 'profile', component: ProfileComponent },
 			{ path: 'settings', component: SettingsComponent },
@@ -33,17 +39,31 @@ const routes: Routes = [
 			{ path: 'users/:username', component: UserComponent },
 
 			{ path: 'device-blueprints', component: DeviceBlueprintsComponent },
+			{ path: 'device-blueprints/:id', component: DeviceBlueprintComponent },
+
 			{ path: 'device-types', component: DeviceTypesComponent },
+			{ path: 'device-types/:id', component: DeviceTypeComponent },
+
 			{ path: 'systems', component: SystemsComponent },
+			{ path: 'systems/:id', component: SystemComponent },
+
 			{ path: 'system-blueprints', component: SystemBlueprintsComponent },
+			{ path: 'system-blueprints/:id', component: SystemBlueprintComponent },
+
+			// 404 not found route
+			{ path: '**', component: Error404Component },
 		],
 	},
+
+	// 404 not found route
+	{ path: '**', redirectTo: '/' },
 ]
 
 @NgModule({
+	declarations: [Error404Component],
 	// Use hash routing for CloudFront SPA support
 	// https://codecraft.tv/courses/angular/routing/routing-strategies/#_hashlocationstrategy
-	imports: [RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules })],
+	imports: [RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules, enableTracing: true, })],
 	exports: [RouterModule],
 })
 export class SputnikRoutingModule {}

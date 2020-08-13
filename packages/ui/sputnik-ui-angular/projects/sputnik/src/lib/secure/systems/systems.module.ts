@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
-import { RouterModule, Routes } from '@angular/router'
+import { RouterModule } from '@angular/router'
 // Components
-import { SecureHomeLayoutComponent } from '../../secure/secure-home-layout.component'
 import { SystemComponent } from './system.component'
 import { SystemsComponent } from './systems.component'
 import { SystemEditModalComponent } from './system.edit.modal.component'
@@ -14,14 +13,6 @@ import { TableModule } from '../../modules/table/table.module'
 import { PipesModule } from '../../pipes/pipes.module'
 import { PrettyJsonModule } from '../../modules/pretty-json/pretty-json.module'
 
-const systemsRoutes: Routes = [
-	{
-		path: 'systems',
-		component: SecureHomeLayoutComponent,
-		children: [{ path: ':id', component: SystemComponent }, { path: '', component: SystemsComponent }],
-	},
-]
-
 @NgModule({
 	declarations: [SystemComponent, SystemsComponent, SystemEditModalComponent, SystemsModalComponent],
 	entryComponents: [SystemEditModalComponent, SystemsModalComponent],
@@ -29,7 +20,7 @@ const systemsRoutes: Routes = [
 	imports: [
 		CommonModule,
 		FormsModule,
-		RouterModule.forChild(systemsRoutes),
+		RouterModule,
 
 		// Modules
 		ChildViewsModule,
