@@ -31,15 +31,28 @@ export class UserService {
 	}
 
 	async init () {
-		this.session = await Auth.currentSession()
-		this.user = await Auth.currentAuthenticatedUser()
+		try {
+			this.session = await Auth.currentSession()
 
-		this.profileInfo = await this.getUserInfo()
-		this.isAdmin = this.profileInfo.isAdmin()
+			this.idToken = this.session.getIdToken()
+			this.jwtToken = this.idToken.getJwtToken()
+			this.accessToken = this.session.getAccessToken()
+		} catch (error) {
+			this.logger.error('[Auth.currentSession]', error)
+		}
 
-		this.idToken = this.session.getIdToken()
-		this.jwtToken = this.idToken.getJwtToken()
-		this.accessToken = this.session.getAccessToken()
+		try {
+			this.user = await Auth.currentUserPoolUser()
+		} catch (error) {
+			this.logger.error('[Auth.currentUserPoolUser]', error)
+		}
+
+		try {
+			this.profileInfo = await this.getUserInfo()
+			this.isAdmin = this.profileInfo.isAdmin()
+		} catch (error) {
+			this.logger.error('[getUserInfo]', error)
+		}
 	}
 
 	logout () {
