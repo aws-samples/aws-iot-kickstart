@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-infra-lambda-code",
   "description": "Lambda functions used in infra",
-  "version": "0.0.0-alpha.13",
+  "version": "0.0.0-beta.0",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "contributors": [
@@ -30,8 +30,8 @@
   "dependencies": {
     "@aws-cdk/aws-lambda": "1.58.0",
     "@aws-cdk/core": "1.58.0",
-    "@deathstar/sputnik-core": "^0.0.0-alpha.3",
-    "@deathstar/sputnik-infra-core": "^0.0.0-alpha.4"
+    "@deathstar/sputnik-core": "^0.0.0-beta.0",
+    "@deathstar/sputnik-infra-core": "^0.0.0-beta.0"
   },
   "resolutions": {
     "deep-diff": "1.0.2",
