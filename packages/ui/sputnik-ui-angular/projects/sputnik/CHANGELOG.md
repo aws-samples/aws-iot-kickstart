@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.17](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.16...@deathstar/sputnik-ui-angular@0.0.0-alpha.17) (2020-08-13)
+
+
+### Bug Fixes
+
+* **ui-angular:** use currect auth user ([e4330db](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/e4330db653dda45eff222d89ee308c0270327cd8))
+
+
+
+
+
 # [0.0.0-alpha.16](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.15...@deathstar/sputnik-ui-angular@0.0.0-alpha.16) (2020-08-13)
 
 
