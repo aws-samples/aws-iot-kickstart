@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-alpha.16](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.15...@deathstar/sputnik-ui-angular@0.0.0-alpha.16) (2020-08-13)
+
+
+### Bug Fixes
+
+* **ui-angular:** move to flat routing and add catch all ([36e7e44](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/commits/36e7e44596a57e2f1ac37c75987aab0729badd54))
+
+
+
+
+
 # [0.0.0-alpha.15](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.14...@deathstar/sputnik-ui-angular@0.0.0-alpha.15) (2020-08-12)
 
 

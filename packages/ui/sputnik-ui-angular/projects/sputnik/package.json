@@ -1,6 +1,6 @@
 {
   "name": "@deathstar/sputnik-ui-angular",
-  "version": "0.0.0-alpha.15",
+  "version": "0.0.0-alpha.16",
   "publishConfig": {
     "directory": "dist"
   },
