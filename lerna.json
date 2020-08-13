@@ -7,7 +7,7 @@
       "conventionalCommits": true,
       "access": "public",
       "npmClient": "yarn",
-      "allowBranch": ["master"],
+      "allowBranch": ["master", "prerelease/*"],
       "verifyAccess": false
     },
     "version": {
