@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.6](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/settings-service@0.0.5...@lambda/settings-service@0.0.6) (2020-08-14)
+
+**Note:** Version bump only for package @lambda/settings-service
+
+
+
+
+
 ## [0.0.5](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/settings-service@0.0.4...@lambda/settings-service@0.0.5) (2020-08-12)
 
 **Note:** Version bump only for package @lambda/settings-service

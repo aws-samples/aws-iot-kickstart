@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.5](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/sputnik-ui-angular@0.2.4...sputnik-ui-angular@0.2.5) (2020-08-14)
+
+**Note:** Version bump only for package sputnik-ui-angular
+
+
+
+
+
 ## [0.2.4](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/sputnik-ui-angular@0.2.3...sputnik-ui-angular@0.2.4) (2020-08-13)
 
 
