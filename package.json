@@ -27,6 +27,8 @@
     "version:release": "lerna version --conventional-commits --force-git-tag",
     "version:prerelease": "lerna version --conventional-commits --conventional-prerelease",
     "version:graduate": "lerna version --conventional-commits --conventional-graduate",
+    "prepublish:beta": "yarn build && yarn test && yarn lint --quiet",
+    "publish:beta": "yarn lerna publish from-package --pre-dist-tag beta",
     "test": "lerna run --stream 'test' -- --silent --notify=false",
     "tsc": "tsc",
     "hygen": "hygen",
