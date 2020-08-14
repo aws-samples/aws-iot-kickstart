@@ -1,25 +1,50 @@
-orbs:
-  release-workflows: 'hutson/library-release-workflows@4.3.3'
 version: 2.1
 workflows:
   build_test_deploy:
     jobs:
       - node_10_test_plan
       - release-workflows/lerna-deliver:
+          description: >
+            Job for generating a release, along with corresponding git tags, for a
+            Lerna-based mono-repository.
+            https://circleci.com/orbs/registry/orb/hutson/library-release-workflows
           context: github-interaction
           email: circleci@circleci
           filters:
             branches:
               only: prerelease/beta
-          fingerprint: '48:0a:68:49:13:e2:09:20:66:3f:55:dd:0a:1a:ab:2a'
-          fullname: CircleCI
+          docker:
+            - image: >-
+               node:10.15.0@sha256:cdca9751c481ae77f2f57bf8a7337c378a144af45310f7d2711d265f5ac9ef15
+          steps:
+            - checkout
+            - add_ssh_keys:
+                fingerprints:
+                  - 48:0a:68:49:13:e2:09:20:66:3f:55:dd:0a:1a:ab:2a
+            - run: >-
+                git config --global user.email "circleci@circleci" && git config --global user.name "CircleCI"
+            - run: yarn install
+            - run: $(yarn bin)/lerna version --yes
           requires:
             - node_10_test_plan
       - release-workflows/lerna-deploy:
+          description: >
+            Job for publishing multiple npm packages from a Lerna-based mono-repository to
+            an npm-compatible package registry.
+            https://circleci.com/orbs/registry/orb/hutson/library-release-workflows
           context: npm-interaction
           filters:
             branches:
               only: prerelease/beta
           requires:
             - release-workflows/lerna-deliver
+          docker:
+            - image: >-
+                node:10.15.0@sha256:cdca9751c481ae77f2f57bf8a7337c378a144af45310f7d2711d265f5ac9ef15
+          steps:
+            - checkout
+            - run: yarn install
+            - run: yarn global add @hutson/set-npm-auth-token-for-ci
+            - run: set-npm-auth-token-for-ci
+            - run: $(yarn bin)/lerna publish from-git --yes
   version: 2
