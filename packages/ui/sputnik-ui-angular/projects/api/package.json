@@ -57,5 +57,6 @@
     "aws-appsync-subscription-link": "^2.2.0",
     "graphql": "^15.3.0",
     "graphql-tag": "^2.11.0"
-  }
+  },
+  "gitHead": "7716d0a0527b9a046a26bccf541ad4f57b17cb1b"
 }

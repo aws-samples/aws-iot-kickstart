@@ -89,5 +89,6 @@
     "tree-cli": "^0.6.4",
     "yaml": "^1.9.2",
     "yaml-cfn": "^0.2.3"
-  }
+  },
+  "gitHead": "7716d0a0527b9a046a26bccf541ad4f57b17cb1b"
 }

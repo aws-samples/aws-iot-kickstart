@@ -63,5 +63,6 @@
   },
   "devDependencies": {
     "aws-sdk-mock": "^5.1.0"
-  }
+  },
+  "gitHead": "89978be01cbdcebf256c6b11eaeda422e9db5b9d"
 }
