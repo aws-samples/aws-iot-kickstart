@@ -24,6 +24,7 @@ import { RealTimeDashboardComponent, RealTimeDashboardModule } from './dashboard
 import { PipesModule } from '../pipes/pipes.module'
 import { MapsModule } from '../secure/maps/maps.component'
 import { CommandButtonWidgetComponent } from './command-button-widget.component'
+import { CodeWidgetComponent } from './code-widget.component'
 
 @NgModule({
 	declarations: [
@@ -32,6 +33,7 @@ import { CommandButtonWidgetComponent } from './command-button-widget.component'
 		ButtonWidgetComponent,
 		CardWidgetComponent,
 		CheckboxWidgetComponent,
+		CodeWidgetComponent,
 		ColorPickerWidgetComponent,
 		GraphRealtimeWidgetComponent,
 		GaugeWidgetComponent,
@@ -44,6 +46,7 @@ import { CommandButtonWidgetComponent } from './command-button-widget.component'
 		ButtonWidgetComponent,
 		CardWidgetComponent,
 		CheckboxWidgetComponent,
+		CodeWidgetComponent,
 		ColorPickerWidgetComponent,
 		GraphRealtimeWidgetComponent,
 		GaugeWidgetComponent,
