@@ -58,7 +58,7 @@ export class IoTPubSuberComponent implements OnDestroy {
 			})
 			this.subscriptionsSubject.next()
 		} else {
-			console.log('Not connected to AWS IoT: Cant subscribe')
+			console.log('Not connected to AWS IoT: Can\'t subscribe')
 		}
 	}
 }

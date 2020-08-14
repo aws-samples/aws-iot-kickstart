@@ -39,12 +39,6 @@ export class DefaultDeviceComponent extends IoTPubSuberComponent implements OnIn
 				if (deviceBlueprint?.spec?.View != null) {
 					this.parent = this // What does this do? From old code, but seems odd
 
-					try {
-						this.shadow = await this.iotService.getThingShadow({ thingName: device.thingName })
-					} catch (error) {
-						console.error(`Failed to get shadow for thingName "${device.thingName}"`, error)
-					}
-
 					const widgetSubscriptions = []
 					const view = JSON.parse(
 						JSON.stringify(deviceBlueprint.spec.View)
@@ -56,12 +50,17 @@ export class DefaultDeviceComponent extends IoTPubSuberComponent implements OnIn
 						.join(device.name),
 					)
 
+					let initShadow = false
 					try {
 						if (view.subscriptions) {
 							const subs = view.subscriptions
 							for (const ref in subs) {
-								if (subs.ref) {
+								if (subs[ref]) {
 									const topic = subs[ref]
+
+									if(topic.search(/\$aws\/things\/.*\/shadow/g) > -1) {
+										initShadow = true
+									}
 
 									this.widgetSubscriptionSubjects[ref] = new Subject<any>()
 									this.widgetSubscriptionObservable$[ref] = this.widgetSubscriptionSubjects[ref].asObservable()
@@ -81,6 +80,14 @@ export class DefaultDeviceComponent extends IoTPubSuberComponent implements OnIn
 						}
 					} catch (error) {
 						console.error(`Failed to subscribe to subscriptions on device "${device.thingName}"`, error)
+					}
+
+					if(initShadow) {
+						try {
+							this.shadow = await this.iotService.getThingShadow({ thingName: device.thingName })
+						} catch (error) {
+							console.error(`Failed to get shadow for thingName "${device.thingName}"`, error)
+						}
 					}
 
 					if (view.widgets) {

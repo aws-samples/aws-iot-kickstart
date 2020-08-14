@@ -20,11 +20,13 @@ import { RealTimeDashboardComponent } from './dashboards/realtime/realtime-dashb
 import { Device } from '../models/device.model'
 import { MapWidgetComponent } from './map-widget.component'
 import { CommandButtonWidgetComponent } from './command-button-widget.component'
+import { CodeWidgetComponent } from './code-widget.component'
 
 const widgetComponentTypes = {
 	button: ButtonWidgetComponent,
 	card: CardWidgetComponent,
 	checkbox: CheckboxWidgetComponent,
+	code: CodeWidgetComponent,
 	'color-picker': ColorPickerWidgetComponent,
 	gauge: GaugeWidgetComponent,
 	'graph-realtime': GraphRealtimeWidgetComponent,
