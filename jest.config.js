@@ -20,7 +20,7 @@ module.exports = {
 	moduleFileExtensions: ['ts', 'tsx', 'js'],
 	modulePathIgnorePatterns: ['dist'],
 	moduleNameMapper: {
-		'@deathstar/(sputnik-([^-]+).+)$': [
+		'@deathstar/(sputnik-([^-]+)(-.+)?)$': [
 			path.join(__dirname, 'packages/$2/$1/src'),
 			'$1',
 		],
