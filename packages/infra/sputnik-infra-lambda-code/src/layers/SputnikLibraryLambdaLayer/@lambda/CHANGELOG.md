@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.1.5](https://github.com/aws-samples/aws-iot-kickstart/compare/@lambda/sputnik-lib@0.1.4...@lambda/sputnik-lib@0.1.5) (2020-08-14)
+
+
+### Bug Fixes
+
+* **core-api:** use beta version for core api ([042fe81](https://github.com/aws-samples/aws-iot-kickstart/commit/042fe81beb46fa8950a5713f1f8231acddc06971))
+
+
+
+
+
 ## [0.1.4](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/sputnik-lib@0.1.3...@lambda/sputnik-lib@0.1.4) (2020-08-14)
 
 **Note:** Version bump only for package @lambda/sputnik-lib

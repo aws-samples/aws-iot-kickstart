@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/aws-samples/aws-iot-kickstart/compare/@lambda/jit-onboarding-service@0.0.10...@lambda/jit-onboarding-service@0.0.11) (2020-08-14)
+
+**Note:** Version bump only for package @lambda/jit-onboarding-service
+
+
+
+
+
 ## [0.0.10](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/jit-onboarding-service@0.0.9...@lambda/jit-onboarding-service@0.0.10) (2020-08-14)
 
 **Note:** Version bump only for package @lambda/jit-onboarding-service

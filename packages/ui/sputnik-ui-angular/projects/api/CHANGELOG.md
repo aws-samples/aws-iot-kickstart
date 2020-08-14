@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-beta-2.0](https://github.com/aws-samples/aws-iot-kickstart/compare/@deathstar/sputnik-ui-angular-api@0.1.0...@deathstar/sputnik-ui-angular-api@0.0.0-beta-2.0) (2020-08-14)
+
+
+### Bug Fixes
+
+* **core-api:** use beta version for core api ([042fe81](https://github.com/aws-samples/aws-iot-kickstart/commit/042fe81beb46fa8950a5713f1f8231acddc06971))
+
+
+
+
+
 # [0.1.0](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular-api@0.0.3...@deathstar/sputnik-ui-angular-api@0.1.0) (2020-08-12)
 
 

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.9](https://github.com/aws-samples/aws-iot-kickstart/compare/@lambda/admin-service@0.0.8...@lambda/admin-service@0.0.9) (2020-08-14)
+
+**Note:** Version bump only for package @lambda/admin-service
+
+
+
+
+
 ## [0.0.8](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/admin-service@0.0.7...@lambda/admin-service@0.0.8) (2020-08-14)
 
 **Note:** Version bump only for package @lambda/admin-service

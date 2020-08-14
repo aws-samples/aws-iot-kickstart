@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/aws-samples/aws-iot-kickstart/compare/sputnik-ui-angular@0.2.5...sputnik-ui-angular@0.3.0) (2020-08-14)
+
+
+### Bug Fixes
+
+* **core-api:** use beta version for core api ([042fe81](https://github.com/aws-samples/aws-iot-kickstart/commit/042fe81beb46fa8950a5713f1f8231acddc06971))
+* **default-device:** init ThingShadow only if subscribed to shadow topics ([da3e9ff](https://github.com/aws-samples/aws-iot-kickstart/commit/da3e9ffd66172ab685868d3ce56d6a40185786e7))
+* **iotservice:** reenable iotService connect and statuService ([368c482](https://github.com/aws-samples/aws-iot-kickstart/commit/368c482839a08891b4c3f3853ea9365c43ac923e))
+
+
+### Features
+
+* **widgets:** add code widget to display text in <code> tags ([26fd51b](https://github.com/aws-samples/aws-iot-kickstart/commit/26fd51b0cdcc98ad5a4aa489dbfc3ef119cd6e22))
+
+
+
+
+
 ## [0.2.5](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/sputnik-ui-angular@0.2.4...sputnik-ui-angular@0.2.5) (2020-08-14)
 
 **Note:** Version bump only for package sputnik-ui-angular

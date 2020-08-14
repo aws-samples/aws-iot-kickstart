@@ -2,7 +2,7 @@
     "private": true,
     "name": "@lambda/sputnik-lib",
     "description": "Sputnik library for all service lambdas",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "scripts": {
         "clean": "tsc --build --clean && rm -rf dist",
         "prebuild": "yarn clean",
@@ -14,8 +14,8 @@
         "test": "jest --config ./jest.config.js"
     },
     "dependencies": {
-        "@deathstar/sputnik-core": "^0.0.0-beta.2",
-        "@deathstar/sputnik-core-api": "^0.0.0-beta.2",
+        "@deathstar/sputnik-core": "^0.0.0-beta.3",
+        "@deathstar/sputnik-core-api": "^0.0.0-beta.3",
         "aws-appsync": "^3.0.3",
         "cross-fetch": "^3.0.4",
         "graphql": "^15.3.0",

@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.7](https://github.com/aws-samples/aws-iot-kickstart/compare/@lambda/systems-service@0.0.6...@lambda/systems-service@0.0.7) (2020-08-14)
+
+**Note:** Version bump only for package @lambda/systems-service
+
+
+
+
+
 ## [0.0.6](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@lambda/systems-service@0.0.5...@lambda/systems-service@0.0.6) (2020-08-14)
 
 **Note:** Version bump only for package @lambda/systems-service

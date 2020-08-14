@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-beta.3](https://github.com/aws-samples/aws-iot-kickstart/compare/@deathstar/sputnik-ui-angular@0.0.0-beta.1...@deathstar/sputnik-ui-angular@0.0.0-beta.3) (2020-08-14)
+
+
+### Bug Fixes
+
+* **default-device:** init ThingShadow only if subscribed to shadow topics ([da3e9ff](https://github.com/aws-samples/aws-iot-kickstart/commit/da3e9ffd66172ab685868d3ce56d6a40185786e7))
+* **iotservice:** reenable iotService connect and statuService ([368c482](https://github.com/aws-samples/aws-iot-kickstart/commit/368c482839a08891b4c3f3853ea9365c43ac923e))
+
+
+### Features
+
+* **widgets:** add code widget to display text in <code> tags ([26fd51b](https://github.com/aws-samples/aws-iot-kickstart/commit/26fd51b0cdcc98ad5a4aa489dbfc3ef119cd6e22))
+
+
+
+
+
 # [0.0.0-beta.1](https://git-codecommit.us-west-2.amazonaws.com/v1/repos/Deathstar/compare/@deathstar/sputnik-ui-angular@0.0.0-alpha.17...@deathstar/sputnik-ui-angular@0.0.0-beta.1) (2020-08-14)
 
 **Note:** Version bump only for package @deathstar/sputnik-ui-angular
