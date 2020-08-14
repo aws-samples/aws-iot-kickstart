@@ -15,7 +15,7 @@
     },
     "dependencies": {
         "@deathstar/sputnik-core": "^0.0.0-beta.1",
-        "@deathstar/sputnik-core-api": "^0.1.0",
+        "@deathstar/sputnik-core-api": "^0.0.0-beta.0",
         "aws-appsync": "^3.0.3",
         "cross-fetch": "^3.0.4",
         "graphql": "^15.3.0",

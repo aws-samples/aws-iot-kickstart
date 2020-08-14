@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-core-api",
   "description": "Sputnik core api schema, types, operation, etc",
-  "version": "0.1.0",
+  "version": "0.0.0-beta.0",
   "license": "Apache-2.0",
   "author": "Jeremy Jonas <jay.jonas@hotmail.com>",
   "contributors": [
