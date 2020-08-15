@@ -1,7 +1,8 @@
+import { unique as shorthash } from 'shorthash'
 import { CfnResource, CfnStack, Construct, Resource, Stack, NestedStack } from '@aws-cdk/core'
 
 export function uniqueIdHash (construct: Construct): string {
-	return construct.node.uniqueId.substr(-8)
+	return shorthash(construct.node.uniqueId)
 }
 
 export function overrideLogicalId (resource: Resource | CfnResource | CfnStack | NestedStack, logicalId: string): void {
