@@ -1,5 +1,17 @@
 version: 2.1
 jobs:
+  build_and_test:
+    description: >
+      Job for verifying build and test
+    docker:
+      - image: >-
+          circleci/node:12.16.2
+    steps:
+      - checkout
+      - run: sudo apt install rsync
+      - run: yarn install
+      - run: yarn build
+      - run: yarn test & yarn lint
   deliver:
     description: >
       Job for generating a release, along with corresponding git tags, for a
@@ -10,12 +22,12 @@ jobs:
           circleci/node:12.16.2
     steps:
       - checkout
+      - run: sudo apt install rsync
       - add_ssh_keys:
           fingerprints:
             - "58:7a:36:83:61:28:2c:c9:83:b1:c5:57:26:a9:fc:11"
       - run: >-
           git config --global user.email "circleci@circleci" && git config --global user.name "CircleCI"
-      - run: sudo apt install rsync
       - run: yarn install
       - run: yarn build
       - run: yarn test & yarn lint --quiet
@@ -30,6 +42,7 @@ jobs:
           circleci/node:12.16.2
     steps:
       - checkout
+      - run: sudo apt install rsync
       - run: npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
       - run: yarn install
       - run: yarn build
@@ -39,7 +52,8 @@ jobs:
       - run: yarn lerna publish from-package --pre-dist-tag latest --yes
 workflows:
   version: 2
-  build:
+  # Should only be run on release branches
+  deliver_deploy:
     jobs:
       - deliver:
           filters:
@@ -51,3 +65,7 @@ workflows:
           filters:
             branches:
               only: prerelease/beta
+  # Should be run on all activity to verify commits for pull-requests
+  test:
+    jobs:
+      - build_and_test
