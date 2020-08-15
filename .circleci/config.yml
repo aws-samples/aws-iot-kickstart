@@ -32,6 +32,7 @@ jobs:
       - checkout
       - run: npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
       - run: yarn install
+      - run: yarn build
       # After major version is releases, change this to use "beta" tag and "mainline" to use "latest"
       # Since "deliver" job already creates the git tags we use "from-git"
       # https://github.com/lerna/lerna/tree/master/commands/publish#bump-from-git
