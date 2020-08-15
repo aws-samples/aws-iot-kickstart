@@ -3,8 +3,7 @@
   "description": "Sputnik UI angular api service",
   "version": "0.0.0-beta-2.1",
   "publishConfig": {
-    "access": "public",
-    "tag": "beta"
+    "access": "public"
   },
   "main": "dist/bundles/deathstar-sputnik-ui-angular-api.umd.js",
   "module": "dist/fesm5/deathstar-sputnik-ui-angular-api.js",

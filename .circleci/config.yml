@@ -49,7 +49,9 @@ jobs:
       # After major version is releases, change this to use "beta" tag and "mainline" to use "latest"
       # Seems from-git does not work as version is already run and committed in "deliver" job
       # `from-git No tagged release found`
-      - run: yarn lerna publish from-package --pre-dist-tag latest --yes
+      # Adding `--dist-tag latest` to override the publishConfig of beta in projects until releases
+      # otherwise is cumbersome to get latest version as stuck of earlier release
+      - run: yarn lerna publish from-package --dist --dist-tag latest --pre-dist-tag latest --yes
 workflows:
   version: 2
   # Should only be run on release branches
