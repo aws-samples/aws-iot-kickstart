@@ -9,6 +9,7 @@ jobs:
       - image: >-
           circleci/node:12.16.2
     steps:
+      - run: sudo apt install rsync
       - checkout
       - add_ssh_keys:
           fingerprints:
