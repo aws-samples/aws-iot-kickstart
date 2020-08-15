@@ -34,9 +34,9 @@ jobs:
       - run: yarn install
       - run: yarn build
       # After major version is releases, change this to use "beta" tag and "mainline" to use "latest"
-      # Since "deliver" job already creates the git tags we use "from-git"
-      # https://github.com/lerna/lerna/tree/master/commands/publish#bump-from-git
-      - run: yarn lerna publish from-git --pre-dist-tag latest --yes
+      # Seems from-git does not work as version is already run and committed in "deliver" job
+      # `from-git No tagged release found`
+      - run: yarn lerna publish from-package --pre-dist-tag latest --yes
 workflows:
   version: 2
   build:
