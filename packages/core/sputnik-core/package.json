@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-core",
   "description": "Sputnik core package",
-  "version": "0.0.0-beta.3",
+  "version": "0.0.0-beta.4",
   "license": "Apache-2.0",
   "publishConfig": {
     "access": "public",
@@ -28,7 +28,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@deathstar/sputnik-core-api": "^0.0.0-beta.3"
+    "@deathstar/sputnik-core-api": "^0.0.0-beta.4"
   },
   "gitHead": "7716d0a0527b9a046a26bccf541ad4f57b17cb1b"
 }

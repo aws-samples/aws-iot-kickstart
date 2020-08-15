@@ -1,7 +1,7 @@
 {
   "name": "@deathstar/sputnik-ui-angular-api",
   "description": "Sputnik UI angular api service",
-  "version": "0.0.0-beta-2.0",
+  "version": "0.0.0-beta-2.1",
   "publishConfig": {
     "access": "public",
     "tag": "beta"
@@ -23,7 +23,7 @@
     "generate": "graphql-codegen --config codegen.yml"
   },
   "dependencies": {
-    "@deathstar/sputnik-core-api": "^0.0.0-beta.3"
+    "@deathstar/sputnik-core-api": "^0.0.0-beta.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.17.6",

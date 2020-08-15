@@ -1,6 +1,6 @@
 {
   "name": "@deathstar/sputnik-ui-angular",
-  "version": "0.0.0-beta.3",
+  "version": "0.0.0-beta.4",
   "publishConfig": {
     "access": "public",
     "tag": "beta",
@@ -20,7 +20,7 @@
   "metadata": "dist/deathstar-sputnik-ui-angular.metadata.json",
   "dependencies": {
     "@aws-amplify/ui-angular": "^0.2.14",
-    "@deathstar/sputnik-core": "^0.0.0-beta.3",
+    "@deathstar/sputnik-core": "^0.0.0-beta.4",
     "@deathstar/sputnik-ui-angular-api": "^0.1.0",
     "@mdi/font": "^4.7.95",
     "@ngx-pwa/local-storage": "^7.0.0",

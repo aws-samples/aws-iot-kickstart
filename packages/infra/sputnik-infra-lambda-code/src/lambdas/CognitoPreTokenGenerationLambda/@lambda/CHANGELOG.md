@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.8](https://github.com/aws-samples/aws-iot-kickstart/compare/@lambda/cognito-pre-token-generation@0.0.7...@lambda/cognito-pre-token-generation@0.0.8) (2020-08-15)
+
+**Note:** Version bump only for package @lambda/cognito-pre-token-generation
+
+
+
+
+
 ## [0.0.7](https://github.com/aws-samples/aws-iot-kickstart/compare/@lambda/cognito-pre-token-generation@0.0.6...@lambda/cognito-pre-token-generation@0.0.7) (2020-08-14)
 
 **Note:** Version bump only for package @lambda/cognito-pre-token-generation

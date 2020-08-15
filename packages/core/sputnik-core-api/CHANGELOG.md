@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-beta.4](https://github.com/aws-samples/aws-iot-kickstart/compare/@deathstar/sputnik-core-api@0.0.0-beta.3...@deathstar/sputnik-core-api@0.0.0-beta.4) (2020-08-15)
+
+**Note:** Version bump only for package @deathstar/sputnik-core-api
+
+
+
+
+
 # [0.0.0-beta.3](https://github.com/aws-samples/aws-iot-kickstart/compare/@deathstar/sputnik-core-api@0.1.0...@deathstar/sputnik-core-api@0.0.0-beta.3) (2020-08-14)
 
 

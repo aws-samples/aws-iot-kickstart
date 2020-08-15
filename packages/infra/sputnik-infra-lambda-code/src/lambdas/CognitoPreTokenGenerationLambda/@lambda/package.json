@@ -2,12 +2,12 @@
     "private": true,
     "name": "@lambda/cognito-pre-token-generation",
     "main": "index.js",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "scripts": {
         "build": "mkdir -p ../../../../dist/@lambda && zip -FSrq ../../../../dist/$npm_package_name.zip *"
     },
     "devDependencies": {
-        "@lambda/sputnik-lib": "^0.1.5",
+        "@lambda/sputnik-lib": "^0.1.6",
         "aws-sdk": "*"
     },
     "peerDependencies": {

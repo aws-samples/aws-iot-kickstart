@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-beta.4](https://github.com/aws-samples/aws-iot-kickstart/compare/@deathstar/sputnik-infra-core@0.0.0-beta.3...@deathstar/sputnik-infra-core@0.0.0-beta.4) (2020-08-15)
+
+
+### Bug Fixes
+
+* **infra-core:** fix `uniqueIdHash` util to use shorthash ([e6cfa79](https://github.com/aws-samples/aws-iot-kickstart/commit/e6cfa79f6db4d7ccc2d5c00ba5c4c87c7d5628a4))
+
+
+
+
+
 # [0.0.0-beta.3](https://github.com/aws-samples/aws-iot-kickstart/compare/@deathstar/sputnik-infra-core@0.0.0-beta.1...@deathstar/sputnik-infra-core@0.0.0-beta.3) (2020-08-14)
 
 **Note:** Version bump only for package @deathstar/sputnik-infra-core

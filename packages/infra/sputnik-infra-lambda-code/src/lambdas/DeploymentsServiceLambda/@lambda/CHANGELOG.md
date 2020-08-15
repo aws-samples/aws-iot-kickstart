@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.0.11](https://github.com/aws-samples/aws-iot-kickstart/compare/@lambda/deployments-service@0.0.10...@lambda/deployments-service@0.0.11) (2020-08-15)
+
+**Note:** Version bump only for package @lambda/deployments-service
+
+
+
+
+
 ## [0.0.10](https://github.com/aws-samples/aws-iot-kickstart/compare/@lambda/deployments-service@0.0.9...@lambda/deployments-service@0.0.10) (2020-08-14)
 
 **Note:** Version bump only for package @lambda/deployments-service

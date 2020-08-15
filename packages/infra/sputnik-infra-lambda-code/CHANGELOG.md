@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.0.0-beta.4](https://github.com/aws-samples/aws-iot-kickstart/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-beta.3...@deathstar/sputnik-infra-lambda-code@0.0.0-beta.4) (2020-08-15)
+
+
+### Bug Fixes
+
+* **infra-lambda-code:** make lambda layer proxy parameter name unique to stack ([9196a32](https://github.com/aws-samples/aws-iot-kickstart/commit/9196a32bbe5dce9476ff2c07f0ac2ab3847453df))
+
+
+
+
+
 # [0.0.0-beta.3](https://github.com/aws-samples/aws-iot-kickstart/compare/@deathstar/sputnik-infra-lambda-code@0.0.0-beta.1...@deathstar/sputnik-infra-lambda-code@0.0.0-beta.3) (2020-08-14)
 
 
