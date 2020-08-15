@@ -1,9 +1,9 @@
-import { Construct, Stack } from '@aws-cdk/core'
+import { Construct, Stack, Lazy } from '@aws-cdk/core'
 import { Code, AssetCode, ILayerVersion, LayerVersion } from '@aws-cdk/aws-lambda'
 import { StringParameter } from '@aws-cdk/aws-ssm'
 import { getRootStack } from '@deathstar/sputnik-infra-core/lib/utils/stack-utils'
 import { lambdaPath, CompiledLambdaLayer } from '../../CompiledLambdaLayer'
-import { namespaced } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
+import { namespaced, uniqueIdHash } from '@deathstar/sputnik-infra-core/lib/utils/cdk-identity-utils'
 
 // TODO: read from package.json
 const PACKAGE_NAME = 'sputnik-lib'
@@ -16,11 +16,20 @@ export class SputnikLibraryLambdaLayer extends CompiledLambdaLayer {
 	}
 
 	private static parameterName (): string {
-		return `/shared-layer-version-proxy/${PACKAGE_NAME}/shared/layerVersionArn`
+		if (this._parameterName == null) {
+			return Lazy.stringValue({
+				produce: () => this._parameterName,
+			})
+		}
+
+		return this._parameterName
 	}
 
 	static getLayerVersion (scope: Construct): ILayerVersion {
-		// const stack = getRootStack(scope)
+		if (this._instance == null) {
+			throw new Error('SputnikLibraryLambdaLayer instance does not exist. Must call `SputnikLibraryLambdaLayer.createLayerVersion()` before `SputnikLibraryLambdaLayer.getLayerVersion()`')
+		}
+
 		const stack = Stack.of(scope)
 		let layerVersion = stackMap.get(stack)
 
@@ -38,12 +47,17 @@ export class SputnikLibraryLambdaLayer extends CompiledLambdaLayer {
 
 	private static _instance: SputnikLibraryLambdaLayer
 
+	private static _parameterName: string
+
 	static createLayerVersion (scope: Construct): SputnikLibraryLambdaLayer {
 		if (this._instance != null) {
 			throw new Error(`LayerVersion "${PACKAGE_NAME}" instance already created`)
 		}
 
-		const layerVersion = new SputnikLibraryLambdaLayer(getRootStack(scope), `LayerVersion-${PACKAGE_NAME}`)
+		const stack = getRootStack(scope)
+		this._parameterName = `/shared-layer-version-proxy/${PACKAGE_NAME}/${uniqueIdHash(stack)}/layerVersionArn`
+
+		const layerVersion = new SputnikLibraryLambdaLayer(stack, `LayerVersion-${PACKAGE_NAME}`)
 		this._instance = layerVersion
 
 		return layerVersion

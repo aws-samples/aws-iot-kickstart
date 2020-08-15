@@ -12,5 +12,8 @@
   },
   "compileOnSave": true,
   "exclude": ["node_modules", "lib"],
-  "include": ["src"]
+  "include": ["src"],
+  "files": [
+    "../../../@types/shorthash.d.ts"
+  ]
 }

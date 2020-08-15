@@ -18,6 +18,10 @@
     "rootDir": "../../",
     "baseUrl": ".",
     "lib": ["dom", "esnext"],
+    "typeRoots": [
+      "../../node_modules/@types",
+      "../../@types",
+    ]
   },
   "include": ["jest-dom/extend-expect"]
 }
