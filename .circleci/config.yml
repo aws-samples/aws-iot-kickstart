@@ -12,7 +12,7 @@ jobs:
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - 58:7a:36:83:61:28:2c:c9:83:b1:c5:57:26:a9:fc:11
+            - "58:7a:36:83:61:28:2c:c9:83:b1:c5:57:26:a9:fc:11"
       - run: >-
           git config --global user.email "circleci@circleci" && git config --global user.name "CircleCI"
       - run: sudo apt install rsync
@@ -30,9 +30,8 @@ jobs:
           circleci/node:12.16.2
     steps:
       - checkout
+      - run: npm config set //registry.npmjs.org/:_authToken ${NPM_TOKEN}
       - run: yarn install
-      - run: yarn global add @hutson/set-npm-auth-token-for-ci
-      - run: set-npm-auth-token-for-ci
       - run: yarn publish:beta
 workflows:
   version: 2
