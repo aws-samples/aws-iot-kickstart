@@ -9,15 +9,17 @@ jobs:
       - image: >-
           circleci/node:12.16.2
     steps:
-      - run: sudo apt install rsync
       - checkout
       - add_ssh_keys:
           fingerprints:
-            - 48:0a:68:49:13:e2:09:20:66:3f:55:dd:0a:1a:ab:2a
+            - 58:7a:36:83:61:28:2c:c9:83:b1:c5:57:26:a9:fc:11
       - run: >-
           git config --global user.email "circleci@circleci" && git config --global user.name "CircleCI"
+      - run: sudo apt install rsync
       - run: yarn install
-      - run: yarn release --yes
+      - run: yarn build
+      - run: yarn test & yarn lint --quiet
+      - run: yarn version:release --yes
   deploy:
     description: >
       Job for publishing multiple npm packages from a Lerna-based mono-repository to
