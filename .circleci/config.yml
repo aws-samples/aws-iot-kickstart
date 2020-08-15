@@ -7,7 +7,7 @@ jobs:
       https://circleci.com/orbs/registry/orb/hutson/library-release-workflows
     docker:
       - image: >-
-          node:10.15.0@sha256:cdca9751c481ae77f2f57bf8a7337c378a144af45310f7d2711d265f5ac9ef15
+          circleci/node:12.16.2
     steps:
       - checkout
       - add_ssh_keys:
@@ -16,7 +16,7 @@ jobs:
       - run: >-
           git config --global user.email "circleci@circleci" && git config --global user.name "CircleCI"
       - run: yarn install
-      - run: $(yarn bin)/lerna version --yes
+      - run: yarn release --yes
   deploy:
     description: >
       Job for publishing multiple npm packages from a Lerna-based mono-repository to
@@ -24,13 +24,13 @@ jobs:
       https://circleci.com/orbs/registry/orb/hutson/library-release-workflows
     docker:
       - image: >-
-          node:10.15.0@sha256:cdca9751c481ae77f2f57bf8a7337c378a144af45310f7d2711d265f5ac9ef15
+          circleci/node:12.16.2
     steps:
       - checkout
       - run: yarn install
       - run: yarn global add @hutson/set-npm-auth-token-for-ci
       - run: set-npm-auth-token-for-ci
-      - run: $(yarn bin)/lerna publish from-git --yes
+      - run: yarn publish:beta
 workflows:
   version: 2
   build:
