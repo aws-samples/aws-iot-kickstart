@@ -7,6 +7,7 @@ import { ColorPickerModule } from 'ngx-color-picker'
 import { CardModule } from '../modules/card/card.module'
 import { GraphLineModule } from '../modules/graph-line/graph-line.module'
 import { GaugeModule } from '../modules/gauge/gauge.module'
+
 // Widgets
 import { WidgetComponent } from './widget.component'
 import { WidgetsComponent } from './widgets.component'
@@ -19,7 +20,9 @@ import { GaugeWidgetComponent } from './gauge-widget.component'
 import { InputTextWidgetComponent } from './input-text-widget.component'
 import { TextWidgetComponent } from './text-widget.component'
 import { MapWidgetComponent } from './map-widget.component'
+import { RangeWidgetComponent } from './range-widget.component';
 import { RealTimeDashboardComponent, RealTimeDashboardModule } from './dashboards/realtime/realtime-dashboard'
+
 // Pipes
 import { PipesModule } from '../pipes/pipes.module'
 import { MapsModule } from '../secure/maps/maps.component'
@@ -35,12 +38,13 @@ import { CodeWidgetComponent } from './code-widget.component'
 		CheckboxWidgetComponent,
 		CodeWidgetComponent,
 		ColorPickerWidgetComponent,
+        CommandButtonWidgetComponent,
 		GraphRealtimeWidgetComponent,
 		GaugeWidgetComponent,
 		InputTextWidgetComponent,
 		TextWidgetComponent,
 		MapWidgetComponent,
-		CommandButtonWidgetComponent,
+		RangeWidgetComponent,
 	],
 	entryComponents: [
 		ButtonWidgetComponent,
@@ -48,12 +52,13 @@ import { CodeWidgetComponent } from './code-widget.component'
 		CheckboxWidgetComponent,
 		CodeWidgetComponent,
 		ColorPickerWidgetComponent,
+		CommandButtonWidgetComponent,
 		GraphRealtimeWidgetComponent,
 		GaugeWidgetComponent,
 		InputTextWidgetComponent,
 		TextWidgetComponent,
 		MapWidgetComponent,
-		CommandButtonWidgetComponent,
+        RangeWidgetComponent,
 		RealTimeDashboardComponent,
 	],
 	exports: [WidgetsComponent],
