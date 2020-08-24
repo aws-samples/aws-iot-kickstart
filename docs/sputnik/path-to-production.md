@@ -67,7 +67,7 @@ A CI/CD pipeline helps automate the steps in the software delivery process, such
 
 CodePipeline, a service that builds, tests, and deploys your code every time there is a code change, can be used to orchestrate each step in the release process.
 
-The prject was built with basic CI/CD setup for development, but does not include running tests, staged deployments, etc.
+The project was built with basic CI/CD setup for development, but does not include running tests, staged deployments, etc.
 
 ### [ ] Custom Domain Names
 The project does not use custom domain names for the website and APIs
