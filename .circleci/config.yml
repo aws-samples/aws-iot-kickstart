@@ -1,5 +1,14 @@
 version: 2.1
 jobs:
+  git_hygiene:
+    description: >
+      Job for enforcing git hygiene such as commit-lint
+    docker:
+      - image: >-
+          circleci/node:12.16.2
+    steps:
+      - run: yarn commitlint-circle
+
   build_and_test:
     description: >
       Job for verifying build and test
@@ -12,6 +21,7 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: yarn test & yarn lint
+
   deliver:
     description: >
       Job for generating a release, along with corresponding git tags, for a
@@ -32,6 +42,7 @@ jobs:
       - run: yarn build
       - run: yarn test & yarn lint --quiet
       - run: yarn version:release --yes
+
   deploy:
     description: >
       Job for publishing multiple npm packages from a Lerna-based mono-repository to
@@ -52,6 +63,7 @@ jobs:
       # Adding `--dist-tag latest` to override the publishConfig of beta in projects until releases
       # otherwise is cumbersome to get latest version as stuck of earlier release
       - run: yarn lerna publish from-package --dist --dist-tag latest --pre-dist-tag latest --yes
+
 workflows:
   version: 2
   # Should only be run on release branches
@@ -68,6 +80,7 @@ workflows:
             branches:
               only: prerelease/beta
   # Should be run on all activity to verify commits for pull-requests
-  test:
+  verify:
     jobs:
+      - git_hygiene
       - build_and_test
