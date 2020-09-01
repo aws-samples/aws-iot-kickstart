@@ -58,7 +58,7 @@ export class DefaultDeviceComponent extends IoTPubSuberComponent implements OnIn
 								if (subs[ref]) {
 									const topic = subs[ref]
 
-									if(topic.search(/\$aws\/things\/.*\/shadow/g) > -1) {
+									if (topic.search(/\$aws\/things\/.*\/shadow/g) > -1) {
 										initShadow = true
 									}
 
@@ -82,7 +82,7 @@ export class DefaultDeviceComponent extends IoTPubSuberComponent implements OnIn
 						console.error(`Failed to subscribe to subscriptions on device "${device.thingName}"`, error)
 					}
 
-					if(initShadow) {
+					if (initShadow) {
 						try {
 							this.shadow = await this.iotService.getThingShadow({ thingName: device.thingName })
 						} catch (error) {

@@ -4,11 +4,11 @@ import { ProfileInfo } from '../../models/profile-info.model'
 import { UserService } from '../../services/user.service'
 
 @Component({
-	template: ''
+	template: '',
 })
 export class PageComponent implements OnInit {
 
-	public isAdminUser: boolean = false
+	public isAdminUser = false
 
 	public profile: ProfileInfo = null;
 

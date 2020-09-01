@@ -35,52 +35,53 @@ export class ApiProviderModule {
 	}
 
   protected token: string | null
-  protected tokenExpiration: number | null
 
-  constructor (config: ApiProviderConfig, apollo: Apollo) {
-  	config.auth = Object.assign({
-  		type: 'AMAZON_COGNITO_USER_POOLS',
-  		jwtToken: async () => {
-  			if (this.token == null || this.tokenExpiration < Date.now() + EXPIRATION_BUFFER) {
-  				const session = await Auth.currentSession()
-  				this.token = session.getIdToken().getJwtToken()
-					this.tokenExpiration = session.getIdToken().getExpiration()
-  			}
+protected tokenExpiration: number | null
 
-  			return this.token
-  		},
-  	}, config.auth)
+constructor (config: ApiProviderConfig, apollo: Apollo) {
+	config.auth = Object.assign({
+		type: 'AMAZON_COGNITO_USER_POOLS',
+		jwtToken: async () => {
+			if (this.token == null || this.tokenExpiration < Date.now() + EXPIRATION_BUFFER) {
+				const session = await Auth.currentSession()
+				this.token = session.getIdToken().getJwtToken()
+				this.tokenExpiration = session.getIdToken().getExpiration()
+			}
 
-  	const links: ApolloLink[] = [
-  		// TODO: implement better error handling and logging
-  		onError(({ graphQLErrors, networkError }) => {
-  			if (graphQLErrors) {
-  				graphQLErrors.forEach(({ message, locations, path, ...errorProps }) => {
-  					console.error(
-  						`[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-  					)
+			return this.token
+		},
+	}, config.auth)
 
-  					if ((errorProps as any).errorType === 'UnauthorizedException') {
-  						// likely "Token has expired."
-  						console.error(`[UnauthorizedException]: ${message}`)
-							// TODO: check if this still occures after refactoring to new amplify ui
-  					}
-  				})
-  			}
+	const links: ApolloLink[] = [
+		// TODO: implement better error handling and logging
+		onError(({ graphQLErrors, networkError }) => {
+			if (graphQLErrors) {
+				graphQLErrors.forEach(({ message, locations, path, ...errorProps }) => {
+					console.error(
+						`[GraphQL Error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+					)
 
-  			if (networkError) {
-  				console.error(`[Network Error]: ${networkError}`)
-  			}
-  		}),
-  	]
+					if ((errorProps as any).errorType === 'UnauthorizedException') {
+						// likely "Token has expired."
+						console.error(`[UnauthorizedException]: ${message}`)
+						// TODO: check if this still occures after refactoring to new amplify ui
+					}
+				})
+			}
 
-  	// https://dev.to/danielbayerlein/migrate-apollo-from-v2-to-v3-in-conjunction-with-aws-appsync-16c0
-  	links.push(createAuthLink(config as Required<ApiProviderConfig>))
-  	links.push(createSubscriptionHandshakeLink(config as Required<ApiProviderConfig>))
+			if (networkError) {
+				console.error(`[Network Error]: ${networkError}`)
+			}
+		}),
+	]
 
-  	apollo.create({
-  		cache: new InMemoryCache(),
-  		link: ApolloLink.from(links),
-  	})
-  }
+	// https://dev.to/danielbayerlein/migrate-apollo-from-v2-to-v3-in-conjunction-with-aws-appsync-16c0
+	links.push(createAuthLink(config as Required<ApiProviderConfig>))
+	links.push(createSubscriptionHandshakeLink(config as Required<ApiProviderConfig>))
+
+	apollo.create({
+		cache: new InMemoryCache(),
+		link: ApolloLink.from(links),
+	})
+}
 }

@@ -82,7 +82,7 @@ export class WidgetComponent implements OnInit {
 				}
 			}
 
-			if(typeof obj === 'object') {
+			if (typeof obj === 'object') {
 				obj = JSON.stringify(obj, null, 2)
 			}
 

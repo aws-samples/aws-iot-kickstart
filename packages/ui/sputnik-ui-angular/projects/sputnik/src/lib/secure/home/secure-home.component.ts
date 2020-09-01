@@ -2,8 +2,8 @@ import { Component } from '@angular/core'
 import { Router } from '@angular/router'
 // Services
 import { BreadCrumbService, Crumb } from '../../services/bread-crumb.service'
-import { PageComponent } from '../common/page.component';
-import { UserService } from '../../services/user.service';
+import { PageComponent } from '../common/page.component'
+import { UserService } from '../../services/user.service'
 
 @Component({
 	selector: 'app-root-home',

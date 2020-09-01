@@ -63,7 +63,7 @@ const routes: Routes = [
 	declarations: [Error404Component],
 	// Use hash routing for CloudFront SPA support
 	// https://codecraft.tv/courses/angular/routing/routing-strategies/#_hashlocationstrategy
-	imports: [RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules, enableTracing: false, })],
+	imports: [RouterModule.forRoot(routes, { useHash: true, preloadingStrategy: PreloadAllModules, enableTracing: false })],
 	exports: [RouterModule],
 })
 export class SputnikRoutingModule {}

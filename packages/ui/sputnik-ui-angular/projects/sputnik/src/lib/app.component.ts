@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core'
 import { Router } from '@angular/router'
-import { onAuthUIStateChange, CognitoUserInterface, AuthState } from '@aws-amplify/ui-components';
+import { onAuthUIStateChange, CognitoUserInterface, AuthState } from '@aws-amplify/ui-components'
 import { LoggerService } from './services/logger.service'
 
 @Component({
@@ -31,7 +31,7 @@ export class SputnikAppComponent implements OnInit, OnDestroy {
 	ngOnInit () {
 		this.logger.info('SputnikAppComponent: initialized')
 
-		onAuthUIStateChange ((authState, authData) => {
+		onAuthUIStateChange((authState, authData) => {
 			this.authState = authState
 			this.user = authData as CognitoUserInterface
 			this.ref.markForCheck()
@@ -43,7 +43,7 @@ export class SputnikAppComponent implements OnInit, OnDestroy {
 		})
 	}
 
-	ngOnDestroy() {
+	ngOnDestroy () {
 		return onAuthUIStateChange
 	}
 }
