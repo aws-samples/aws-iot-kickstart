@@ -44,7 +44,7 @@ export class SecureHomeLayoutComponent extends PageComponent {
 		blockUI: NgBlockUI;
 
 		constructor (
-				userService: UserService,
+			userService: UserService,
 				public router: Router,
 				public route: ActivatedRoute,
 				private logger: LoggerService,
@@ -73,17 +73,17 @@ export class SecureHomeLayoutComponent extends PageComponent {
 				// this.ngZone.run(() => {})
 			})
 
-					this.iotService.connect()
-					this.iotService.connectionObservable$.subscribe((connected: boolean) => {
-						this.logger.info(`Change of connection state: new state: ${connected}`)
-					})
+			this.iotService.connect()
+			this.iotService.connectionObservable$.subscribe((connected: boolean) => {
+				this.logger.info(`Change of connection state: new state: ${connected}`)
+			})
 
-					this.statService.statObservable$.subscribe((msg: Stats) => {
-						this.deviceStats = msg.deviceStats
-						this.systemStats = msg.systemStats
-						this.ngZone.run(() => {})
-					})
-					this.statService.refresh()
+			this.statService.statObservable$.subscribe((msg: Stats) => {
+				this.deviceStats = msg.deviceStats
+				this.systemStats = msg.systemStats
+				this.ngZone.run(() => {})
+			})
+			this.statService.refresh()
 
 			this.prepUI()
 		}

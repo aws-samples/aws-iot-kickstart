@@ -34,7 +34,6 @@ export class SystemBlueprintsComponent extends PageComponent {
 
 	public pageTitle = 'System Blueprints';
 
-
 	constructor (
 		userService: UserService,
 		public router: Router,

@@ -16,7 +16,7 @@ export class SputnikComponent implements OnInit, OnDestroy {
 		this.logger.info('SputnikComponent: initialized')
 	}
 
-	ngOnDestroy() {
+	ngOnDestroy () {
 		this.logger.info('SputnikComponent: destroyed')
 	}
 }

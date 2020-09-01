@@ -57,7 +57,7 @@ export function createCompiler (fn: CompilerFactory): Compiler {
 	return fn.createCompiler()
 }
 
-export function userFactory(config: UserService) {
+export function userFactory (config: UserService) {
 	// Prevent "Metadata collected contains an error that will be reported at runtime: Lambda not supported."
 	// https://medium.com/@thilanka.nuwan89/angular-lambda-not-supported-error-work-around-8f204f4cad9a
 	const fn = () => config.init()
@@ -161,11 +161,11 @@ export function userFactory(config: UserService) {
 		},
 		UserService,
 		{
-      provide: APP_INITIALIZER,
-      useFactory: userFactory,
-      deps: [UserService],
-      multi: true
-    }
+			provide: APP_INITIALIZER,
+			useFactory: userFactory,
+			deps: [UserService],
+			multi: true,
+		},
 	],
 	bootstrap: [SputnikComponent],
 	schemas: [NO_ERRORS_SCHEMA],
