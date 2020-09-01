@@ -2,39 +2,39 @@
 	"folders": [
 		{
 			"name": "Kickstarter (infra)",
-			"path": "../kickstarter/infra"
+			"path": "./kickstarter/infra"
 		},
 		{
 			"name": "Kickstarter (web)",
-			"path": "../kickstarter/web"
+			"path": "./kickstarter/web"
 		},
 		{
 			"name": "Core",
-			"path": "../packages/core/sputnik-core"
+			"path": "./packages/core/sputnik-core"
 		},
 		{
 			"name": "Core API",
-			"path": "../packages/core/sputnik-core-api"
+			"path": "./packages/core/sputnik-core-api"
 		},
 		{
 			"name": "Infra Core",
-			"path": "../packages/infra/sputnik-infra-core"
+			"path": "./packages/infra/sputnik-infra-core"
 		},
 		{
 			"name": "Infra",
-			"path": "../packages/infra/sputnik-infra"
+			"path": "./packages/infra/sputnik-infra"
 		},
 		{
 			"name": "Infra Lambdas",
-			"path": "../packages/infra/sputnik-infra-lambda-code"
+			"path": "./packages/infra/sputnik-infra-lambda-code"
 		},
 		{
 			"name": "UI Angular",
-			"path": "../packages/ui/sputnik-ui-angular"
+			"path": "./packages/ui/sputnik-ui-angular"
 		},
 		{
 			"name": "Deathstar",
-			"path": ".."
+			"path": "./"
 		},
 	],
 	"settings": {
