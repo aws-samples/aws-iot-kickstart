@@ -1,3 +1,14 @@
+const defaults = require('@commitlint/config-conventional',)
+
 module.exports = {
-  extends: ['@deathstar/config-commitlint'],
+	extends: [
+    '@commitlint/config-conventional',
+  ],
+  rules: {
+		'type-enum': [
+			2,
+			'always',
+      defaults.rules['type-enum'][2].concat(['wip']),
+		],
+  }
 }
