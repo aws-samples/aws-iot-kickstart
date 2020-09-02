@@ -8,7 +8,7 @@
     "build:api": "NG_BUILD_DIFFERENTIAL_FULL=true ng build api",
     "build:app": "NG_BUILD_DIFFERENTIAL_FULL=true ng build sputnik",
     "//test": "ng test",
-    "lint": "export NODE_OPTIONS=\"--max-old-space-size=6144\" && eslint '**/*.{ts,tsx}'",
+    "lint": "export NODE_OPTIONS=\"--max-old-space-size=6144\" && eslint '**/*.{ts,tsx}' --quiet",
     "e2e": "ng e2e"
   },
   "dependencies": {
