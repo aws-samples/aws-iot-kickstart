@@ -102,3 +102,4 @@ export class WidgetsComponent implements AfterViewInit {
         );
     }
 }
+
