@@ -24,8 +24,8 @@ export class ProfileComponent extends PageComponent {
 		protected localStorage: LocalStorage,
 		private logger: LoggerService,
 	) {
-			super(userService)
-		}
+		super(userService)
+	}
 
 	ngOnInit () {
 		super.ngOnInit()

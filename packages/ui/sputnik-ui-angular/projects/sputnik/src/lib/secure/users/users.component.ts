@@ -1,5 +1,5 @@
 import { Component, NgZone } from '@angular/core'
-import {  NgForm } from '@angular/forms'
+import { NgForm } from '@angular/forms'
 import { Router } from '@angular/router'
 import { LocalStorage } from '@ngx-pwa/local-storage'
 import swal from 'sweetalert2'
