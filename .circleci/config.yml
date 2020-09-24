@@ -1,0 +1,19 @@
+version: 2.1
+jobs:
+  # placeholder for circleci, currently bypass checks for master until beta release
+  # beta release has a full config that onces merged will replace this.
+  # we need this for dependabot and other automation to occur in master
+  bypass:
+    description: >
+      Skipping checks for master until beta release
+    docker:
+      - image: >-
+          circleci/node:12.16.2
+    steps:
+      - echo "Skipping for master until beta release"
+
+workflows:
+  version: 2
+  verify:
+    jobs:
+      - bypass
