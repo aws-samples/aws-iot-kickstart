@@ -10,7 +10,7 @@
         "sputnik-custom-resource-helper-utils": "../../resources/utils/",
         "sputnik-devices-service": "../devices",
         "underscore": "*",
-        "node-forge": "0.8.5",
+        "node-forge": "0.10.0",
         "shortid": "2.2.14"
     },
     "devDependencies": {},
