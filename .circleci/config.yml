@@ -10,7 +10,7 @@ jobs:
       - image: >-
           circleci/node:12.16.2
     steps:
-      - echo "Skipping for master until beta release"
+      - run: echo "Skipping for master until beta release"
 
 workflows:
   version: 2
