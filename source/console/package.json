@@ -27,7 +27,7 @@
     "aws-amplify": "1.1.36",
     "aws-amplify-angular": "3.0.11",
     "bootstrap": "^4.3.1",
-    "chart.js": "2.8.0",
+    "chart.js": ">=2.9.4",
     "chartjs-plugin-annotation": "0.5.7",
     "chartjs-plugin-draggable": "0.1.6",
     "chartjs-plugin-streaming": "1.8.0",
