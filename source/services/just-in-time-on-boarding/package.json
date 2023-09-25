@@ -1,5 +1,5 @@
 {
-    "name": "sputnik-just-in-time-on-boarding-service",
+    "name": "@aws-samples/aws-iot-kickstart-just-in-time-on-boarding-service",
     "description": "The Just In Time On Boarding microservice for sputnik",
     "main": "index.js",
     "license": "Amazon Software License (ASL)",

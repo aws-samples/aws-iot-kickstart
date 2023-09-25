@@ -1,5 +1,5 @@
 {
-    "name": "sputnik-website",
+    "name": "@aws-samples/aws-iot-kickstart-website",
     "version": "x.x.4",
     "description": "Website for sputnik",
     "main": "index.js",

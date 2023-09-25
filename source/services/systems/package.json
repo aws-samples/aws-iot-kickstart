@@ -1,5 +1,5 @@
 {
-    "name": "sputnik-systems-service",
+    "name": "@aws-samples/aws-iot-kickstart-systems-service",
     "description": "The systems microservice for the sputnik",
     "main": "libs.js",
     "license": "Amazon Software License (ASL)",

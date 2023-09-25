@@ -1,5 +1,5 @@
 {
-    "name": "sputnik-custom-resource-helper-utils",
+    "name": "@aws-samples/aws-iot-kickstart-custom-resource-helper-utils",
     "description": "Utils for the app",
     "main": "libs.js",
     "author": {

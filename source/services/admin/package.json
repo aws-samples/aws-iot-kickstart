@@ -1,5 +1,5 @@
 {
-    "name": "sputnik-admin-service",
+    "name": "@aws-samples/aws-iot-kickstart-admin-service",
     "description": "The admin microservice for the sputnik",
     "main": "libs.js",
     "license": "Amazon Software License (ASL)",

@@ -1,5 +1,5 @@
 {
-    "name": "sputnik-custom-resource-helper-s3",
+    "name": "@aws-samples/aws-iot-kickstart-custom-resource-helper-s3",
     "description": "Cloudformation Custom Resource Helper for S3",
     "main": "index.js",
     "author": {
@@ -7,16 +7,13 @@
     },
     "version": "0.0.1",
     "private": "true",
-    "dependencies": {
-    },
-    "devDependencies": {
-    },
+    "dependencies": {},
+    "devDependencies": {},
     "scripts": {
         "build:init": "rm -rf dist && rm -rf node_modules",
         "build:zip": "zip -rq `jq -cr '.name' package.json`.zip .",
         "build:dist": "mkdir dist && mv `jq -cr '.name' package.json`.zip dist/",
         "build": "yarn run build:init && yarn install --production && yarn run build:zip && yarn run build:dist"
     },
-    "bundledDependencies": [
-    ]
+    "bundledDependencies": []
 }
